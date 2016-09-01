@@ -10,48 +10,43 @@
     tools:context="com.melodies.bandup.MainActivity">
 
     <EditText
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/etUsername"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:hint="Username" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/etPassword"
-        android:layout_below="@+id/etUsername"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/etUsername"
-        android:hint="Password" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/etUsername"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
         android:id="@+id/btnSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/etPassword"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/etPassword"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/etPassword" />
+        android:onClick="onClickSignIn"
+        android:text="Sign In" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
         android:id="@+id/btnSignUp"
-        android:layout_below="@+id/btnSignIn"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/btnSignIn" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to Chat"
-        android:id="@+id/toChat"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/btnSignUp" />
+        android:layout_alignEnd="@+id/btnSignIn"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnSignIn"
+        android:onClick="onClickSignUp"
+        android:text="Sign Up" />
+
 </RelativeLayout>

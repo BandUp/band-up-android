@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Register" />
         <activity android:name=".SocketActivity" />
         <activity android:name=".ChatFragment" />
         <activity android:name=".Message"></activity>

@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,11 @@ import com.github.nkzawa.socketio.client.Socket;
 import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    public void onClickRegister(View v) {
+        Intent registerIntent = new Intent(MainActivity.this, Register.class);
+        MainActivity.this.startActivity(registerIntent);
+    }
 
     public void onClick(View v) {
         switch (v.getId()) {

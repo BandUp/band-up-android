@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         final Button btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
         if (v.getId() == R.id.btnSignUp) {
-            Intent signUpIntent = new Intent(MainActivity.this, Register.class);
-            MainActivity.this.startActivity(signUpIntent);
+            Intent signUpIntent = new Intent(Login.this, Register.class);
+            Login.this.startActivity(signUpIntent);
         }
     }
 }

@@ -46,4 +46,12 @@
         android:layout_below="@+id/btnSignIn"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/btnSignIn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Chat"
+        android:id="@+id/toChat"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/btnSignUp" />
 </RelativeLayout>

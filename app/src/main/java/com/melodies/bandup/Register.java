@@ -2,20 +2,33 @@ package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Register extends AppCompatActivity {
+    private String url = "https://band-up-server.herokuapp.com/signup-local";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
     }
 
-    public void onClickRegister(View v) {
+    public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
@@ -40,10 +53,33 @@ public class Register extends AppCompatActivity {
                 pass.show();
             } else {
                 // insert new user into Database and..
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("username", username);
+                jsonObject.put("password", password);
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                        Request.Method.POST,
+                        url, jsonObject,
+                        new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println("succesfully logged in");
+                            Toast pass = Toast.makeText(Register.this, response.toString(), Toast.LENGTH_LONG);
+                            Intent registerIntent = new Intent(Register.this, Login.class);
+                            Register.this.startActivity(registerIntent);
+                        }
+                    }, new Response.ErrorListener(){
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println(error.getMessage());
+                        }
+                    }
+                );
 
                 //..go to Sign In view
-                Intent registerIntent = new Intent(Register.this, MainActivity.class);
-                Register.this.startActivity(registerIntent);
+                VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
             }
         }

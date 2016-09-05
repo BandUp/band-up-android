@@ -66,6 +66,7 @@ public class Register extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             System.out.println("succesfully logged in");
                             Toast pass = Toast.makeText(Register.this, response.toString(), Toast.LENGTH_LONG);
+                            pass.show();
                             Intent registerIntent = new Intent(Register.this, Login.class);
                             Register.this.startActivity(registerIntent);
                         }
@@ -73,7 +74,7 @@ public class Register extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            System.out.println(error.getMessage());
+                            System.out.println(error.toString());
                         }
                     }
                 );

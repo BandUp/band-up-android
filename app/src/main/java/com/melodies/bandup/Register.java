@@ -2,7 +2,6 @@ package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,37 +46,35 @@ public class Register extends AppCompatActivity {
             // check if passwords match
             if (!password.equals(password2)) {
                 // popup msg
-                Toast pass = Toast.makeText(Register.this, "Passwords don't match!", Toast.LENGTH_SHORT);
-                pass.show();
+                Toast.makeText(Register.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
             } else {
-                // insert new user into Database and..
+                // create request
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("username", username);
                 jsonObject.put("password", password);
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                         Request.Method.POST,
-                        url, jsonObject,
+                        url,
+                        jsonObject,
                         new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            System.out.println("succesfully logged in");
-                            Toast pass = Toast.makeText(Register.this, response.toString(), Toast.LENGTH_LONG);
-                            pass.show();
-                            Intent registerIntent = new Intent(Register.this, Login.class);
-                            Register.this.startActivity(registerIntent);
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
+                                Intent registerIntent = new Intent(Register.this, Login.class);
+                                Register.this.startActivity(registerIntent);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(Register.this, error.toString(), Toast.LENGTH_LONG).show();
+                                //System.out.println(error.getMessage());
+                            }
                         }
-                    }, new Response.ErrorListener(){
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            System.out.println(error.toString());
-                        }
-                    }
                 );
 
-                //..go to Sign In view
+                // send request
                 VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
             }

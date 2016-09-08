@@ -18,16 +18,13 @@
         android:layout_weight="1"
         android:gravity="top">
 
-        <TableLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"></TableLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollView"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/txtChatView"
+            android:maxLines = "900"
+            android:scrollbars = "vertical"
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -40,8 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtMessage"
-            android:layout_weight="1"
-            android:text=""/>
+            android:layout_weight="1"/>
 
         <Button
             android:layout_width="75dp"

@@ -9,29 +9,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.melodies.bandup.ChatActivity">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/send"
-        android:layout_above="@+id/send" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/txtMessage"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/send" />
+        android:layout_toStartOf="@+id/btnSend" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"
-        android:id="@+id/send"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/btnSend"
+        android:layout_alignBottom="@+id/txtMessage"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickSend"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtChatView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btnSend"
+        android:layout_alignEnd="@+id/btnSend" />
 
 </RelativeLayout>

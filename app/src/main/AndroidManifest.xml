@@ -20,6 +20,7 @@
         <activity android:name=".Register" />
         <activity android:name=".SocketActivity" />
         <activity android:name=".ChatFragment" />
+        <activity android:name=".Instruments"></activity>
         <activity android:name=".Message"></activity>
     </application>
 

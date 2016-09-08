@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,32 +7,46 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.melodies.bandup.ChatActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/chatLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtMessage"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/btnSend" />
+        android:layout_weight="1"
+        android:gravity="top">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send"
-        android:id="@+id/btnSend"
-        android:layout_alignBottom="@+id/txtMessage"
-        android:layout_alignParentEnd="true"
-        android:onClick="onClickSend"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtChatView"
+            android:maxLines = "900"
+            android:scrollbars = "vertical"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtChatView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnSend"
-        android:layout_alignEnd="@+id/btnSend" />
+    <LinearLayout
+        android:id="@+id/messageLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMessage"
+            android:layout_weight="1"
+            android:text="fjdkslafjdklsa\nfdsafdsnfdsafds\nfdsafds" />
+
+        <Button
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/btnSend"
+            android:layout_weight="0"
+            android:layout_gravity="b"
+            android:onClick="onClickSend" />
+    </LinearLayout>
+</LinearLayout>

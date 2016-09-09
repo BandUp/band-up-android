@@ -1,6 +1,5 @@
 package com.melodies.bandup;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 
 public class ChatActivity extends AppCompatActivity {
-    public Activity activity = this;
     private void displayMessage(String message) {
         final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
                 txtMessage.setText("");
-                displayMessage(message);
+                displayMessage("Me: " + message);
                 JSONObject msgObject = new JSONObject();
                 String sendTo = "elvar";
                 msgObject.put("nick", sendTo);
@@ -70,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("https://band-up-server.herokuapp.com");
+            mSocket = IO.socket("http://192.168.144.211:3000");
         } catch (URISyntaxException e) {}
     }
 
@@ -86,9 +84,9 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void call(Object... args) {
                 if (args[0].equals(false)) {
-                    System.out.println("Username already taken");
+                    System.out.println("FINISHING");
+                    finish();
                 } else {
-                    System.out.println("Username available");
                 }
             }
         });
@@ -97,12 +95,12 @@ public class ChatActivity extends AppCompatActivity {
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            activity.runOnUiThread(new Runnable() {
+            ChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     // args[0] = from username
                     // args[1] = message
-                    displayMessage(args[1].toString());
+                    displayMessage(args[0].toString() + ": " + args[1].toString());
                 }
             });
         }
@@ -111,7 +109,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         mSocket.off();
         mSocket.disconnect();
         mSocket.off("recv_privatemsg", onNewMessage);

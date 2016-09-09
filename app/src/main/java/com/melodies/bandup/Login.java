@@ -24,12 +24,24 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+    // Go to chat button temp----------------------------
+    public void onClickGoToChat (View v) {
+        final Button btnGoToChat = (Button) findViewById(R.id.btnGoToChat);
+
+        if (v.getId() == R.id.btnGoToChat) {
+            Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
+            Login.this.startActivity(toChatIntent);
+        }
+
+    }
+    //--------------------------------------------
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final Button btnSignIn = (Button) findViewById(R.id.btnSignIn);
+
 
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();

@@ -49,4 +49,14 @@
         android:onClick="onClickSignUp"
         android:text="Sign Up" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go To Chat"
+        android:id="@+id/btnGoToChat"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickGoToChat" />
+
 </RelativeLayout>

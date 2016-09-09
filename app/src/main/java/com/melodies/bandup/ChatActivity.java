@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
@@ -17,26 +18,38 @@ import java.net.URISyntaxException;
 
 public class ChatActivity extends AppCompatActivity {
 
-    public void onClickSend (View v) {
+    private void displayMessage(String message) {
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View myView = vi.inflate(R.layout.chat_message_cell,null, false);
+        TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
+        tv.setText(message);
+        ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
+        insertPoint.addView(myView);
 
+    }
+    private void scrollToBottom(final ScrollView scrollView) {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+    }
+
+    public void onClickSend (View v) {
         final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
         final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         switch (v.getId()) {
             case R.id.btnSend:
-                LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View myView = vi.inflate(R.layout.chat_message_cell,null, false);
                 String message = txtMessage.getText().toString();
-                TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
-                tv.setText(message);
-                ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
-                insertPoint.addView(myView);
+                if (message.equals("")) {
+                    return;
+                }
                 txtMessage.setText("");
-                scrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_DOWN);
-                    }
-                });
+                displayMessage(message);
+                scrollToBottom(scrollView);
+
+                break;
         }
     }
 
@@ -49,8 +62,15 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String username = "YOUR USERNAME";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mSocket.connect();
+        mSocket.emit("adduser", username, new Ack() {
+            @Override
+            public void call(Object... args) {
+                System.out.println(args[0]);
+            }
+        });
     }
 }

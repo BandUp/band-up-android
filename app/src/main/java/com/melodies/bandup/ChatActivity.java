@@ -100,6 +100,8 @@ public class ChatActivity extends AppCompatActivity {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // args[0] = from username
+                    // args[1] = message
                     displayMessage(args[1].toString());
                 }
             });

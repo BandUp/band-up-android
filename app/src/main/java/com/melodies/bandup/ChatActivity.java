@@ -21,6 +21,38 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 
 public class ChatActivity extends AppCompatActivity {
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("https://band-up-server.herokuapp.com/");
+        } catch (URISyntaxException e) {}
+    }
+
+    Ack sendMessageAck = new Ack() {
+        @Override
+        public void call(Object... args) {
+            // If the message transmission succeeded or not
+            if (args[0].equals(false)) {
+                System.out.println("Sending message failed");
+            } else {
+                System.out.println("Sending message succeeded");
+            }
+        }
+    };
+
+    Ack addUserAck = new Ack() {
+        @Override
+        public void call(Object... args) {
+
+            // If the username is taken
+            if (args[0].equals(false)) {
+                finish();
+            }
+        }
+    };
+
+    /* Adds the message to the ScrollView and scrolls to the bottom. */
     private void displayMessage(String message) {
         final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -32,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         scrollToBottom(scrollView);
 
     }
+    /* Scroll to the bottom. */
     private void scrollToBottom(final ScrollView scrollView) {
         scrollView.post(new Runnable() {
             @Override
@@ -41,35 +74,32 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /* When the user taps on the Send Message button. */
     public void onClickSend (View v) throws JSONException {
         final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
+
         switch (v.getId()) {
             case R.id.btnSend:
+                String sendTo = "elvar";
                 String message = txtMessage.getText().toString();
+
+                // Do not allow user to send empty string.
                 if (message.equals("")) {
                     return;
                 }
+
                 txtMessage.setText("");
-                displayMessage("Me: " + message);
-                JSONObject msgObject = new JSONObject();
-                String sendTo = "elvar";
+
+                // Create the JSON object to send the message.
+                final JSONObject msgObject = new JSONObject();
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
-                System.out.println(msgObject);
-                mSocket.emit("privatemsg", msgObject, new Ack() {
-                    @Override
-                    public void call(Object... args) {
-                    }
-                });
+
+                displayMessage("Me: " + message);
+
+                mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
         }
-    }
-
-    private Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket("http://192.168.144.211:3000");
-        } catch (URISyntaxException e) {}
     }
 
     @Override
@@ -80,18 +110,10 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
 
-        mSocket.emit("adduser", username, new Ack() {
-            @Override
-            public void call(Object... args) {
-                if (args[0].equals(false)) {
-                    System.out.println("FINISHING");
-                    finish();
-                } else {
-                }
-            }
-        });
+        mSocket.emit("adduser", username, addUserAck);
     }
 
+    // Listener to listen to the "recv_privatemsg" emission.
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -113,5 +135,4 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.disconnect();
         mSocket.off("recv_privatemsg", onNewMessage);
     }
-
 }

@@ -60,6 +60,9 @@ public class Register extends AppCompatActivity {
                         new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
+                                // this handles whatever the response is
+                                // if (reposnse == "positive") {go into view}
+                                // else { do somthing else with negative response}
                                 System.out.println("\"Registration succesful!");
                                 Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
                                 Intent registerIntent = new Intent(Register.this, Login.class);

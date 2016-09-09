@@ -27,22 +27,21 @@ public class Login extends AppCompatActivity {
     // Go to chat button temp----------------------------
     public void onClickGoToChat (View v) {
         final Button btnGoToChat = (Button) findViewById(R.id.btnGoToChat);
-
         if (v.getId() == R.id.btnGoToChat) {
             Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
             Login.this.startActivity(toChatIntent);
         }
-
     }
     //--------------------------------------------
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
+        // catching views into variables
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final Button btnSignIn = (Button) findViewById(R.id.btnSignIn);
 
-
+        // converting into string
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();
 
@@ -59,8 +58,10 @@ public class Login extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("Login Succesful!");
+
+                            // how to handle respnse correctly??
                             Toast.makeText(Login.this, "Login Succesful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, response.toString(), Toast.LENGTH_SHORT).show();
                             Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                             Login.this.startActivity(instrumentsIntent);
                         }

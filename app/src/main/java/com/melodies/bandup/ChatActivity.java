@@ -54,16 +54,17 @@ public class ChatActivity extends AppCompatActivity {
 
     /* Adds the message to the ScrollView and scrolls to the bottom. */
     private void displayMessage(String message) {
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View myView = vi.inflate(R.layout.chat_message_cell,null, false);
+        View myView = vi.inflate(R.layout.chat_message_cell, null, false);
         TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
-        tv.setText(message);
         ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
+
+        tv.setText(message);
         insertPoint.addView(myView);
         scrollToBottom(scrollView);
-
     }
+
     /* Scroll to the bottom. */
     private void scrollToBottom(final ScrollView scrollView) {
         scrollView.post(new Runnable() {
@@ -80,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.btnSend:
-                String sendTo = "elvar";
+                String sendTo = "bergthor";
                 String message = txtMessage.getText().toString();
 
                 // Do not allow user to send empty string.
@@ -104,7 +105,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String username = "bergthor";
+        String username = "elvar";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mSocket.on("recv_privatemsg", onNewMessage);

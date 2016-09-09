@@ -54,11 +54,15 @@ public class ChatActivity extends AppCompatActivity {
                 displayMessage(message);
                 scrollToBottom(scrollView);
                 JSONObject msgObject = new JSONObject();
-                String sendTo = "Elvar";
+                String sendTo = "elvar";
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
-
-                mSocket.emit("privatemsg", msgObject);
+                System.out.println(msgObject);
+                mSocket.emit("privatemsg", msgObject, new Ack() {
+                    @Override
+                    public void call(Object... args) {
+                    }
+                });
                 break;
         }
     }
@@ -72,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String username = "helloworld";
+        String username = "bergthor";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mSocket.on("recv_privatemsg", onNewMessage);
@@ -96,21 +100,19 @@ public class ChatActivity extends AppCompatActivity {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String message;
-                    System.out.println("args:");
-                    System.out.println(args[0]);
-                    System.out.println("DATA");
-                    System.out.println(data);
-                    try {
-                        message = data.getString("message");
-                    } catch (JSONException e) {
-                        return;
-                    }
-                    displayMessage(message);
+                    displayMessage(args[1].toString());
                 }
             });
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mSocket.off();
+        mSocket.disconnect();
+        mSocket.off("recv_privatemsg", onNewMessage);
+    }
 
 }

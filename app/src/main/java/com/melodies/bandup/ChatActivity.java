@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.github.nkzawa.socketio.client.IO;
@@ -19,7 +20,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onClickSend (View v) {
 
         final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
-
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         switch (v.getId()) {
             case R.id.btnSend:
                 LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,7 +31,12 @@ public class ChatActivity extends AppCompatActivity {
                 ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
                 insertPoint.addView(myView);
                 txtMessage.setText("");
-
+                scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
         }
     }
 

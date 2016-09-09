@@ -1,10 +1,11 @@
 package com.melodies.bandup;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,22 +17,27 @@ import java.net.URISyntaxException;
 public class ChatActivity extends AppCompatActivity {
 
     public void onClickSend (View v) {
-        final Button btnSend = (Button) findViewById(R.id.btnSend);
-        final TextView txtChatView = (TextView) findViewById(R.id.txtChatView);
+
         final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
-        txtChatView.setMovementMethod(new ScrollingMovementMethod());
+
         switch (v.getId()) {
             case R.id.btnSend:
+                LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View myView = vi.inflate(R.layout.chat_message_cell,null, false);
                 String message = txtMessage.getText().toString();
-                txtChatView.append(message + "\n");
+                TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
+                tv.setText(message);
+                ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
+                insertPoint.addView(myView);
                 txtMessage.setText("");
+
         }
     }
 
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://band-up-server.herokuapp.com");
+            mSocket = IO.socket("https://band-up-server.herokuapp.com");
         } catch (URISyntaxException e) {}
     }
 

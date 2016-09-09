@@ -24,12 +24,14 @@ import java.net.URISyntaxException;
 public class ChatActivity extends AppCompatActivity {
     public Activity activity = this;
     private void displayMessage(String message) {
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View myView = vi.inflate(R.layout.chat_message_cell,null, false);
         TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
         tv.setText(message);
         ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
         insertPoint.addView(myView);
+        scrollToBottom(scrollView);
 
     }
     private void scrollToBottom(final ScrollView scrollView) {
@@ -43,7 +45,6 @@ public class ChatActivity extends AppCompatActivity {
 
     public void onClickSend (View v) throws JSONException {
         final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         switch (v.getId()) {
             case R.id.btnSend:
                 String message = txtMessage.getText().toString();
@@ -52,7 +53,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 txtMessage.setText("");
                 displayMessage(message);
-                scrollToBottom(scrollView);
                 JSONObject msgObject = new JSONObject();
                 String sendTo = "elvar";
                 msgObject.put("nick", sendTo);

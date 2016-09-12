@@ -1,6 +1,8 @@
 package com.melodies.bandup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -77,15 +79,18 @@ public class Login extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        saveSessionId(response);
                         Toast.makeText(Login.this, "Login Succesful!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(Login.this, response.toString(), Toast.LENGTH_SHORT).show();
                         Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                         Login.this.startActivity(instrumentsIntent);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // diplays error on screen as popup
                         Toast.makeText(Login.this, error.toString(), Toast.LENGTH_LONG).show();
                         System.out.println(error.toString());
                     }
@@ -94,6 +99,15 @@ public class Login extends AppCompatActivity {
 
         // insert request into queue
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    // Storing user sessionId in SessionIdData folder, which only this app can access
+    public void saveSessionId(JSONObject response) {
+
+        SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = srdPref.edit();
+        editor.putString("sessionId", response.toString());
+        editor.commit();
     }
 
     // when Sign Up is Clicked go to Registration View

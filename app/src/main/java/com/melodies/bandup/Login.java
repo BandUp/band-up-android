@@ -10,8 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -19,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
+    // server url location for login
     private String url = "https://band-up-server.herokuapp.com/login-local";
 
     @Override
@@ -90,15 +97,35 @@ public class Login extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // diplays error on screen as popup
-                        Toast.makeText(Login.this, error.toString(), Toast.LENGTH_LONG).show();
-                        System.out.println(error.toString());
+                        errorHandlerLogin(error);
                     }
                 }
         );
 
         // insert request into queue
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    // Handling errors that can occur while SignIn request
+    private void errorHandlerLogin(VolleyError error) {
+        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+            Toast.makeText(Login.this, "Connection error!", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof AuthFailureError ) {
+            Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof ServerError) {
+            Toast.makeText(Login.this, "Server error!", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof NetworkError) {
+            Toast.makeText(Login.this, "Network error!", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof ParseError) {
+            Toast.makeText(Login.this, "Server parse error!", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(Login.this, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
+        }
     }
 
     // Storing user sessionId in SessionIdData folder, which only this app can access

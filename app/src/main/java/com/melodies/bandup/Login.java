@@ -56,13 +56,13 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
             }
             else {
-                loginUser(username, password);
+                createloginRequest(username, password);
             }
         }
     }
 
     // Login user into app
-    private void loginUser(String username, String password) {
+    private void createloginRequest(String username, String password) {
         // create request for Login
         JSONObject user = new JSONObject();
         try {

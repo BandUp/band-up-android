@@ -1,6 +1,8 @@
 package com.melodies.bandup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,6 +27,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
     }
 
+    //
     public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
@@ -65,40 +68,58 @@ public class Register extends AppCompatActivity {
             */
             else {
                 // create request
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("username", username);
-                jsonObject.put("password", password);
-                //jsonObject.put("email", email);
-                //jsonObject.put("age", age);
-
-                final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.POST,
-                        url,
-                        jsonObject,
-                        new Response.Listener<JSONObject>(){
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                // if response is not error, then we register user.
-                                System.out.println("\"Registration succesful!");
-                                Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
-                                Intent registerIntent = new Intent(Register.this, Login.class);
-                                Register.this.startActivity(registerIntent);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                System.out.println(error.toString());
-                            }
-                        }
-                );
-
-                // send request
-                VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
+                createRegisterRequest(username, password);
             }
         }
+    }
 
+    // creating user registration form and sending request to server
+    public void createRegisterRequest(String username, String password) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("username", username);
+            jsonObject.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //jsonObject.put("email", email);
+        //jsonObject.put("age", age);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                jsonObject,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // if response is not error, then userId is stored and redirect to SignIn view.
+                        saveUserId(response);
+                        System.out.println("\"Registration succesful!");
+                        Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
+                        Intent registerIntent = new Intent(Register.this, Login.class);
+                        Register.this.startActivity(registerIntent);
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error.toString());
+                    }
+                }
+        );
+        // send request
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    // Storing user userId in UserIdData folder, which only this app can access
+    public void saveUserId(JSONObject response) {
+
+        SharedPreferences srdPref = getSharedPreferences("UserIdData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = srdPref.edit();
+        editor.putString("userId", response.toString());
+        editor.commit();
     }
 
 }

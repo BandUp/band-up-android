@@ -79,12 +79,11 @@ public class Register extends AppCompatActivity {
         try {
             jsonObject.put("username", username);
             jsonObject.put("password", password);
+            //jsonObject.put("email", email);
+            //jsonObject.put("age", age);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        //jsonObject.put("email", email);
-        //jsonObject.put("age", age);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
@@ -122,5 +121,6 @@ public class Register extends AppCompatActivity {
         editor.commit();
     }
 
+    
 }
 

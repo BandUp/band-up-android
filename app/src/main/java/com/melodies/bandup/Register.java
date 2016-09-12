@@ -45,24 +45,40 @@ public class Register extends AppCompatActivity {
         if (v.getId() == R.id.btnRegister) {
             // check if passwords match
             if (!password.equals(password2)) {
-                // popup msg
                 Toast.makeText(Register.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            /*
+            else if (email.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please enter your Email.", Toast.LENGTH_SHORT).show();
+            }
+            */
+            else if (username.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
+            }
+            else if (password.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
+            }
+            /*
+            else if (age.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please enter your Age.", Toast.LENGTH_SHORT).show();
+            }
+            */
+            else {
                 // create request
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("username", username);
                 jsonObject.put("password", password);
+                //jsonObject.put("email", email);
+                //jsonObject.put("age", age);
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                         Request.Method.POST,
                         url,
                         jsonObject,
                         new Response.Listener<JSONObject>(){
                             @Override
                             public void onResponse(JSONObject response) {
-                                // this handles whatever the response is
-                                // if (reposnse == "positive") {go into view}
-                                // else { do somthing else with negative response}
+                                // if response is not error, then we register user.
                                 System.out.println("\"Registration succesful!");
                                 Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
                                 Intent registerIntent = new Intent(Register.this, Login.class);

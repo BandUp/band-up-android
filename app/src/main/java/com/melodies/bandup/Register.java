@@ -118,6 +118,7 @@ public class Register extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
+    // Handling errors that can occur while Sign Up request
     private void errorHandlerRegister(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
             Toast.makeText(Register.this, "Connection error!", Toast.LENGTH_LONG).show();

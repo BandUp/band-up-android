@@ -56,31 +56,27 @@ public class Register extends AppCompatActivity {
             if (!password.equals(password2)) {
                 Toast.makeText(Register.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
             }
-            /*
             else if (email.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Email.", Toast.LENGTH_SHORT).show();
             }
-            */
             else if (username.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
             }
             else if (password.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
             }
-            /*
             else if (age.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Age.", Toast.LENGTH_SHORT).show();
             }
-            */
             else {
                 // create request
-                createRegisterRequest(username, password);
+                createRegisterRequest(username, password, email, age);
             }
         }
     }
 
     // creating user registration form and sending request to server
-    public void createRegisterRequest(String username, String password) {
+    public void createRegisterRequest(String username, String password, String email, String age) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", username);

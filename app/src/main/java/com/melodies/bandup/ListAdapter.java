@@ -1,4 +1,4 @@
-package com.melodies.bandup.Instruments;
+package com.melodies.bandup;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,36 +8,32 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.melodies.bandup.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Bergthor on 15.9.2016.
- */
-final class InstrumentListAdapter extends BaseAdapter {
-    private List<Instrument> instruments = new ArrayList();
+final class ListAdapter extends BaseAdapter {
+    private List<DoubleListItem> doubleList = new ArrayList();
     private final LayoutInflater mInflater;
+    private String url = "https://band-up-server.herokuapp.com/instruments";
 
-    public InstrumentListAdapter(Context context, List<Instrument> list) {
+    public ListAdapter(Context context, List<DoubleListItem> list) {
         mInflater = LayoutInflater.from(context);
-        this.instruments = list;
+        this.doubleList = list;
     }
 
     @Override
     public int getCount() {
-        return instruments.size();
+        return doubleList.size();
     }
 
     @Override
-    public Instrument getItem(int i) {
-        return instruments.get(i);
+    public DoubleListItem getItem(int i) {
+        return doubleList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return instruments.get(i).drawableId;
+        return doubleList.get(i).drawableId;
     }
 
     @Override
@@ -47,23 +43,22 @@ final class InstrumentListAdapter extends BaseAdapter {
         CheckBox isSelected;
 
         if (v == null) {
-            v = mInflater.inflate(R.layout.instrument_grid_view_cell, viewGroup, false);
+            v = mInflater.inflate(R.layout.item_grid_view_cell, viewGroup, false);
             v.setTag(R.id.text, v.findViewById(R.id.instrumentName));
-            v.setTag(R.id.instrumentSelected, v.findViewById(R.id.instrumentSelected));
         }
 
         name = (TextView) v.getTag(R.id.text);
-        Instrument item = getItem(i);
+        DoubleListItem item = getItem(i);
         name.setText(item.name);
         return v;
     }
 
-    public static class Instrument {
+    public static class DoubleListItem {
         public final String name;
         public final int drawableId;
         public Boolean isSelected;
 
-        Instrument (int drawableId, String name) {
+        DoubleListItem (int drawableId, String name) {
             this.name = name;
             this.drawableId = drawableId;
             this.isSelected = false;

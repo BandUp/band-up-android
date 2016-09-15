@@ -1,4 +1,4 @@
-package com.melodies.bandup.Instruments;
+package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.melodies.bandup.Genres;
-import com.melodies.bandup.R;
-import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,29 +29,24 @@ public class Instruments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
-
         JSONArray req = new JSONArray();
-
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                req,
+                Request.Method.GET, url, req,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<InstrumentListAdapter.Instrument> list = new ArrayList<>();
+                        List<ListAdapter.DoubleListItem> list = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
-
                             try {
                                 JSONObject instrument = response.getJSONObject(i);
-                                InstrumentListAdapter.Instrument myInst = new InstrumentListAdapter.Instrument(instrument.getInt("order"), instrument.getString("name"));
+                                ListAdapter.DoubleListItem myInst = new ListAdapter.DoubleListItem(instrument.getInt("order"), instrument.getString("name"));
                                 list.add(myInst);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        gridView.setAdapter(new InstrumentListAdapter(getBaseContext(), list));
+                        gridView.setAdapter(new ListAdapter(getBaseContext(), list));
                     }
                 },
                 new Response.ErrorListener() {
@@ -67,22 +59,20 @@ public class Instruments extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                InstrumentListAdapter.Instrument inst = (InstrumentListAdapter.Instrument)parent.getAdapter().getItem(0);
-                ImageView instrumentSelected = (ImageView) view.findViewById(R.id.instrumentSelected);
+                ListAdapter.DoubleListItem inst = (ListAdapter.DoubleListItem)parent.getAdapter().getItem(0);
+                ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution
-                if (instrumentSelected.getVisibility() == view.VISIBLE) {
-                    instrumentSelected.setVisibility(view.INVISIBLE);
+                if (itemSelected.getVisibility() == view.VISIBLE) {
+                    itemSelected.setVisibility(view.INVISIBLE);
                     inst.isSelected = false;
 
                 } else {
-                    instrumentSelected.setVisibility(view.VISIBLE);
+                    itemSelected.setVisibility(view.VISIBLE);
                     inst.isSelected = true;
                 }
-
             }
         });
     }

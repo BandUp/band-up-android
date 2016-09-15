@@ -52,11 +52,21 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Go To Instruments"
+        android:id="@+id/btnGoToInstruments"
+        android:onClick="onClickGoToInstruments"
+        android:layout_above="@+id/btnGoToChat"
+        android:layout_alignEnd="@+id/btnGoToChat"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Go To Chat"
         android:id="@+id/btnGoToChat"
+        android:onClick="onClickGoToChat"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onClickGoToChat" />
+        android:layout_alignEnd="@+id/btnSignUp"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

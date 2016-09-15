@@ -43,6 +43,16 @@ public class Login extends AppCompatActivity {
     }
     //--------------------------------------------
 
+    // Go to instruments button temp----------------------------
+    public void onClickGoToInstruments (View v) {
+        final Button btnGoToInstruments = (Button) findViewById(R.id.btnGoToInstruments);
+        if (v.getId() == R.id.btnGoToInstruments) {
+            Intent toInstrumentsIntent = new Intent(Login.this, Instruments.class);
+            Login.this.startActivity(toInstrumentsIntent);
+        }
+    }
+    //--------------------------------------------
+
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables

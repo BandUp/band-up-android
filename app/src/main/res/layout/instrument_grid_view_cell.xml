@@ -19,7 +19,8 @@
         android:layout_margin="7dp"
         android:layout_gravity="right|top"
         android:id="@+id/instrumentSelected"
-        android:src="@drawable/check_on"/>
+        android:src="@drawable/check_on"
+        android:visibility="invisible" />
 
 
 </FrameLayout>

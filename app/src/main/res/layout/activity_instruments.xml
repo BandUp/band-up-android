@@ -4,12 +4,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15px"
+        android:layout_marginBottom="10px"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Let&apos;s get started"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15px"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="What instruments do you play?"
+        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal" />
+
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/instrumentGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/btnNext"
+        android:layout_gravity="right"
+        android:onClick="onClickNext"
+        />
 
 </LinearLayout>

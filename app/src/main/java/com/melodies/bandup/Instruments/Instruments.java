@@ -1,9 +1,11 @@
 package com.melodies.bandup.Instruments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -11,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.Genres;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -44,7 +47,7 @@ public class Instruments extends AppCompatActivity {
 
                             try {
                                 JSONObject instrument = response.getJSONObject(i);
-                                InstrumentListAdapter.Instrument myInst = new InstrumentListAdapter.Instrument(instrument.getInt("id"), instrument.getString("name"));
+                                InstrumentListAdapter.Instrument myInst = new InstrumentListAdapter.Instrument(instrument.getInt("order"), instrument.getString("name"));
                                 list.add(myInst);
 
                             } catch (JSONException e) {
@@ -82,5 +85,12 @@ public class Instruments extends AppCompatActivity {
 
             }
         });
+    }
+    public void onClickNext (View v) {
+        final Button btnGoToInstruments = (Button) findViewById(R.id.btnNext);
+        if (v.getId() == R.id.btnNext) {
+            Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
+            Instruments.this.startActivity(toInstrumentsIntent);
+        }
     }
 }

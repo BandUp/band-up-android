@@ -19,7 +19,6 @@ import java.util.List;
 final class InstrumentListAdapter extends BaseAdapter {
     private List<Instrument> instruments = new ArrayList();
     private final LayoutInflater mInflater;
-    private String url = "https://band-up-server.herokuapp.com/instruments";
 
     public InstrumentListAdapter(Context context, List<Instrument> list) {
         mInflater = LayoutInflater.from(context);
@@ -50,7 +49,7 @@ final class InstrumentListAdapter extends BaseAdapter {
         if (v == null) {
             v = mInflater.inflate(R.layout.instrument_grid_view_cell, viewGroup, false);
             v.setTag(R.id.text, v.findViewById(R.id.instrumentName));
-            //v.setTag(R.id.checkBox, v.findViewById(R.id.checkBox));
+            v.setTag(R.id.instrumentSelected, v.findViewById(R.id.instrumentSelected));
         }
 
         name = (TextView) v.getTag(R.id.text);

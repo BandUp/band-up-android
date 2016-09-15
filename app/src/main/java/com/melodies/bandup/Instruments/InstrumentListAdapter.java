@@ -1,11 +1,14 @@
-package com.melodies.bandup;
+package com.melodies.bandup.Instruments;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.melodies.bandup.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +17,13 @@ import java.util.List;
  * Created by Bergthor on 15.9.2016.
  */
 final class InstrumentListAdapter extends BaseAdapter {
-    private final List<Instrument> instruments = new ArrayList();
+    private List<Instrument> instruments = new ArrayList();
     private final LayoutInflater mInflater;
+    private String url = "https://band-up-server.herokuapp.com/instruments";
 
-    public InstrumentListAdapter(Context context) {
+    public InstrumentListAdapter(Context context, List<Instrument> list) {
         mInflater = LayoutInflater.from(context);
-
-        instruments.add(new Instrument(0, "Guitar",   false));
-        instruments.add(new Instrument(1, "Keyboard", false));
-        instruments.add(new Instrument(2, "Bass",     false));
+        this.instruments = list;
     }
 
     @Override
@@ -44,10 +45,12 @@ final class InstrumentListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = view;
         TextView name;
+        CheckBox isSelected;
 
         if (v == null) {
             v = mInflater.inflate(R.layout.instrument_grid_view_cell, viewGroup, false);
             v.setTag(R.id.text, v.findViewById(R.id.instrumentName));
+            //v.setTag(R.id.checkBox, v.findViewById(R.id.checkBox));
         }
 
         name = (TextView) v.getTag(R.id.text);
@@ -56,15 +59,15 @@ final class InstrumentListAdapter extends BaseAdapter {
         return v;
     }
 
-    private static class Instrument {
+    public static class Instrument {
         public final String name;
         public final int drawableId;
         public Boolean isSelected;
 
-        Instrument (int drawableId, String name, Boolean isSelected) {
+        Instrument (int drawableId, String name) {
             this.name = name;
             this.drawableId = drawableId;
-            this.isSelected = isSelected;
+            this.isSelected = false;
         }
     }
 }

@@ -6,17 +6,20 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
+        android:layout_height="80dp"
         android:text="Guitar"
         android:textSize="30dp"
+        android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/instrumentName" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/checkBox"
-        android:layout_gravity="right|top" />
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="7dp"
+        android:layout_gravity="right|top"
+        android:id="@+id/instrumentSelected"
+        android:src="@drawable/check_on"/>
 
 
 </FrameLayout>

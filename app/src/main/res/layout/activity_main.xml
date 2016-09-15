@@ -52,6 +52,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Go To Genres"
+        android:id="@+id/btnGoToGenres"
+        android:onClick="onClickGoToGenres"
+        android:layout_above="@+id/btnGoToInstruments"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/btnGoToInstruments" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Go To Instruments"
         android:id="@+id/btnGoToInstruments"
         android:onClick="onClickGoToInstruments"

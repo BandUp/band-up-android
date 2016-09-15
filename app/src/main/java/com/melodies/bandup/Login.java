@@ -53,6 +53,16 @@ public class Login extends AppCompatActivity {
     }
     //--------------------------------------------
 
+    // Go to chat button temp----------------------------
+    public void onClickGoToGenres (View v) {
+        final Button btnGoToChat = (Button) findViewById(R.id.btnGoToGenres);
+        if (v.getId() == R.id.btnGoToGenres) {
+            Intent toGenresIntent = new Intent(Login.this, Genres.class);
+            Login.this.startActivity(toGenresIntent);
+        }
+    }
+    //--------------------------------------------
+
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -86,10 +85,16 @@ public class Instruments extends AppCompatActivity {
         });
     }
     public void onClickNext (View v) {
-        final Button btnGoToInstruments = (Button) findViewById(R.id.btnNext);
         if (v.getId() == R.id.btnNext) {
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.out.println("BACK PRESSED");
+        overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
     }
 }

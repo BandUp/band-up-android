@@ -108,9 +108,10 @@ public class Login extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         saveSessionId(response);
-                        Toast.makeText(Login.this, "Login Succesful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                         Login.this.startActivity(instrumentsIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                         finish();
                     }
                 },

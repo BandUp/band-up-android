@@ -18,7 +18,8 @@
         android:layout_margin="7dp"
         android:layout_gravity="right|top"
         android:id="@+id/itemSelected"
-        android:src="@drawable/check_on"
-        android:visibility="invisible" />
+        android:src="@drawable/ic_check_circle_black_24dp"
+        android:visibility="invisible"
+        android:tint="@color/colorPrimaryDark" />
 
 </FrameLayout>

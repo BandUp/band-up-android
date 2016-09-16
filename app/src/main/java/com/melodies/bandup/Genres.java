@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -69,11 +71,15 @@ public class Genres extends AppCompatActivity {
 
                 // TODO: Find a better solution
                 if (itemSelected.getVisibility() == view.VISIBLE) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shrink);
+                    itemSelected.startAnimation(animation);
                     itemSelected.setVisibility(view.INVISIBLE);
                     inst.isSelected = false;
 
                 } else {
                     itemSelected.setVisibility(view.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pop);
+                    itemSelected.startAnimation(animation);
                     inst.isSelected = true;
                 }
             }
@@ -86,7 +92,17 @@ public class Genres extends AppCompatActivity {
         if (v.getId() == R.id.btnFinish) {
             Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
             Genres.this.startActivity(toInstrumentsIntent);
+            overridePendingTransition(R.anim.no_change,R.anim.slide_down);
+
+
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.out.println("BACK PRESSED");
+        overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
     }
 }

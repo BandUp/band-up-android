@@ -16,6 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:singleLine="true"
         android:hint="Username" />
 
     <EditText

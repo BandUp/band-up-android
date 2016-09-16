@@ -11,18 +11,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Instruments extends AppCompatActivity {
     private String url = "https://band-up-server.herokuapp.com/instruments";
@@ -34,35 +27,14 @@ public class Instruments extends AppCompatActivity {
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
         JSONArray req = new JSONArray();
 
+        SetupListeners sl = new SetupListeners(getBaseContext(), gridView);
+
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
-                Request.Method.GET, url, req,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        List<DoubleListItem> list = new ArrayList<>();
-
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject instrument = response.getJSONObject(i);
-                                int order = instrument.getInt("order");
-                                String name = instrument.getString("name");
-
-                                DoubleListItem myInst = new DoubleListItem(order, name);
-                                list.add(myInst);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        gridView.setAdapter(new DoubleListAdapter(getBaseContext(), list));
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println(error.toString());
-                    }
-                }
+                Request.Method.GET,
+                url,
+                req,
+                sl.getResponseListener(),
+                sl.getErrorListener()
         );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonInstrumentRequest);

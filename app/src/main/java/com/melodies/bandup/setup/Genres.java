@@ -12,19 +12,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserList;
 import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Genres extends AppCompatActivity {
     private String url = "https://band-up-server.herokuapp.com/genres";
@@ -36,35 +29,17 @@ public class Genres extends AppCompatActivity {
 
         final GridView gridView = (GridView)findViewById(R.id.genreGridView);
         JSONArray req = new JSONArray();
+        SetupListeners sl = new SetupListeners(getBaseContext(), gridView);
 
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
-                Request.Method.GET, url, req,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        List<DoubleListItem> list = new ArrayList<>();
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject genre = response.getJSONObject(i);
-                                DoubleListItem myInst = new DoubleListItem(genre.getInt("order"), genre.getString("name"));
-                                list.add(myInst);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        gridView.setAdapter(new DoubleListAdapter(getBaseContext(), list));
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println(error.toString());
-                    }
-                }
+        JsonArrayRequest jsonGenresRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                req,
+                sl.getResponseListener(),
+                sl.getErrorListener()
         );
 
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonGenresRequest);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

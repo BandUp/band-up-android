@@ -30,7 +30,10 @@
         android:numColumns="2"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@drawable/instrument_border"
+        android:layout_marginBottom="5px"
+        android:fadeScrollbars="false"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -38,6 +41,8 @@
         android:text="Finish"
         android:id="@+id/btnFinish"
         android:layout_gravity="right"
-        android:onClick="onClickFinish" />
+        android:onClick="onClickFinish"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"/>
 
 </LinearLayout>

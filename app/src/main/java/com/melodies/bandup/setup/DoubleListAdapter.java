@@ -1,4 +1,4 @@
-package com.melodies.bandup;
+package com.melodies.bandup.setup;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.melodies.bandup.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,17 +50,5 @@ final class DoubleListAdapter extends BaseAdapter {
         DoubleListItem item = getItem(i);
         name.setText(item.name);
         return v;
-    }
-
-    public static class DoubleListItem {
-        public final String name;
-        public final int drawableId;
-        public Boolean isSelected;
-
-        DoubleListItem (int drawableId, String name) {
-            this.name = name;
-            this.drawableId = drawableId;
-            this.isSelected = false;
-        }
     }
 }

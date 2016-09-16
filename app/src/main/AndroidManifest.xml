@@ -22,9 +22,9 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".ChatActivity" />
-        <activity android:name=".Instruments" />
+        <activity android:name=".setup.Instruments" />
         <activity android:name=".Matches" />
-        <activity android:name=".Genres"></activity>
+        <activity android:name=".setup.Genres"></activity>
         <activity
             android:name=".UserList"
             android:label="@string/title_activity_user_list"

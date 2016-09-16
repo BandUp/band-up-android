@@ -1,4 +1,4 @@
-package com.melodies.bandup;
+package com.melodies.bandup.setup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -14,6 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.R;
+import com.melodies.bandup.UserList;
+import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,14 +26,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Instruments extends AppCompatActivity {
-    private String url = "https://band-up-server.herokuapp.com/instruments";
+public class Genres extends AppCompatActivity {
+    private String url = "https://band-up-server.herokuapp.com/genres";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_instruments);
-        final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
+        setContentView(R.layout.activity_genres);
+
+        final GridView gridView = (GridView)findViewById(R.id.genreGridView);
         JSONArray req = new JSONArray();
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
@@ -37,12 +42,11 @@ public class Instruments extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<DoubleListAdapter.DoubleListItem> list = new ArrayList<>();
-
+                        List<DoubleListItem> list = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                JSONObject instrument = response.getJSONObject(i);
-                                DoubleListAdapter.DoubleListItem myInst = new DoubleListAdapter.DoubleListItem(instrument.getInt("order"), instrument.getString("name"));
+                                JSONObject genre = response.getJSONObject(i);
+                                DoubleListItem myInst = new DoubleListItem(genre.getInt("order"), genre.getString("name"));
                                 list.add(myInst);
 
                             } catch (JSONException e) {
@@ -65,7 +69,7 @@ public class Instruments extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DoubleListAdapter.DoubleListItem inst = (DoubleListAdapter.DoubleListItem)parent.getAdapter().getItem(0);
+                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(0);
                 ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution
@@ -84,13 +88,18 @@ public class Instruments extends AppCompatActivity {
             }
         });
     }
-    public void onClickNext (View v) {
-        if (v.getId() == R.id.btnNext) {
-            Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
-            Instruments.this.startActivity(toInstrumentsIntent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+
+    public void onClickFinish(View v) {
+
+        final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
+        if (v.getId() == R.id.btnFinish) {
+            Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
+            Genres.this.startActivity(toInstrumentsIntent);
+            overridePendingTransition(R.anim.no_change,R.anim.slide_down);
         }
+
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -1,4 +1,4 @@
-package com.melodies.bandup;
+package com.melodies.bandup.setup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -15,6 +14,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.R;
+import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,27 +24,30 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Genres extends AppCompatActivity {
-    private String url = "https://band-up-server.herokuapp.com/genres";
+public class Instruments extends AppCompatActivity {
+    private String url = "https://band-up-server.herokuapp.com/instruments";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_genres);
-
-        final GridView gridView = (GridView)findViewById(R.id.genreGridView);
+        setContentView(R.layout.activity_instruments);
+        final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
         JSONArray req = new JSONArray();
 
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET, url, req,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<DoubleListAdapter.DoubleListItem> list = new ArrayList<>();
+                        List<DoubleListItem> list = new ArrayList<>();
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                JSONObject genre = response.getJSONObject(i);
-                                DoubleListAdapter.DoubleListItem myInst = new DoubleListAdapter.DoubleListItem(genre.getInt("order"), genre.getString("name"));
+                                JSONObject instrument = response.getJSONObject(i);
+                                int order = instrument.getInt("order");
+                                String name = instrument.getString("name");
+
+                                DoubleListItem myInst = new DoubleListItem(order, name);
                                 list.add(myInst);
 
                             } catch (JSONException e) {
@@ -61,12 +65,12 @@ public class Genres extends AppCompatActivity {
                 }
         );
 
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonInstrumentRequest);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DoubleListAdapter.DoubleListItem inst = (DoubleListAdapter.DoubleListItem)parent.getAdapter().getItem(0);
+                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(0);
                 ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution
@@ -85,24 +89,18 @@ public class Genres extends AppCompatActivity {
             }
         });
     }
-
-    public void onClickFinish(View v) {
-
-        final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
-        if (v.getId() == R.id.btnFinish) {
-            Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
-            Genres.this.startActivity(toInstrumentsIntent);
-            overridePendingTransition(R.anim.no_change,R.anim.slide_down);
+    public void onClickNext (View v) {
+        if (v.getId() == R.id.btnNext) {
+            Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
+            Instruments.this.startActivity(toInstrumentsIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
         }
-
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        System.out.println("ISTASKROOT");
-        System.out.println(isTaskRoot());
-        System.out.println("BACK PRESSED");
-        overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+        if(!isTaskRoot()) {
+            overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+        }
     }
 }

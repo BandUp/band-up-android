@@ -18,11 +18,13 @@ import com.melodies.bandup.VolleySingleton;
 import org.json.JSONArray;
 
 public class Instruments extends AppCompatActivity {
-    private String url = "https://band-up-server.herokuapp.com/instruments";
+    private String url;
+    private String route = "/instruments";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_instruments);
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
         JSONArray req = new JSONArray();

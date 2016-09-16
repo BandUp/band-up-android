@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_address">https://band-up-server.herokuapp.com</string>
+</resources>

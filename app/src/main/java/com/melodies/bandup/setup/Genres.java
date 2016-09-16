@@ -20,11 +20,13 @@ import com.melodies.bandup.VolleySingleton;
 import org.json.JSONArray;
 
 public class Genres extends AppCompatActivity {
-    private String url = "https://band-up-server.herokuapp.com/genres";
+    private String url;
+    private String route = "/genres";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_genres);
 
         final GridView gridView = (GridView)findViewById(R.id.genreGridView);
@@ -70,9 +72,8 @@ public class Genres extends AppCompatActivity {
         if (v.getId() == R.id.btnFinish) {
             Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
             Genres.this.startActivity(toInstrumentsIntent);
-            overridePendingTransition(R.anim.no_change,R.anim.slide_down);
+            overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
         }
-
     }
 
     @Override

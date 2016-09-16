@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
@@ -23,11 +24,8 @@ import java.net.URISyntaxException;
 public class ChatActivity extends AppCompatActivity {
 
     private Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket("https://band-up-server.herokuapp.com/");
-        } catch (URISyntaxException e) {}
-    }
+    String username = "elvar";
+    String sendTo = "bergthor";
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -81,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.btnSend:
-                String sendTo = "bergthor";
+
                 String message = txtMessage.getText().toString();
 
                 // Do not allow user to send empty string.
@@ -107,6 +105,12 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         String username = "elvar";
         super.onCreate(savedInstanceState);
+        try {
+            mSocket = IO.socket(getResources().getString(R.string.api_address));
+        } catch (URISyntaxException e) {
+            Toast.makeText(ChatActivity.this, "URL parsing failed", Toast.LENGTH_SHORT).show();
+        }
+
         setContentView(R.layout.activity_chat);
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();

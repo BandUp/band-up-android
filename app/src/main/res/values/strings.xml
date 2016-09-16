@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BandUp</string>
-    <string name="title_activity_user_list">UserList</string>
+    <string name="title_activity_user_list">User List</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_message_hint">Type a message...</string>
 </resources>

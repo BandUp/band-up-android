@@ -1,1 +1,1 @@
-# band-up-android
+# BandUp Android Client

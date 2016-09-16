@@ -37,18 +37,18 @@ public class Genres extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<ListAdapter.DoubleListItem> list = new ArrayList<>();
+                        List<DoubleListAdapter.DoubleListItem> list = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject genre = response.getJSONObject(i);
-                                ListAdapter.DoubleListItem myInst = new ListAdapter.DoubleListItem(genre.getInt("order"), genre.getString("name"));
+                                DoubleListAdapter.DoubleListItem myInst = new DoubleListAdapter.DoubleListItem(genre.getInt("order"), genre.getString("name"));
                                 list.add(myInst);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        gridView.setAdapter(new ListAdapter(getBaseContext(), list));
+                        gridView.setAdapter(new DoubleListAdapter(getBaseContext(), list));
                     }
                 },
                 new Response.ErrorListener() {
@@ -64,7 +64,7 @@ public class Genres extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListAdapter.DoubleListItem inst = (ListAdapter.DoubleListItem)parent.getAdapter().getItem(0);
+                DoubleListAdapter.DoubleListItem inst = (DoubleListAdapter.DoubleListItem)parent.getAdapter().getItem(0);
                 ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution

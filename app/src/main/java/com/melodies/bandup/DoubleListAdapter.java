@@ -10,11 +10,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ListAdapter extends BaseAdapter {
+final class DoubleListAdapter extends BaseAdapter {
     private List<DoubleListItem> doubleList = new ArrayList<>();
     private final LayoutInflater mInflater;
 
-    public ListAdapter(Context context, List<DoubleListItem> list) {
+    public DoubleListAdapter(Context context, List<DoubleListItem> list) {
         mInflater = LayoutInflater.from(context);
         this.doubleList = list;
     }

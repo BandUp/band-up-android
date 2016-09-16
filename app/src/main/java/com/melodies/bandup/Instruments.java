@@ -94,7 +94,8 @@ public class Instruments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        System.out.println("BACK PRESSED");
-        overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+        if(!isTaskRoot()) {
+            overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+        }
     }
 }

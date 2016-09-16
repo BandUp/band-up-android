@@ -93,8 +93,6 @@ public class Genres extends AppCompatActivity {
             Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
             Genres.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.no_change,R.anim.slide_down);
-
-
         }
 
     }
@@ -102,6 +100,8 @@ public class Genres extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        System.out.println("ISTASKROOT");
+        System.out.println(isTaskRoot());
         System.out.println("BACK PRESSED");
         overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
     }

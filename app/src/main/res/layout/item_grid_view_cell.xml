@@ -10,7 +10,7 @@
         android:textSize="30dp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:id="@+id/instrumentName" />
+        android:id="@+id/itemName" />
 
     <ImageView
         android:layout_width="25dp"
@@ -20,4 +20,5 @@
         android:id="@+id/itemSelected"
         android:src="@drawable/check_on"
         android:visibility="invisible" />
+
 </FrameLayout>

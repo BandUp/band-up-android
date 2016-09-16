@@ -25,11 +25,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Register extends AppCompatActivity {
-    private String url = "https://band-up-server.herokuapp.com/signup-local";
+    private String url;
+    private String route = "/signup-local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_register);
     }
 
@@ -96,8 +98,8 @@ public class Register extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         // if response is not error, then userId is stored and redirect to SignIn view.
                         saveUserId(response);
-                        System.out.println("\"Registration succesful!");
-                        Toast.makeText(Register.this, "Registration succesful! You can Sign In now.", Toast.LENGTH_LONG).show();
+                        System.out.println("\"Registration successful!");
+                        Toast.makeText(Register.this, "Registration successful!\nYou can sign in now.", Toast.LENGTH_LONG).show();
                         Intent registerIntent = new Intent(Register.this, Login.class);
                         Register.this.startActivity(registerIntent);
                         finish();

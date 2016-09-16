@@ -27,11 +27,13 @@ import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
     // server url location for login
-    private String url = "https://band-up-server.herokuapp.com/login-local";
+    private String url;
+    private String route = "/login-local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_main);
     }
     // Go to chat button temp----------------------------

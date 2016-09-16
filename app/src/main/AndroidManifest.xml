@@ -15,6 +15,7 @@
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -23,8 +24,11 @@
         <activity android:name=".ChatActivity" />
         <activity android:name=".Instruments" />
         <activity android:name=".Matches" />
-        <activity android:name=".Genres">
-        </activity>
+        <activity android:name=".Genres"></activity>
+        <activity
+            android:name=".UserList"
+            android:label="@string/title_activity_user_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

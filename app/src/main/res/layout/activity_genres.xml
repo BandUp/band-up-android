@@ -29,6 +29,15 @@
         android:layout_height="match_parent"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        android:id="@+id/btnFinish"
+        android:layout_gravity="right"
+        android:onClick="onClickFinish" />
 
 </LinearLayout>

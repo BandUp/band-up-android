@@ -30,7 +30,6 @@ public class Instruments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
-
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
         JSONArray req = new JSONArray();
 

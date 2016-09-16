@@ -1,9 +1,11 @@
 package com.melodies.bandup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -76,5 +78,15 @@ public class Genres extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onClickFinish(View v) {
+
+        final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
+        if (v.getId() == R.id.btnFinish) {
+            Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
+            Genres.this.startActivity(toInstrumentsIntent);
+        }
+
     }
 }

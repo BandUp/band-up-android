@@ -26,8 +26,10 @@ public class Genres extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
+
         final GridView gridView = (GridView)findViewById(R.id.genreGridView);
         JSONArray req = new JSONArray();
+
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET, url, req,
                 new Response.Listener<JSONArray>() {
@@ -54,6 +56,7 @@ public class Genres extends AppCompatActivity {
                     }
                 }
         );
+
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

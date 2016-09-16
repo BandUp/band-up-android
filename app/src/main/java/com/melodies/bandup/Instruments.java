@@ -30,6 +30,7 @@ public class Instruments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
+
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
         JSONArray req = new JSONArray();
 
@@ -39,6 +40,7 @@ public class Instruments extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<ListAdapter.DoubleListItem> list = new ArrayList<>();
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject instrument = response.getJSONObject(i);
@@ -59,6 +61,7 @@ public class Instruments extends AppCompatActivity {
                     }
                 }
         );
+
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

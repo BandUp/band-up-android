@@ -5,16 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 final class ListAdapter extends BaseAdapter {
-    private List<DoubleListItem> doubleList = new ArrayList();
+    private List<DoubleListItem> doubleList = new ArrayList<>();
     private final LayoutInflater mInflater;
-    private String url = "https://band-up-server.herokuapp.com/instruments";
 
     public ListAdapter(Context context, List<DoubleListItem> list) {
         mInflater = LayoutInflater.from(context);
@@ -40,11 +38,10 @@ final class ListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = view;
         TextView name;
-        CheckBox isSelected;
 
         if (v == null) {
             v = mInflater.inflate(R.layout.item_grid_view_cell, viewGroup, false);
-            v.setTag(R.id.text, v.findViewById(R.id.instrumentName));
+            v.setTag(R.id.text, v.findViewById(R.id.itemName));
         }
 
         name = (TextView) v.getTag(R.id.text);

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -31,7 +32,8 @@ public class Genres extends AppCompatActivity {
 
         final GridView gridView = (GridView)findViewById(R.id.genreGridView);
         JSONArray req = new JSONArray();
-        SetupListeners sl = new SetupListeners(getBaseContext(), gridView);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
+        SetupListeners sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
         JsonArrayRequest jsonGenresRequest = new JsonArrayRequest(
                 Request.Method.GET,

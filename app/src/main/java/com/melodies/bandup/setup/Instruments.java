@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -27,9 +28,10 @@ public class Instruments extends AppCompatActivity {
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_instruments);
         final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         JSONArray req = new JSONArray();
 
-        SetupListeners sl = new SetupListeners(getBaseContext(), gridView);
+        SetupListeners sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,

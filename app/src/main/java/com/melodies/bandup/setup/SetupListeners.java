@@ -2,6 +2,7 @@ package com.melodies.bandup.setup;
 
 import android.content.Context;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,7 +25,7 @@ public class SetupListeners {
     Response.Listener<JSONArray> responseListener;
     Response.ErrorListener errorListener;
 
-    SetupListeners(final Context context, final GridView gridView) {
+    SetupListeners(final Context context, final GridView gridView, final ProgressBar progressBar) {
         responseListener = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -43,6 +44,7 @@ public class SetupListeners {
                         e.printStackTrace();
                     }
                 }
+                progressBar.setVisibility(progressBar.GONE);
                 gridView.setAdapter(new DoubleListAdapter(context, list));
             }
         };

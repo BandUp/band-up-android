@@ -34,10 +34,11 @@ public class SetupListeners {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject item = response.getJSONObject(i);
-                        int    order = item.getInt("order");
+                        String id    = item.getString("_id");
+                        int    order = item.getInt   ("order");
                         String name  = item.getString("name");
 
-                        DoubleListItem myItems = new DoubleListItem(order, name);
+                        DoubleListItem myItems = new DoubleListItem(id, order, name);
                         list.add(myItems);
 
                     } catch (JSONException e) {

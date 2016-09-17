@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class DoubleListAdapter extends BaseAdapter {
+    public List<DoubleListItem> getDoubleList() {
+        return doubleList;
+    }
+
     private List<DoubleListItem> doubleList = new ArrayList<>();
     private final LayoutInflater mInflater;
 
@@ -51,4 +55,5 @@ final class DoubleListAdapter extends BaseAdapter {
         name.setText(item.name);
         return v;
     }
+
 }

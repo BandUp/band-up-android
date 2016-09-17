@@ -22,12 +22,15 @@ public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";
 
+     GridView gridView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_instruments);
-        final GridView gridView = (GridView)findViewById(R.id.instrumentGridView);
+        gridView = (GridView) findViewById(R.id.instrumentGridView);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         JSONArray req = new JSONArray();
 
@@ -42,11 +45,10 @@ public class Instruments extends AppCompatActivity {
         );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonInstrumentRequest);
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(0);
+                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(position);
                 ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution
@@ -67,6 +69,14 @@ public class Instruments extends AppCompatActivity {
     }
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
+            DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
+            JSONArray resultArray = new JSONArray();
+            for (DoubleListItem dli:dla.getDoubleList()) {
+                if (dli.isSelected) {
+                    resultArray.put(dli.id);
+                }
+            }
+            System.out.println(resultArray.toString());
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

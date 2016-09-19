@@ -53,6 +53,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -110,7 +111,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 break;
             case R.id.sign_out_button:
                 signOut();
-                Toast.makeText(getApplicationContext(), "You are Signed Out ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "You are Signed Out", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.disconnect_button:
+                revokeAccess();
+                Toast.makeText(getApplicationContext(), "Google+ disconnected from the app!", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -129,6 +134,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Google+ Sign Out
     private void signOut() { Auth.GoogleSignInApi.signOut(mGoogleApiClient); }
+
+    // Google+ Disconnecting Google account from the app
+    private void revokeAccess() { Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient); }
 
 
 

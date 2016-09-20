@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,7 +36,7 @@ import org.json.JSONObject;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
-    private String url = "https://band-up-server.herokuapp.com/login-local";
+    private static final String url = "https://band-up-server.herokuapp.com/login-local";
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
@@ -146,7 +145,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Go to chat button temp----------------------------
     public void onClickGoToChat (View v) {
-        final Button btnGoToChat = (Button) findViewById(R.id.btnGoToChat);
         if (v.getId() == R.id.btnGoToChat) {
             Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
             Login.this.startActivity(toChatIntent);
@@ -159,7 +157,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // catching views into variables
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-        final Button btnSignIn = (Button) findViewById(R.id.btnSignIn);
 
         // converting into string
         final String username = etUsername.getText().toString();
@@ -245,13 +242,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
         editor.putString("sessionId", response.toString());
-        editor.commit();
+        editor.apply();
     }
 
     // when Sign Up is Clicked go to Registration View
     public void onClickSignUp(View v) {
-        final Button btnSignUp = (Button) findViewById(R.id.btnSignUp);
-
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);

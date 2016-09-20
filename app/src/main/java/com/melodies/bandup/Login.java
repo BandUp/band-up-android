@@ -37,8 +37,8 @@ import org.json.JSONObject;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
-    private String url = "https://band-up-server.herokuapp.com/login-local";
-
+    private String url;
+    private String route = "/login-local";
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
@@ -48,7 +48,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        url = getResources().getString(R.string.api_address).concat(route);
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -199,9 +199,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onResponse(JSONObject response) {
 
                         saveSessionId(response);
-                        Toast.makeText(Login.this, "Login Succesful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                         Login.this.startActivity(instrumentsIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                         finish();
                     }
                 },

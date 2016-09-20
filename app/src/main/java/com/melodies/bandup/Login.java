@@ -37,7 +37,7 @@ import org.json.JSONObject;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
-    private static final String url = "https://band-up-server.herokuapp.com/login-local";
+    private String url = "https://band-up-server.herokuapp.com/login-local";
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     }
 
-    // Google Sign in environment
+    //
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -88,6 +88,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+            Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
+            //Intent userProfileIntent = new Intent(Login.this, UserProfile.class);
+            //Login.this.startActivity(userProfileIntent);
 
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -97,23 +100,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
-            Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
-
-            updateUI(true);
-
-        }
-    }
-
-    private void updateUI(boolean signedIn) {
-        if (signedIn) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-
-            // don't wanna work
-            //Intent userProfileIntent = new Intent(Login.this, UserProfile.class);
-            //Login.this.startActivity(userProfileIntent);
-        }
-        else {
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
         }
     }
 
@@ -147,10 +133,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     // Google+ Sign Out
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-        updateUI(false);
-    }
+    private void signOut() { Auth.GoogleSignInApi.signOut(mGoogleApiClient); }
 
     // Google+ Disconnecting Google account from the app
     private void revokeAccess() { Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient); }

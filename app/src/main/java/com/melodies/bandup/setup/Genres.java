@@ -31,10 +31,9 @@ public class Genres extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_genres);
 
-        JSONArray req = new JSONArray();
+        url = getResources().getString(R.string.api_address).concat(route);
         gridView = (GridView)findViewById(R.id.genreGridView);
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         sl = new SetupListeners(getBaseContext(), gridView, progressBar);
@@ -42,7 +41,7 @@ public class Genres extends AppCompatActivity {
         JsonArrayRequest getGenres = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
-                req,
+                new JSONArray(),
                 sl.getResponseListener(),
                 sl.getErrorListener()
         );

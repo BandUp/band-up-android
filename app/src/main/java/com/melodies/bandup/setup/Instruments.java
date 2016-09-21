@@ -25,15 +25,16 @@ public class Instruments extends AppCompatActivity {
     private String route = "/instruments";
     private SetupListeners sl;
     private GridView gridView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
+
         url = getResources().getString(R.string.api_address).concat(route);
         gridView = (GridView) findViewById(R.id.instrumentGridView);
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
-
+        progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
@@ -87,7 +88,6 @@ public class Instruments extends AppCompatActivity {
             );
 
             VolleySingleton.getInstance(this).addToRequestQueue(postInstruments);
-
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

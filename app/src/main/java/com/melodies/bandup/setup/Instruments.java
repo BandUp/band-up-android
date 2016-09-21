@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -22,8 +23,8 @@ import org.json.JSONArray;
 public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";
-
-    GridView gridView;
+    private SetupListeners sl;
+    private GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class Instruments extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.instrumentGridView);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
 
-        SetupListeners sl = new SetupListeners(getBaseContext(), gridView, progressBar);
+        sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -69,14 +70,24 @@ public class Instruments extends AppCompatActivity {
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            JSONArray resultArray = new JSONArray();
+
+            JSONArray selectedInstruments = new JSONArray();
             for (DoubleListItem dli:dla.getDoubleList()) {
                 if (dli.isSelected) {
-                    resultArray.put(dli.id);
+                    selectedInstruments.put(dli.id);
                 }
             }
-            System.out.println("ARRAY READY");
-            System.out.println(resultArray.toString());
+
+            JsonRequest postInstruments = new JsonArrayRequest(
+                    Request.Method.POST,
+                    url,
+                    selectedInstruments,
+                    sl.getPickListener(),
+                    sl.getErrorListener()
+            );
+
+            VolleySingleton.getInstance(this).addToRequestQueue(postInstruments);
+
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

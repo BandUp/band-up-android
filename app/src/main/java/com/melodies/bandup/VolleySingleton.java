@@ -9,6 +9,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 /**
  * Created by Dagur on 3.9.2016.
  */
@@ -21,6 +24,9 @@ public class VolleySingleton {
     private VolleySingleton(Context context){
         mCtx = context;
         mRequestQueue = getRequestQueue();
+
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
 
         mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache(){
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);

@@ -18,28 +18,27 @@ import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
 
+
 public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";
 
-     GridView gridView;
-
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_instruments);
+        url = getResources().getString(R.string.api_address).concat(route);
         gridView = (GridView) findViewById(R.id.instrumentGridView);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
-        JSONArray req = new JSONArray();
 
         SetupListeners sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
-                req,
+                new JSONArray(),
                 sl.getResponseListener(),
                 sl.getErrorListener()
         );
@@ -76,6 +75,7 @@ public class Instruments extends AppCompatActivity {
                     resultArray.put(dli.id);
                 }
             }
+            System.out.println("ARRAY READY");
             System.out.println(resultArray.toString());
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);

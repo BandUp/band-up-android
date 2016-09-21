@@ -188,7 +188,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        System.out.println(user.toString());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -196,7 +196,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         saveSessionId(response);
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
@@ -241,7 +240,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Storing user sessionId in SessionIdData folder, which only this app can access
     public void saveSessionId(JSONObject response) {
-
+        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
         editor.putString("sessionId", response.toString());

@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupListeners {
-    Response.Listener<JSONArray> responseListener;
-    Response.ErrorListener errorListener;
+    private Response.Listener<JSONArray> responseListener;
+    private Response.Listener pickListener;
+    private Response.ErrorListener errorListener;
 
     SetupListeners(final Context context, final GridView gridView, final ProgressBar progressBar) {
         responseListener = new Response.Listener<JSONArray>() {
@@ -49,6 +50,14 @@ public class SetupListeners {
                 gridView.setAdapter(new DoubleListAdapter(context, list));
             }
         };
+
+        pickListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+            }
+        };
+
         errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -74,10 +83,12 @@ public class SetupListeners {
         };
     }
 
-
-
     public Response.Listener<JSONArray> getResponseListener() {
         return responseListener;
+    }
+
+    public Response.Listener<JSONArray> getPickListener() {
+        return pickListener;
     }
 
     public Response.ErrorListener getErrorListener() {

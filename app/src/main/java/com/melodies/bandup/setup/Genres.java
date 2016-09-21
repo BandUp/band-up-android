@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserList;
 import com.melodies.bandup.VolleySingleton;
@@ -24,18 +25,22 @@ public class Genres extends AppCompatActivity {
     private String url;
     private String route = "/genres";
 
+    GridView gridView;
+    SetupListeners sl;
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_genres);
 
-        final GridView gridView = (GridView)findViewById(R.id.genreGridView);
         JSONArray req = new JSONArray();
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
-        SetupListeners sl = new SetupListeners(getBaseContext(), gridView, progressBar);
+        gridView = (GridView)findViewById(R.id.genreGridView);
+        progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
+        sl = new SetupListeners(getBaseContext(), gridView, progressBar);
 
-        JsonArrayRequest jsonGenresRequest = new JsonArrayRequest(
+        JsonArrayRequest getGenres = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 req,
@@ -43,12 +48,12 @@ public class Genres extends AppCompatActivity {
                 sl.getErrorListener()
         );
 
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonGenresRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(getGenres);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(0);
+                DoubleListItem inst = (DoubleListItem)parent.getAdapter().getItem(position);
                 ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
 
                 // TODO: Find a better solution
@@ -69,9 +74,26 @@ public class Genres extends AppCompatActivity {
     }
 
     public void onClickFinish(View v) {
-
         final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
         if (v.getId() == R.id.btnFinish) {
+            DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
+            JSONArray userGenres = new JSONArray();
+
+            for (DoubleListItem dli : dla.getDoubleList()) {
+                if (dli.isSelected) {
+                    userGenres.put(dli.id);
+                }
+            }
+
+            JsonRequest postGenres = new JsonArrayRequest(
+                    Request.Method.POST,
+                    url,
+                    userGenres,
+                    sl.getPickListener(),
+                    sl.getErrorListener()
+            );
+
+            VolleySingleton.getInstance(this).addToRequestQueue(postGenres);
             Intent toInstrumentsIntent = new Intent(Genres.this, UserList.class);
             Genres.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);

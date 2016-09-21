@@ -24,10 +24,9 @@ import org.json.JSONArray;
 public class Genres extends AppCompatActivity {
     private String url;
     private String route = "/genres";
-
-    GridView gridView;
-    SetupListeners sl;
-    ProgressBar progressBar;
+    private GridView gridView;
+    private SetupListeners sl;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,18 +76,18 @@ public class Genres extends AppCompatActivity {
         final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
         if (v.getId() == R.id.btnFinish) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            JSONArray userGenres = new JSONArray();
+            JSONArray selectedGenres = new JSONArray();
 
             for (DoubleListItem dli : dla.getDoubleList()) {
                 if (dli.isSelected) {
-                    userGenres.put(dli.id);
+                    selectedGenres.put(dli.id);
                 }
             }
 
             JsonRequest postGenres = new JsonArrayRequest(
                     Request.Method.POST,
                     url,
-                    userGenres,
+                    selectedGenres,
                     sl.getPickListener(),
                     sl.getErrorListener()
             );

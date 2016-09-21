@@ -58,6 +58,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestId()
                 .requestEmail()
                 .build();
 
@@ -90,11 +92,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
-            //Intent userProfileIntent = new Intent(Login.this, UserProfile.class);
-            //Login.this.startActivity(userProfileIntent);
 
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
+
+            final String idToken = acct.getIdToken();
+            //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
+            // send token to sever and validate server side
+            sendGoogleTokenToServer(idToken);
+
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
@@ -102,6 +108,36 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
         }
+    }
+
+    private void sendGoogleTokenToServer(String idToken) {
+        // create request for Login
+        JSONObject user = new JSONObject();
+        try {
+            user.put("idToken", idToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                getResources().getString(R.string.google_token),
+                user,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(Login.this, "User added server side, token valid", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Login.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        errorHandlerLogin(error);
+                    }
+                }
+        );
+        // insert request into queue
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     //

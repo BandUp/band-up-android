@@ -34,6 +34,8 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static java.lang.Boolean.getBoolean;
+
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
     private String url;
@@ -234,10 +236,26 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                        Login.this.startActivity(instrumentsIntent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                        finish();
+                        try {
+                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
+                            System.out.println("HASFINISHEDSETUP");
+                            System.out.println(hasFinishedSetup);
+                            if (hasFinishedSetup) {
+                                Intent userListIntent = new Intent(Login.this, UserList.class);
+                                Login.this.startActivity(userListIntent);
+                            } else {
+                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                                Login.this.startActivity(instrumentsIntent);
+                            }
+                        } catch (JSONException e) {
+                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                            Login.this.startActivity(instrumentsIntent);
+
+                        } finally {
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                            finish();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -288,6 +306,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
+            finish();
         }
     }
 

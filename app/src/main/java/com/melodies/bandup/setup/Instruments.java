@@ -57,6 +57,7 @@ public class Instruments extends AppCompatActivity {
                 Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
                 Instruments.this.startActivity(toInstrumentsIntent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
             }
         }
     }

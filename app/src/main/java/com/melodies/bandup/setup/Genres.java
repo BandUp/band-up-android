@@ -59,6 +59,7 @@ public class Genres extends AppCompatActivity {
                 Intent toUserListIntent = new Intent(Genres.this, UserList.class);
                 Genres.this.startActivity(toUserListIntent);
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+                finish();
             }
 
 

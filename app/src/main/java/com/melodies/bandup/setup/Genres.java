@@ -55,11 +55,13 @@ public class Genres extends AppCompatActivity {
     public void onClickFinish(View v) {
         if (v.getId() == R.id.btnFinish) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            sShared.postSelectedItems(dla, Genres.this, url);
+            if (sShared.postSelectedItems(dla, Genres.this, url)) {
+                Intent toUserListIntent = new Intent(Genres.this, UserList.class);
+                Genres.this.startActivity(toUserListIntent);
+                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+            }
 
-            Intent toUserListIntent = new Intent(Genres.this, UserList.class);
-            Genres.this.startActivity(toUserListIntent);
-            overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+
         }
     }
 

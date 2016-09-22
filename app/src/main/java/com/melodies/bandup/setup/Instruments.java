@@ -53,11 +53,11 @@ public class Instruments extends AppCompatActivity {
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            sShared.postSelectedItems(dla, Instruments.this, url);
-
-            Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
-            Instruments.this.startActivity(toInstrumentsIntent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            if (sShared.postSelectedItems(dla, Instruments.this, url)) {
+                Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
+                Instruments.this.startActivity(toInstrumentsIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            }
         }
     }
     @Override

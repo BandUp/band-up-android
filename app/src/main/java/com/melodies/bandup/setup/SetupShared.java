@@ -20,6 +20,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
@@ -28,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +61,12 @@ public class SetupShared {
         };
     }
 
-    public Response.Listener<JSONArray> getPickListener() {
-        return new Response.Listener<JSONArray>() {
+    public Response.Listener<JSONObject> getPickListener() {
+        return new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
-
+            public void onResponse(JSONObject response) {
+                System.out.println("ASDFASDFASDF");
+                System.out.println(response.toString());
             }
         };
     }
@@ -79,7 +82,18 @@ public class SetupShared {
                     Toast.makeText(context, "Invalid username or password", Toast.LENGTH_LONG).show();
                 }
                 else if (error instanceof ServerError) {
-                    Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
+                    String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    System.out.println(jsonString);
+                    try {
+                        JSONObject myObject = new JSONObject(jsonString);
+                        int errNo      = myObject.getInt("err");
+                        String message = myObject.getString("msg");
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+
                 }
                 else if (error instanceof NetworkError) {
                     Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
@@ -113,7 +127,7 @@ public class SetupShared {
         }
     }
 
-    public void postSelectedItems(DoubleListAdapter dla, Context c, String url) {
+    public Boolean postSelectedItems(DoubleListAdapter dla, Context c, String url) {
         JSONArray selectedItems = new JSONArray();
 
         for (DoubleListItem dli:dla.getDoubleList()) {
@@ -121,8 +135,11 @@ public class SetupShared {
                 selectedItems.put(dli.id);
             }
         }
-
-        JsonArrayRequest postItems = new JsonArrayRequest(
+        if (selectedItems.length() == 0) {
+            Toast.makeText(c, "You need to select at least one item.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        JsonArrayToObjectRequest postItems2 = new JsonArrayToObjectRequest(
                 Request.Method.POST,
                 url,
                 selectedItems,
@@ -130,6 +147,7 @@ public class SetupShared {
                 this.getErrorListener(c)
         );
 
-        VolleySingleton.getInstance(c).addToRequestQueue(postItems);
+        VolleySingleton.getInstance(c).addToRequestQueue(postItems2);
+        return true;
     }
 }

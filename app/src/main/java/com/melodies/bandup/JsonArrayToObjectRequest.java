@@ -1,4 +1,4 @@
-package com.melodies.bandup.setup;
+package com.melodies.bandup;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;

@@ -15,7 +15,6 @@ import com.melodies.bandup.VolleySingleton;
 
 import org.json.JSONArray;
 
-
 public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";
@@ -50,6 +49,7 @@ public class Instruments extends AppCompatActivity {
             }
         });
     }
+
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
@@ -60,6 +60,7 @@ public class Instruments extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

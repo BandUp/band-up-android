@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class DoubleListAdapter extends BaseAdapter {
+    private List<DoubleListItem> doubleList = new ArrayList<>();
+    private final LayoutInflater mInflater;
+
     public List<DoubleListItem> getDoubleList() {
         return doubleList;
     }
-
-    private List<DoubleListItem> doubleList = new ArrayList<>();
-    private final LayoutInflater mInflater;
 
     public DoubleListAdapter(Context context, List<DoubleListItem> list) {
         mInflater = LayoutInflater.from(context);

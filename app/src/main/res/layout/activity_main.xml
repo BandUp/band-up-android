@@ -62,14 +62,6 @@
         android:layout_alignEnd="@+id/btnSignUp"
         android:layout_alignParentStart="true" />
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnGoToChat"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="49dp" />
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
@@ -96,6 +88,14 @@
         android:layout_above="@+id/btnGoToChat"
         android:layout_alignStart="@+id/sign_in_button"
         android:layout_marginStart="49dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/login_button"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

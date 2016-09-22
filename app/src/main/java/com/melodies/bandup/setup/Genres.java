@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
@@ -61,8 +60,6 @@ public class Genres extends AppCompatActivity {
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 finish();
             }
-
-
         }
     }
 

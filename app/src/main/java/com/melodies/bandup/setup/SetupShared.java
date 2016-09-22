@@ -19,9 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -93,7 +90,6 @@ public class SetupShared {
                         Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
-
                 }
                 else if (error instanceof NetworkError) {
                     Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
@@ -139,7 +135,7 @@ public class SetupShared {
             Toast.makeText(c, "You need to select at least one item.", Toast.LENGTH_LONG).show();
             return false;
         }
-        JsonArrayToObjectRequest postItems2 = new JsonArrayToObjectRequest(
+        JsonArrayToObjectRequest postItems = new JsonArrayToObjectRequest(
                 Request.Method.POST,
                 url,
                 selectedItems,
@@ -147,7 +143,7 @@ public class SetupShared {
                 this.getErrorListener(c)
         );
 
-        VolleySingleton.getInstance(c).addToRequestQueue(postItems2);
+        VolleySingleton.getInstance(c).addToRequestQueue(postItems);
         return true;
     }
 }

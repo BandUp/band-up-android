@@ -45,7 +45,7 @@ public class SetupShared {
             }
         }
 
-        JsonRequest postItems = new JsonArrayRequest(
+        JsonArrayRequest postItems = new JsonArrayRequest(
                 Request.Method.POST,
                 url,
                 selectedItems,

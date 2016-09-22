@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -36,11 +37,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.setup.Instruments;
 
-import com.facebook.FacebookSdk;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
@@ -316,26 +314,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        try {
-                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
-                            System.out.println("HASFINISHEDSETUP");
-                            System.out.println(hasFinishedSetup);
-                            if (hasFinishedSetup) {
-                                Intent userListIntent = new Intent(Login.this, UserList.class);
-                                Login.this.startActivity(userListIntent);
-                            } else {
-                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                                Login.this.startActivity(instrumentsIntent);
-                            }
-                        } catch (JSONException e) {
-                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                            Login.this.startActivity(instrumentsIntent);
-
-                        } finally {
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                            finish();
-                        }
-
+                        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                        Login.this.startActivity(instrumentsIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -386,7 +368,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
-            finish();
         }
     }
 

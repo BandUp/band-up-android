@@ -3,7 +3,6 @@ package com.melodies.bandup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -36,12 +36,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.setup.Instruments;
 
-import com.facebook.FacebookSdk;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
@@ -175,29 +171,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
-
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
             // send token to sever and validate server side
             sendGoogleTokenToServer(idToken);
-
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
         }
     }
 
+    // POST ing authentication token to server
     private void sendGoogleTokenToServer(String idToken) {
-        // create request for Login
+
         JSONObject user = new JSONObject();
         try {
-            user.put("idToken", idToken);
+            user.put("access_token", idToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -208,6 +196,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        saveSessionId(response);
+                        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                        Login.this.startActivity(instrumentsIntent);
+                        finish();
                         Toast.makeText(Login.this, "User added server side, token valid", Toast.LENGTH_SHORT).show();
                     }
                 },

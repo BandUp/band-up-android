@@ -304,7 +304,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(user.toString());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -314,10 +313,23 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                        Login.this.startActivity(instrumentsIntent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                        finish();
+                        try {
+                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
+                            if (hasFinishedSetup) {
+                                Intent userListIntent = new Intent(Login.this, UserList.class);
+                                Login.this.startActivity(userListIntent);
+                            } else {
+                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                                Login.this.startActivity(instrumentsIntent);
+                            }
+                        } catch (JSONException e) {
+                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                            Login.this.startActivity(instrumentsIntent);
+
+                        } finally {
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                            finish();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

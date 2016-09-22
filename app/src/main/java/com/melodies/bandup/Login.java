@@ -22,6 +22,11 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,24 +36,58 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.setup.Instruments;
 
+import com.facebook.FacebookSdk;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
     private String url;
-    private String route = "/login-local";
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
 
+    private CallbackManager callbackManager = CallbackManager.Factory.create();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
+        String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
+
+    // -----------------------------Facebook START ------------------------------------------------------------
+
+
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        loginButton.setReadPermissions("email");
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                //Toast.makeText(Login.this, loginResult.getAccessToken().getToken(), Toast.LENGTH_LONG).show();
+                facebookCreateUser(loginResult);
+            }
+
+            @Override
+            public void onCancel() {
+                System.out.println("login canceled");
+                Toast.makeText(Login.this, "login cancelled", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                System.out.println("hit an error");
+                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
@@ -76,6 +115,48 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     }
 
+    /**
+     * take result from facebook login process and create user in backend
+     *
+     * side effect: starts up instrument activity if succesfull
+     *
+     * @param loginResult facebook loginResult
+     */
+    private void facebookCreateUser(LoginResult loginResult) {
+        try{
+            url = getResources().getString(R.string.api_address).concat("/login-facebook");
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("access_token", loginResult.getAccessToken().getToken());
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url,
+                    jsonObject, new Response.Listener<JSONObject>(){
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    saveSessionId(response);
+                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                    Login.this.startActivity(instrumentsIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                    finish();
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+        }catch (JSONException ex){
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
     //
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -84,6 +165,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        }else{
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 

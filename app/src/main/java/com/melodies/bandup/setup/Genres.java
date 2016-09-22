@@ -21,27 +21,25 @@ public class Genres extends AppCompatActivity {
     private String url;
     private String route = "/genres";
     private GridView gridView;
-    private SetupListeners sl;
     private ProgressBar progressBar;
-    private SetupShared ss;
+    private SetupShared sShared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
 
-        url = getResources().getString(R.string.api_address).concat(route);
-        gridView = (GridView)findViewById(R.id.genreGridView);
+        url         = getResources().getString(R.string.api_address).concat(route);
+        gridView    = (GridView) findViewById(R.id.genreGridView);
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
-        sl = new SetupListeners(getBaseContext(), gridView, progressBar);
-        ss = new SetupShared();
+        sShared     = new SetupShared();
 
         JsonArrayRequest jsonGenreRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 new JSONArray(),
-                sl.getResponseListener(),
-                sl.getErrorListener()
+                sShared.getResponseListener(Genres.this, gridView, progressBar),
+                sShared.getErrorListener(Genres.this)
         );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonGenreRequest);
@@ -49,16 +47,16 @@ public class Genres extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ss.onItemClick(getApplicationContext(), parent, view, position, id);
+                sShared.toggleItemSelection(getApplicationContext(), parent, view, position);
             }
         });
     }
 
     public void onClickFinish(View v) {
-        final Button btnGoToInstruments = (Button) findViewById(R.id.btnFinish);
         if (v.getId() == R.id.btnFinish) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            ss.postSelectedItems(dla, sl, this, url);
+            sShared.postSelectedItems(dla, Genres.this, url);
+
             Intent toUserListIntent = new Intent(Genres.this, UserList.class);
             Genres.this.startActivity(toUserListIntent);
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);

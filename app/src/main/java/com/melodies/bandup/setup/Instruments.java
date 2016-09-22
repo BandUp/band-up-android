@@ -19,28 +19,26 @@ import org.json.JSONArray;
 public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";
-    private SetupListeners sl;
     private GridView gridView;
     private ProgressBar progressBar;
-    private SetupShared ss;
+    private SetupShared sShared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
 
-        url = getResources().getString(R.string.api_address).concat(route);
-        gridView = (GridView) findViewById(R.id.instrumentGridView);
+        url         = getResources().getString(R.string.api_address).concat(route);
+        gridView    = (GridView) findViewById(R.id.instrumentGridView);
         progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
-        sl = new SetupListeners(getBaseContext(), gridView, progressBar);
-        ss = new SetupShared();
+        sShared     = new SetupShared();
 
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 new JSONArray(),
-                sl.getResponseListener(),
-                sl.getErrorListener()
+                sShared.getResponseListener(Instruments.this, gridView, progressBar),
+                sShared.getErrorListener(Instruments.this)
         );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonInstrumentRequest);
@@ -48,14 +46,15 @@ public class Instruments extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ss.onItemClick(getApplicationContext(), parent, view, position, id);
+                sShared.toggleItemSelection(getApplicationContext(), parent, view, position);
             }
         });
     }
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            ss.postSelectedItems(dla, sl, this, url);
+            sShared.postSelectedItems(dla, Instruments.this, url);
+
             Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
             Instruments.this.startActivity(toInstrumentsIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

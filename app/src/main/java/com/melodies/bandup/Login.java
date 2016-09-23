@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +48,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
+    private ProgressDialog loginDialog;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -58,6 +60,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         setContentView(R.layout.activity_main);
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
+        loginDialog = new ProgressDialog(Login.this);
 
     // -----------------------------Facebook START ------------------------------------------------------------
 
@@ -293,6 +296,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
             }
             else {
+                loginDialog = ProgressDialog.show(this, "Logging in...", "Please wait", true);
                 createloginRequest(username, password);
             }
         }
@@ -308,7 +312,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(user.toString());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -318,15 +321,30 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
                         Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                        Login.this.startActivity(instrumentsIntent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                        finish();
+                        try {
+                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
+                            if (hasFinishedSetup) {
+                                Intent userListIntent = new Intent(Login.this, UserList.class);
+                                Login.this.startActivity(userListIntent);
+                            } else {
+                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                                Login.this.startActivity(instrumentsIntent);
+                            }
+                        } catch (JSONException e) {
+                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                            Login.this.startActivity(instrumentsIntent);
+
+                        } finally {
+                            loginDialog.dismiss();
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                            finish();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loginDialog.dismiss();
                         errorHandlerLogin(error);
                     }
                 }

@@ -177,7 +177,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
             // send token to sever and validate server side
             sendGoogleTokenToServer(idToken);
 
@@ -191,33 +190,38 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     private void sendGoogleTokenToServer(String idToken) {
-        // create request for Login
-        JSONObject user = new JSONObject();
-        try {
-            user.put("idToken", idToken);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                getResources().getString(R.string.google_token),
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(Login.this, "User added server side, token valid", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Login.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        errorHandlerLogin(error);
-                    }
+        try{
+            url = getResources().getString(R.string.api_address).concat("/login-google");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("access_token", idToken);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url,
+                    jsonObject, new Response.Listener<JSONObject>(){
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(getApplicationContext(), "Success ", Toast.LENGTH_SHORT).show();
+                    saveSessionId(response);
+                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                    Login.this.startActivity(instrumentsIntent);
+                    finish();
                 }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Failure ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+        }catch (JSONException ex){
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     //

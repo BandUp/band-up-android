@@ -75,7 +75,7 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Please enter your Age.", Toast.LENGTH_SHORT).show();
             }
             else {
-                registerDialog = ProgressDialog.show(Register.this, "Registering", "Please wait...");
+                registerDialog = ProgressDialog.show(this, "Registering", "Please wait...", true, false);
                 // create request
                 createRegisterRequest(username, password, email, age);
             }

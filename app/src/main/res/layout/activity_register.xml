@@ -26,6 +26,7 @@
                     android:id="@+id/etEmail"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:hint="Email" />
             </android.support.design.widget.TextInputLayout>
 
@@ -37,7 +38,8 @@
                     android:id="@+id/etUsername"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username" />
+                    android:hint="Username"
+                    android:inputType="text"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -87,5 +89,4 @@
                 android:text="Register"/>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

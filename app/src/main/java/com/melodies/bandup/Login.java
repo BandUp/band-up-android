@@ -292,7 +292,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
             }
             else {
-                loginDialog = ProgressDialog.show(this, "Logging in...", "Please wait", true);
+                loginDialog = ProgressDialog.show(this, "Logging in", "Please wait...", true);
                 createloginRequest(username, password);
             }
         }

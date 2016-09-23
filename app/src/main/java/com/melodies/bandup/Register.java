@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,12 +28,15 @@ import org.json.JSONObject;
 public class Register extends AppCompatActivity {
     private String url;
     private String route = "/signup-local";
+    private ProgressDialog registerDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_register);
+        registerDialog = new ProgressDialog(Register.this);
     }
 
     //
@@ -71,6 +75,7 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Please enter your Age.", Toast.LENGTH_SHORT).show();
             }
             else {
+                registerDialog = ProgressDialog.show(Register.this, "Registering", "Please wait...");
                 // create request
                 createRegisterRequest(username, password, email, age);
             }
@@ -101,6 +106,7 @@ public class Register extends AppCompatActivity {
                         System.out.println("\"Registration successful!");
                         Toast.makeText(Register.this, "Registration successful!\nYou can sign in now.", Toast.LENGTH_LONG).show();
                         Intent registerIntent = new Intent(Register.this, Login.class);
+                        registerDialog.dismiss();
                         Register.this.startActivity(registerIntent);
                         finish();
                     }
@@ -108,6 +114,7 @@ public class Register extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        registerDialog.dismiss();
                         errorHandlerRegister(error);
                     }
                 }

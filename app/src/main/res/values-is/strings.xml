@@ -12,11 +12,13 @@
     <string name="register_btn_register">Nýskrá</string>
 
     <!-- Setup Screens (Instruments and Genres) -->
-    <string name="setup_get_started">Let\'s get started</string>
-    <string name="setup_instruments_hint">What instruments do you play?</string>
     <string name="setup_instruments_next">Áfram</string>
+    <string name="setup_get_started">Hefjumst handa</string>
+    <string name="setup_instruments_hint">Á hvaða hljóðfæri spilar þú?</string>
     <string name="setup_genres_hint">Hvaða tónlist fílar þú?</string>
     <string name="setup_genres_finish">Lokið</string>
+
+
 
     <!-- Login Screen -->
     <string name="login_username">Notandanafn</string>
@@ -27,12 +29,11 @@
 
     <!-- User List Screen -->
     <string name="title_activity_user_list">Notanda listi</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Chat Screen -->
     <string name="chat_send">Senda</string>
     <string name="chat_message_hint">Skrifaðu skilaboð…</string>
+
 
 
 </resources>

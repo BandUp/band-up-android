@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +48,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
+    private ProgressDialog loginDialog;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -58,6 +60,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         setContentView(R.layout.activity_main);
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
+        loginDialog = new ProgressDialog(Login.this);
 
     // -----------------------------Facebook START ------------------------------------------------------------
 
@@ -289,6 +292,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
             }
             else {
+                loginDialog = ProgressDialog.show(this, "Logging in...", "Please wait", true);
                 createloginRequest(username, password);
             }
         }
@@ -327,6 +331,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             Login.this.startActivity(instrumentsIntent);
 
                         } finally {
+                            loginDialog.dismiss();
                             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                             finish();
                         }
@@ -335,6 +340,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loginDialog.dismiss();
                         errorHandlerLogin(error);
                     }
                 }

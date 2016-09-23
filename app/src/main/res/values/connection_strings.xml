@@ -2,4 +2,7 @@
 <resources>
     <string name="api_address">https://band-up-server.herokuapp.com</string>
     <string name="google_token">https://band-up-server.herokuapp.com/login-google</string>
+
+    <string name="facebook_app_id">1734365480157177</string>
+    <string name="fb_login_protocol_scheme">fb1734365480157177</string>
 </resources>

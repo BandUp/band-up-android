@@ -18,6 +18,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilEmail"
                 android:layout_width="fill_parent"
@@ -27,7 +28,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="Email" />
+                    android:hint="@string/register_email" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -38,7 +39,7 @@
                     android:id="@+id/etUsername"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"
+                    android:hint="@string/register_username"
                     android:inputType="text"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +52,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Password"
+                    android:hint="@string/register_password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
@@ -64,7 +65,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Confirm Password"
+                    android:hint="@string/register_confirm_password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
@@ -77,7 +78,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Age"
+                    android:hint="@string/register_age"
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="onClickRegister"
-                android:text="Register"/>
+                android:text="@string/register_btn_register"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

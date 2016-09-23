@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The name of the app as displayed on the homescreen -->
+    <string name="app_name">BandUp</string>
+
+    <!-- Register Screen -->
+    <string name="register_email">Tölvupóstur</string>
+    <string name="register_username">Notandanafn</string>
+    <string name="register_password">Lykilorð</string>
+    <string name="register_confirm_password">Staðfesta lykilorð</string>
+    <string name="register_age">Aldur</string>
+    <string name="register_btn_register">Nýskrá</string>
+
+    <!-- Setup Screens (Instruments and Genres) -->
+    <string name="setup_get_started">Let\'s get started</string>
+    <string name="setup_instruments_hint">What instruments do you play?</string>
+    <string name="setup_instruments_next">Áfram</string>
+    <string name="setup_genres_hint">Hvaða tónlist fílar þú?</string>
+    <string name="setup_genres_finish">Lokið</string>
+
+    <!-- Login Screen -->
+    <string name="login_username">Notandanafn</string>
+    <string name="login_password">Lykilorð</string>
+    <string name="login_sign_in">Innskrá</string>
+    <string name="login_sign_up">Nýskrá</string>
+    <string name="login_go_to_chat_temporary">Fara í spjall</string>
+
+    <!-- User List Screen -->
+    <string name="title_activity_user_list">Notanda listi</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Chat Screen -->
+    <string name="chat_send">Senda</string>
+    <string name="chat_message_hint">Skrifaðu skilaboð…</string>
+
+
+</resources>

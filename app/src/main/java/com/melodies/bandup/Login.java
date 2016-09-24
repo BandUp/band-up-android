@@ -1,6 +1,5 @@
 package com.melodies.bandup;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +8,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewConfiguration;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -57,9 +58,42 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
+    private LinearLayout mainLinearLayout;
+    private LinearLayout linearLayoutInput;
 
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
+
+    private static boolean hasSoftNavigation(Context context) {
+        return !ViewConfiguration.get(context).hasPermanentMenuKey();
+    }
+
+    private int getSoftButtonsBarHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int usableHeight = metrics.heightPixels;
+
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        int realHeight = metrics.heightPixels;
+
+        if (realHeight > usableHeight)
+            return realHeight - usableHeight;
+        else
+            return 0;
+    }
+    private int getIconCenter() {
+        final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
+
+        int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
+        int activityHeight = mainLinearLayout.getHeight();
+        int statusBarHeight = screenHeight - activityHeight;
+        if (hasSoftNavigation(Login.this)) {
+            return (activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2;
+        } else {
+            return (activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +101,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
 
         setContentView(R.layout.activity_main);
+        mainLinearLayout  = (LinearLayout) findViewById(R.id.login_ll);
+        linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
+
+        mainLinearLayout.post(new Runnable() {
+            public void run() {
+                mainLinearLayout.setY(getIconCenter());
+                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
+                mainLinearLayout.animate().translationY(50).setDuration(500);
+                linearLayoutInput.startAnimation(testAnimation);
+            }
+        });
+
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);
@@ -90,7 +136,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-    // -----------------------------Facebook START ------------------------------------------------------------
+        // -----------------------------Facebook START ------------------------------------------------------------
 
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -117,7 +163,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-    // -----------------------------Google+ START -------------------------------------------------------------
+        // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
@@ -143,13 +189,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     /**
      * take result from facebook login process and create user in backend
-     *
+     * <p>
      * side effect: starts up instrument activity if succesfull
      *
      * @param loginResult facebook loginResult
      */
     private void facebookCreateUser(LoginResult loginResult) {
-        try{
+        try {
             url = getResources().getString(R.string.api_address).concat("/login-facebook");
             JSONObject jsonObject = new JSONObject();
 
@@ -157,7 +203,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
-                    jsonObject, new Response.Listener<JSONObject>(){
+                    jsonObject, new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {
@@ -167,7 +213,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                     finish();
                 }
-            }, new Response.ErrorListener(){
+            }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -177,7 +223,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        }catch (JSONException ex){
+        } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
 
@@ -191,7 +237,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-        }else{
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -271,11 +317,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     // Google+ Sign Out
-    private void signOut() { Auth.GoogleSignInApi.signOut(mGoogleApiClient); }
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+    }
 
     // Google+ Disconnecting Google account from the app
-    private void revokeAccess() { Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient); }
-
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
+    }
 
 
     // ------------------------------Google+ END ---------------------------------------------------------------
@@ -293,11 +342,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             // Check for empty field in the form
             if (username.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
-            }
-            else if (password.isEmpty()) {
+            } else if (password.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 loginDialog = ProgressDialog.show(this, "Logging in", "Please wait...", true, false);
                 createloginRequest(username, password);
             }
@@ -360,20 +407,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void errorHandlerLogin(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
             Toast.makeText(Login.this, "Connection error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof AuthFailureError ) {
+        } else if (error instanceof AuthFailureError) {
             Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ServerError) {
+        } else if (error instanceof ServerError) {
             Toast.makeText(Login.this, "Server error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof NetworkError) {
+        } else if (error instanceof NetworkError) {
             Toast.makeText(Login.this, "Network error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ParseError) {
+        } else if (error instanceof ParseError) {
             Toast.makeText(Login.this, "Server parse error!", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Toast.makeText(Login.this, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
         }
     }

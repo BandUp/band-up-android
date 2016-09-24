@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <!-- This is main login View -->
-        <activity android:name=".Login">
+        <activity android:name=".Login" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,11 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".setup.Instruments" />
+        <activity
+            android:name=".Register"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".setup.Instruments"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".setup.Genres"
+            android:screenOrientation="portrait" />
+
         <activity android:name=".Matches" />
-        <activity android:name=".setup.Genres"/>
+
+        <activity android:name=".ChatActivity" />
         <activity
             android:name=".UserList"
             android:label="@string/title_activity_user_list"

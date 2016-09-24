@@ -35,6 +35,7 @@
     <string name="chat_message_hint">Skrifaðu skilaboð…</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="register_title">Nýskráning</string>
 
 
 </resources>

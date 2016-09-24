@@ -37,6 +37,7 @@ public class Register extends AppCompatActivity {
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_register);
         registerDialog = new ProgressDialog(Register.this);
+        setTitle(getString(R.string.register_title));
     }
 
     //

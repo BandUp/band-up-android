@@ -33,6 +33,4 @@
     <!-- Chat Screen -->
     <string name="chat_send">Send</string>
     <string name="chat_message_hint">Type a message…</string>
-
-
 </resources>

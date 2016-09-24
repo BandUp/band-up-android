@@ -9,8 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,9 +53,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
     private ProgressDialog loginDialog;
+    private EditText etUsername;
+    private EditText etPassword;
+
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,25 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+
+        etPassword.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    try {
+                        Login.this.onClickSignIn(findViewById(R.id.btnSignIn));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
     // -----------------------------Facebook START ------------------------------------------------------------
 
@@ -276,8 +301,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
+
 
         // converting into string
         final String username = etUsername.getText().toString();

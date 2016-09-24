@@ -7,6 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".Login">
     <android.support.design.widget.TextInputLayout
         android:id="@+id/tilUsername"
@@ -20,7 +22,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_username"
-            android:maxLines="1" />
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusUp="@id/etUsername"
+            android:nextFocusLeft="@id/etUsername"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout

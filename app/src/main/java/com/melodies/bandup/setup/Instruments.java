@@ -8,13 +8,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.R;
-import com.melodies.bandup.VolleySingleton;
 
-import org.json.JSONArray;
 
+/**
+ * An activity class that controls the Instruments view.
+ */
 public class Instruments extends AppCompatActivity {
     private String url;
     private String route = "/instruments";

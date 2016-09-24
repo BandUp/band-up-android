@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -63,6 +65,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
+
         setContentView(R.layout.activity_main);
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
@@ -117,8 +120,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -254,14 +255,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             case R.id.sign_in_button:
                 signIn();
                 break;
-            case R.id.sign_out_button:
-                signOut();
-                Toast.makeText(getApplicationContext(), "You are Signed Out", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                Toast.makeText(getApplicationContext(), "Google+ disconnected from the app!", Toast.LENGTH_LONG).show();
-                break;
         }
     }
 
@@ -286,17 +279,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     // ------------------------------Google+ END ---------------------------------------------------------------
-
-
-
-    // Go to chat button temp----------------------------
-    public void onClickGoToChat (View v) {
-        if (v.getId() == R.id.btnGoToChat) {
-            Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
-            Login.this.startActivity(toChatIntent);
-        }
-    }
-    //--------------------------------------------
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {

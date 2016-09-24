@@ -22,7 +22,7 @@
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign In</string>
-    <string name="login_sign_up">Sign Up</string>
+    <string name="login_sign_up">Do not have an account? Sign up here!</string>
     <string name="login_go_to_chat_temporary">Go To Chat</string>
 
     <!-- User List Screen -->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,105 +10,88 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context=".Login">
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilUsername"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="275dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/login_username"
-            android:inputType="text"
-            android:maxLines="1"
-            android:nextFocusUp="@id/etUsername"
-            android:nextFocusLeft="@id/etUsername"/>
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/ic_band_up_125"
+            android:id="@+id/imageView3" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilPassword"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/tilUsername"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tilUsername">
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/login_password"
-            android:inputType="textPassword" />
-    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/etUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_username"
+                android:inputType="text"
+                android:maxLines="1"
+                android:nextFocusUp="@id/etUsername"
+                android:nextFocusLeft="@id/etUsername"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/login_password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/btnSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/tilPassword"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tilPassword"
         android:onClick="onClickSignIn"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
         android:text="@string/login_sign_in" />
 
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btnSignIn"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btnSignIn"
         android:onClick="onClickSignUp"
-        android:text="@string/login_sign_up" />
+        android:layout_gravity="center"
+        android:text="@string/login_sign_up"
+        android:background="?android:attr/selectableItemBackground"
+        android:textAllCaps="false"/>
+    </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_go_to_chat_temporary"
-        android:id="@+id/btnGoToChat"
-        android:onClick="onClickGoToChat"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/btnSignUp"
-        android:layout_alignParentStart="true" />
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <!-- sign-out button -->
-    <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:layout_above="@+id/btnGoToChat"
-        android:layout_alignEnd="@+id/sign_in_button"
-        android:layout_marginEnd="69dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Revoke Access"
-        android:id="@+id/disconnect_button"
-        android:layout_above="@+id/btnGoToChat"
-        android:layout_alignStart="@+id/sign_in_button"
-        android:layout_marginStart="49dp" />
+        android:layout_gravity="center"
+        android:layout_marginEnd="10dp"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_below="@+id/login_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content" />
+</LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

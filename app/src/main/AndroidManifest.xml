@@ -33,6 +33,7 @@
         <activity
             android:name=".setup.Instruments"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".setup.Genres"
             android:screenOrientation="portrait" />

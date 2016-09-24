@@ -32,6 +32,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A shared class that both Genres and Instruments
+ * use to GET and POST data to and from the server.
+ */
 public class SetupShared {
 
     private Response.Listener<JSONArray> getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {

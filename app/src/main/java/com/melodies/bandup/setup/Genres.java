@@ -8,14 +8,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserList;
-import com.melodies.bandup.VolleySingleton;
 
-import org.json.JSONArray;
-
+/**
+ * An activity class that controls the Genres view.
+ */
 public class Genres extends AppCompatActivity {
     private String url;
     private String route = "/genres";

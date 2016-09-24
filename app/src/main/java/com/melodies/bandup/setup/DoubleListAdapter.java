@@ -24,12 +24,23 @@ final class DoubleListAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(context);
         this.doubleList = list;
     }
-
+    /**
+     * Returns the number of items in the list.
+     *
+     * @return      Number of items in the list.
+     */
     @Override
     public int getCount() {
         return doubleList.size();
     }
 
+    /**
+     * Returns a DoubleListItem.
+     *
+     * @param  i    the index of the item in question
+     * @return      the DoubleListItem at the index 'i'
+     * @see         DoubleListItem
+     */
     @Override
     public DoubleListItem getItem(int i) {
         return doubleList.get(i);

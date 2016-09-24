@@ -1,12 +1,12 @@
 package com.melodies.bandup.setup;
 
 /**
- * Created by Bergthor on 16.9.2016.
+ * An item class that the DoubleListAdapter uses.
  */
-public class DoubleListItem {
+class DoubleListItem {
     public final String name;
-    public final int drawableId;
-    public Boolean isSelected;
+    final int drawableId;
+    Boolean isSelected;
     public final String id;
 
     DoubleListItem (String id, int drawableId, String name) {

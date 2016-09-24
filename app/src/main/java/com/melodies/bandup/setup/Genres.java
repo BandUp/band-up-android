@@ -33,15 +33,7 @@ public class Genres extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         sShared     = new SetupShared();
 
-        JsonArrayRequest jsonGenreRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                new JSONArray(),
-                sShared.getResponseListener(Genres.this, gridView, progressBar),
-                sShared.getErrorListener(Genres.this)
-        );
-
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonGenreRequest);
+        sShared.getSetupItems(Genres.this, url, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

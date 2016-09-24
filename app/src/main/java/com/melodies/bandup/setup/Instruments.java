@@ -32,15 +32,7 @@ public class Instruments extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         sShared     = new SetupShared();
 
-        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                new JSONArray(),
-                sShared.getResponseListener(Instruments.this, gridView, progressBar),
-                sShared.getErrorListener(Instruments.this)
-        );
-
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonInstrumentRequest);
+        sShared.getSetupItems(Instruments.this, url, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

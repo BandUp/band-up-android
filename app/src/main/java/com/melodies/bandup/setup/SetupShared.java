@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.JsonArrayToObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class SetupShared {
 
-    public Response.Listener<JSONArray> getResponseListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
+    private Response.Listener<JSONArray> getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -59,7 +60,7 @@ public class SetupShared {
         };
     }
 
-    public Response.Listener<JSONObject> getPickListener() {
+    private Response.Listener<JSONObject> getPickListener() {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -69,7 +70,7 @@ public class SetupShared {
         };
     }
 
-    public Response.ErrorListener getErrorListener(final Context context) {
+    private Response.ErrorListener getErrorListener(final Context context) {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -146,5 +147,18 @@ public class SetupShared {
 
         VolleySingleton.getInstance(c).addToRequestQueue(postItems);
         return true;
+    }
+
+    public void getSetupItems(Context context, String url, GridView gridView, ProgressBar progressBar) {
+
+        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                new JSONArray(),
+                this.getSetupItemsListener(context, gridView, progressBar),
+                this.getErrorListener(context)
+        );
+
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
     }
 }

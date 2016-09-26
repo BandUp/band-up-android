@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserList;
@@ -31,6 +32,7 @@ public class Genres extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         sShared     = new SetupShared();
 
+        // Gets the list of genres.
         sShared.getSetupItems(Genres.this, url, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,7 +46,16 @@ public class Genres extends AppCompatActivity {
     public void onClickFinish(View v) {
         if (v.getId() == R.id.btnFinish) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            if (sShared.postSelectedItems(dla, Genres.this, url)) {
+
+            // The adapter for the GridView hasn't been set.
+            // This means we didn't get data from the server.
+            if (dla == null) {
+                Toast.makeText(Genres.this, "I cannot contact the server.\nPlease contact support.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Send the items that the user selected to the server.
+            if (sShared.postSelectedItems(Genres.this, dla, url)) {
                 Intent toUserListIntent = new Intent(Genres.this, UserList.class);
                 Genres.this.startActivity(toUserListIntent);
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);

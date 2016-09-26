@@ -16,14 +16,15 @@ final class DoubleListAdapter extends BaseAdapter {
     private List<DoubleListItem> doubleList = new ArrayList<>();
     private final LayoutInflater mInflater;
 
+    public DoubleListAdapter(Context context) {
+        mInflater = LayoutInflater.from(context);
+        doubleList = new ArrayList<>();
+    }
+
     public List<DoubleListItem> getDoubleList() {
         return doubleList;
     }
 
-    public DoubleListAdapter(Context context, List<DoubleListItem> list) {
-        mInflater = LayoutInflater.from(context);
-        this.doubleList = list;
-    }
     /**
      * Returns the number of items in the list.
      *
@@ -49,6 +50,16 @@ final class DoubleListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return doubleList.get(i).drawableId;
+    }
+
+    public Boolean addItem(DoubleListItem doubleListItem) {
+
+        if (doubleListItem == null) {
+            return false;
+        } else {
+            doubleList.add(doubleListItem);
+            return true;
+        }
     }
 
     @Override

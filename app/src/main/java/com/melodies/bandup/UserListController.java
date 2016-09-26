@@ -19,8 +19,8 @@ public class UserListController {
         users.add(u);
     }
 
-    public void getUser(int index) {
-        users.get(index);
+    public User getUser(int index) {
+        return users.get(index);
     }
 
     public User getNextUser() {

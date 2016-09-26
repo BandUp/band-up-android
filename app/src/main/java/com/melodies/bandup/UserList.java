@@ -32,6 +32,7 @@ public class UserList extends AppCompatActivity
     private TextView txtPercentage;
     private TextView txtInstruments;
     private TextView txtGenres;
+    private View     partialView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class UserList extends AppCompatActivity
         txtPercentage  = (TextView) findViewById(R.id.txtPercentage);
         txtInstruments = (TextView) findViewById(R.id.txtInstruments);
         txtGenres      = (TextView) findViewById(R.id.txtGenres);
+        partialView = findViewById(R.id.user_partial_view);
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -77,6 +79,8 @@ public class UserList extends AppCompatActivity
                                 e.printStackTrace();
                             }
                         }
+                        partialView.setVisibility(partialView.VISIBLE);
+                        displayUser(ulc.getUser(0));
                     }
                 },
                 new Response.ErrorListener() {
@@ -136,12 +140,7 @@ public class UserList extends AppCompatActivity
         return true;
     }
 
-    public void onClickNextUser(View view) {
-        User u = ulc.getNextUser();
-        if (u == null) {
-            return;
-        }
-
+    private void displayUser(User u) {
         txtName.setText(u.name);
         txtStatus.setText(u.status);
         txtDistance.setText(u.distance+" km.");
@@ -156,7 +155,13 @@ public class UserList extends AppCompatActivity
         for (int i = 0; i < u.genres.size(); i++) {
             txtGenres.append(u.genres.get(i)+" ");
         }
-
+    }
+    public void onClickNextUser(View view) {
+        User u = ulc.getNextUser();
+        if (u == null) {
+            return;
+        }
+        displayUser(u);
     }
 
     public void onClickPreviousUser(View view) {
@@ -164,25 +169,6 @@ public class UserList extends AppCompatActivity
         if (u == null) {
             return;
         }
-
-        txtName.setText(u.name);
-        txtStatus.setText(u.status);
-        txtDistance.setText(u.distance+" km.");
-        txtPercentage.setText(u.percentage+"%");
-
-        txtInstruments.setText("");
-        for (int i = 0; i < u.instruments.size(); i++) {
-            txtInstruments.append(u.instruments.get(i)+" ");
-        }
-
-        txtGenres.setText("");
-        for (int i = 0; i < u.genres.size(); i++) {
-            txtGenres.append(u.genres.get(i)+" ");
-        }
-
-
+        displayUser(u);
     }
-
-
-
 }

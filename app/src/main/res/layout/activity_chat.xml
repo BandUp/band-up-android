@@ -25,14 +25,16 @@
             android:layout_gravity="center_horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/chatCells">
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
+    <View android:background="#999999"
+        android:layout_width = "match_parent"
+        android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/messageLayout"
         android:orientation="horizontal"

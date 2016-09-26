@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_address">https://band-up-server.herokuapp.com</string>
+    <string name="api_address" translatable="false">https://band-up-server.herokuapp.com</string>
+    <string name="google_token" translatable="false">https://band-up-server.herokuapp.com/login-google</string>
+
+    <string name="facebook_app_id" translatable="false">1734365480157177</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1734365480157177</string>
 </resources>

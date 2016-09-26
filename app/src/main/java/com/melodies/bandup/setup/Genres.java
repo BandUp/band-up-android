@@ -7,15 +7,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserList;
-import com.melodies.bandup.VolleySingleton;
 
-import org.json.JSONArray;
-
+/**
+ * An activity class that controls the Genres view.
+ */
 public class Genres extends AppCompatActivity {
     private String url;
     private String route = "/genres";
@@ -33,15 +32,8 @@ public class Genres extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         sShared     = new SetupShared();
 
-        JsonArrayRequest jsonGenreRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                new JSONArray(),
-                sShared.getResponseListener(Genres.this, gridView, progressBar),
-                sShared.getErrorListener(Genres.this)
-        );
-
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonGenreRequest);
+        // Gets the list of genres.
+        sShared.getSetupItems(Genres.this, url, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,7 +46,16 @@ public class Genres extends AppCompatActivity {
     public void onClickFinish(View v) {
         if (v.getId() == R.id.btnFinish) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            if (sShared.postSelectedItems(dla, Genres.this, url)) {
+
+            // The adapter for the GridView hasn't been set.
+            // This means we didn't get data from the server.
+            if (dla == null) {
+                Toast.makeText(Genres.this, "I cannot contact the server.\nPlease contact support.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Send the items that the user selected to the server.
+            if (sShared.postSelectedItems(Genres.this, dla, url)) {
                 Intent toUserListIntent = new Intent(Genres.this, UserList.class);
                 Genres.this.startActivity(toUserListIntent);
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);

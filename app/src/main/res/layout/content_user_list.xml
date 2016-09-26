@@ -14,10 +14,7 @@
     tools:showIn="@layout/app_bar_user_list">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/button3"
-        android:layout_alignParentEnd="true">
+        android:layout_height="wrap_content">
         <include layout="@layout/user_list_user_partial"/>
     </android.support.v7.widget.CardView>
 
@@ -31,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button3"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:onClick="onClickPreviousUser"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -41,7 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button5"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:onClick="onClickNextUser"/>
     </LinearLayout>
 
 </LinearLayout>

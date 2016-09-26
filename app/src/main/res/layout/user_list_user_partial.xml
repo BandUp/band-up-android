@@ -12,18 +12,9 @@
     tools:context="com.melodies.bandup.UserList">
 
 
-    <TextView
-        android:text="95%"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignStart="@+id/imageView2"
-        android:layout_marginTop="19dp"
-        android:id="@+id/textView4" />
-
     <ImageView
         app:srcCompat="@color/colorAccent"
-        android:id="@+id/imageView2"
+        android:id="@+id/imgProfile"
         android:layout_width="100dp"
         android:layout_marginEnd="20dp"
         android:layout_height="100dp" />
@@ -32,41 +23,41 @@
         android:text="10 km"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView8"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:id="@+id/txtDistance"
+        android:layout_below="@+id/txtStatus"
+        android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
         android:text="Searching"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/textView7"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:id="@+id/txtStatus"
+        android:layout_below="@+id/txtGenres"
+        android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
         android:text="Reggae"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView7"
-        android:layout_below="@+id/textView6"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:id="@+id/txtGenres"
+        android:layout_below="@+id/txtInstruments"
+        android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
         android:text="Bassi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/textView5"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:id="@+id/txtInstruments"
+        android:layout_below="@+id/txtName"
+        android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
         android:text="Jón forseti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView5"
+        android:id="@+id/txtName"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/imgProfile"
         android:textSize="18sp" />
 
     <Button
@@ -74,16 +65,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="94dp"
-        android:id="@+id/button4"
-        android:layout_below="@+id/textView4"
+        android:id="@+id/btnDetails"
+        android:layout_below="@+id/txtPercentage"
         android:layout_alignParentStart="true" />
 
     <Button
         android:text="Like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_alignBaseline="@+id/button4"
-        android:layout_alignBottom="@+id/button4"
+        android:id="@+id/btnLike"
+        android:layout_alignBaseline="@+id/btnDetails"
+        android:layout_alignBottom="@+id/btnDetails"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="95%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:id="@+id/txtPercentage"
+        android:textSize="25sp"
+        android:layout_below="@+id/imgProfile"
+        android:layout_alignEnd="@+id/btnDetails"
+        android:layout_marginEnd="17dp" />
 </RelativeLayout>

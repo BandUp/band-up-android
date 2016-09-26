@@ -8,12 +8,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.UserListController.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +25,7 @@ import org.json.JSONObject;
 public class UserList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    UserListController ulc = new UserListController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,9 @@ public class UserList extends AppCompatActivity
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject item = response.getJSONObject(i);
-                                String name  = item.getString("name");
-
+                                User user = new User();
+                                user.name = item.getString("name");
+                                ulc.addUser(user);
                             } catch (JSONException e) {
                                 Toast.makeText(UserList.this, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
@@ -103,4 +108,26 @@ public class UserList extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void onClickNextUser(View view) {
+        TextView tv = (TextView) findViewById(R.id.txtName);
+        User u = ulc.getNextUser();
+        if (u == null) {
+            return;
+        }
+        tv.setText(u.name);
+    }
+
+    public void onClickPreviousUser(View view) {
+        TextView tv = (TextView) findViewById(R.id.txtName);
+        User u = ulc.getPrevUser();
+        if (u == null) {
+            return;
+        }
+        tv.setText(u.name);
+
+    }
+
+
+
 }

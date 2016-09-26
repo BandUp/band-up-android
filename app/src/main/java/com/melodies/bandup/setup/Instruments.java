@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.melodies.bandup.R;
 
@@ -31,6 +32,7 @@ public class Instruments extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         sShared     = new SetupShared();
 
+        // Gets the list of instruments.
         sShared.getSetupItems(Instruments.this, url, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,7 +46,16 @@ public class Instruments extends AppCompatActivity {
     public void onClickNext (View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
-            if (sShared.postSelectedItems(dla, Instruments.this, url)) {
+
+            // The adapter for the GridView hasn't been set.
+            // This means we didn't get data from the server.
+            if (dla == null) {
+                Toast.makeText(Instruments.this, "I cannot contact the server.\nPlease contact support.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Send the items that the user selected to the server.
+            if (sShared.postSelectedItems(Instruments.this, dla, url)) {
                 Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
                 Instruments.this.startActivity(toInstrumentsIntent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

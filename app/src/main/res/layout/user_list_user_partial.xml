@@ -13,7 +13,6 @@
 
 
     <ImageView
-        app:srcCompat="@color/colorAccent"
         android:id="@+id/imgProfile"
         android:layout_width="100dp"
         android:layout_marginEnd="20dp"

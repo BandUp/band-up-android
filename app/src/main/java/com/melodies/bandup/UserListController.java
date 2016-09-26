@@ -51,5 +51,6 @@ public class UserListController {
         String status;
         int distance;
         int percentage;
+        String imgURL;
     }
 }

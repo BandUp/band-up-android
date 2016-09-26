@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,12 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.UserListController.User;
 
@@ -61,6 +64,7 @@ public class UserList extends AppCompatActivity
                                 user.status = item.getString("status");
                                 user.distance = item.getInt("distance");
                                 user.percentage = item.getInt("percentage");
+                                user.imgURL = item.getString("profileImgUrl");
 
                                 JSONArray instrumentArray = item.getJSONArray("instruments");
 
@@ -155,6 +159,30 @@ public class UserList extends AppCompatActivity
         for (int i = 0; i < u.genres.size(); i++) {
             txtGenres.append(u.genres.get(i)+" ");
         }
+        final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
+        ImageLoader il = VolleySingleton.getInstance(UserList.this).getImageLoader();
+        iv.setImageResource(R.color.transparent);
+        il.get(u.imgURL, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                final Bitmap b = response.getBitmap();
+                if (b != null) {
+                    Runnable r = new Runnable() {
+                        @Override
+                        public void run() {
+                            iv.setImageBitmap(b);
+                        }
+                    };
+                    runOnUiThread(r);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERROR RESPONSE");
+            }
+        });
+
     }
     public void onClickNextUser(View view) {
         User u = ulc.getNextUser();

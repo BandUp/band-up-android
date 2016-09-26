@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
     private void displayMessage(String message) {
         ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View myView = vi.inflate(R.layout.chat_message_cell, null, false);
+        View myView = vi.inflate(R.layout.chat_message_cell, scrollView, false);
         TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
         ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
 
@@ -94,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
 
-                displayMessage("Me: " + message);
+                displayMessage("You: " + message);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;

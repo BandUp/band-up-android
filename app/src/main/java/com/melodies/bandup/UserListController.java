@@ -41,12 +41,13 @@ public class UserListController {
 
     static public class User {
         public User(){
-
+            instruments = new ArrayList<>();
+            genres = new ArrayList<>();
         }
         String id;
         String name;
-        String[] instruments;
-        String[] genres;
+        List<String> instruments;
+        List<String> genres;
         String status;
         int distance;
         int percentage;

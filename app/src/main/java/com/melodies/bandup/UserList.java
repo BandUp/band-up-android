@@ -26,11 +26,23 @@ public class UserList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     UserListController ulc = new UserListController();
+    private TextView txtName;
+    private TextView txtStatus;
+    private TextView txtDistance;
+    private TextView txtPercentage;
+    private TextView txtInstruments;
+    private TextView txtGenres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+        txtName        = (TextView) findViewById(R.id.txtName);
+        txtStatus      = (TextView) findViewById(R.id.txtStatus);
+        txtDistance    = (TextView) findViewById(R.id.txtDistance);
+        txtPercentage  = (TextView) findViewById(R.id.txtPercentage);
+        txtInstruments = (TextView) findViewById(R.id.txtInstruments);
+        txtGenres      = (TextView) findViewById(R.id.txtGenres);
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -43,7 +55,22 @@ public class UserList extends AppCompatActivity
                             try {
                                 JSONObject item = response.getJSONObject(i);
                                 User user = new User();
-                                user.name = item.getString("name");
+                                user.name = item.getString("username");
+                                user.status = item.getString("status");
+                                user.distance = item.getInt("distance");
+                                user.percentage = item.getInt("percentage");
+
+                                JSONArray instrumentArray = item.getJSONArray("instruments");
+
+                                for (int j = 0; j < instrumentArray.length(); j++) {
+                                    user.instruments.add(instrumentArray.getString(j));
+                                }
+
+                                JSONArray genreArray = item.getJSONArray("genres");
+
+                                for (int j = 0; j < genreArray.length(); j++) {
+                                    user.genres.add(genreArray.getString(j));
+                                }
                                 ulc.addUser(user);
                             } catch (JSONException e) {
                                 Toast.makeText(UserList.this, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
@@ -110,21 +137,49 @@ public class UserList extends AppCompatActivity
     }
 
     public void onClickNextUser(View view) {
-        TextView tv = (TextView) findViewById(R.id.txtName);
         User u = ulc.getNextUser();
         if (u == null) {
             return;
         }
-        tv.setText(u.name);
+
+        txtName.setText(u.name);
+        txtStatus.setText(u.status);
+        txtDistance.setText(u.distance+" km.");
+        txtPercentage.setText(u.percentage+"%");
+
+        txtInstruments.setText("");
+        for (int i = 0; i < u.instruments.size(); i++) {
+            txtInstruments.append(u.instruments.get(i)+" ");
+        }
+
+        txtGenres.setText("");
+        for (int i = 0; i < u.genres.size(); i++) {
+            txtGenres.append(u.genres.get(i)+" ");
+        }
+
     }
 
     public void onClickPreviousUser(View view) {
-        TextView tv = (TextView) findViewById(R.id.txtName);
         User u = ulc.getPrevUser();
         if (u == null) {
             return;
         }
-        tv.setText(u.name);
+
+        txtName.setText(u.name);
+        txtStatus.setText(u.status);
+        txtDistance.setText(u.distance+" km.");
+        txtPercentage.setText(u.percentage+"%");
+
+        txtInstruments.setText("");
+        for (int i = 0; i < u.instruments.size(); i++) {
+            txtInstruments.append(u.instruments.get(i)+" ");
+        }
+
+        txtGenres.setText("");
+        for (int i = 0; i < u.genres.size(); i++) {
+            txtGenres.append(u.genres.get(i)+" ");
+        }
+
 
     }
 

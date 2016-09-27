@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.JsonArrayToObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -27,84 +29,213 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * A shared class that both Genres and Instruments
+ * use to GET and POST data to and from the server.
+ */
 public class SetupShared {
 
-    public Response.Listener<JSONArray> getResponseListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
+
+    /**
+     * This function GETs instruments or genres, depending on the URL.
+     * @param context     The context we are working in.
+     * @param url         The URL where we are going to GET the data.
+     * @param gridView    The GridView we are going to put the data into.
+     * @param progressBar The ProgressBar that displays when we are getting the data.
+     */
+    public void getSetupItems(Context context, String url, GridView gridView, ProgressBar progressBar) {
+        progressBar.setVisibility(progressBar.VISIBLE);
+        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                new JSONArray(),
+                this.getSetupItemsListener(context, gridView, progressBar),
+                this.getSetupItemsErrorListener(context, progressBar)
+        );
+
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+    }
+
+    /**
+     * This listener is used when listening to responses to
+     * GET /instruments and GET /genres.
+     *
+     * The progress bar's visibility must be set before sending the request.
+     *
+     * It parses the JSON object and puts every item into an array in the DoubleListAdapter.
+     *
+     * {
+     *     "_id":"57dafe54dcba0f51172fb163"  The ID of the instrument/genre
+     *     "name":"Drums"                    The name of the instrument/genre
+     * }
+     *
+     * @param context
+     * @param gridView     The GridView that will be displaying the data.
+     * @param progressBar  A ProgressBar that will be displayed when fetching data.
+     * @return             the listener
+     * @see DoubleListAdapter
+     */
+    private Response.Listener<JSONArray> getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                List<DoubleListItem> list = new ArrayList<>();
 
+                // Create a new adapter for the GridView.
+                DoubleListAdapter dlAdapter = new DoubleListAdapter(context);
+                gridView.setAdapter(dlAdapter);
+
+                // Go through every item in the list the server sent us.
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject item = response.getJSONObject(i);
                         String id    = item.getString("_id");
-                        int    order = item.getInt   ("order");
                         String name  = item.getString("name");
 
-                        DoubleListItem myItems = new DoubleListItem(id, order, name);
-                        list.add(myItems);
+                        DoubleListItem dlItem = new DoubleListItem(id, i, name);
+                        dlAdapter.addItem(dlItem);
 
                     } catch (JSONException e) {
+                        Toast.makeText(context, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
                 progressBar.setVisibility(progressBar.GONE);
-                gridView.setAdapter(new DoubleListAdapter(context, list));
             }
         };
     }
 
-    public Response.Listener<JSONObject> getPickListener() {
-        return new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("ASDFASDFASDF");
-                System.out.println(response.toString());
-            }
-        };
-    }
-
-    public Response.ErrorListener getErrorListener(final Context context) {
+    /**
+     * This error listener is used when listening to responses to
+     * GET /instruments and GET /genres.
+     *
+     * The progress bar's visibility must be set before sending the request.
+     *
+     * @param context     The context we are working in.
+     * @param progressBar The ProgressBar in the view.
+     * @return the listener.
+     */
+    private Response.ErrorListener getSetupItemsErrorListener(final Context context, final ProgressBar progressBar) {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Toast.makeText(context, "Connection error!", Toast.LENGTH_LONG).show();
-                }
-                else if (error instanceof AuthFailureError) {
-                    Toast.makeText(context, "Invalid username or password", Toast.LENGTH_LONG).show();
-                }
-                else if (error instanceof ServerError) {
-                    String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-                    System.out.println(jsonString);
-                    try {
-                        JSONObject myObject = new JSONObject(jsonString);
-                        //noinspection UnusedAssignment
-                        int errNo      = myObject.getInt("err");
-                        String message = myObject.getString("msg");
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-                else if (error instanceof NetworkError) {
-                    Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
-                }
-                else if (error instanceof ParseError) {
-                    Toast.makeText(context, "Server parse error!", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(context, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
-                }
+                checkCauseOfError(context, error);
+                progressBar.setVisibility(progressBar.GONE);
             }
         };
     }
 
+    /**
+     * This function POSTs the selected items to the server.
+     *
+     * @param c   The context we are working in.
+     * @param dla The DoubleListAdapter we want to read from.
+     * @param url The URL where we are going to POST the data.
+     * @return True if all preconditions are met. False otherwise.
+     */
+    public Boolean postSelectedItems(Context c, DoubleListAdapter dla, String url) {
+        JSONArray selectedItems = new JSONArray();
+
+        // Go through all items in the GridView and put its IDs into an array.
+        for (DoubleListItem dli:dla.getDoubleList()) {
+            if (dli.isSelected) {
+                selectedItems.put(dli.id);
+            }
+        }
+
+        if (selectedItems.length() == 0) {
+            Toast.makeText(c, "You need to select at least one item.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        JsonArrayToObjectRequest postItems = new JsonArrayToObjectRequest(
+                Request.Method.POST,
+                url,
+                selectedItems,
+                this.getPickListener(),
+                this.getPickErrorListener(c)
+        );
+
+        VolleySingleton.getInstance(c).addToRequestQueue(postItems);
+        return true;
+    }
+
+    /**
+     * This listener is used when listening to responses to
+     * POST /instruments and POST /genres.
+     *
+     * @return the listener
+     */
+    private Response.Listener<JSONObject> getPickListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+            }
+        };
+    }
+
+    /**
+     * This error listener is used when listening to responses to
+     * POST /instruments and POST /genres.
+     *
+     * @param context The context we are working in.
+     * @return the listener.
+     */
+    private Response.ErrorListener getPickErrorListener(final Context context) {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                checkCauseOfError(context, error);
+            }
+        };
+    }
+
+    /**
+     * This function checks the cause of the Volley Error and prints out a relevant Toast message.
+     *
+     * @param context The context we are working in.
+     * @param error   The Volley Error object
+     */
+    private void checkCauseOfError(Context context, VolleyError error) {
+        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+            Toast.makeText(context, "Connection error!", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof AuthFailureError) {
+            Toast.makeText(context, "Invalid username or password", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof ServerError) {
+            String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+            System.out.println(jsonString);
+            try {
+                JSONObject myObject = new JSONObject(jsonString);
+                int errNo      = myObject.getInt("err");
+                String message = myObject.getString("msg");
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
+        else if (error instanceof NetworkError) {
+            Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
+        }
+        else if (error instanceof ParseError) {
+            Toast.makeText(context, "Server parse error!", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(context, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * This toggles the selected/deselected state of an item
+     * in the list when the user taps on a particular item.
+     *
+     * @param context  The context we are working in.
+     * @param parent   The parent of the adapter. (?)
+     * @param view     The view we are working with.
+     * @param position The index of the item that was tapped.
+     */
     public void toggleItemSelection(Context context, AdapterView<?> parent, View view, int position) {
         DoubleListItem inst = (DoubleListItem) parent.getAdapter().getItem(position);
         ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
@@ -122,29 +253,5 @@ public class SetupShared {
             itemSelected.startAnimation(animation);
             inst.isSelected = true;
         }
-    }
-
-    public Boolean postSelectedItems(DoubleListAdapter dla, Context c, String url) {
-        JSONArray selectedItems = new JSONArray();
-
-        for (DoubleListItem dli:dla.getDoubleList()) {
-            if (dli.isSelected) {
-                selectedItems.put(dli.id);
-            }
-        }
-        if (selectedItems.length() == 0) {
-            Toast.makeText(c, "You need to select at least one item.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        JsonArrayToObjectRequest postItems = new JsonArrayToObjectRequest(
-                Request.Method.POST,
-                url,
-                selectedItems,
-                this.getPickListener(),
-                this.getErrorListener(c)
-        );
-
-        VolleySingleton.getInstance(c).addToRequestQueue(postItems);
-        return true;
     }
 }

@@ -3,6 +3,7 @@ package com.melodies.bandup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,8 +25,8 @@ import java.net.URISyntaxException;
 public class ChatActivity extends AppCompatActivity {
 
     private Socket mSocket;
-    String username = "elvar";
-    String sendTo = "bergthor";
+    String username = "bergthor";
+    String sendTo = "elvar";
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -51,14 +52,24 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     /* Adds the message to the ScrollView and scrolls to the bottom. */
-    private void displayMessage(String sender, String message) {
+    private void displayMessage(Boolean isUser, String sender, String message) {
 
         ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+
         LinearLayout ll = (LinearLayout) findViewById(R.id.chatCells);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View myView = vi.inflate(R.layout.chat_message_cell, ll, false);
+        if (isUser) {
+            LinearLayout chatCell = (LinearLayout) myView.findViewById(R.id.chatMessageCell);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chatCell.getLayoutParams();
+            params.gravity = Gravity.END;
+            chatCell.setLayoutParams(params);
+        }
+
         TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
         tv.setText(message);
+
         ll.addView(myView);
         scrollToBottom(scrollView);
     }
@@ -94,7 +105,7 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
 
-                displayMessage("You", message);
+                displayMessage(true, "You", message);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
@@ -103,7 +114,6 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String username = "elvar";
         super.onCreate(savedInstanceState);
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
@@ -127,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
                 public void run() {
                     // args[0] = from username
                     // args[1] = message
-                    displayMessage(args[0].toString(), args[1].toString());
+                    displayMessage(false, args[0].toString(), args[1].toString());
                 }
             });
         }

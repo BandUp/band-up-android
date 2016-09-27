@@ -252,7 +252,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }catch (JSONException ex){
             System.out.println(ex.getMessage());
         }
-
     }
 
     //

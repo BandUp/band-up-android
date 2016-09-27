@@ -45,6 +45,9 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @SuppressWarnings("UnusedAssignment")
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -66,6 +69,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
+        isLoggedIn();
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);
@@ -140,6 +144,39 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
+    }
+
+    private void isLoggedIn() {
+        SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+        System.out.println(srdPref.getString("sessionId", ""));
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                getResources().getString(R.string.api_address).concat("/isloggedin"),
+                null, new Response.Listener<JSONObject>(){
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    System.out.println(response.toString());
+                    if (response.getBoolean("loggedIn")){
+                        Intent userListIntent = new Intent(Login.this, UserList.class);
+                        Login.this.startActivity(userListIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     /**
@@ -408,7 +445,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("sessionId", response.toString());
+        try {
+            editor.putString("sessionId", response.getString("sessionID"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         editor.apply();
     }
 

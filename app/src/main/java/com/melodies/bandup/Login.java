@@ -4,13 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -113,8 +117,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        //findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.disconnect_button).setOnClickListener(this);
+        findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -201,57 +205,47 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            // user already signed in, go to Instruments view
-            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-            Login.this.startActivity(instrumentsIntent);
+            //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
+            // send token to sever and validate server side
+            sendGoogleTokenToServer(idToken);
 
             String personName = acct.getDisplayName();
-            //String personGivenName = acct.getGivenName();
-            //String personFamilyName = acct.getFamilyName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            //Uri personPhoto = acct.getPhotoUrl();
-
-            // storing user info in DB
-            sendGoogleTokenToServer(personId, idToken, personName, personEmail);
+            Uri personPhoto = acct.getPhotoUrl();
         }
     }
 
-    private void sendGoogleTokenToServer(String personId, String idToken, String personName, String personEmail) {
-        try{
-            url = getResources().getString(R.string.api_address).concat("/login-google");
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", personId);
-            jsonObject.put("userToken", idToken);
-            jsonObject.put("userName", personName);
-            jsonObject.put("userEmail", personEmail);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url,
-                    jsonObject, new Response.Listener<JSONObject>(){
-
-                @Override
-                public void onResponse(JSONObject response) {
-                    Toast.makeText(getApplicationContext(), "Success ", Toast.LENGTH_SHORT).show();
-                    saveSessionId(response);
-                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                    Login.this.startActivity(instrumentsIntent);
-                    finish();
-                }
-            }, new Response.ErrorListener(){
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Failure ", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
-        }catch (JSONException ex){
-            System.out.println(ex.getMessage());
+    private void sendGoogleTokenToServer(String idToken) {
+        // create request for Login
+        JSONObject user = new JSONObject();
+        try {
+            user.put("idToken", idToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                getResources().getString(R.string.google_token),
+                user,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(Login.this, "User added server side, token valid", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Login.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        errorHandlerLogin(error);
+                    }
+                }
+        );
+        // insert request into queue
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     //

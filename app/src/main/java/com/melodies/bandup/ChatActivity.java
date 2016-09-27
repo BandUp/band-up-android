@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,15 +51,15 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     /* Adds the message to the ScrollView and scrolls to the bottom. */
-    private void displayMessage(String message) {
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
-        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View myView = vi.inflate(R.layout.chat_message_cell, scrollView, false);
-        TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
-        ViewGroup insertPoint = (ViewGroup) findViewById(R.id.chatCells);
+    private void displayMessage(String sender, String message) {
 
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.chatCells);
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View myView = vi.inflate(R.layout.chat_message_cell, ll, false);
+        TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
         tv.setText(message);
-        insertPoint.addView(myView);
+        ll.addView(myView);
         scrollToBottom(scrollView);
     }
 
@@ -94,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
 
-                displayMessage("You: " + message);
+                displayMessage("You", message);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                 public void run() {
                     // args[0] = from username
                     // args[1] = message
-                    displayMessage(args[0].toString() + ": " + args[1].toString());
+                    displayMessage(args[0].toString(), args[1].toString());
                 }
             });
         }

@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:id="@+id/chatMessageCell">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:id="@+id/chatMessageCell"
+    android:gravity="center"
+    android:background="@drawable/chat_bubble">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:gravity="left|center"
+        android:text="Message"
+        android:gravity="start|center"
         android:id="@+id/txtChatMessageText"
-        android:paddingLeft="20dp"
-        android:background="@drawable/chat_border"
-        android:textColor="@color/colorPrimaryDark"/>
-
+        android:layout_marginTop="0dp"
+        android:textColor="@color/transparent"/>
 </LinearLayout>

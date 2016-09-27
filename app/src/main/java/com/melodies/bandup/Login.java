@@ -4,17 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -117,8 +113,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
+        //findViewById(R.id.sign_out_button).setOnClickListener(this);
+        //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -205,23 +201,30 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            // send token to sever and validate server side
-            sendGoogleTokenToServer(idToken);
+            // user already signed in, go to Instruments view
+            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+            Login.this.startActivity(instrumentsIntent);
 
             String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
+            //String personGivenName = acct.getGivenName();
+            //String personFamilyName = acct.getFamilyName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
+            //Uri personPhoto = acct.getPhotoUrl();
+
+            // storing user info in DB
+            sendGoogleTokenToServer(personId, idToken, personName, personEmail);
         }
     }
 
-    private void sendGoogleTokenToServer(String idToken) {
+    private void sendGoogleTokenToServer(String personId, String idToken, String personName, String personEmail) {
         try{
             url = getResources().getString(R.string.api_address).concat("/login-google");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("access_token", idToken);
+            jsonObject.put("userId", personId);
+            jsonObject.put("userToken", idToken);
+            jsonObject.put("userName", personName);
+            jsonObject.put("userEmail", personEmail);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,

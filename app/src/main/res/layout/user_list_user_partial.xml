@@ -19,15 +19,15 @@
         android:layout_height="100dp" />
 
     <TextView
-        android:text="10 km"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtDistance"
         android:layout_below="@+id/txtStatus"
-        android:layout_toEndOf="@+id/imgProfile" />
+        android:layout_toEndOf="@+id/imgProfile"
+        android:text="Distance" />
 
     <TextView
-        android:text="Searching"
+        android:text="Status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtStatus"
@@ -35,7 +35,7 @@
         android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
-        android:text="Reggae"
+        android:text="Genres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtGenres"
@@ -43,7 +43,7 @@
         android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
-        android:text="Bassi"
+        android:text="Instruments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtInstruments"
@@ -51,7 +51,7 @@
         android:layout_toEndOf="@+id/imgProfile" />
 
     <TextView
-        android:text="Jón forseti"
+        android:text="Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtName"
@@ -78,7 +78,7 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="95%"
+        android:text="00%"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"

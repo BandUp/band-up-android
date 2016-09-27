@@ -45,6 +45,8 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+@SuppressWarnings("UnusedAssignment")
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
     private String url;
@@ -205,6 +207,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
+            if (idToken == null){
+                Toast.makeText(this, "error in sign in result", Toast.LENGTH_LONG);
+                return;
+            }
             //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
             // send token to sever and validate server side
             sendGoogleTokenToServer(idToken);
@@ -301,7 +307,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables
-
+        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
+        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
 
         // converting into string
         final String username = etUsername.getText().toString();
@@ -410,6 +417,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
+            finish();
         }
     }
 

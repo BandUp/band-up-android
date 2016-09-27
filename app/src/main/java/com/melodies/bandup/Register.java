@@ -41,6 +41,7 @@ public class Register extends AppCompatActivity {
     }
 
     //
+    @SuppressWarnings("UnusedAssignment")
     public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);

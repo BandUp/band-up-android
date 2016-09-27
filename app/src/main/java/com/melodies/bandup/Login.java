@@ -4,17 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -195,7 +191,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
-    // Sign In result handler
+    // Accessing user data from Google & storing on server
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -205,47 +201,52 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            //Toast.makeText(getApplicationContext(), "idToken: "+idToken, Toast.LENGTH_SHORT).show();
-            // send token to sever and validate server side
-            sendGoogleTokenToServer(idToken);
-
             String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
+            //Uri personPhoto = acct.getPhotoUrl();
+
+            // Sending user info to server
+            sendGoogleUserToServer(personId, idToken, personName, personEmail);
         }
     }
 
-    private void sendGoogleTokenToServer(String idToken) {
-        // create request for Login
-        JSONObject user = new JSONObject();
-        try {
-            user.put("idToken", idToken);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                getResources().getString(R.string.google_token),
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(Login.this, "User added server side, token valid", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Login.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        errorHandlerLogin(error);
-                    }
+    // Sending user info to server
+    private void sendGoogleUserToServer(String personId, String idToken, String personName, String personEmail) {
+        try{
+            url = getResources().getString(R.string.api_address).concat("/login-google");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userId", personId);
+            jsonObject.put("userToken", idToken);
+            jsonObject.put("userName", personName);
+            jsonObject.put("userEmail", personEmail);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url,
+                    jsonObject,
+                    new Response.Listener<JSONObject>(){
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
+                    saveSessionId(response);
+                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                    Login.this.startActivity(instrumentsIntent);
+                    finish();
                 }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+        }catch (JSONException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     //

@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -198,5 +199,11 @@ public class UserList extends AppCompatActivity
             return;
         }
         displayUser(u);
+    }
+
+    // Temporary button
+    public void onClickChat(View view) {
+        Intent instrumentsIntent = new Intent(UserList.this, ChatActivity.class);
+        UserList.this.startActivity(instrumentsIntent);
     }
 }

@@ -36,6 +36,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="register_title">Nýskráning</string>
+    <string name="login_username_validation">Vinsamlegast skrifaðu inn notandanafnið þitt</string>
+    <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
 
 
 </resources>

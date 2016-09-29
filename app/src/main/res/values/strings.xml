@@ -34,4 +34,6 @@
     <!-- Chat Screen -->
     <string name="chat_send">Send</string>
     <string name="chat_message_hint">Type a message…</string>
+    <string name="login_username_validation">Please enter your username</string>
+    <string name="login_password_validation">Please enter your password</string>
 </resources>

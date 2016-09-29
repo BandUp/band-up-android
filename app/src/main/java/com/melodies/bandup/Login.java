@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -47,6 +50,9 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.melodies.bandup.R.id.tilPassword;
+import static com.melodies.bandup.R.id.tilUsername;
+
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
     private String url;
@@ -59,6 +65,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private EditText etPassword;
     private LinearLayout mainLinearLayout;
     private LinearLayout linearLayoutInput;
+    private TextInputLayout tilUsername;
+    private TextInputLayout tilPassword;
+
 
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
@@ -98,7 +107,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
-
         setContentView(R.layout.activity_main);
         mainLinearLayout  = (LinearLayout) findViewById(R.id.login_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
@@ -133,7 +141,44 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 }
                 return false;
             }
+
         });
+
+        tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
+        tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilUsername.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilPassword.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         // -----------------------------Facebook START ------------------------------------------------------------
 
@@ -337,21 +382,32 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables
 
-
         // converting into string
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();
 
         if (v.getId() == R.id.btnSignIn) {
             // Check for empty field in the form
+            Boolean isValid = true;
+
             if (username.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
-            } else if (password.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
-            } else {
+                isValid = false;
+                tilUsername.setError(getString(R.string.login_username_validation));
+                etUsername.requestFocus();
+
+            }
+
+            if (password.isEmpty()) {
+                isValid = false;
+                System.out.println("ASDFASDF");
+                tilPassword.setError(getString(R.string.login_password_validation));
+            }
+
+            if (isValid) {
                 loginDialog = ProgressDialog.show(this, "Logging in", "Please wait...", true, false);
                 createloginRequest(username, password);
             }
+
         }
     }
 

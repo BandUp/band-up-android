@@ -27,6 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:id="@+id/chatCells">
 
             </LinearLayout>
@@ -45,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtMessage"
+            android:layout_marginStart="5dp"
             android:hint="@string/chat_message_hint"
             android:layout_weight="1" />
         <Button
@@ -53,6 +57,7 @@
             android:text="@string/chat_send"
             android:id="@+id/btnSend"
             android:layout_weight="0"
+            android:layout_marginEnd="5dp"
             android:layout_gravity="bottom"
             android:onClick="onClickSend" />
     </LinearLayout>

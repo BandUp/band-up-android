@@ -3,11 +3,8 @@
     package="com.melodies.bandup">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <meta-data
-        android:name="com.facebook.sdk.ApplicationId"
-        android:value="@string/facebook_app_id" />
-
+    <!--suppress AndroidElementNotAllowed -->
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

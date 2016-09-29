@@ -68,7 +68,7 @@
 
             <Button
                 android:id="@+id/btnSignIn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
@@ -77,9 +77,10 @@
 
             <Button
                 android:id="@+id/btnSignUp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="onClickSignUp"
                 android:text="@string/login_sign_up"

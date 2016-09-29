@@ -1,6 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.melodies.bandup.UserList">
+
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDistance"
+            android:layout_below="@+id/txtStatus"
+            android:layout_toEndOf="@+id/imgProfile"
+            android:text="Distance"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:text="Genres"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtGenres"
+            android:layout_below="@+id/txtInstruments"
+            android:layout_toEndOf="@+id/imgProfile"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:text="Instruments"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtInstruments"
+            android:layout_below="@+id/txtName"
+            android:layout_toEndOf="@+id/imgProfile"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:text="Username"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtName"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imgProfile"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="Search Radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/txtBeforeSeekBarDescription"
+            android:layout_below="@+id/txtPercentage"
+            android:layout_alignParentStart="true"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:text="About Me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAboutMe"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="220dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/txtStatus" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtSeekValue"
+            android:layout_alignBottom="@+id/seekBarRadius"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/seekBarRadius" />
+
+        <SeekBar
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBarRadius"
+            android:layout_alignBottom="@+id/txtBeforeSeekBarDescription"
+            android:layout_toEndOf="@+id/imgProfile" />
+
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="160dp"
+            android:layout_height="180dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Status"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtStatus"
+            android:layout_below="@+id/txtGenres"
+            android:layout_toEndOf="@+id/imgProfile"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:text="00%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/txtPercentage"
+            android:textSize="25sp"
+            android:layout_alignBottom="@+id/txtAboutMe"
+            android:layout_alignEnd="@+id/txtBeforeSeekBarDescription" />
+
+        <TextView
+            android:text="Promotion"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/txtPromotion"
+            android:textSize="20sp"
+            android:layout_below="@+id/txtPercentage"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView19" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView9"
+        android:layout_below="@+id/txtStatus"
+        android:layout_toEndOf="@+id/imgProfile"
+        android:text="Distance" />
+
+    <TextView
+        android:text="Status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView10"
+        android:layout_below="@+id/txtGenres"
+        android:layout_toEndOf="@+id/imgProfile" />
+
+    <TextView
+        android:text="Genres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/txtInstruments"
+        android:layout_toEndOf="@+id/imgProfile" />
+
+    <TextView
+        android:text="Instruments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView12"
+        android:layout_below="@+id/txtName"
+        android:layout_toEndOf="@+id/imgProfile" />
+
+    <TextView
+        android:text="Username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imgProfile"
+        android:textSize="18sp" />
+
+    <Button
+        android:text="Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="94dp"
+        android:id="@+id/button6"
+        android:layout_below="@+id/txtPercentage"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Like"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button7"
+        android:layout_alignBaseline="@+id/btnDetails"
+        android:layout_alignBottom="@+id/btnDetails"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="00%"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:id="@+id/textView14"
+        android:textSize="25sp"
+        android:layout_below="@+id/imgProfile"
+        android:layout_alignEnd="@+id/btnDetails"
+        android:layout_marginEnd="17dp" />
 </LinearLayout>

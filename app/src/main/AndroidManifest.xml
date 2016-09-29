@@ -24,17 +24,14 @@
         <activity
             android:name=".Register"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".setup.Instruments"
             android:screenOrientation="portrait"/>
-        
         <activity
             android:name=".setup.Genres"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".UserProfile" />
         <activity android:name=".Matches" />
-
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".UserList"

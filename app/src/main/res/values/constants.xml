@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="login_image_padding_top" translatable="false">50</integer>
+
+</resources>

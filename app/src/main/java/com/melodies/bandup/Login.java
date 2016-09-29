@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,9 +51,6 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.melodies.bandup.R.id.tilPassword;
-import static com.melodies.bandup.R.id.tilUsername;
-
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
     private String url;
@@ -67,6 +65,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
+    private Boolean usernameHasFocus;
+    private Boolean passwordHasFocus;
 
 
 
@@ -96,10 +96,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
         int activityHeight = mainLinearLayout.getHeight();
         int statusBarHeight = screenHeight - activityHeight;
+        int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
         if (hasSoftNavigation(Login.this)) {
-            return (activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop;
         } else {
-            return (activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop;
         }
     }
 
@@ -115,7 +116,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             public void run() {
                 mainLinearLayout.setY(getIconCenter());
                 Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
-                mainLinearLayout.animate().translationY(50).setDuration(500);
+                mainLinearLayout.animate().translationY(0).setDuration(500);
                 linearLayoutInput.startAnimation(testAnimation);
             }
         });
@@ -162,6 +163,32 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             }
         });
+
+        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    usernameHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+                } else {
+                    usernameHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    passwordHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+                } else {
+                    passwordHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -178,7 +205,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             }
         });
-
 
         // -----------------------------Facebook START ------------------------------------------------------------
 
@@ -495,6 +521,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mainLinearLayout.requestFocus();
+        System.out.println("BACKPRESSED");
     }
 
 }

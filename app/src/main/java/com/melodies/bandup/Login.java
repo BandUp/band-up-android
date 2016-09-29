@@ -6,11 +6,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -51,15 +61,66 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
+    private LinearLayout mainLinearLayout;
+    private LinearLayout linearLayoutInput;
+    private TextInputLayout tilUsername;
+    private TextInputLayout tilPassword;
+    private Boolean usernameHasFocus;
+    private Boolean passwordHasFocus;
+
 
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
+
+    private static boolean hasSoftNavigation(Context context) {
+        return !ViewConfiguration.get(context).hasPermanentMenuKey();
+    }
+
+    private int getSoftButtonsBarHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int usableHeight = metrics.heightPixels;
+
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        int realHeight = metrics.heightPixels;
+
+        if (realHeight > usableHeight)
+            return realHeight - usableHeight;
+        else
+            return 0;
+    }
+    private int getIconCenter() {
+        final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
+
+        int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
+        int activityHeight = mainLinearLayout.getHeight();
+        int statusBarHeight = screenHeight - activityHeight;
+        int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
+        if (hasSoftNavigation(Login.this)) {
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop;
+        } else {
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
+        mainLinearLayout  = (LinearLayout) findViewById(R.id.login_ll);
+        linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
+
+        mainLinearLayout.post(new Runnable() {
+            public void run() {
+                mainLinearLayout.setY(getIconCenter());
+                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
+                mainLinearLayout.animate().translationY(0).setDuration(500);
+                linearLayoutInput.startAnimation(testAnimation);
+            }
+        });
+
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);
@@ -81,9 +142,71 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 }
                 return false;
             }
+
         });
 
-    // -----------------------------Facebook START ------------------------------------------------------------
+        tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
+        tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilUsername.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    usernameHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+                } else {
+                    usernameHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    passwordHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+                } else {
+                    passwordHasFocus = true;
+                    Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilPassword.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        // -----------------------------Facebook START ------------------------------------------------------------
 
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -110,11 +233,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-    // -----------------------------Google+ START -------------------------------------------------------------
+        // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -138,13 +259,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     /**
      * take result from facebook login process and create user in backend
-     *
+     * <p>
      * side effect: starts up instrument activity if succesfull
      *
      * @param loginResult facebook loginResult
      */
     private void facebookCreateUser(LoginResult loginResult) {
-        try{
+        try {
             url = getResources().getString(R.string.api_address).concat("/login-facebook");
             JSONObject jsonObject = new JSONObject();
 
@@ -152,7 +273,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
-                    jsonObject, new Response.Listener<JSONObject>(){
+                    jsonObject, new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {
@@ -162,7 +283,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                     finish();
                 }
-            }, new Response.ErrorListener(){
+            }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -172,7 +293,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        }catch (JSONException ex){
+        } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
 
@@ -186,7 +307,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-        }else{
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -255,14 +376,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             case R.id.sign_in_button:
                 signIn();
                 break;
-            case R.id.sign_out_button:
-                signOut();
-                Toast.makeText(getApplicationContext(), "You are Signed Out", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                Toast.makeText(getApplicationContext(), "Google+ disconnected from the app!", Toast.LENGTH_LONG).show();
-                break;
         }
     }
 
@@ -279,30 +392,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     // Google+ Sign Out
-    private void signOut() { Auth.GoogleSignInApi.signOut(mGoogleApiClient); }
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+    }
 
     // Google+ Disconnecting Google account from the app
-    private void revokeAccess() { Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient); }
-
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
+    }
 
 
     // ------------------------------Google+ END ---------------------------------------------------------------
 
-
-
-    // Go to chat button temp----------------------------
-    public void onClickGoToChat (View v) {
-        if (v.getId() == R.id.btnGoToChat) {
-            Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
-            Login.this.startActivity(toChatIntent);
-        }
-    }
-    //--------------------------------------------
-
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables
-
 
         // converting into string
         final String username = etUsername.getText().toString();
@@ -310,16 +414,26 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         if (v.getId() == R.id.btnSignIn) {
             // Check for empty field in the form
+            Boolean isValid = true;
+
             if (username.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
+                isValid = false;
+                tilUsername.setError(getString(R.string.login_username_validation));
+                etUsername.requestFocus();
+
             }
-            else if (password.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
+
+            if (password.isEmpty()) {
+                isValid = false;
+                System.out.println("ASDFASDF");
+                tilPassword.setError(getString(R.string.login_password_validation));
             }
-            else {
+
+            if (isValid) {
                 loginDialog = ProgressDialog.show(this, "Logging in", "Please wait...", true, false);
                 createloginRequest(username, password);
             }
+
         }
     }
 
@@ -379,20 +493,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void errorHandlerLogin(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
             Toast.makeText(Login.this, "Connection error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof AuthFailureError ) {
+        } else if (error instanceof AuthFailureError) {
             Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ServerError) {
+        } else if (error instanceof ServerError) {
             Toast.makeText(Login.this, "Server error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof NetworkError) {
+        } else if (error instanceof NetworkError) {
             Toast.makeText(Login.this, "Network error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ParseError) {
+        } else if (error instanceof ParseError) {
             Toast.makeText(Login.this, "Server parse error!", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Toast.makeText(Login.this, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
         }
     }
@@ -412,6 +521,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mainLinearLayout.requestFocus();
+        System.out.println("BACKPRESSED");
     }
 
 }

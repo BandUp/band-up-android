@@ -522,12 +522,4 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Login.this.startActivity(signUpIntent);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        mainLinearLayout.requestFocus();
-        System.out.println("BACKPRESSED");
-    }
-
 }

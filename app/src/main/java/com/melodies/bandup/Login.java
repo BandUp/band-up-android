@@ -86,7 +86,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // -----------------------------Facebook START ------------------------------------------------------------
 
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
         loginButton.setReadPermissions("email");
 
@@ -112,7 +112,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.login_button_google).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
@@ -130,7 +130,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
 
         // Google+ Sign In button design
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
@@ -252,7 +252,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     //
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_in_button:
+            case R.id.login_button_google:
                 signIn();
                 break;
             case R.id.sign_out_button:

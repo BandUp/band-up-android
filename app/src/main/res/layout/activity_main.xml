@@ -75,7 +75,7 @@
         android:layout_alignParentStart="true" />
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
+        android:id="@+id/login_button_facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -83,14 +83,6 @@
         android:layout_centerHorizontal="true" />
 
     <!-- sign-out button -->
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_below="@+id/login_button"
-        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -118,6 +110,14 @@
         android:layout_alignBaseline="@+id/disconnect_button"
         android:layout_alignBottom="@+id/disconnect_button"
         android:layout_toStartOf="@+id/disconnect_button" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/login_button_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/login_button_facebook"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

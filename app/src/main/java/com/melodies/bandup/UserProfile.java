@@ -13,7 +13,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView txtInstruments;
     private TextView txtGenres;
     private TextView txtStatus;
-    private TextView txtDistance;
+    private TextView txtFanStar;
     private TextView txtPercentage;
     private TextView txtAboutMe;
     private TextView txtPromotion;
@@ -21,7 +21,7 @@ public class UserProfile extends AppCompatActivity {
     private SeekBar seekBarRadius;
     private TextView txtSeekValue;  // displaying searching value
     private int progressMinValue = 1;       // Min 1 Km radius
-    private int getProgressMaxValue = 25;   // Max 10 Km radius
+    private int getProgressMaxValue = 25;   // Max 25 Km radius
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +29,28 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         txtName        = (TextView) findViewById(R.id.txtName);
-        txtStatus      = (TextView) findViewById(R.id.txtStatus);
-        txtDistance    = (TextView) findViewById(R.id.txtDistance);
         txtInstruments = (TextView) findViewById(R.id.txtInstruments);
         txtGenres      = (TextView) findViewById(R.id.txtGenres);
+        txtStatus      = (TextView) findViewById(R.id.txtStatus);
+        txtFanStar     = (TextView) findViewById(R.id.txtFanStar);
         txtPercentage  = (TextView) findViewById(R.id.txtPercentage);
-        txtSeekValue   = (TextView)findViewById(R.id.txtSeekValue);
         txtAboutMe     = (TextView) findViewById(R.id.txtAboutMe);
+        txtSeekValue   = (TextView)findViewById(R.id.txtSeekValue);
         txtPromotion   = (TextView) findViewById(R.id.txtPromotion);
 
+        // TODO: Access Real Data from Server/DB
 
-        seekBarRadius  = (SeekBar)  findViewById(R.id.seekBarRadius);
+        // dumm data
+        txtName.setText("Jón Forseti");
+        txtInstruments.setText("Bass, Guitar, Drums");
+        txtGenres.setText("Rock, Jazz, Hip Hop");
+        txtFanStar.setText("Bob Marley");
+        txtStatus.setText("Searching for band");
+        txtPercentage.setText("45%");
+        txtAboutMe.setText("About Me...Lorem ipsum dolor sit amet, eius aliquid qui no. Ei viris pertinax convenire vel");
+
+
+        seekBarRadius  = (SeekBar)findViewById(R.id.seekBarRadius);
         seekBarRadius.setMax(getProgressMaxValue);
         seekBarRadius.setProgress(progressMinValue);
         txtSeekValue.setText(progressMinValue + " km");

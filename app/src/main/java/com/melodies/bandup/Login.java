@@ -287,8 +287,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     // ------------------------------Google+ END ---------------------------------------------------------------
-
-    // Go to chat button temp----------------------------
+    /*
+    // Go to userProfile button temp----------------------------
     public void onClickUserProfile (View v) {
         if (v.getId() == R.id.btnUserProfile) {
             Intent toUserProfileIntent = new Intent(Login.this, UserProfile.class);
@@ -305,7 +305,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
     //--------------------------------------------
-
+*/
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {

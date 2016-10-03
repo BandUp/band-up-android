@@ -181,7 +181,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // -----------------------------Facebook START ------------------------------------------------------------
 
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
         loginButton.setReadPermissions("email");
 

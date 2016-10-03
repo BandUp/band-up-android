@@ -64,8 +64,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
-    private Boolean usernameHasFocus;
-    private Boolean passwordHasFocus;
 
 
 
@@ -209,7 +207,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        //findViewById(R.id.sign_out_button).setOnClickListener(this);
+        //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -225,7 +225,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
 
         // Google+ Sign In button design
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
@@ -344,10 +344,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
-    //
+    // Google buttons
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_in_button:
+            case R.id.login_button_google:
                 signIn();
                 break;
         }

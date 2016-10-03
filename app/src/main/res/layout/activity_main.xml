@@ -105,7 +105,7 @@
                     android:layout_marginEnd="10dp" />
 
                 <com.google.android.gms.common.SignInButton
-                    android:id="@+id/sign_in_button"
+                    android:id="@+id/login_button_google"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

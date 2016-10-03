@@ -129,6 +129,8 @@ public class UserList extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_edit_profile) {
+            Intent toUserProfileIntent = new Intent(UserList.this, UserProfile.class);
+            UserList.this.startActivity(toUserProfileIntent);
 
         } else if (id == R.id.nav_matches) {
 

@@ -23,7 +23,7 @@
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign In</string>
-    <string name="login_sign_up">Sign Up</string>
+    <string name="login_sign_up">Do not have an account? Sign up here!</string>
     <string name="login_go_to_chat_temporary">Go To Chat</string>
 
     <!-- User List Screen -->
@@ -34,6 +34,6 @@
     <!-- Chat Screen -->
     <string name="chat_send">Send</string>
     <string name="chat_message_hint">Type a message…</string>
-
-
+    <string name="login_username_validation">Please enter your username</string>
+    <string name="login_password_validation">Please enter your password</string>
 </resources>

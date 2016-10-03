@@ -1,7 +1,9 @@
 package com.melodies.bandup;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,23 +22,25 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.melodies.bandup.UserListController.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
+import static android.os.Build.VERSION;
+
 public class UserList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     UserListController ulc = new UserListController();
-    private TextView txtName;
-    private TextView txtStatus;
-    private TextView txtDistance;
-    private TextView txtPercentage;
-    private TextView txtInstruments;
-    private TextView txtGenres;
+    private TextView txtName, txtStatus, txtDistance, txtPercentage, txtInstruments, txtGenres;
     private View     partialView;
+    private CameraPhoto cameraPhoto;
+    final int CAMERA_REQUEST = 555;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class UserList extends AppCompatActivity
         txtInstruments = (TextView) findViewById(R.id.txtInstruments);
         txtGenres      = (TextView) findViewById(R.id.txtGenres);
         partialView = findViewById(R.id.user_partial_view);
+
+        cameraPhoto = new CameraPhoto(this);
+
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -187,6 +194,7 @@ public class UserList extends AppCompatActivity
         });
 
     }
+
     public void onClickNextUser(View view) {
         User u = ulc.getNextUser();
         if (u == null) {
@@ -207,5 +215,58 @@ public class UserList extends AppCompatActivity
     public void onClickChat(View view) {
         Intent instrumentsIntent = new Intent(UserList.this, ChatActivity.class);
         UserList.this.startActivity(instrumentsIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("HELLOW");
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Toast.makeText(this, cameraPhoto.getPhotoPath(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+
+        switch(permsRequestCode){
+
+            case 200:
+                boolean externalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
+                boolean cameraAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
+                if (externalStorageAccepted && cameraAccepted) {
+                    try {
+                        startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+                        cameraPhoto.addToGallery();
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(this, "Please allow access to the camera to take a photo.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+
+    }
+    public void onClickSelectImage(View view) {
+        int permsRequestCode = 200;
+        String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
+        if (VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            requestPermissions(perms, permsRequestCode);
+        } else {
+            try {
+                startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+                cameraPhoto.addToGallery();
+            } catch (IOException e) {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void onClickUploadImage(View view) {
     }
 }

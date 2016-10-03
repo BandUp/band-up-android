@@ -29,6 +29,24 @@
         android:layout_gravity="bottom"
         android:onClick="onClickChat" />
     <!-- Go to Chat temporary button -->
+    <!-- Upload Image temporary button -->
+    <Button
+        android:text="Select Profile Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/onClickSelectImage"
+        android:layout_gravity="bottom"
+        android:onClick="onClickSelectImage" />
+    <!-- Upload Image temporary button -->
+    <!-- Upload Image temporary button -->
+    <Button
+        android:text="Upload Profile Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnUploadImage"
+        android:layout_gravity="bottom"
+        android:onClick="onClickUploadImage" />
+    <!-- Upload Image temporary button -->
 
     <LinearLayout
         android:layout_width="match_parent"

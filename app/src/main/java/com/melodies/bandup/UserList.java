@@ -3,6 +3,7 @@ package com.melodies.bandup;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -23,15 +24,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.kosalgeek.android.photoutil.CameraPhoto;
+import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.UserListController.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
-
-import static android.os.Build.VERSION;
 
 public class UserList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +41,9 @@ public class UserList extends AppCompatActivity
     private TextView txtName, txtStatus, txtDistance, txtPercentage, txtInstruments, txtGenres;
     private View     partialView;
     private CameraPhoto cameraPhoto;
+    private GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST = 555;
+    final int LIBRARY_REQUEST = 666;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class UserList extends AppCompatActivity
         partialView = findViewById(R.id.user_partial_view);
 
         cameraPhoto = new CameraPhoto(this);
+        galleryPhoto = new GalleryPhoto(this);
 
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
         JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
@@ -68,11 +72,11 @@ public class UserList extends AppCompatActivity
                             try {
                                 JSONObject item = response.getJSONObject(i);
                                 User user = new User();
+                                user.id = item.getString("_id");
                                 user.name = item.getString("username");
                                 user.status = item.getString("status");
                                 user.distance = item.getInt("distance");
                                 user.percentage = item.getInt("percentage");
-                                user.imgURL = item.getString("profileImgUrl");
 
                                 JSONArray instrumentArray = item.getJSONArray("instruments");
 
@@ -155,6 +159,7 @@ public class UserList extends AppCompatActivity
     }
 
     private void displayUser(User u) {
+        String profileUrl = getResources().getString(R.string.api_address).concat("/profile-picture/").concat(u.id);
         txtName.setText(u.name);
         txtStatus.setText(u.status);
         txtDistance.setText(u.distance+" km.");
@@ -172,7 +177,7 @@ public class UserList extends AppCompatActivity
         final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
         ImageLoader il = VolleySingleton.getInstance(UserList.this).getImageLoader();
         iv.setImageResource(R.color.transparent);
-        il.get(u.imgURL, new ImageLoader.ImageListener() {
+        il.get(profileUrl, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 final Bitmap b = response.getBitmap();
@@ -220,9 +225,52 @@ public class UserList extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("HELLOW");
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Toast.makeText(this, cameraPhoto.getPhotoPath(), Toast.LENGTH_SHORT).show();
+        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST) {
+                Toast.makeText(this, cameraPhoto.getPhotoPath(), Toast.LENGTH_SHORT).show();
+                File image = new File(cameraPhoto.getPhotoPath());
+                MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(UserList.this, "ImageSuccess", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
+            }
+            if (requestCode == LIBRARY_REQUEST) {
+                Uri uri = data.getData();
+                System.out.println(uri);
+                galleryPhoto.setPhotoUri(uri);
+                File image = new File(uri.toString());
+
+                MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(UserList.this, "ImageSuccess", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
+
+                Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
@@ -246,14 +294,13 @@ public class UserList extends AppCompatActivity
                     Toast.makeText(this, "Please allow access to the camera to take a photo.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
         }
 
     }
-    public void onClickSelectImage(View view) {
+    public void onClickTakePicture(View view) {
         int permsRequestCode = 200;
         String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
-        if (VERSION.SDK_INT > Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(perms, permsRequestCode);
         } else {
             try {
@@ -267,6 +314,13 @@ public class UserList extends AppCompatActivity
 
     }
 
-    public void onClickUploadImage(View view) {
+    public void onClickSelectPicture(View view) {
+//        int permsRequestCode = 300;
+//        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE"};
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+//            requestPermissions(perms, permsRequestCode);
+//        } else {
+//            startActivityForResult(galleryPhoto.openGalleryIntent(), LIBRARY_REQUEST);
+//        }
     }
 }

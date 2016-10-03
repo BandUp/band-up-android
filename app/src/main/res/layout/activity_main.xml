@@ -91,24 +91,31 @@
                 android:textAllCaps="false" />
             </LinearLayout>
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button_facebook"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="50px"
+                android:orientation="horizontal">
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/login_button_google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/login_button_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
 
-            <Button
-                android:id="@+id/login_button_soundcloud"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SoundCloud"
-                android:layout_gravity="center"/>
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/login_button_google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <!-- Finna SoundCloud SDK + Takka með Logo -->
+                <Button
+                    android:id="@+id/login_button_soundcloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SC" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     </ScrollView>

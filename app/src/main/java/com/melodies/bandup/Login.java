@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,8 +66,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
 
-
-
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
     private static boolean hasSoftNavigation(Context context) {
@@ -87,6 +86,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         else
             return 0;
     }
+
     private int getIconCenter() {
         final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
 
@@ -180,7 +180,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------Facebook START ------------------------------------------------------------
 
-
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
         loginButton.setReadPermissions("email");
@@ -270,7 +269,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 
     //
@@ -376,7 +374,47 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
 
-    // ------------------------------Google+ END ---------------------------------------------------------------
+    // ------------------------------Google+ END---------------------------------------------------------------
+
+    // ------------------------------ SoundCloud---------------------------------------------------------------
+    Button btnSoundCloud = (Button) findViewById(R.id.login_button_soundcloud);
+
+    private void soundcloudCreateUser() {
+        url = getResources().getString(R.string.api_address).concat("/login-soundcloud");
+        JSONObject jsonObject = new JSONObject();
+
+        //TODO: Get user information from SoundCloud API
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url,
+                jsonObject, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                saveSessionId(response);
+                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                Login.this.startActivity(instrumentsIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void onClickSoundCloud(View v) {
+        switch (v.getId()) {
+            case R.id.login_button_soundcloud:
+                // TODO: Connect to SoundCloud!
+                break;
+        }
+    }
+    // ------------------------------SoundCloud END ---------------------------------------------------------------
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {

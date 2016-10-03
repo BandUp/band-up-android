@@ -112,9 +112,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        findViewById(R.id.login_button_google).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
+        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        //findViewById(R.id.sign_out_button).setOnClickListener(this);
+        //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -249,19 +249,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
-    //
+    // Google buttons
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_button_google:
                 signIn();
-                break;
-            case R.id.sign_out_button:
-                signOut();
-                Toast.makeText(getApplicationContext(), "You are Signed Out", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                Toast.makeText(getApplicationContext(), "Google+ disconnected from the app!", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -287,30 +279,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
     // ------------------------------Google+ END ---------------------------------------------------------------
-    /*
-    // Go to userProfile button temp----------------------------
-    public void onClickUserProfile (View v) {
-        if (v.getId() == R.id.btnUserProfile) {
-            Intent toUserProfileIntent = new Intent(Login.this, UserProfile.class);
-            Login.this.startActivity(toUserProfileIntent);
-        }
-    }
-    //--------------------------------------------
-
-    // Go to chat button temp----------------------------
-    public void onClickGoToChat (View v) {
-        if (v.getId() == R.id.btnGoToChat) {
-            Intent toChatIntent = new Intent(Login.this, ChatActivity.class);
-            Login.this.startActivity(toChatIntent);
-        }
-    }
-    //--------------------------------------------
-*/
 
     // when Sign In is Clicked grab data and ...
     public void onClickSignIn(View v) throws JSONException {
         // catching views into variables
-
 
         // converting into string
         final String username = etUsername.getText().toString();

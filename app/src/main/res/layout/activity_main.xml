@@ -9,6 +9,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".Login">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -90,25 +91,24 @@
                 android:textAllCaps="false" />
             </LinearLayout>
 
-            <LinearLayout
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="50px"
-                android:orientation="horizontal">
+                android:layout_gravity="center" />
 
-                <com.facebook.login.widget.LoginButton
-                    android:id="@+id/login_button_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="10dp" />
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/login_button_google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/login_button_google"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/login_button_soundcloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SoundCloud"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
     </ScrollView>

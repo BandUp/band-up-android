@@ -27,7 +27,7 @@
     <string name="login_go_to_chat_temporary">Go To Chat</string>
 
     <!-- User List Screen -->
-    <string name="title_activity_user_list">User List</string>
+    <string name="title_activity_user_list">Musicians near you</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

@@ -28,7 +28,7 @@
     <string name="login_go_to_chat_temporary">Fara í spjall</string>
 
     <!-- User List Screen -->
-    <string name="title_activity_user_list">Notanda listi</string>
+    <string name="title_activity_user_list">Tónlistarfólk nálægt þér</string>
 
     <!-- Chat Screen -->
     <string name="chat_send">Senda</string>

@@ -56,22 +56,22 @@ public class Register extends AppCompatActivity {
         if (v.getId() == R.id.btnRegister) {
             // check if passwords match
             if (!password.equals(password2)) {
-                Toast.makeText(Register.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Register.this, R.string.register_password_mismatch, Toast.LENGTH_SHORT).show();
             }
             else if (email.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Email.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.register_enter_email, Toast.LENGTH_SHORT).show();
             }
             else if (username.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Username.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.register_enter_username, Toast.LENGTH_SHORT).show();
             }
             else if (password.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Password.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.register_enter_password, Toast.LENGTH_SHORT).show();
             }
             else if (age.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your Age.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.register_enter_age, Toast.LENGTH_SHORT).show();
             }
             else {
-                registerDialog = ProgressDialog.show(this, "Registering", "Please wait...", true, false);
+                registerDialog = ProgressDialog.show(this, getString(R.string.register_progress_title), getString(R.string.register_progress_description), true, false);
                 // create request
                 createRegisterRequest(username, password, email, age);
             }
@@ -100,7 +100,7 @@ public class Register extends AppCompatActivity {
                         // if response is not error, then userId is stored and redirect to SignIn view.
                         saveUserId(response);
                         System.out.println("\"Registration successful!");
-                        Toast.makeText(Register.this, "Registration successful!\nYou can sign in now.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register.this, R.string.register_success, Toast.LENGTH_LONG).show();
                         Intent registerIntent = new Intent(Register.this, Login.class);
                         registerDialog.dismiss();
                         Register.this.startActivity(registerIntent);

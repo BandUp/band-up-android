@@ -75,12 +75,18 @@ public class UserList extends AppCompatActivity
                             try {
                                 JSONObject item = response.getJSONObject(i);
                                 User user = new User();
-                                user.id = item.getString("_id");
-                                user.name = item.getString("username");
-                                user.status = item.getString("status");
-                                user.distance = item.getInt("distance");
+                                if (!item.isNull("_id"))      user.id = item.getString("_id");
+                                if (!item.isNull("username")) user.name = item.getString("username");
+                                if (!item.isNull("status"))   user.status = item.getString("status");
+                                if (!item.isNull("distance")) user.distance = item.getInt("distance");
+
                                 user.percentage = item.getInt("percentage");
-                                user.imgURL = item.getJSONObject("image").getString("url");
+                                if(!item.isNull("image")) {
+                                    JSONObject userImg = item.getJSONObject("image");
+                                    if (!userImg.isNull("url")) {
+                                        user.imgURL = userImg.getString("url");
+                                    }
+                                }
 
                                 JSONArray instrumentArray = item.getJSONArray("instruments");
 
@@ -181,26 +187,30 @@ public class UserList extends AppCompatActivity
         final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
         ImageLoader il = VolleySingleton.getInstance(UserList.this).getImageLoader();
         iv.setImageResource(R.color.transparent);
-        il.get(u.imgURL, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                final Bitmap b = response.getBitmap();
-                if (b != null) {
-                    Runnable r = new Runnable() {
-                        @Override
-                        public void run() {
-                            iv.setImageBitmap(b);
-                        }
-                    };
-                    runOnUiThread(r);
+        if (u.imgURL != null && !u.imgURL.equals("")) {
+            il.get(u.imgURL, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    final Bitmap b = response.getBitmap();
+                    if (b != null) {
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                iv.setImageBitmap(b);
+                            }
+                        };
+                        runOnUiThread(r);
+                    }
                 }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
+                }
+            });
+        }
+
+
 
     }
 

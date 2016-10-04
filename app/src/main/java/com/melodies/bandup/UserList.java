@@ -238,7 +238,6 @@ public class UserList extends AppCompatActivity
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                Toast.makeText(this, cameraPhoto.getPhotoPath(), Toast.LENGTH_SHORT).show();
                 File image = new File(cameraPhoto.getPhotoPath());
                 MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
                         new Response.Listener<String>() {
@@ -262,7 +261,7 @@ public class UserList extends AppCompatActivity
                 VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
             }
-            
+
             if (requestCode == GALLERY_REQUEST) {
                 Uri uri = data.getData();
                 System.out.println(uri);
@@ -287,9 +286,8 @@ public class UserList extends AppCompatActivity
                             }
                     );
                     VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
-
-                    Toast.makeText(this, galleryPhoto.getPath(), Toast.LENGTH_SHORT).show();
                 } else {
+                    // TODO: Download file.
                     Toast.makeText(this, "Need to download file first", Toast.LENGTH_SHORT).show();
                 }
  

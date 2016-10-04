@@ -44,7 +44,7 @@ public class UserList extends AppCompatActivity
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST = 555;
-    final int LIBRARY_REQUEST = 666;
+    final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 10000;
     final int REQUEST_RETRY = 0;
 
@@ -262,30 +262,37 @@ public class UserList extends AppCompatActivity
                 VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
             }
-            if (requestCode == LIBRARY_REQUEST) {
+            
+            if (requestCode == GALLERY_REQUEST) {
                 Uri uri = data.getData();
                 System.out.println(uri);
                 galleryPhoto.setPhotoUri(uri);
-                File image = new File(uri.toString());
+                String imagePath = galleryPhoto.getPath();
+                if (!imagePath.equals("")) {
+                    File image = new File(galleryPhoto.getPath());
 
-                MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                    MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
+                                    VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
+                                }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
-                                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
-                            }
-                        }
-                );
-                VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
+                    );
+                    VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
-                Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, galleryPhoto.getPath(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Need to download file first", Toast.LENGTH_SHORT).show();
+                }
+ 
             }
         }
 
@@ -296,9 +303,9 @@ public class UserList extends AppCompatActivity
         switch(permsRequestCode){
 
             case 200:
-                boolean externalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
+                boolean writeExternalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
                 boolean cameraAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                if (externalStorageAccepted && cameraAccepted) {
+                if (writeExternalStorageAccepted && cameraAccepted) {
                     try {
                         startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                         cameraPhoto.addToGallery();
@@ -306,6 +313,14 @@ public class UserList extends AppCompatActivity
                         Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
+                } else {
+                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 300:
+                boolean readExternalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
+                if (readExternalStorageAccepted) {
+                        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
                 } else {
                     Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
                 }
@@ -331,12 +346,12 @@ public class UserList extends AppCompatActivity
     }
 
     public void onClickSelectPicture(View view) {
-//        int permsRequestCode = 300;
-//        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE"};
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-//            requestPermissions(perms, permsRequestCode);
-//        } else {
-//            startActivityForResult(galleryPhoto.openGalleryIntent(), LIBRARY_REQUEST);
-//        }
+        int permsRequestCode = 300;
+        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE"};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(perms, permsRequestCode);
+        } else {
+            startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+        }
     }
 }

@@ -56,6 +56,7 @@
     <string name="register_progress_title">Registering</string>
     <string name="user_image_success">Picture saved to the server</string>
     <string name="user_image_error">Could not save the image to the server. Please try again.</string>
-    <string name="user_allow_camera">Please allow access to the camera to take a photo.</string>
+    <string name="user_allow_camera">Please allow access to take a photo.</string>
     <string name="user_error">Something went wrong</string>
+    <string name="user_allow_storage">Please allow access to select a photo.</string>
 </resources>

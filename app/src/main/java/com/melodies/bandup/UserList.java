@@ -1,12 +1,13 @@
 package com.melodies.bandup;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +50,8 @@ public class UserList extends AppCompatActivity
     final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 10000;
     final int REQUEST_RETRY = 0;
+    final int REQUEST_TAKE_PICTURE = 200;
+    final int REQUEST_READ_GALLERY = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,60 +301,84 @@ public class UserList extends AppCompatActivity
 
     }
     @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        Boolean allGranted = true;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
 
-        switch(permsRequestCode){
-
-            case 200:
-                boolean writeExternalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
-                boolean cameraAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                if (writeExternalStorageAccepted && cameraAccepted) {
-                    try {
-                        startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
-                        cameraPhoto.addToGallery();
-                    } catch (IOException e) {
-                        Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 300:
-                boolean readExternalStorageAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
-                if (readExternalStorageAccepted) {
-                        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
-                } else {
-                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-
-    }
-    public void onClickTakePicture(View view) {
-        int permsRequestCode = 200;
-        String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(perms, permsRequestCode);
-        } else {
-            try {
-                startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
-                cameraPhoto.addToGallery();
-            } catch (IOException e) {
-                Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                allGranted = false;
             }
         }
 
+        switch(requestCode){
+            case REQUEST_TAKE_PICTURE:
+                if(allGranted) {
+                    openCamera();
+                } else {
+                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_READ_GALLERY:
+                if (allGranted) {
+                    openGallery();
+                } else {
+                    Toast.makeText(this, R.string.user_allow_storage, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+    }
+
+    public void openGallery() {
+        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+    }
+    public void openCamera() {
+        try {
+            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+            cameraPhoto.addToGallery();
+        } catch (IOException e) {
+            Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void onClickTakePicture(View view) {
+        if (checkPermissions(new String[]{
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, REQUEST_TAKE_PICTURE)) {
+            openCamera();
+        }
+    }
+
+    public Boolean checkPermissions(String[] permissions, int requestCode) {
+        Boolean hasAllPermissions = true;
+        List<String> perms = new ArrayList<>();
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (ActivityCompat.checkSelfPermission(this, permissions[i]) == PackageManager.PERMISSION_DENIED) {
+                perms.add(permissions[i]);
+                hasAllPermissions = false;
+            }
+
+        }
+
+        if (!hasAllPermissions) {
+            String[] permArray = new String[perms.size()];
+            permArray = perms.toArray(permArray);
+
+            ActivityCompat.requestPermissions(this, permArray, requestCode);
+        }
+
+        return hasAllPermissions;
     }
 
     public void onClickSelectPicture(View view) {
-        int permsRequestCode = 300;
-        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE"};
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(perms, permsRequestCode);
-        } else {
-            startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+        if (checkPermissions(new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, REQUEST_READ_GALLERY)) {
+            openGallery();
         }
     }
 }

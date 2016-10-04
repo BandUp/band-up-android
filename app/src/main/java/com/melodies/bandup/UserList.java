@@ -209,9 +209,6 @@ public class UserList extends AppCompatActivity
                 }
             });
         }
-
-
-
     }
 
     public void onClickNextUser(View view) {
@@ -238,7 +235,6 @@ public class UserList extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("HELLOW");
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
@@ -248,13 +244,13 @@ public class UserList extends AppCompatActivity
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(UserList.this, "ImageSuccess", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
                                 VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
                             }
                         }
@@ -276,13 +272,13 @@ public class UserList extends AppCompatActivity
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(UserList.this, "ImageSuccess", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
                                 VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
                             }
                         }
@@ -307,11 +303,11 @@ public class UserList extends AppCompatActivity
                         startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                         cameraPhoto.addToGallery();
                     } catch (IOException e) {
-                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(this, "Please allow access to the camera to take a photo.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -327,7 +323,7 @@ public class UserList extends AppCompatActivity
                 startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                 cameraPhoto.addToGallery();
             } catch (IOException e) {
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }

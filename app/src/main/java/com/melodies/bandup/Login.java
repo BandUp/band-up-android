@@ -438,12 +438,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             if (password.isEmpty()) {
                 isValid = false;
-                System.out.println("ASDFASDF");
                 tilPassword.setError(getString(R.string.login_password_validation));
             }
 
             if (isValid) {
-                loginDialog = ProgressDialog.show(this, "Logging in", "Please wait...", true, false);
+                loginDialog = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_description), true, false);
                 createloginRequest(username, password);
             }
 
@@ -468,7 +467,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     @Override
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
-                        Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         try {
                             Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
                             if (hasFinishedSetup) {

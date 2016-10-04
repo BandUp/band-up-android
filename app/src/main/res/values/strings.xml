@@ -36,4 +36,26 @@
     <string name="chat_message_hint">Type a message…</string>
     <string name="login_username_validation">Please enter your username</string>
     <string name="login_password_validation">Please enter your password</string>
+    <string name="user_select_picture">Select Picture</string>
+    <string name="user_take_picture">Take Picture</string>
+    <string name="go_to_chat_temp">Go to Chat</string>
+    <string name="user_list_previous_temp">Previous</string>
+    <string name="user_list_next_temp">Next</string>
+    <string name="user_list_like">Like</string>
+    <string name="user_list_details">Details</string>
+    <string name="login_progress_title">Logging in</string>
+    <string name="login_progress_description">Please wait...</string>
+    <string name="login_success">Login Successful!</string>
+    <string name="register_success">Registration successful!\nYou can sign in now.</string>
+    <string name="register_password_mismatch">Passwords don\'t match!</string>
+    <string name="register_enter_email">Please enter your Email.</string>
+    <string name="register_enter_username">Please enter your Username.</string>
+    <string name="register_enter_password">Please enter your Password.</string>
+    <string name="register_enter_age">Please enter your Age.</string>
+    <string name="register_progress_description">Please wait...</string>
+    <string name="register_progress_title">Registering</string>
+    <string name="user_image_success">Picture saved to the server</string>
+    <string name="user_image_error">Could not save the image to the server. Please try again.</string>
+    <string name="user_allow_camera">Please allow access to the camera to take a photo.</string>
+    <string name="user_error">Something went wrong</string>
 </resources>

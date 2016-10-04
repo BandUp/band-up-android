@@ -38,6 +38,28 @@
     <string name="register_title">Nýskráning</string>
     <string name="login_username_validation">Vinsamlegast skrifaðu inn notandanafnið þitt</string>
     <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
+    <string name="go_to_chat_temp">Fara í spjall</string>
+    <string name="user_list_details">Nánar</string>
+    <string name="user_list_like">Líka</string>
+    <string name="user_list_previous_temp">Fyrri</string>
+    <string name="user_list_next_temp">Næsti</string>
+    <string name="user_select_picture">Velja mynd</string>
+    <string name="user_take_picture">Taka mynd</string>
+    <string name="login_progress_description">Vinsamlegast bíðið...</string>
+    <string name="login_progress_title">Skrái þig inn</string>
+    <string name="login_success">Innskráning tókst</string>
+    <string name="register_enter_age">Vinsamlega skráðu aldur þinn</string>
+    <string name="register_enter_email">Vinsamlega skráðu tölvupóstfangið þitt</string>
+    <string name="register_enter_password">Vinsamlega skráðu inn lykilorð</string>
+    <string name="register_enter_username">Vinsamlegast skráðu inn notandanafn</string>
+    <string name="register_progress_description">Vinsamlega bíðið...</string>
+    <string name="register_password_mismatch">Lykilorð passa ekki!</string>
+    <string name="register_progress_title">Nýskrái þig</string>
+    <string name="register_success">Nýskráning tókst!\\nÞú getur nú skráð þig inn.</string>
+    <string name="user_allow_camera">Vinsamlega leyfðu aðgang að myndavélinni til þess að taka mynd</string>
+    <string name="user_error">Eitthvað fór úrskeiðis</string>
+    <string name="user_image_error">Það tókst ekki að senda myndina á vefþjóninn. Vinsamlega reyndu aftur.</string>
+    <string name="user_image_success">Mynd vistuð á vefþjón</string>
 
 
 </resources>

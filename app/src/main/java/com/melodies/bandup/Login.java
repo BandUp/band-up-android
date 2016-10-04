@@ -1,6 +1,5 @@
 package com.melodies.bandup;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -540,8 +539,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // request permissions
             ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION
             }, LOCATION_REQUEST_CODE);
+
             return;
         }
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -566,12 +566,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     url.concat("/location"), jsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    finish();
+                    //finish();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    finish();
+                    //finish();
                 }
             });
 

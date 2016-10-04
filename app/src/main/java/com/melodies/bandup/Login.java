@@ -1,12 +1,19 @@
 package com.melodies.bandup;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -100,7 +107,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
-        mainLinearLayout  = (LinearLayout) findViewById(R.id.login_ll);
+        mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
 
         mainLinearLayout.post(new Runnable() {
@@ -223,7 +230,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         signInButton.setScopes(gso.getScopeArray());
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
-        btnSoundCloud =  (Button) findViewById(R.id.login_button_soundcloud);
+        btnSoundCloud = (Button) findViewById(R.id.login_button_soundcloud);
+
+        createLocationRequest();
 
     }
 
@@ -304,7 +313,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Sending user info to server
     private void sendGoogleUserToServer(String personId, String idToken, String personName, String personEmail) {
-        try{
+        try {
             url = getResources().getString(R.string.api_address).concat("/login-google");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userId", personId);
@@ -315,17 +324,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
                     jsonObject,
-                    new Response.Listener<JSONObject>(){
+                    new Response.Listener<JSONObject>() {
 
-                @Override
-                public void onResponse(JSONObject response) {
-                    Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
-                    saveSessionId(response);
-                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                    Login.this.startActivity(instrumentsIntent);
-                    finish();
-                }
-            }, new Response.ErrorListener(){
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
+                            saveSessionId(response);
+                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                            Login.this.startActivity(instrumentsIntent);
+                            finish();
+                        }
+                    }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -337,7 +346,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        }catch (JSONException ex){
+        } catch (JSONException ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -521,6 +530,84 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
+        }
+    }
+
+    // ======= Location setup ========
+    private final int LOCATION_REQUEST_CODE = 333;
+
+    protected void createLocationRequest() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // request permissions
+            ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            }, LOCATION_REQUEST_CODE);
+            return;
+        }
+        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        try{
+            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
+            sendLocation(location);
+        }catch (IllegalArgumentException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void sendLocation(Location location){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("lon", location.getLongitude());
+            jsonObject.put("lat", location.getLatitude());
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url.concat("/location"), jsonObject, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    finish();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    finish();
+                }
+            });
+
+            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    createLocationRequest();
+                } else {
+                    // permission denied, boo!
+                    Toast.makeText(this, "Need location for app functionality", Toast.LENGTH_LONG).show();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    createLocationRequest();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 }

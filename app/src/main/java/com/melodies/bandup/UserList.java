@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -44,6 +45,8 @@ public class UserList extends AppCompatActivity
     private GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST = 555;
     final int LIBRARY_REQUEST = 666;
+    final int REQUEST_TIMEOUT = 10000;
+    final int REQUEST_RETRY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class UserList extends AppCompatActivity
                                 user.status = item.getString("status");
                                 user.distance = item.getInt("distance");
                                 user.percentage = item.getInt("percentage");
+                                user.imgURL = item.getJSONObject("image").getString("url");
 
                                 JSONArray instrumentArray = item.getJSONArray("instruments");
 
@@ -96,13 +100,16 @@ public class UserList extends AppCompatActivity
                             }
                         }
                         partialView.setVisibility(partialView.VISIBLE);
-                        displayUser(ulc.getUser(0));
+                        if (ulc.users.size() > 0) {
+                            displayUser(ulc.getUser(0));
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(UserList.this, "Error.", Toast.LENGTH_LONG).show();
+                        VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
 
                     }
                 }
@@ -149,8 +156,6 @@ public class UserList extends AppCompatActivity
 
         } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_edit_profile) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,7 +164,6 @@ public class UserList extends AppCompatActivity
     }
 
     private void displayUser(User u) {
-        String profileUrl = getResources().getString(R.string.api_address).concat("/profile-picture/").concat(u.id);
         txtName.setText(u.name);
         txtStatus.setText(u.status);
         txtDistance.setText(u.distance+" km.");
@@ -177,7 +181,7 @@ public class UserList extends AppCompatActivity
         final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
         ImageLoader il = VolleySingleton.getInstance(UserList.this).getImageLoader();
         iv.setImageResource(R.color.transparent);
-        il.get(profileUrl, new ImageLoader.ImageListener() {
+        il.get(u.imgURL, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 final Bitmap b = response.getBitmap();
@@ -194,7 +198,7 @@ public class UserList extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("ERROR RESPONSE");
+                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
             }
         });
 
@@ -241,9 +245,14 @@ public class UserList extends AppCompatActivity
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
                             }
                         }
                 );
+                multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        REQUEST_TIMEOUT,
+                        REQUEST_RETRY,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
             }
@@ -264,6 +273,7 @@ public class UserList extends AppCompatActivity
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(UserList.this, "ImageError", Toast.LENGTH_SHORT).show();
+                                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
                             }
                         }
                 );

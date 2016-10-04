@@ -23,14 +23,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
@@ -228,6 +222,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
+        // -----------------------------SoundCloud START -------------------------------------------------------------
+        btnSoundCloud =  (Button) findViewById(R.id.login_button_soundcloud);
+
     }
 
     /**
@@ -261,6 +258,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    errorHandlerLogin(error);
                 }
             });
 
@@ -332,6 +330,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    errorHandlerLogin(error);
+
                 }
             });
 
@@ -377,7 +377,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // ------------------------------Google+ END---------------------------------------------------------------
 
     // ------------------------------ SoundCloud---------------------------------------------------------------
-    Button btnSoundCloud = (Button) findViewById(R.id.login_button_soundcloud);
+    Button btnSoundCloud;
 
     private void soundcloudCreateUser() {
         url = getResources().getString(R.string.api_address).concat("/login-soundcloud");
@@ -402,6 +402,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                VolleySingleton.getInstance(Login.this).checkCauseOfError(Login.this, error);
             }
         });
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
@@ -503,19 +504,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Handling errors that can occur while SignIn request
     private void errorHandlerLogin(VolleyError error) {
-        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Toast.makeText(Login.this, "Connection error!", Toast.LENGTH_LONG).show();
-        } else if (error instanceof AuthFailureError) {
-            Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-        } else if (error instanceof ServerError) {
-            Toast.makeText(Login.this, "Server error!", Toast.LENGTH_LONG).show();
-        } else if (error instanceof NetworkError) {
-            Toast.makeText(Login.this, "Network error!", Toast.LENGTH_LONG).show();
-        } else if (error instanceof ParseError) {
-            Toast.makeText(Login.this, "Server parse error!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(Login.this, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
-        }
+        VolleySingleton.getInstance(Login.this).checkCauseOfError(Login.this, error);
     }
 
     // Storing user sessionId in SessionIdData folder, which only this app can access

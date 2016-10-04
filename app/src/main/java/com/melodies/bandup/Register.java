@@ -11,14 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -127,24 +121,7 @@ public class Register extends AppCompatActivity {
 
     // Handling errors that can occur while Sign Up request
     private void errorHandlerRegister(VolleyError error) {
-        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Toast.makeText(Register.this, "Connection error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof AuthFailureError) {
-            Toast.makeText(Register.this, "Invalid username!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ServerError) {
-            Toast.makeText(Register.this, "Server error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof NetworkError) {
-            Toast.makeText(Register.this, "Network error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ParseError) {
-            Toast.makeText(Register.this, "Server parse error!", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(Register.this, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
-        }
+        VolleySingleton.getInstance(Register.this).checkCauseOfError(Register.this, error);
     }
 
     // Storing user userId in UserIdData folder, which only this app can access

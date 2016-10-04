@@ -10,14 +10,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.JsonArrayToObjectRequest;
@@ -27,8 +21,6 @@ import com.melodies.bandup.VolleySingleton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * A shared class that both Genres and Instruments
@@ -119,7 +111,7 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
                 progressBar.setVisibility(progressBar.GONE);
             }
         };
@@ -185,46 +177,9 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
             }
         };
-    }
-
-    /**
-     * This function checks the cause of the Volley Error and prints out a relevant Toast message.
-     *
-     * @param context The context we are working in.
-     * @param error   The Volley Error object
-     */
-    private void checkCauseOfError(Context context, VolleyError error) {
-        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Toast.makeText(context, "Connection error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof AuthFailureError) {
-            Toast.makeText(context, "Invalid username or password", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ServerError) {
-            String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-            System.out.println(jsonString);
-            try {
-                JSONObject myObject = new JSONObject(jsonString);
-                int errNo      = myObject.getInt("err");
-                String message = myObject.getString("msg");
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            } catch (JSONException e) {
-                Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }
-        else if (error instanceof NetworkError) {
-            Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
-        }
-        else if (error instanceof ParseError) {
-            Toast.makeText(context, "Server parse error!", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(context, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
-        }
     }
 
     /**

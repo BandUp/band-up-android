@@ -91,7 +91,6 @@ public class VolleySingleton {
             Toast.makeText(context, "Connection error!", Toast.LENGTH_LONG).show();
         }
         else if (error instanceof AuthFailureError) {
-            Toast.makeText(context, "Invalid username or password", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(context, Login.class);
             context.startActivity(intent);
         }

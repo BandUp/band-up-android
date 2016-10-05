@@ -1,11 +1,14 @@
 package com.melodies.bandup;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -34,7 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +124,6 @@ public class UserList extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(UserList.this, "Error.", Toast.LENGTH_LONG).show();
                         VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
 
                     }
@@ -243,69 +247,69 @@ public class UserList extends AppCompatActivity
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                File image = new File(cameraPhoto.getPhotoPath());
-                MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
-                                VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
-                            }
-                        }
-                );
-                multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                        REQUEST_TIMEOUT,
-                        REQUEST_RETRY,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
-
+                sendImageToServer(url, cameraPhoto.getPhotoPath());
             }
 
             if (requestCode == GALLERY_REQUEST) {
+                // Get the URI from the intent result.
                 Uri uri = data.getData();
-                System.out.println(uri);
-                galleryPhoto.setPhotoUri(uri);
-                String imagePath = galleryPhoto.getPath();
-                if (!imagePath.equals("")) {
-                    File image = new File(galleryPhoto.getPath());
 
-                    MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
-                                    VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
-                                }
-                            }
-                    );
-                    VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
-                } else {
-                    // TODO: Download file.
-                    Toast.makeText(this, "Need to download file first", Toast.LENGTH_SHORT).show();
+                // Create a new input stream for the photo to be stored.
+                InputStream inputStream = null;
+
+                if (uri.getAuthority() != null) {
+                    try {
+                        inputStream = this.getContentResolver().openInputStream(uri);
+                        Bitmap bmpImage = BitmapFactory.decodeStream(inputStream);
+                        ContentResolver contentResolver = UserList.this.getContentResolver();
+                        String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
+                        galleryPhoto.setPhotoUri(Uri.parse(path));
+                        sendImageToServer(url, cameraPhoto.getPhotoPath());
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }finally {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
- 
             }
         }
+    }
+
+    public void sendImageToServer(String url, String path) {
+        File image = new File(path);
+        MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(UserList.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(UserList.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
+                        VolleySingleton.getInstance(UserList.this).checkCauseOfError(UserList.this, error);
+                    }
+                }
+        );
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                REQUEST_TIMEOUT,
+                REQUEST_RETRY,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         Boolean allGranted = true;
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-
                 allGranted = false;
             }
         }
@@ -332,6 +336,7 @@ public class UserList extends AppCompatActivity
     public void openGallery() {
         startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
     }
+
     public void openCamera() {
         try {
             startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
@@ -349,6 +354,14 @@ public class UserList extends AppCompatActivity
                 Manifest.permission.READ_EXTERNAL_STORAGE
         }, REQUEST_TAKE_PICTURE)) {
             openCamera();
+        }
+    }
+
+    public void onClickSelectPicture(View view) {
+        if (checkPermissions(new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, REQUEST_READ_GALLERY)) {
+            openGallery();
         }
     }
 
@@ -372,13 +385,5 @@ public class UserList extends AppCompatActivity
         }
 
         return hasAllPermissions;
-    }
-
-    public void onClickSelectPicture(View view) {
-        if (checkPermissions(new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE
-        }, REQUEST_READ_GALLERY)) {
-            openGallery();
-        }
     }
 }

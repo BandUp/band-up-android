@@ -51,7 +51,7 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     // server url location for login
     private String url;
 
@@ -212,7 +212,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(Login.this.getResources().getString(R.string.default_web_client_id))
                 .requestId()
                 .requestEmail()
                 .build();
@@ -232,6 +232,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         btnSoundCloud = (Button) findViewById(R.id.login_button_soundcloud);
 
         createLocationRequest();
+        signIn();
 
     }
 
@@ -293,6 +294,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Accessing user data from Google & storing on server
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        System.out.println(result.getStatus());
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
 
@@ -307,6 +309,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             // Sending user info to server
             sendGoogleUserToServer(personId, idToken, personName, personEmail);
+        } else {
+            Toast.makeText(this, "Could not sign in with Google", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -351,10 +355,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     // Google buttons
-    public void onClick(View v) {
+    public void onClickGoogle(View v) {
         switch (v.getId()) {
             case R.id.login_button_google:
-                signIn();
+
                 break;
         }
     }

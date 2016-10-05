@@ -7,3 +7,5 @@
 /build
 /captures
 /app/google-services.json
+/app/keystore.jks
+/keystore.properties

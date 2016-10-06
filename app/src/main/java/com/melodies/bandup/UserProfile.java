@@ -25,6 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.melodies.bandup.MainScreenActivity.MultipartRequest;
+import com.melodies.bandup.MainScreenActivity.UserListController;
 
 import java.io.File;
 import java.io.FileNotFoundException;

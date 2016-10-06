@@ -53,8 +53,8 @@
         <activity android:name=".Matches" />
         <activity android:name=".ChatActivity" />
         <activity
-            android:name=".UserList"
-            android:label="@string/title_activity_user_list"
+            android:name=".MainScreenActivity.MainScreenActivity"
+            android:label="@string/main_title_user_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.facebook.CustomTabActivity"

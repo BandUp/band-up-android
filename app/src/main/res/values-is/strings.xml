@@ -28,7 +28,7 @@
     <string name="login_go_to_chat_temporary">Fara í spjall</string>
 
     <!-- User List Screen -->
-    <string name="title_activity_user_list">Tónlistarfólk nálægt þér</string>
+    <string name="main_title_user_list">Tónlistarfólk nálægt þér</string>
 
     <!-- Chat Screen -->
     <string name="chat_send">Senda</string>
@@ -71,6 +71,16 @@
     <string name="prompt_password">Lykilorð (valkvæmt)</string>
     <string name="title_activity_sound_cloud">Nýskráning</string>
     <string name="permission_rationale">\"Contacts permissions are needed for providing email         completions.\"</string>
+    <string name="main_nav_about">Um okkur</string>
+    <string name="main_nav_edit_profile">Breyta prófíl</string>
+    <string name="main_nav_matches">Möts</string>
+    <string name="main_nav_near_me">Nálægt mér</string>
+    <string name="main_nav_privacy">Persónuvernd</string>
+    <string name="main_nav_settings">Stillingar</string>
+    <string name="main_title_about">Um okkur</string>
+    <string name="main_title_matches">Möts</string>
+    <string name="main_title_privacy">Persónuvend</string>
+    <string name="main_title_settings">Stillingar</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.melodies.bandup;
+package com.melodies.bandup.MainScreenActivity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;

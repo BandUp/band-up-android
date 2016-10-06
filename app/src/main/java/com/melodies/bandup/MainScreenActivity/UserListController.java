@@ -1,4 +1,4 @@
-package com.melodies.bandup;
+package com.melodies.bandup.MainScreenActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +44,13 @@ public class UserListController {
             instruments = new ArrayList<>();
             genres = new ArrayList<>();
         }
-        String id;
-        String name;
-        List<String> instruments;
-        List<String> genres;
-        String status;
-        int distance;
-        int percentage;
-        String imgURL;
+        public String id;
+        public String name;
+        public List<String> instruments;
+        public List<String> genres;
+        public String status;
+        public int distance;
+        public int percentage;
+        public String imgURL;
     }
 }

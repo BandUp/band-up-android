@@ -280,7 +280,7 @@ public class UserProfile extends AppCompatActivity {
     public void onClickDisplayModal(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
 
-        builder.setTitle("Upload a photo").setItems(R.array.image_res_ids, new DialogInterface.OnClickListener() {
+        builder.setTitle("New Profile Photo").setItems(R.array.image_res_ids, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {

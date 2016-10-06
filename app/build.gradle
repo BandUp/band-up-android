@@ -66,4 +66,5 @@ dependencies {
         exclude module: "httpclient"
     }
     compile files('libs/PhotoUtil.jar')
+    compile 'com.soundcloud:java-api-wrapper:1.3.1'
 }

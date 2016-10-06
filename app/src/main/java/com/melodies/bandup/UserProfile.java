@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 
@@ -108,6 +110,36 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        // TODO: Get the user.
+
+        UserListController.User u = new UserListController.User();
+        // Get and display the user profile image
+        final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
+        ImageLoader il = VolleySingleton.getInstance(UserProfile.this).getImageLoader();
+        iv.setImageResource(R.color.transparent);
+        if (u.imgURL != null && !u.imgURL.equals("")) {
+            il.get(u.imgURL, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    final Bitmap b = response.getBitmap();
+                    if (b != null) {
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                iv.setImageBitmap(b);
+                            }
+                        };
+                        runOnUiThread(r);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -131,8 +163,25 @@ public class UserProfile extends AppCompatActivity {
                         Bitmap bmpImage = BitmapFactory.decodeStream(inputStream);
                         ContentResolver contentResolver = UserProfile.this.getContentResolver();
                         String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
+
+                        System.out.println("PATH:");
+                        System.out.println(path);
+
+                        System.out.println("URI:");
+                        System.out.println(Uri.parse(path));
+
                         galleryPhoto.setPhotoUri(Uri.parse(path));
-                        sendImageToServer(url, cameraPhoto.getPhotoPath());
+
+                        String photoPath = galleryPhoto.getPath();
+
+                        System.out.println("URL:");
+                        System.out.println(photoPath);
+
+                        if (photoPath != null) {
+                            sendImageToServer(url, galleryPhoto.getPath());
+                        } else {
+
+                        }
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,15 +45,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.melodies.bandup.setup.Instruments;
-import com.soundcloud.api.ApiWrapper;
-import com.soundcloud.api.Token;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     // server url location for login
@@ -234,7 +228,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         signInButton.setScopes(gso.getScopeArray());
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
-        btnSoundCloud = (Button) findViewById(R.id.login_button_soundcloud);
+        btnSoundCloud = (ImageView) findViewById(R.id.login_button_soundcloud);
 
         createLocationRequest();
 
@@ -390,49 +384,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // ------------------------------Google+ END---------------------------------------------------------------
 
     // ------------------------------ SoundCloud---------------------------------------------------------------
-    Button btnSoundCloud;
-
-    private void soundcloudCreateUser() {
-        url = getResources().getString(R.string.api_address).concat("/login-soundcloud");
-        JSONObject jsonObject = new JSONObject();
-
-        try{
-            ApiWrapper apiWrapper = new ApiWrapper("", "", null, null);
-
-            final String username = etUsername.getText().toString();
-            final String password = etPassword.getText().toString();
-
-            Token token = apiWrapper.login(username, password, Token.SCOPE_NON_EXPIRING);
-
-            jsonObject.put("token", token.toString());
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url,
-                    jsonObject, new Response.Listener<JSONObject>() {
-
-                @Override
-                public void onResponse(JSONObject response) {
-                    saveSessionId(response);
-                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                    Login.this.startActivity(instrumentsIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                    finish();
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                    VolleySingleton.getInstance(Login.this).checkCauseOfError(Login.this, error);
-                }
-            });
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }catch (JSONException ex){
-            ex.printStackTrace();
-        }
-    }
+    ImageView btnSoundCloud;
 
     public void onClickSoundCloud(View v) {
         switch (v.getId()) {

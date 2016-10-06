@@ -16,6 +16,10 @@
             android:icon="@drawable/pencil"
             android:title="@string/main_nav_edit_profile" />
         <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/incognito"
+            android:title="@string/main_nav_privacy" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings"
             android:title="@string/main_nav_settings" />
@@ -23,10 +27,5 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/information"
             android:title="@string/main_nav_about" />
-
-        <item
-            android:id="@+id/nav_privacy"
-            android:icon="@drawable/incognito"
-            android:title="@string/main_nav_privacy" />
     </group>
 </menu>

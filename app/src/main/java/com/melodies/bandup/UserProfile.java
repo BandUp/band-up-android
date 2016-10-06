@@ -1,10 +1,35 @@
 package com.melodies.bandup;
 
 
+import android.content.ContentResolver;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.kosalgeek.android.photoutil.CameraPhoto;
+import com.kosalgeek.android.photoutil.GalleryPhoto;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -17,7 +42,14 @@ public class UserProfile extends AppCompatActivity {
     private TextView txtPercentage;
     private TextView txtAboutMe;
     private TextView txtPromotion;
-
+    private CameraPhoto cameraPhoto;
+    private GalleryPhoto galleryPhoto;
+    final int CAMERA_REQUEST = 555;
+    final int GALLERY_REQUEST = 666;
+    final int REQUEST_TIMEOUT = 10000;
+    final int REQUEST_RETRY = 0;
+    final int REQUEST_TAKE_PICTURE = 200;
+    final int REQUEST_READ_GALLERY = 300;
     private SeekBar seekBarRadius;
     private TextView txtSeekValue;  // displaying searching value
     private int progressMinValue = 1;       // Min 1 Km radius
@@ -37,6 +69,9 @@ public class UserProfile extends AppCompatActivity {
         txtAboutMe     = (TextView) findViewById(R.id.txtAboutMe);
         txtSeekValue   = (TextView)findViewById(R.id.txtSeekValue);
         txtPromotion   = (TextView) findViewById(R.id.txtPromotion);
+
+        cameraPhoto = new CameraPhoto(this);
+        galleryPhoto = new GalleryPhoto(this);
 
         // TODO: Access Real Data from Server/DB
 
@@ -75,5 +110,170 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST) {
+                sendImageToServer(url, cameraPhoto.getPhotoPath());
+            }
 
+            if (requestCode == GALLERY_REQUEST) {
+                // Get the URI from the intent result.
+                Uri uri = data.getData();
+
+                // Create a new input stream for the photo to be stored.
+                InputStream inputStream = null;
+
+                if (uri.getAuthority() != null) {
+                    try {
+                        inputStream = this.getContentResolver().openInputStream(uri);
+                        Bitmap bmpImage = BitmapFactory.decodeStream(inputStream);
+                        ContentResolver contentResolver = UserProfile.this.getContentResolver();
+                        String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
+                        galleryPhoto.setPhotoUri(Uri.parse(path));
+                        sendImageToServer(url, cameraPhoto.getPhotoPath());
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }finally {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void sendImageToServer(String url, String path) {
+        File image = new File(path);
+        MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(UserProfile.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(UserProfile.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
+                        VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
+                    }
+                }
+        );
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                REQUEST_TIMEOUT,
+                REQUEST_RETRY,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        Boolean allGranted = true;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                allGranted = false;
+            }
+        }
+
+        switch(requestCode){
+            case REQUEST_TAKE_PICTURE:
+                if(allGranted) {
+                    openCamera();
+                } else {
+                    Toast.makeText(this, R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_READ_GALLERY:
+                if (allGranted) {
+                    openGallery();
+                } else {
+                    Toast.makeText(this, R.string.user_allow_storage, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+    }
+
+    public void openGallery() {
+        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+    }
+
+    public void openCamera() {
+        try {
+            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+            cameraPhoto.addToGallery();
+        } catch (IOException e) {
+            Toast.makeText(this, R.string.user_error, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void onClickTakePicture(View view) {
+        if (checkPermissions(new String[]{
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+        }, REQUEST_TAKE_PICTURE)) {
+            openCamera();
+        }
+    }
+
+    public void onClickSelectPicture(View view) {
+        if (checkPermissions(new String[]{
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+        }, REQUEST_READ_GALLERY)) {
+            openGallery();
+        }
+    }
+
+    public Boolean checkPermissions(String[] permissions, int requestCode) {
+        Boolean hasAllPermissions = true;
+        List<String> perms = new ArrayList<>();
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (ActivityCompat.checkSelfPermission(this, permissions[i]) == PackageManager.PERMISSION_DENIED) {
+                perms.add(permissions[i]);
+                hasAllPermissions = false;
+            }
+
+        }
+
+        if (!hasAllPermissions) {
+            String[] permArray = new String[perms.size()];
+            permArray = perms.toArray(permArray);
+
+            ActivityCompat.requestPermissions(this, permArray, requestCode);
+        }
+
+        return hasAllPermissions;
+    }
+
+
+    public void onClickDisplayModal(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
+
+        builder.setNeutralButton("Take a photo", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openCamera();
+            }
+        });
+
+        builder.setPositiveButton("Choose a photo", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openGallery();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }

@@ -115,7 +115,8 @@
                     android:id="@+id/login_button_soundcloud"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SC" />
+                    android:text="SC"
+                    android:onClick="onClickSoundCloud"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

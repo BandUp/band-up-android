@@ -25,6 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.melodies.bandup.MainScreenActivity.MultipartRequest;
+import com.melodies.bandup.MainScreenActivity.UserListController;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -139,7 +141,6 @@ public class UserProfile extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     @Override
@@ -164,18 +165,9 @@ public class UserProfile extends AppCompatActivity {
                         ContentResolver contentResolver = UserProfile.this.getContentResolver();
                         String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
 
-                        System.out.println("PATH:");
-                        System.out.println(path);
-
-                        System.out.println("URI:");
-                        System.out.println(Uri.parse(path));
-
                         galleryPhoto.setPhotoUri(Uri.parse(path));
 
                         String photoPath = galleryPhoto.getPath();
-
-                        System.out.println("URL:");
-                        System.out.println(photoPath);
 
                         if (photoPath != null) {
                             sendImageToServer(url, galleryPhoto.getPath());
@@ -264,24 +256,6 @@ public class UserProfile extends AppCompatActivity {
         }
     }
 
-    public void onClickTakePicture(View view) {
-        if (checkPermissions(new String[]{
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }, REQUEST_TAKE_PICTURE)) {
-            openCamera();
-        }
-    }
-
-    public void onClickSelectPicture(View view) {
-        if (checkPermissions(new String[]{
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }, REQUEST_READ_GALLERY)) {
-            openGallery();
-        }
-    }
-
     public Boolean checkPermissions(String[] permissions, int requestCode) {
         Boolean hasAllPermissions = true;
         List<String> perms = new ArrayList<>();
@@ -308,17 +282,29 @@ public class UserProfile extends AppCompatActivity {
     public void onClickDisplayModal(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
 
-        builder.setNeutralButton("Take a photo", new DialogInterface.OnClickListener() {
+        builder.setTitle("New Profile Photo").setItems(R.array.image_res_ids, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                openCamera();
-            }
-        });
-
-        builder.setPositiveButton("Choose a photo", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                openGallery();
+                switch (which) {
+                    case 0:
+                        if (checkPermissions(new String[]{
+                                android.Manifest.permission.CAMERA,
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                        }, REQUEST_TAKE_PICTURE)) {
+                            openCamera();
+                        }
+                        break;
+                    case 1:
+                        if (checkPermissions(new String[]{
+                                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                        }, REQUEST_READ_GALLERY)) {
+                            openGallery();
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 

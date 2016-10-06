@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.melodies.bandup.R;
-import com.melodies.bandup.UserList;
+import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 
 /**
  * An activity class that controls the Genres view.
@@ -56,7 +56,7 @@ public class Genres extends AppCompatActivity {
 
             // Send the items that the user selected to the server.
             if (sShared.postSelectedItems(Genres.this, dla, url)) {
-                Intent toUserListIntent = new Intent(Genres.this, UserList.class);
+                Intent toUserListIntent = new Intent(Genres.this, MainScreenActivity.class);
                 Genres.this.startActivity(toUserListIntent);
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 finish();

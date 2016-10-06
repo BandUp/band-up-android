@@ -45,6 +45,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
@@ -452,7 +453,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         try {
                             Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
                             if (hasFinishedSetup) {
-                                Intent userListIntent = new Intent(Login.this, UserList.class);
+                                Intent userListIntent = new Intent(Login.this, MainScreenActivity.class);
                                 Login.this.startActivity(userListIntent);
                             } else {
                                 Intent instrumentsIntent = new Intent(Login.this, Instruments.class);

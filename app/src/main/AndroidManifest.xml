@@ -49,11 +49,10 @@
         <activity
             android:name=".setup.Genres"
             android:screenOrientation="portrait" />
-        <activity android:name=".UserProfile" />
-        <activity android:name=".Matches" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".MainScreenActivity.MainScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/main_title_user_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -16,7 +16,6 @@ import android.view.View;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
 import com.melodies.bandup.R;
-import com.melodies.bandup.UserProfile;
 
 public class MainScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -34,6 +33,15 @@ public class MainScreenActivity extends AppCompatActivity
     PrivacyFragment privacyFragment;
     ProfileFragment profileFragment;
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        profileFragment.onImageSelectResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,8 +96,9 @@ public class MainScreenActivity extends AppCompatActivity
             ft.commit();
             setTitle(getString(R.string.main_title_matches));
         } else if (id == R.id.nav_edit_profile) {
-            Intent toUserProfileIntent = new Intent(MainScreenActivity.this, UserProfile.class);
-            MainScreenActivity.this.startActivity(toUserProfileIntent);
+            ft.replace(R.id.mainFrame, profileFragment);
+            ft.commit();
+            setTitle(getString(R.string.main_title_edit_profile));
         } else if (id == R.id.nav_settings) {
             ft.replace(R.id.mainFrame, settingsFragment);
             ft.commit();
@@ -130,5 +139,9 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+    }
+
+    public void onClickDisplayModal(View view) {
+        profileFragment.onClickDisplayModal(view);
     }
 }

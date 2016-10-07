@@ -244,6 +244,7 @@ public class UserProfile extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        imageDownloadDialog.dismiss();
                         Toast.makeText(UserProfile.this, R.string.user_image_error, Toast.LENGTH_SHORT).show();
                         VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
                     }

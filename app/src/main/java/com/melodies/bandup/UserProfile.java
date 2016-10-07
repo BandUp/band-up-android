@@ -28,6 +28,9 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.MainScreenActivity.MultipartRequest;
 import com.melodies.bandup.MainScreenActivity.UserListController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,11 +49,12 @@ public class UserProfile extends AppCompatActivity {
     private TextView txtPercentage;
     private TextView txtAboutMe;
     private TextView txtPromotion;
+    private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST = 555;
     final int GALLERY_REQUEST = 666;
-    final int REQUEST_TIMEOUT = 10000;
+    final int REQUEST_TIMEOUT = 120000;
     final int REQUEST_RETRY = 0;
     final int REQUEST_TAKE_PICTURE = 200;
     final int REQUEST_READ_GALLERY = 300;
@@ -71,8 +75,9 @@ public class UserProfile extends AppCompatActivity {
         txtFanStar     = (TextView) findViewById(R.id.txtFanStar);
         txtPercentage  = (TextView) findViewById(R.id.txtPercentage);
         txtAboutMe     = (TextView) findViewById(R.id.txtAboutMe);
-        txtSeekValue   = (TextView)findViewById(R.id.txtSeekValue);
+        txtSeekValue   = (TextView) findViewById(R.id.txtSeekValue);
         txtPromotion   = (TextView) findViewById(R.id.txtPromotion);
+        ivUserProfileImage = (ImageView) findViewById(R.id.imgProfile);
 
         cameraPhoto = new CameraPhoto(this);
         galleryPhoto = new GalleryPhoto(this);
@@ -194,8 +199,48 @@ public class UserProfile extends AppCompatActivity {
         MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(String urlResponse) {
                         Toast.makeText(UserProfile.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                        ImageLoader il = VolleySingleton.getInstance(UserProfile.this).getImageLoader();
+                        ivUserProfileImage.setImageResource(R.color.transparent);
+                        String imageURL = null;
+                        try {
+                            System.out.println("RESPONSE");
+                            System.out.println(urlResponse);
+                            JSONObject urlObject = new JSONObject(urlResponse);
+                            if (urlObject != null) {
+                                Toast.makeText(UserProfile.this, "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                            }
+
+                            if (!urlObject.isNull("url")) imageURL = urlObject.getString("url");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (imageURL != null && !imageURL.equals("")) {
+                            System.out.println("GOT URL");
+                            il.get(imageURL, new ImageLoader.ImageListener() {
+                                @Override
+                                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                                    final Bitmap b = response.getBitmap();
+                                    if (b != null) {
+                                        Runnable r = new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                System.out.println("SET BITMAP");
+                                                ivUserProfileImage.setImageBitmap(b);
+                                            }
+                                        };
+                                        runOnUiThread(r);
+                                    }
+                                }
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
+                                }
+                            });
+                        }
                     }
                 },
                 new Response.ErrorListener() {

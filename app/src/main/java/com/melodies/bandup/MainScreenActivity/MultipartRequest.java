@@ -12,6 +12,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 
 public class MultipartRequest extends Request<String> {
@@ -59,7 +60,8 @@ public class MultipartRequest extends Request<String> {
 
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {
-        return Response.success("Uploaded", getCacheEntry());
+        String str = new String(response.data, StandardCharsets.UTF_8);
+        return Response.success(str, getCacheEntry());
     }
 
     @Override

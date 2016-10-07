@@ -127,10 +127,11 @@ public class Register extends AppCompatActivity {
     // Storing user userId in UserIdData folder, which only this app can access
     public void saveUserId(JSONObject response) {
 
-        SharedPreferences srdPref = getSharedPreferences("UserIdData", Context.MODE_PRIVATE);
+        String id = response.toString().substring(7,31);
+        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("userId", response.toString());
-        editor.commit();
+        editor.putString("userId", id);
+        editor.apply();
     }
 
 

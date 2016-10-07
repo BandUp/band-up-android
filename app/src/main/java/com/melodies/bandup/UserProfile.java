@@ -206,6 +206,7 @@ public class UserProfile extends AppCompatActivity {
             } else {
                 imageDownloadDialog.dismiss();
                 Toast.makeText(UserProfile.this, "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                return null;
             }
         } catch (JSONException e) {
             e.printStackTrace();

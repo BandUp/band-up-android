@@ -86,4 +86,5 @@
     <string name="main_nav_edit_profile">Edit Profile</string>
     <string name="main_nav_matches">Matches</string>
     <string name="main_nav_near_me">Near Me</string>
+    <string name="profile_uploading">Uploading Photo</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.melodies.bandup;
 
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,6 +63,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView txtSeekValue;  // displaying searching value
     private int progressMinValue = 1;       // Min 1 Km radius
     private int getProgressMaxValue = 25;   // Max 25 Km radius
+    ProgressDialog imageDownloadDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,20 +207,15 @@ public class UserProfile extends AppCompatActivity {
                         ivUserProfileImage.setImageResource(R.color.transparent);
                         String imageURL = null;
                         try {
-                            System.out.println("RESPONSE");
-                            System.out.println(urlResponse);
                             JSONObject urlObject = new JSONObject(urlResponse);
                             if (urlObject != null) {
                                 Toast.makeText(UserProfile.this, "Could not parse JSON", Toast.LENGTH_SHORT).show();
                             }
-
                             if (!urlObject.isNull("url")) imageURL = urlObject.getString("url");
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         if (imageURL != null && !imageURL.equals("")) {
-                            System.out.println("GOT URL");
                             il.get(imageURL, new ImageLoader.ImageListener() {
                                 @Override
                                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -227,7 +224,7 @@ public class UserProfile extends AppCompatActivity {
                                         Runnable r = new Runnable() {
                                             @Override
                                             public void run() {
-                                                System.out.println("SET BITMAP");
+                                                imageDownloadDialog.dismiss();
                                                 ivUserProfileImage.setImageBitmap(b);
                                             }
                                         };
@@ -237,6 +234,7 @@ public class UserProfile extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    imageDownloadDialog.dismiss();
                                     VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
                                 }
                             });
@@ -255,8 +253,9 @@ public class UserProfile extends AppCompatActivity {
                 REQUEST_TIMEOUT,
                 REQUEST_RETRY,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
 
+        VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
+        imageDownloadDialog = ProgressDialog.show(this, getString(R.string.profile_uploading), getString(R.string.login_progress_description), true, false);
     }
 
     @Override

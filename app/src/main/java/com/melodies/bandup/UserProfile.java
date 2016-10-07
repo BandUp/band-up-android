@@ -195,6 +195,27 @@ public class UserProfile extends AppCompatActivity {
             }
         }
     }
+    String validateJSON(String json) {
+        System.out.println("JSON");
+        System.out.println(json);
+        String imageURL = null;
+        try {
+            JSONObject urlObject = new JSONObject(json);
+            if (!urlObject.isNull("url")) {
+                imageURL = urlObject.getString("url");
+            } else {
+                imageDownloadDialog.dismiss();
+                Toast.makeText(UserProfile.this, "Could not parse JSON", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (imageURL == null || imageURL.equals("")) {
+            return null;
+        }
+        return imageURL;
+    }
 
     public void sendImageToServer(String url, String path) {
         File image = new File(path);
@@ -202,21 +223,14 @@ public class UserProfile extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {
+                        imageDownloadDialog.dismiss();
                         Toast.makeText(UserProfile.this, R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         ImageLoader il = VolleySingleton.getInstance(UserProfile.this).getImageLoader();
                         ivUserProfileImage.setImageResource(R.color.transparent);
-                        String imageURL = null;
-                        try {
-                            JSONObject urlObject = new JSONObject(urlResponse);
-                            if (urlObject != null) {
-                                Toast.makeText(UserProfile.this, "Could not parse JSON", Toast.LENGTH_SHORT).show();
-                            }
-                            if (!urlObject.isNull("url")) imageURL = urlObject.getString("url");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if (imageURL != null && !imageURL.equals("")) {
-                            il.get(imageURL, new ImageLoader.ImageListener() {
+
+                        String imageUrl = validateJSON(urlResponse);
+                        if (imageUrl != null) {
+                            il.get(imageUrl, new ImageLoader.ImageListener() {
                                 @Override
                                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                                     final Bitmap b = response.getBitmap();
@@ -224,7 +238,6 @@ public class UserProfile extends AppCompatActivity {
                                         Runnable r = new Runnable() {
                                             @Override
                                             public void run() {
-                                                imageDownloadDialog.dismiss();
                                                 ivUserProfileImage.setImageBitmap(b);
                                             }
                                         };
@@ -234,11 +247,11 @@ public class UserProfile extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    imageDownloadDialog.dismiss();
                                     VolleySingleton.getInstance(UserProfile.this).checkCauseOfError(UserProfile.this, error);
                                 }
                             });
                         }
+                        imageDownloadDialog.dismiss();
                     }
                 },
                 new Response.ErrorListener() {

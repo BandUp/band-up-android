@@ -27,5 +27,9 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/information"
             android:title="@string/main_nav_about" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/near_me"
+            android:title="Chat" />
     </group>
 </menu>

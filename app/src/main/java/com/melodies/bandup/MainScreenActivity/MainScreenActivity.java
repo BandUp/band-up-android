@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserProfile;
@@ -101,6 +102,9 @@ public class MainScreenActivity extends AppCompatActivity
             ft.replace(R.id.mainFrame, privacyFragment);
             ft.commit();
             setTitle(getString(R.string.main_title_privacy));
+        } else if (id == R.id.nav_chat) {
+            Intent toChatActivity = new Intent(MainScreenActivity.this, ChatActivity.class);
+            MainScreenActivity.this.startActivity(toChatActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

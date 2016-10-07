@@ -3,8 +3,10 @@ package com.melodies.bandup;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,9 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.MainScreenActivity.MultipartRequest;
@@ -40,6 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
+
+    public static final String DEFAULT = "N/A";
+    public static final String url = "https://band-up-server.herokuapp.com/get-user";
 
     UserListController ulc = new UserListController();
     private TextView txtName;
@@ -69,6 +76,9 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        // Access Real Data from Server/DB
+        userRequest();
 
         txtName        = (TextView) findViewById(R.id.txtName);
         txtInstruments = (TextView) findViewById(R.id.txtInstruments);
@@ -119,8 +129,6 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-        // TODO: Get the user.
-
         UserListController.User u = new UserListController.User();
         // Get and display the user profile image
         final ImageView iv = (ImageView) findViewById(R.id.imgProfile);
@@ -148,6 +156,53 @@ public class UserProfile extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    // Get the App registered users id
+    public String getUserId() {
+        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String userId = srdPref.getString("userId", DEFAULT);
+        return (!userId.equals(DEFAULT)) ? userId : "No data Found";
+    }
+
+    // Request REAL user info from server
+    public void userRequest() {
+        JSONObject user = new JSONObject();
+        try {
+            user.put("userId", getUserId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                "http://10.0.2.2:3000/get-user",
+                user,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (response != null) {
+                            Toast.makeText(UserProfile.this, "Response success:" + response, Toast.LENGTH_LONG).show();
+                            // Binding View to real data
+                            try {
+                                txtName.setText(response.getString("username"));
+                                txtInstruments.setText(response.getString("instruments"));
+                                txtGenres.setText(response.getString("genres"));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(UserProfile.this, "Bad response: " + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        // insert request into queue
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     @Override

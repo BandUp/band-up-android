@@ -64,7 +64,6 @@ public class ProfileFragment extends Fragment {
     public static final String DEFAULT = "N/A";
     public static final String url = "https://band-up-server.herokuapp.com/get-user";
 
-    UserListController ulc = new UserListController();
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
@@ -171,41 +170,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        UserListController.User u = new UserListController.User();
-        // Get and display the user profile image
-        final ImageView iv = (ImageView) rootView.findViewById(R.id.imgProfile);
-        ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
-        iv.setImageResource(R.color.transparent);
-        if (u.imgURL != null && !u.imgURL.equals("")) {
-            il.get(u.imgURL, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    final Bitmap b = response.getBitmap();
-                    if (b != null) {
-                        Runnable r = new Runnable() {
-                            @Override
-                            public void run() {
-                                iv.setImageBitmap(b);
-                            }
-                        };
-                        getActivity().runOnUiThread(r);
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
-                }
-            });
-        }
         return rootView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -254,6 +219,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void onImageSelectResult(int requestCode, int resultCode, Intent data) {
+
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
@@ -286,7 +252,7 @@ public class ProfileFragment extends Fragment {
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }finally {
+                    } finally {
                         try {
                             inputStream.close();
                         } catch (IOException e) {
@@ -306,7 +272,7 @@ public class ProfileFragment extends Fragment {
                     public void onResponse(String urlResponse) {
                         imageDownloadDialog.dismiss();
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        getProfilePhoto(urlResponse);
+                        getProfilePhoto(urlResponse, imageDownloadDialog);
                     }
                 },
                 new Response.ErrorListener() {
@@ -406,7 +372,6 @@ public class ProfileFragment extends Fragment {
             if (!urlObject.isNull("url")) {
                 imageURL = urlObject.getString("url");
             } else {
-                imageDownloadDialog.dismiss();
                 Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
                 return null;
             }
@@ -418,6 +383,11 @@ public class ProfileFragment extends Fragment {
             return null;
         }
         return imageURL;
+    }
+
+    public void getProfilePhoto(String urlResponse, ProgressDialog pDialog) {
+        getProfilePhoto(urlResponse);
+        pDialog.dismiss();
     }
 
     public void getProfilePhoto(String urlResponse) {
@@ -447,7 +417,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
-        imageDownloadDialog.dismiss();
     }
 
     // Get the App registered users id
@@ -481,9 +450,11 @@ public class ProfileFragment extends Fragment {
                                 txtInstruments.setText(response.getString("instruments"));
                                 txtGenres.setText(response.getString("genres"));
 
-
-
-                                getProfilePhoto(response.getJSONObject("image").getString("secure_url"));
+                                if (!response.isNull("image")) {
+                                    getProfilePhoto(response.getJSONObject("image").toString());
+                                } else {
+                                    // TODO: Could not get image, display the placeholder.
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -503,12 +474,12 @@ public class ProfileFragment extends Fragment {
     }
 
     public void openGallery() {
-        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+        getActivity().startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
     }
 
     public void openCamera() {
         try {
-            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+            getActivity().startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
             cameraPhoto.addToGallery();
         } catch (IOException e) {
             Toast.makeText(getActivity(), R.string.user_error, Toast.LENGTH_SHORT).show();

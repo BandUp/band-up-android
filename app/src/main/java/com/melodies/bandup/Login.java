@@ -430,6 +430,28 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
+    // Storing user userId in UserIdData folder, which only this app can access
+    public Boolean saveUserId(JSONObject response) {
+
+        try {
+            String id;
+            if (!response.isNull("userID")) {
+                id = response.getString("userID");
+            } else {
+                return false;
+            }
+
+            SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = srdPref.edit();
+            editor.putString("userId", id);
+            editor.apply();
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     // Login user into app
     private void createloginRequest(String username, String password) {
         // create request for Login
@@ -449,6 +471,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     @Override
                     public void onResponse(JSONObject response) {
                         saveSessionId(response);
+                        saveUserId(response);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         try {
                             Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");

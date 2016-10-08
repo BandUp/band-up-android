@@ -8,8 +8,8 @@ public class UserListControllerTest {
     @Test
     public void addUser() throws Exception {
         String username = "User 1";
-        com.melodies.bandup.MainScreenActivity.UserListController ulc = new com.melodies.bandup.MainScreenActivity.UserListController();
-        com.melodies.bandup.MainScreenActivity.UserListController.User u = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController ulc = new UserListController();
+        UserListController.User u = new UserListController.User();
         u.name = username;
         ulc.addUser(u);
         assertEquals(ulc.users.size(), 1);
@@ -19,8 +19,8 @@ public class UserListControllerTest {
     @Test
     public void getUser() throws Exception {
         String username = "User 1";
-        com.melodies.bandup.MainScreenActivity.UserListController ulc = new com.melodies.bandup.MainScreenActivity.UserListController();
-        com.melodies.bandup.MainScreenActivity.UserListController.User u = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController ulc = new UserListController();
+        UserListController.User u = new UserListController.User();
         u.name = username;
         ulc.addUser(u);
         assertEquals(ulc.getUser(0).name, username);
@@ -28,14 +28,14 @@ public class UserListControllerTest {
 
     @Test
     public void getNextUser() throws Exception {
-        com.melodies.bandup.MainScreenActivity.UserListController ulc = new com.melodies.bandup.MainScreenActivity.UserListController();
-        com.melodies.bandup.MainScreenActivity.UserListController.User u1 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController ulc = new UserListController();
+        UserListController.User u1 = new UserListController.User();
         String username1 = "User 1";
 
-        com.melodies.bandup.MainScreenActivity.UserListController.User u2 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController.User u2 = new UserListController.User();
         String username2 = "User 2";
 
-        com.melodies.bandup.MainScreenActivity.UserListController.User u3 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController.User u3 = new UserListController.User();
         String username3 = "User 3";
 
         u1.name = username1;
@@ -49,20 +49,20 @@ public class UserListControllerTest {
         assertEquals(ulc.getNextUser().name, u2.name);
         assertEquals(ulc.getNextUser().name, u3.name);
         assertEquals(ulc.getNextUser(), null);
-        assertEquals(ulc.getNextUser().name, null);
+        assertEquals(ulc.getNextUser(), null);
 
     }
 
     @Test
     public void getPrevUser() throws Exception {
-        com.melodies.bandup.MainScreenActivity.UserListController ulc = new com.melodies.bandup.MainScreenActivity.UserListController();
-        com.melodies.bandup.MainScreenActivity.UserListController.User u1 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController ulc = new UserListController();
+        UserListController.User u1 = new UserListController.User();
         String username1 = "User 1";
 
-        com.melodies.bandup.MainScreenActivity.UserListController.User u2 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController.User u2 = new UserListController.User();
         String username2 = "User 2";
 
-        com.melodies.bandup.MainScreenActivity.UserListController.User u3 = new com.melodies.bandup.MainScreenActivity.UserListController.User();
+        UserListController.User u3 = new UserListController.User();
         String username3 = "User 3";
 
         u1.name = username1;

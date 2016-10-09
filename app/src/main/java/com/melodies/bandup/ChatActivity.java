@@ -28,6 +28,8 @@ public class ChatActivity extends AppCompatActivity {
     String username = "bergthor";
     String sendTo = "elvar";
 
+    String history = getResources().getString(R.string.api_address).concat("/chat_history");
+
     Ack sendMessageAck = new Ack() {
         @Override
         public void call(Object... args) {

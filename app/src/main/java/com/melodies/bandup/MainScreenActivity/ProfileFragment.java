@@ -305,6 +305,7 @@ public class ProfileFragment extends Fragment {
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
+                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
@@ -324,7 +325,9 @@ public class ProfileFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {
-                        imageDownloadDialog.dismiss();
+                        if (imageDownloadDialog != null) {
+                            imageDownloadDialog.dismiss();
+                        }
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         getProfilePhoto(urlResponse, imageDownloadDialog);
                         if (shouldDeleteAfterwards) {
@@ -340,7 +343,9 @@ public class ProfileFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        imageDownloadDialog.dismiss();
+                        if (imageDownloadDialog != null) {
+                            imageDownloadDialog.dismiss();
+                        }
                         Toast.makeText(getActivity(), R.string.user_image_error, Toast.LENGTH_SHORT).show();
                         VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
                     }
@@ -505,7 +510,6 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (response != null) {
-                            Toast.makeText(getActivity(), "Response success:" + response, Toast.LENGTH_LONG).show();
                             // Binding View to real data
                             try {
                                 txtName.setText(response.getString("username"));

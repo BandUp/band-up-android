@@ -1,8 +1,6 @@
 package com.melodies.bandup;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -22,12 +20,20 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         isLoggedIn();
     }
+    private void openLoginActivity() {
+        Intent intent = new Intent(SplashActivity.this, Login.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void openMainActivity() {
+        Intent userListIntent = new Intent(SplashActivity.this, MainScreenActivity.class);
+        SplashActivity.this.startActivity(userListIntent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
 
     private void isLoggedIn() {
-        SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
-        System.out.println("SESSIONID:");
-        System.out.println(srdPref.getString("sessionId", ""));
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 getResources().getString(R.string.api_address).concat("/isloggedin"),
                 null, new Response.Listener<JSONObject>(){
@@ -35,33 +41,22 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
                     if (response.getBoolean("loggedIn")){
-                        Intent userListIntent = new Intent(SplashActivity.this, MainScreenActivity.class);
-                        SplashActivity.this.startActivity(userListIntent);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                        finish();
+                        openMainActivity();
                     } else {
-                        Intent intent = new Intent(SplashActivity.this, Login.class);
-                        startActivity(intent);
-                        finish();
+                        openLoginActivity();
                     }
                 } catch (JSONException e) {
-                    Intent intent = new Intent(SplashActivity.this, Login.class);
-                    startActivity(intent);
-                    finish();
+                    openLoginActivity();
                 }
             }
         }, new Response.ErrorListener(){
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Intent intent = new Intent(SplashActivity.this, Login.class);
-                startActivity(intent);
-                finish();
+                openLoginActivity();
             }
         });
-
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 }

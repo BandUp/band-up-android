@@ -513,7 +513,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Storing user sessionId in SessionIdData folder, which only this app can access
     public void saveSessionId(JSONObject response) {
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
         try {

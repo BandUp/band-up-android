@@ -12,6 +12,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
@@ -24,11 +28,11 @@ import java.net.URISyntaxException;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private Socket mSocket;
     String username = "bergthor";
     String sendTo = "elvar";
 
-    String history = getResources().getString(R.string.api_address).concat("/chat_history");
+    private String url = getResources().getString(R.string.api_address).concat("/chat_history").concat(sendTo);
+    private Socket mSocket;
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -128,6 +132,25 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.connect();
 
         mSocket.emit("adduser", username, addUserAck);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     // Listener to listen to the "recv_privatemsg" emission.

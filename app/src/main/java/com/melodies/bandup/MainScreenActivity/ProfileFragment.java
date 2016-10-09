@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -62,7 +64,6 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     public static final String DEFAULT = "N/A";
-    public static final String url = "https://band-up-server.herokuapp.com/get-user";
 
     private TextView txtName;
     private TextView txtInstruments;
@@ -86,6 +87,7 @@ public class ProfileFragment extends Fragment {
     private int progressMinValue = 1;       // Min 1 Km radius
     private int getProgressMaxValue = 25;   // Max 25 Km radius
     ProgressDialog imageDownloadDialog;
+    MyThread myThread;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -125,6 +127,8 @@ public class ProfileFragment extends Fragment {
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
+        myThread = new MyThread();
+        myThread.start();
     }
 
     @Override
@@ -171,6 +175,84 @@ public class ProfileFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    public void displayDownloadMessage(final String title, final String message) {
+        if (imageDownloadDialog == null) {
+            imageDownloadDialog = ProgressDialog.show(getActivity(), title, message, true, false);
+        } else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    imageDownloadDialog.dismiss();
+                    imageDownloadDialog.setTitle(title);
+                    imageDownloadDialog.setMessage(message);
+                    imageDownloadDialog.show();
+
+                }
+            });
+
+
+        }
+    }
+
+    public void sendMessage(final Intent data) {
+        System.out.println(myThread.handler);
+        myThread.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Uri uri = data.getData();
+
+                // Create a new input stream for the photo to be stored.
+                InputStream inputStream = null;
+                String photoPath = null;
+                if (uri.getAuthority() != null) {
+                    try {
+                        inputStream = getActivity().getContentResolver().openInputStream(uri);
+                        Bitmap bmpImage = BitmapFactory.decodeStream(inputStream);
+                        ContentResolver contentResolver = getActivity().getContentResolver();
+                        String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
+
+                        galleryPhoto.setPhotoUri(Uri.parse(path));
+
+                        photoPath = galleryPhoto.getPath();
+
+                        if (photoPath != null) {
+                            sendImageToServer(galleryPhoto.getPath(), true);
+                        } else {
+
+                        }
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+
+
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    class MyThread extends Thread {
+        Handler handler;
+        public MyThread() {
+
+        }
+
+        @Override
+        public void run() {
+            Looper.prepare();
+            handler = new Handler();
+            Looper.loop();
+        }
+
     }
 
     @Override
@@ -223,56 +305,36 @@ public class ProfileFragment extends Fragment {
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                sendImageToServer(url, cameraPhoto.getPhotoPath());
+                sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
             if (requestCode == GALLERY_REQUEST) {
                 // Get the URI from the intent result.
-                Uri uri = data.getData();
+                displayDownloadMessage("Uploading Photo", "Please wait...");
+                sendMessage(data);
 
-                // Create a new input stream for the photo to be stored.
-                InputStream inputStream = null;
-
-                if (uri.getAuthority() != null) {
-                    try {
-                        inputStream = getActivity().getContentResolver().openInputStream(uri);
-                        Bitmap bmpImage = BitmapFactory.decodeStream(inputStream);
-                        ContentResolver contentResolver = getActivity().getContentResolver();
-                        String path = MediaStore.Images.Media.insertImage(contentResolver, bmpImage, "ImageToUpload", null);
-
-                        galleryPhoto.setPhotoUri(Uri.parse(path));
-
-                        String photoPath = galleryPhoto.getPath();
-
-                        if (photoPath != null) {
-                            sendImageToServer(url, galleryPhoto.getPath());
-                        } else {
-
-                        }
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            inputStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
             }
         }
     }
 
-    public void sendImageToServer(String url, String path) {
-        File image = new File(path);
-        MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+    public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
+        final File image = new File(path);
+        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        final MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {
                         imageDownloadDialog.dismiss();
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         getProfilePhoto(urlResponse, imageDownloadDialog);
+                        if (shouldDeleteAfterwards) {
+                            if (image.delete()) {
+                                System.out.println("FILE DELETION SUCCEEDED");
+                            } else {
+                                System.out.println("FILE DELETION FAILED");
+                            }
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -290,8 +352,8 @@ public class ProfileFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(multipartRequest);
-        imageDownloadDialog = ProgressDialog.show(getActivity(), getString(R.string.profile_uploading), getString(R.string.login_progress_description), true, false);
-    }
+
+        }
 
     /**
      * This interface must be implemented by activities that contain this

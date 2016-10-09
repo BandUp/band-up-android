@@ -516,6 +516,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
+        try {
+            editor.putString("sessionId", response.getString("sessionID"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         editor.putString("sessionId", response.toString());
         editor.apply();
     }

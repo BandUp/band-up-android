@@ -1,6 +1,7 @@
 package com.melodies.bandup;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -26,11 +27,11 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
+import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+
 public class ChatActivity extends AppCompatActivity {
 
-    String username = "elvar";
-    String sendTo =  "bergthor";
-
+    private String sendTo =  "57f30487cc0be459610523e2";
     private Socket mSocket;
 
     Ack sendMessageAck = new Ack() {
@@ -117,6 +118,12 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    public String getUserId() {
+        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String userId = srdPref.getString("userId", DEFAULT);
+        return (!userId.equals(DEFAULT)) ? userId : "No data Found";
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +137,9 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
 
-        mSocket.emit("adduser", username, addUserAck);
+        mSocket.emit("adduser", getUserId(), addUserAck);
 
-        String url = getResources().getString(R.string.api_address).concat("/chat_history/").concat("57f30487cc0be459610523e2");
+        String url = getResources().getString(R.string.api_address).concat("/chat_history/").concat(sendTo);
 
         // Get chat history.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

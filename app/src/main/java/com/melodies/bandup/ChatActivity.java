@@ -28,10 +28,9 @@ import java.net.URISyntaxException;
 
 public class ChatActivity extends AppCompatActivity {
 
-    String username = "bergthor";
-    String sendTo = "elvar";
+    String username = "elvar";
+    String sendTo =  "bergthor";
 
-    private String url = getResources().getString(R.string.api_address).concat("/chat_history").concat(sendTo);
     private Socket mSocket;
 
     Ack sendMessageAck = new Ack() {
@@ -133,6 +132,9 @@ public class ChatActivity extends AppCompatActivity {
 
         mSocket.emit("adduser", username, addUserAck);
 
+        String url = getResources().getString(R.string.api_address).concat("/chat_history/").concat("57f30487cc0be459610523e2");
+
+        // Get chat history.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

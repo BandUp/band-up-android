@@ -503,7 +503,7 @@ public class ProfileFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = "http://10.0.2.2:3000/get-user";//getResources().getString(R.string.api_address).concat("/get-user");
+        String url = getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,

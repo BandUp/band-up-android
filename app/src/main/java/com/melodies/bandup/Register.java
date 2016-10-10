@@ -124,7 +124,7 @@ public class Register extends AppCompatActivity {
         VolleySingleton.getInstance(Register.this).checkCauseOfError(Register.this, error);
     }
 
-    // IS SOMEONE USING IT???? IF NOT, It's USELESS and should be removed.
+    // IS SOMEONE USING IT???? IF NOT, It's USELESS and should be removed and server response changed.
     // Storing userId in UserIdData folder, which only this app can access
     public void saveUserId(JSONObject response) {
 

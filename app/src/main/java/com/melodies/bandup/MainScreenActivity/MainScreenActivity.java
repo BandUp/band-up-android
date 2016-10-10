@@ -114,6 +114,8 @@ public class MainScreenActivity extends AppCompatActivity
         } else if (id == R.id.nav_chat) {
             Intent toChatActivity = new Intent(MainScreenActivity.this, ChatActivity.class);
             MainScreenActivity.this.startActivity(toChatActivity);
+        } else if (id == R.id.nav_logout) {
+            // TODO: Log user out.
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

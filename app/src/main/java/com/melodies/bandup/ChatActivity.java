@@ -145,41 +145,6 @@ public class ChatActivity extends AppCompatActivity {
 
         String url = getResources().getString(R.string.api_address).concat("/chat_history/").concat(sendTo);
 
-//        for (int i = 0; i < response.length(); i++) {
-//            try {
-//                JSONObject item = response.getJSONObject(i);
-//                UserListController.User user = new UserListController.User();
-//                if (!item.isNull("_id"))      user.id = item.getString("_id");
-//                if (!item.isNull("username")) user.name = item.getString("username");
-//                if (!item.isNull("status"))   user.status = item.getString("status");
-//                if (!item.isNull("distance")) user.distance = item.getInt("distance");
-//
-//                user.percentage = item.getInt("percentage");
-//                if(!item.isNull("image")) {
-//                    JSONObject userImg = item.getJSONObject("image");
-//                    if (!userImg.isNull("url")) {
-//                        user.imgURL = userImg.getString("url");
-//                    }
-//                }
-//
-//                JSONArray instrumentArray = item.getJSONArray("instruments");
-//
-//                for (int j = 0; j < instrumentArray.length(); j++) {
-//                    user.instruments.add(instrumentArray.getString(j));
-//                }
-//
-//                JSONArray genreArray = item.getJSONArray("genres");
-//
-//                for (int j = 0; j < genreArray.length(); j++) {
-//                    user.genres.add(genreArray.getString(j));
-//                }
-//                ulc.addUser(user);
-//            } catch (JSONException e) {
-//                Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
-//                e.printStackTrace();
-//            }
-//        }
-
         // Get chat history.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -196,7 +161,6 @@ public class ChatActivity extends AppCompatActivity {
                                     JSONObject item = chatHistory.getJSONObject(i);
                                     if (!item.isNull("message")) {
                                         Boolean isUser = getUserId().equals(item.getString("sender"));
-
                                         displayMessage(isUser, item.getString("sender"), item.getString("message"));
                                     }
                                 }

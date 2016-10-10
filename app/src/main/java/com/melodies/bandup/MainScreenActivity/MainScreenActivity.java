@@ -144,4 +144,8 @@ public class MainScreenActivity extends AppCompatActivity
     public void onClickDisplayModal(View view) {
         profileFragment.onClickDisplayModal(view);
     }
+
+    public void onClickChat(View view) {
+        userListFragment.onClickChat(view);
+    }
 }

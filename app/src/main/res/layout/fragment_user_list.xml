@@ -20,7 +20,13 @@
                 android:id="@+id/user_partial_view"
                 android:visibility="invisible" />
         </android.support.v7.widget.CardView>
-
+        <Button
+            android:text="@string/go_to_chat_temp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"
+            android:onClick="onClickChat"
+            />
         <!-- Temporary layout -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,6 +41,7 @@
                 android:id="@+id/button3"
                 android:layout_gravity="bottom"
                 android:onClick="onClickPreviousUser"/>
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

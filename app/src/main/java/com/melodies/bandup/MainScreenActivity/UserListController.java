@@ -23,6 +23,10 @@ public class UserListController {
         return users.get(index);
     }
 
+    public User getCurrentUser() {
+        return users.get(currentIndex);
+    }
+
     public User getNextUser() {
         if (currentIndex == users.size()-1) {
             return null;

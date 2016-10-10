@@ -124,14 +124,20 @@ public class Register extends AppCompatActivity {
         VolleySingleton.getInstance(Register.this).checkCauseOfError(Register.this, error);
     }
 
-    // Storing user userId in UserIdData folder, which only this app can access
+    // IS SOMEONE USING IT???? IF NOT, It's USELESS and should be removed.
+    // Storing userId in UserIdData folder, which only this app can access
     public void saveUserId(JSONObject response) {
 
-        String id = response.toString().substring(7,31);
-        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("userId", id);
-        editor.apply();
+        try {
+            String id = response.get("id").toString();
+            SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = srdPref.edit();
+            editor.putString("userId", id);
+            editor.apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

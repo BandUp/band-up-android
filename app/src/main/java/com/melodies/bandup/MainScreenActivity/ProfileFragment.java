@@ -486,11 +486,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    // Get the App registered users id
-    public String getUserId() {
-        SharedPreferences srdPref = getActivity().getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
-        String userId = srdPref.getString("userId", DEFAULT);
-        return (!userId.equals(DEFAULT)) ? userId : "No data Found";
+    // Get the userid of logged in user
+    public String getUserId() throws JSONException {
+        SharedPreferences srdPref = getActivity().getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+        String response = srdPref.getString("response", DEFAULT);
+        JSONObject obj = new JSONObject(response);
+        String id = obj.get("userID").toString();
+        return (!id.equals(DEFAULT)) ? id : "No data Found";
     }
 
     // Request REAL user info from server
@@ -501,7 +503,7 @@ public class ProfileFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/get-user");
+        String url = "http://10.0.2.2:3000/get-user";//getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,

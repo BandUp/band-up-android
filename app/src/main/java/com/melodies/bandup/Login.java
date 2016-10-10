@@ -255,7 +255,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    saveSessionId(response);
+                    saveUserReponse(response);
                     Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                     Login.this.startActivity(instrumentsIntent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
@@ -328,7 +328,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         @Override
                         public void onResponse(JSONObject response) {
                             Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
-                            saveSessionId(response);
+                            saveUserReponse(response);
                             Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
                             Login.this.startActivity(instrumentsIntent);
                             finish();
@@ -470,7 +470,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        saveSessionId(response);
+                        saveUserReponse(response);
                         saveUserId(response);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         try {
@@ -511,16 +511,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         VolleySingleton.getInstance(Login.this).checkCauseOfError(Login.this, error);
     }
 
-    // Storing user sessionId in SessionIdData folder, which only this app can access
-    public void saveSessionId(JSONObject response) {
+    // Storing user sessionId, hasFinishedSetup & userID in SessionIdData folder, which only this app can access
+    public void saveUserReponse(JSONObject response) {
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
-        try {
-            editor.putString("sessionId", response.getString("sessionID"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        editor.putString("sessionId", response.toString());
+        editor.putString("response", response.toString());
         editor.apply();
     }
 

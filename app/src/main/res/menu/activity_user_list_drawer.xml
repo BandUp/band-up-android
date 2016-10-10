@@ -29,12 +29,8 @@
             android:icon="@drawable/information"
             android:title="@string/main_nav_about" />
         <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/near_me"
-            android:title="Chat" />
-        <item
             android:id="@+id/nav_logout"
-            android:title="Log Out"
+            android:title="@string/main_nav_log_out"
             />
     </group>
 </menu>

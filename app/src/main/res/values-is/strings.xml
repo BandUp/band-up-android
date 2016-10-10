@@ -83,6 +83,7 @@
     <string name="main_title_settings">Stillingar</string>
     <string name="profile_uploading">Hleð upp mynd</string>
     <string name="main_title_edit_profile">Breyta prófíl</string>
+    <string name="main_nav_log_out">Útskrá</string>
 
 
 </resources>

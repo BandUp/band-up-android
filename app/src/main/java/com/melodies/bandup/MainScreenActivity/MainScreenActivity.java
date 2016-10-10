@@ -111,9 +111,6 @@ public class MainScreenActivity extends AppCompatActivity
             ft.replace(R.id.mainFrame, privacyFragment);
             ft.commit();
             setTitle(getString(R.string.main_title_privacy));
-        } else if (id == R.id.nav_chat) {
-            Intent toChatActivity = new Intent(MainScreenActivity.this, ChatActivity.class);
-            MainScreenActivity.this.startActivity(toChatActivity);
         } else if (id == R.id.nav_logout) {
             // TODO: Log user out.
         }

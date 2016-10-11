@@ -121,7 +121,7 @@ public class Register extends AppCompatActivity {
 
     // Handling errors that can occur while Sign Up request
     private void errorHandlerRegister(VolleyError error) {
-        VolleySingleton.getInstance(Register.this).checkCauseOfError(Register.this, error);
+        VolleySingleton.getInstance(Register.this).checkCauseOfError(error);
     }
 
     // IS SOMEONE USING IT???? IF NOT, It's USELESS and should be removed and server response changed.

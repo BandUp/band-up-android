@@ -508,7 +508,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Handling errors that can occur while SignIn request
     private void errorHandlerLogin(VolleyError error) {
-        VolleySingleton.getInstance(Login.this).checkCauseOfError(Login.this, error);
+        VolleySingleton.getInstance(Login.this).checkCauseOfError(error);
     }
 
     // Storing user sessionId, hasFinishedSetup & userID in SessionIdData folder, which only this app can access

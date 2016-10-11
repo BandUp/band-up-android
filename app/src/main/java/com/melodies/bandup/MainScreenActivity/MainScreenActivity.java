@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
 import com.melodies.bandup.R;
 
@@ -127,6 +126,10 @@ public class MainScreenActivity extends AppCompatActivity
 
     public void onClickPreviousUser(View view) {
         userListFragment.onClickPreviousUser(view);
+    }
+
+    public void onClickLike(View view) {
+        userListFragment.onClickLike(view);
     }
 
     @Override

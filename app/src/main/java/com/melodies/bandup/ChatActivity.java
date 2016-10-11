@@ -134,6 +134,7 @@ public class ChatActivity extends AppCompatActivity {
         else {
             finish();
         }
+
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
         } catch (URISyntaxException e) {
@@ -178,7 +179,7 @@ public class ChatActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // If there is no chat found. No worries.
                         if (error.networkResponse.statusCode != 404) {
-                            VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(ChatActivity.this, error);
+                            VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(error);
                         }
                     }
                 });

@@ -111,7 +111,7 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(error);
                 progressBar.setVisibility(progressBar.GONE);
             }
         };
@@ -177,7 +177,7 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(error);
             }
         };
     }

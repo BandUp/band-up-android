@@ -347,7 +347,7 @@ public class ProfileFragment extends Fragment {
                             imageDownloadDialog.dismiss();
                         }
                         Toast.makeText(getActivity(), R.string.user_image_error, Toast.LENGTH_SHORT).show();
-                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
+                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
                     }
                 }
         );
@@ -480,7 +480,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
+                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
                 }
             });
         }

@@ -176,7 +176,10 @@ public class ChatActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(ChatActivity.this, error);
+                        // If there is no chat found. No worries.
+                        if (error.networkResponse.statusCode != 404) {
+                            VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(ChatActivity.this, error);
+                        }
                     }
                 });
 

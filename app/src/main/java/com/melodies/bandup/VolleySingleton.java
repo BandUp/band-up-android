@@ -96,7 +96,7 @@ public class VolleySingleton {
         }
         else if (error instanceof ServerError) {
             String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-            System.out.println(jsonString);
+
             try {
                 JSONObject myObject = new JSONObject(jsonString);
                 int errNo      = myObject.getInt("err");

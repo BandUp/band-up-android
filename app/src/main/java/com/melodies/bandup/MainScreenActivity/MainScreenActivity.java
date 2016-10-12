@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
 import com.melodies.bandup.R;
 
 public class MainScreenActivity extends AppCompatActivity
@@ -139,8 +138,8 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+    public void onListFragmentInteraction(UserListController.User item) {
+        System.out.println(item);
     }
 
     public void onClickDisplayModal(View view) {

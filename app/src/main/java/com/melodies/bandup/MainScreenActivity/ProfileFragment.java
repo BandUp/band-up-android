@@ -57,7 +57,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,9 +85,10 @@ public class ProfileFragment extends Fragment {
     private SeekBar seekBarRadius;
     private TextView txtSeekValue;  // displaying searching value
     private int progressMinValue = 1;       // Min 1 Km radius
-    private int getProgressMaxValue = 25;   // Max 25 Km radius
+    private int getProgressMaxValue = 200;   // Max X Km radius
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -129,30 +130,24 @@ public class ProfileFragment extends Fragment {
         galleryPhoto = new GalleryPhoto(getActivity());
         myThread = new MyThread();
         myThread.start();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         txtName            = (TextView) rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
         txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
         txtStatus          = (TextView) rootView.findViewById(R.id.txtStatus);
         txtFanStar         = (TextView) rootView.findViewById(R.id.txtFanStar);
         txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
+        txtAboutMe          = (TextView) rootView.findViewById(R.id.txtAboutMe);
         txtSeekValue       = (TextView) rootView.findViewById(R.id.txtSeekValue);
         txtPromotion       = (TextView) rootView.findViewById(R.id.txtPromotion);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        txtName.setText("Jón Forseti");
-        txtInstruments.setText("Bass, Guitar, Drums");
-        txtGenres.setText("Rock, Jazz, Hip Hop");
-        txtFanStar.setText("Bob Marley");
-        txtStatus.setText("Searching for band");
-        txtPercentage.setText("45%");
-        txtAboutMe.setText("About Me...Lorem ipsum dolor sit amet, eius aliquid qui no. Ei viris pertinax convenire vel");
         seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);
         seekBarRadius.setMax(getProgressMaxValue);
         seekBarRadius.setProgress(progressMinValue);
@@ -503,7 +498,7 @@ public class ProfileFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/get-user");
+        String url =getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -515,8 +510,12 @@ public class ProfileFragment extends Fragment {
                             // Binding View to real data
                             try {
                                 txtName.setText(response.getString("username"));
-                                txtInstruments.setText(response.getString("instruments"));
-                                txtGenres.setText(response.getString("genres"));
+                                //txtInstruments.setText(response.getString("instruments"));    // need some work
+                                //txtGenres.setText(response.getString("genres"));              // need some work
+                                txtFanStar.setText("Bob Marley");
+                                txtStatus.setText("Searching for band");        // need to create list of available options to choose
+                                txtPercentage.setText("45%");                   // needs match % value
+                                //txtAboutMe.setText("About Me...");
 
                                 if (!response.isNull("image")) {
                                     getProfilePhoto(response.getJSONObject("image").toString());
@@ -539,6 +538,11 @@ public class ProfileFragment extends Fragment {
         );
         // insert request into queue
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void onClickAboutMe (View view) {
+        Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
+        getActivity().startActivity(aboutMeIntent);
     }
 
     public void openGallery() {

@@ -150,4 +150,6 @@ public class MainScreenActivity extends AppCompatActivity
     public void onClickChat(View view) {
         userListFragment.onClickChat(view);
     }
+
+    public void onClickAboutMe(View view) { profileFragment.onClickAboutMe(view); }
 }

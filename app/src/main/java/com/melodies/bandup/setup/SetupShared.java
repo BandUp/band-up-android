@@ -28,7 +28,6 @@ import org.json.JSONObject;
  */
 public class SetupShared {
 
-
     /**
      * This function GETs instruments or genres, depending on the URL.
      * @param context     The context we are working in.

@@ -79,7 +79,6 @@ public class VolleySingleton {
         return mImageLoader;
     }
 
-
     /**
      * This function checks the cause of the Volley Error and prints out a relevant Toast message.
      *

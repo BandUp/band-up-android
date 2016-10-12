@@ -38,6 +38,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -45,6 +46,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 
@@ -139,7 +141,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 }
                 return false;
             }
-
         });
 
         tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
@@ -262,7 +263,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     finish();
                 }
             }, new Response.ErrorListener() {
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
@@ -324,7 +324,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     url,
                     jsonObject,
                     new Response.Listener<JSONObject>() {
-
                         @Override
                         public void onResponse(JSONObject response) {
                             Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
@@ -339,7 +338,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                     errorHandlerLogin(error);
-
                 }
             });
 
@@ -381,7 +379,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
     }
 
-
     // ------------------------------Google+ END---------------------------------------------------------------
 
     // ------------------------------ SoundCloud---------------------------------------------------------------
@@ -390,7 +387,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void onClickSoundCloud(View v) {
         switch (v.getId()) {
             case R.id.login_button_soundcloud:
-                // TODO: Connect to SoundCloud!
                 Intent intent = new Intent(this,SoundCloud.class);
                 startActivity(intent);
                 break;
@@ -414,25 +410,20 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 isValid = false;
                 tilUsername.setError(getString(R.string.login_username_validation));
                 etUsername.requestFocus();
-
             }
-
             if (password.isEmpty()) {
                 isValid = false;
                 tilPassword.setError(getString(R.string.login_password_validation));
             }
-
             if (isValid) {
                 loginDialog = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_description), true, false);
                 createloginRequest(username, password);
             }
-
         }
     }
 
     // Storing user userId in UserIdData folder, which only this app can access
     public Boolean saveUserId(JSONObject response) {
-
         try {
             String id;
             if (!response.isNull("userID")) {
@@ -440,7 +431,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             } else {
                 return false;
             }
-
             SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = srdPref.edit();
             editor.putString("userId", id);
@@ -462,7 +452,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -578,15 +567,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    // permission was granted, yay! Do the contacts-related task you need to do.
                     createLocationRequest();
                 } else {
                     // permission denied, boo!

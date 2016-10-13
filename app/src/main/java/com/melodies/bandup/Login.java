@@ -53,7 +53,7 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
     private String url;
 
@@ -207,7 +207,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        findViewById(R.id.login_button_google).setOnClickListener(this);
         //findViewById(R.id.sign_out_button).setOnClickListener(this);
         //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
@@ -293,6 +293,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Accessing user data from Google & storing on server
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Toast.makeText(this, result.getStatus().toString(), Toast.LENGTH_SHORT).show();
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
 
@@ -312,17 +313,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Sending user info to server
     private void sendGoogleUserToServer(String personId, String idToken, String personName, String personEmail) {
-        try {
-            url = getResources().getString(R.string.api_address).concat("/login-google");
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", personId);
-            jsonObject.put("userToken", idToken);
-            jsonObject.put("userName", personName);
-            jsonObject.put("userEmail", personEmail);
+            url = getResources().getString(R.string.api_address).concat("/login-google-token");
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
-                    jsonObject,
+                    new JSONObject(),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -343,9 +338,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        } catch (JSONException ex) {
-            System.out.println(ex.getMessage());
-        }
+
     }
 
     // Google buttons

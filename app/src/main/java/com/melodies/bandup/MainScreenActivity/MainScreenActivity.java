@@ -110,7 +110,7 @@ public class MainScreenActivity extends AppCompatActivity
             ft.commit();
             setTitle(getString(R.string.main_title_privacy));
         } else if (id == R.id.nav_logout) {
-            // TODO: Log user out.
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,17 +138,15 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(UserListController.User item) {
-        System.out.println(item);
+    public void onListFragmentInteraction(UserListController.User user) {
+        matchesFragment.onClickChat(user.id);
     }
 
     public void onClickDisplayModal(View view) {
         profileFragment.onClickDisplayModal(view);
     }
 
-    public void onClickChat(View view) {
-        userListFragment.onClickChat(view);
+    public void onClickAboutMe(View view) {
+        profileFragment.onClickAboutMe(view);
     }
-
-    public void onClickAboutMe(View view) { profileFragment.onClickAboutMe(view); }
 }

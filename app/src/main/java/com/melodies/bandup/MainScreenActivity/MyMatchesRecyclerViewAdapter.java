@@ -69,9 +69,8 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.username);
             mImageView = (ImageView) view.findViewById(R.id.profile_picture);
-
         }
 
         @Override

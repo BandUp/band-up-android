@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -86,8 +88,6 @@ public class MatchesFragment extends Fragment {
                                     if (!imgObj.isNull("url")) user.imgURL = imgObj.getString("url");
                                 }
                                 mmrva.addUser(user);
-
-
                             } catch (JSONException e) {
                                 Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
@@ -105,7 +105,6 @@ public class MatchesFragment extends Fragment {
                 }
         );
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
-
     }
 
     @Override
@@ -126,7 +125,6 @@ public class MatchesFragment extends Fragment {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -158,5 +156,11 @@ public class MatchesFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(UserListController.User item);
+    }
+
+    public void onClickChat(String id) {
+        Intent myIntent = new Intent(getActivity(), ChatActivity.class);
+        myIntent.putExtra("SEND_TO_USER_ID", id);
+        startActivity(myIntent);
     }
 }

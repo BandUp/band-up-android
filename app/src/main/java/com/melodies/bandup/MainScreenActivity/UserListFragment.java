@@ -1,7 +1,6 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -182,12 +180,6 @@ public class UserListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void onClickChat(View view) {
-        Intent myIntent = new Intent(getActivity(), ChatActivity.class);
-        myIntent.putExtra("SEND_TO_USER_ID", ulc.getCurrentUser().id);
-        startActivity(myIntent);
     }
 
     public void onClickLike(View view) {

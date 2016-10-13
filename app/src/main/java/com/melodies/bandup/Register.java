@@ -121,13 +121,11 @@ public class Register extends AppCompatActivity {
 
     // Handling errors that can occur while Sign Up request
     private void errorHandlerRegister(VolleyError error) {
-        VolleySingleton.getInstance(Register.this).checkCauseOfError(Register.this, error);
+        VolleySingleton.getInstance(Register.this).checkCauseOfError(error);
     }
 
-    // IS SOMEONE USING IT???? IF NOT, It's USELESS and should be removed and server response changed.
     // Storing userId in UserIdData folder, which only this app can access
     public void saveUserId(JSONObject response) {
-
         try {
             String id = response.get("id").toString();
             SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
@@ -137,9 +135,6 @@ public class Register extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
 

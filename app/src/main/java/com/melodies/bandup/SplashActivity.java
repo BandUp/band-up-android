@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         isLoggedIn();
     }
+
     private void openLoginActivity() {
         Intent intent = new Intent(SplashActivity.this, Login.class);
         startActivity(intent);
@@ -50,8 +51,7 @@ public class SplashActivity extends AppCompatActivity {
                     openLoginActivity();
                 }
             }
-        }, new Response.ErrorListener(){
-
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 openLoginActivity();

@@ -28,7 +28,6 @@ import org.json.JSONObject;
  */
 public class SetupShared {
 
-
     /**
      * This function GETs instruments or genres, depending on the URL.
      * @param context     The context we are working in.
@@ -111,7 +110,7 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(error);
                 progressBar.setVisibility(progressBar.GONE);
             }
         };
@@ -177,7 +176,7 @@ public class SetupShared {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(context).checkCauseOfError(context, error);
+                VolleySingleton.getInstance(context).checkCauseOfError(error);
             }
         };
     }

@@ -112,7 +112,6 @@
                 android:layout_marginTop="5dp" />
 
             <TextView
-                android:text="About Me"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtAboutMe"
@@ -122,6 +121,9 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="40dp"
                 android:textSize="18sp"
+                android:hint="About Me"
+                android:onClick="onClickAboutMe"
+                android:maxLength="100"
                 />
 
             <LinearLayout

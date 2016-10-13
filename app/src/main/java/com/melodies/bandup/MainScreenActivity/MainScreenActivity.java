@@ -13,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.melodies.bandup.ChatActivity;
-import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
 import com.melodies.bandup.R;
 
 public class MainScreenActivity extends AppCompatActivity
@@ -112,7 +110,7 @@ public class MainScreenActivity extends AppCompatActivity
             ft.commit();
             setTitle(getString(R.string.main_title_privacy));
         } else if (id == R.id.nav_logout) {
-            // TODO: Log user out.
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,6 +127,10 @@ public class MainScreenActivity extends AppCompatActivity
         userListFragment.onClickPreviousUser(view);
     }
 
+    public void onClickLike(View view) {
+        userListFragment.onClickLike(view);
+    }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -136,15 +138,15 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+    public void onListFragmentInteraction(UserListController.User user) {
+        matchesFragment.onClickChat(user.id);
     }
 
     public void onClickDisplayModal(View view) {
         profileFragment.onClickDisplayModal(view);
     }
 
-    public void onClickChat(View view) {
-        userListFragment.onClickChat(view);
+    public void onClickAboutMe(View view) {
+        profileFragment.onClickAboutMe(view);
     }
 }

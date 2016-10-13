@@ -1,7 +1,6 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.melodies.bandup.ChatActivity;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -132,7 +131,7 @@ public class UserListFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
+                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
 
                     }
                 }
@@ -183,10 +182,46 @@ public class UserListFragment extends Fragment {
         mListener = null;
     }
 
-    public void onClickChat(View view) {
-        Intent myIntent = new Intent(getActivity(), ChatActivity.class);
-        myIntent.putExtra("SEND_TO_USER_ID", ulc.getCurrentUser().id);
-        startActivity(myIntent);
+    public void onClickLike(View view) {
+        JSONObject user = new JSONObject();
+        try {
+            user.put("userID", ulc.getCurrentUser().id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = getActivity().getResources().getString(R.string.api_address).concat("/like");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                user,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Boolean isMatch = response.getBoolean("isMatch");
+                            if (isMatch) {
+                                Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You Didn't Match! :D", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+
+                    }
+                }
+        );
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+
+
     }
 
     /**
@@ -240,7 +275,7 @@ public class UserListFragment extends Fragment {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(getActivity(), error);
+                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
                 }
             });
         }

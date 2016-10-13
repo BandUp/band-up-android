@@ -79,20 +79,18 @@ public class VolleySingleton {
         return mImageLoader;
     }
 
-
     /**
      * This function checks the cause of the Volley Error and prints out a relevant Toast message.
      *
-     * @param context The context we are working in.
      * @param error   The Volley Error object
      */
-    public void checkCauseOfError(Context context, VolleyError error) {
+    public void checkCauseOfError(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Toast.makeText(context, "Connection error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, "Connection error!", Toast.LENGTH_LONG).show();
         }
         else if (error instanceof AuthFailureError) {
-            Intent intent = new Intent(context, Login.class);
-            context.startActivity(intent);
+            Intent intent = new Intent(mCtx, Login.class);
+            mCtx.startActivity(intent);
         }
         else if (error instanceof ServerError) {
             String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
@@ -101,20 +99,20 @@ public class VolleySingleton {
                 JSONObject myObject = new JSONObject(jsonString);
                 int errNo      = myObject.getInt("err");
                 String message = myObject.getString("msg");
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(mCtx, message, Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
-                Toast.makeText(context, "Server error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(mCtx, "Server error!", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
         else if (error instanceof NetworkError) {
-            Toast.makeText(context, "Network error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, "Network error!", Toast.LENGTH_LONG).show();
         }
         else if (error instanceof ParseError) {
-            Toast.makeText(context, "Server parse error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, "Server parse error!", Toast.LENGTH_LONG).show();
 
         } else {
-            Toast.makeText(context, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -75,7 +75,8 @@
         android:id="@+id/btnLike"
         android:layout_alignBaseline="@+id/btnDetails"
         android:layout_alignBottom="@+id/btnDetails"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickLike"/>
 
     <TextView
         android:text="00%"

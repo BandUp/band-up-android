@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,10 +10,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.melodies.bandup.MainScreenActivity.dummy.DummyContent;
-import com.melodies.bandup.MainScreenActivity.dummy.DummyContent.DummyItem;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.R;
+import com.melodies.bandup.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -45,13 +58,53 @@ public class MatchesFragment extends Fragment {
         return fragment;
     }
 
+    MyMatchesRecyclerViewAdapter mmrva;
+    List<UserListController.User> matchItems;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        matchItems = new ArrayList<>();
+        mmrva = new MyMatchesRecyclerViewAdapter(matchItems, mListener);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        String url = getActivity().getResources().getString(R.string.api_address).concat("/matches");
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                new JSONArray(),
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject item = response.getJSONObject(i);
+                                UserListController.User user = new UserListController.User();
+                                if (!item.isNull("_id"))      user.id = item.getString("_id");
+                                if (!item.isNull("username")) user.name = item.getString("username");
+                                if (!item.isNull("image")) {
+                                    JSONObject imgObj = item.getJSONObject("image");
+                                    if (!imgObj.isNull("url")) user.imgURL = imgObj.getString("url");
+                                }
+                                mmrva.addUser(user);
+                            } catch (JSONException e) {
+                                Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+
+                    }
+                }
+        );
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
     }
 
     @Override
@@ -68,11 +121,10 @@ public class MatchesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyMatchesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(mmrva);
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -103,6 +155,12 @@ public class MatchesFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(UserListController.User item);
+    }
+
+    public void onClickChat(String id) {
+        Intent myIntent = new Intent(getActivity(), ChatActivity.class);
+        myIntent.putExtra("SEND_TO_USER_ID", id);
+        startActivity(myIntent);
     }
 }

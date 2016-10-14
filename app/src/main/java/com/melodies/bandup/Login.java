@@ -38,7 +38,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -46,7 +45,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 
@@ -301,23 +299,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            String personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            //Uri personPhoto = acct.getPhotoUrl();
-
-            // Sending user info to server
-            sendGoogleUserToServer(personId, idToken, personName, personEmail);
+            sendGoogleUserToServer(idToken);
         }
     }
 
     // Sending user info to server
-    private void sendGoogleUserToServer(String personId, String idToken, String personName, String personEmail) {
-            url = getResources().getString(R.string.api_address).concat("/login-google-token");
+    private void sendGoogleUserToServer(String idToken) {
+        try {
+            url = getResources().getString(R.string.api_address).concat("/login-google");
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("access_token", idToken);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
-                    new JSONObject(),
+                    jsonObject,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -327,18 +323,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             Login.this.startActivity(instrumentsIntent);
                             finish();
                         }
-                    }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    errorHandlerLogin(error);
-                }
-            });
-
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                            errorHandlerLogin(error);
+                        }
+                    });
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
-
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     // Google buttons

@@ -24,7 +24,9 @@
         android:hint="About Me ..."
         android:background="@android:color/transparent"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:maxLength="100"
+        android:singleLine="false" />
 
     <Button
         android:text="Save"

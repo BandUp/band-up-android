@@ -96,9 +96,8 @@ public class ProfileFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    // Required empty public constructor
+    public ProfileFragment() {}
 
     /**
      * Use this factory method to create a new instance of
@@ -144,7 +143,7 @@ public class ProfileFragment extends Fragment{
         txtStatus          = (TextView) rootView.findViewById(R.id.txtStatus);
         txtFanStar         = (TextView) rootView.findViewById(R.id.txtFanStar);
         txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe          = (TextView) rootView.findViewById(R.id.txtAboutMe);
+        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
         txtSeekValue       = (TextView) rootView.findViewById(R.id.txtSeekValue);
         txtPromotion       = (TextView) rootView.findViewById(R.id.txtPromotion);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
@@ -184,7 +183,6 @@ public class ProfileFragment extends Fragment{
                     imageDownloadDialog.setTitle(title);
                     imageDownloadDialog.setMessage(message);
                     imageDownloadDialog.show();
-
                 }
             });
 
@@ -498,7 +496,7 @@ public class ProfileFragment extends Fragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url =getResources().getString(R.string.api_address).concat("/get-user");
+        String url = getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -515,7 +513,7 @@ public class ProfileFragment extends Fragment{
                                 txtFanStar.setText("Bob Marley");
                                 txtStatus.setText("Searching for band");        // need to create list of available options to choose
                                 txtPercentage.setText("45%");                   // needs match % value
-                                //txtAboutMe.setText("About Me...");
+                                txtAboutMe.setText(response.getString("aboutme"));  // done
 
                                 if (!response.isNull("image")) {
                                     getProfilePhoto(response.getJSONObject("image").toString());
@@ -542,7 +540,24 @@ public class ProfileFragment extends Fragment{
 
     public void onClickAboutMe (View view) {
         Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
-        getActivity().startActivity(aboutMeIntent);
+        startActivityForResult(aboutMeIntent, 2);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getActivity(), "onActivityResuld Called", Toast.LENGTH_LONG).show();
+        if (requestCode == 2) {
+            if (data != null) {
+                Toast.makeText(getActivity(), "OK", Toast.LENGTH_LONG).show();
+                String message = data.getStringExtra("MESSAGE");
+                txtAboutMe.setText(message);
+            }
+        }
+    }
+
+    public void setAbout(String a) {
+        txtAboutMe.setText(a);
     }
 
     public void openGallery() {

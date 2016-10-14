@@ -255,10 +255,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 @Override
                 public void onResponse(JSONObject response) {
                     saveUserReponse(response);
-                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                    Login.this.startActivity(instrumentsIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                    finish();
+                    openCorrectIntent(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -291,7 +288,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Accessing user data from Google & storing on server
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        Toast.makeText(this, result.getStatus().toString(), Toast.LENGTH_SHORT).show();
         if (result.isSuccess()) {
             Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
 
@@ -300,6 +296,28 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             final String idToken = acct.getIdToken();
             sendGoogleUserToServer(idToken);
+        }
+    }
+    private void openCorrectIntent(JSONObject response) {
+        Boolean hasFinishedSetup = null;
+        try {
+            hasFinishedSetup = response.getBoolean("hasFinishedSetup");
+            if (hasFinishedSetup) {
+                Intent userListIntent = new Intent(Login.this, MainScreenActivity.class);
+                Login.this.startActivity(userListIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
+            } else {
+                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                Login.this.startActivity(instrumentsIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
+            }
+        } catch (JSONException e) {
+            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+            Login.this.startActivity(instrumentsIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            finish();
         }
     }
 
@@ -317,17 +335,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
                             saveUserReponse(response);
-                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                            Login.this.startActivity(instrumentsIntent);
-                            finish();
+                            openCorrectIntent(response);
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                             errorHandlerLogin(error);
                         }
                     });
@@ -451,24 +465,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         saveUserReponse(response);
                         saveUserId(response);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
-                        try {
-                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
-                            if (hasFinishedSetup) {
-                                Intent userListIntent = new Intent(Login.this, MainScreenActivity.class);
-                                Login.this.startActivity(userListIntent);
-                            } else {
-                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                                Login.this.startActivity(instrumentsIntent);
-                            }
-                        } catch (JSONException e) {
-                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                            Login.this.startActivity(instrumentsIntent);
-
-                        } finally {
-                            loginDialog.dismiss();
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                            finish();
-                        }
+                        openCorrectIntent(response);
+                        loginDialog.dismiss();
                     }
                 },
                 new Response.ErrorListener() {

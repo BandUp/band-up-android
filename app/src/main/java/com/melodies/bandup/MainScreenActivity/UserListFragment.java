@@ -147,12 +147,9 @@ public class UserListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
         txtName        = (TextView) rootView.findViewById(R.id.txtName);
-        txtStatus      = (TextView) rootView.findViewById(R.id.txtStatus);
-        txtDistance    = (TextView) rootView.findViewById(R.id.txtDistance);
-        txtPercentage  = (TextView) rootView.findViewById(R.id.txtPercentage);
         txtInstruments = (TextView) rootView.findViewById(R.id.txtInstruments);
-        txtGenres      = (TextView) rootView.findViewById(R.id.txtGenres);
         partialView        = rootView.findViewById(R.id.user_partial_view);
+        txtDistance    = (TextView) rootView.findViewById(R.id.txtDistance);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
 
         return rootView;
@@ -184,6 +181,7 @@ public class UserListFragment extends Fragment {
 
     public void onClickLike(View view) {
         JSONObject user = new JSONObject();
+
         try {
             user.put("userID", ulc.getCurrentUser().id);
         } catch (JSONException e) {
@@ -202,8 +200,6 @@ public class UserListFragment extends Fragment {
                             Boolean isMatch = response.getBoolean("isMatch");
                             if (isMatch) {
                                 Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "You Didn't Match! :D", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -241,18 +237,10 @@ public class UserListFragment extends Fragment {
 
     private void displayUser(UserListController.User u) {
         txtName.setText(u.name);
-        txtStatus.setText(u.status);
-        txtDistance.setText(u.distance+" km.");
-        txtPercentage.setText(u.percentage+"%");
-
         txtInstruments.setText("");
+        txtDistance.setText(u.distance + " km. away from you");
         for (int i = 0; i < u.instruments.size(); i++) {
             txtInstruments.append(u.instruments.get(i)+" ");
-        }
-
-        txtGenres.setText("");
-        for (int i = 0; i < u.genres.size(); i++) {
-            txtGenres.append(u.genres.get(i)+" ");
         }
 
         ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
@@ -269,7 +257,10 @@ public class UserListFragment extends Fragment {
                                 ivUserProfileImage.setImageBitmap(b);
                             }
                         };
-                        getActivity().runOnUiThread(r);
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(r);
+                        }
+
                     }
                 }
 

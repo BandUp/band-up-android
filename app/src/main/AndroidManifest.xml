@@ -49,7 +49,8 @@
         <activity
             android:name=".setup.Genres"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatActivity" />
+        <activity android:name=".ChatActivity"
+            android:label="Chat"/>
         <activity
             android:name=".MainScreenActivity.MainScreenActivity"
             android:label="@string/main_title_user_list"

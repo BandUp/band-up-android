@@ -1,5 +1,6 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
+import com.melodies.bandup.UserDetailsActivity;
+import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.helper_classes.User;
+
+import org.json.JSONObject;
 
 public class MainScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -31,9 +42,12 @@ public class MainScreenActivity extends AppCompatActivity
     PrivacyFragment privacyFragment;
     ProfileFragment profileFragment;
 
+    ProgressDialog logoutDialog;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         profileFragment.onImageSelectResult(requestCode, resultCode, data);
+        profileFragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -50,6 +64,9 @@ public class MainScreenActivity extends AppCompatActivity
         aboutFragment = new AboutFragment();
         privacyFragment = new PrivacyFragment();
         profileFragment = new ProfileFragment();
+        logoutDialog = new ProgressDialog(MainScreenActivity.this);
+        logoutDialog.setMessage("Logging out");
+        logoutDialog.setTitle("Please wait...");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,12 +127,41 @@ public class MainScreenActivity extends AppCompatActivity
             ft.commit();
             setTitle(getString(R.string.main_title_privacy));
         } else if (id == R.id.nav_logout) {
-            finish();
+            logout();
+            logoutDialog.show();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logout() {
+        String url = getResources().getString(R.string.api_address).concat("/logout");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        logoutDialog.dismiss();
+                        Intent intent = new Intent(MainScreenActivity.this, Login.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        logoutDialog.dismiss();
+                        VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+                    }
+                }
+        );
+        // insert request into queue
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
 
@@ -138,7 +184,7 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(UserListController.User user) {
+    public void onListFragmentInteraction(User user) {
         matchesFragment.onClickChat(user.id);
     }
 
@@ -149,4 +195,6 @@ public class MainScreenActivity extends AppCompatActivity
     public void onClickAboutMe(View view) {
         profileFragment.onClickAboutMe(view);
     }
+
+    public void onClickDetails(View view) { Intent intent = new Intent(MainScreenActivity.this, UserDetailsActivity.class); startActivity(intent); }
 }

@@ -175,16 +175,18 @@ public class ProfileFragment extends Fragment{
         if (imageDownloadDialog == null) {
             imageDownloadDialog = ProgressDialog.show(getActivity(), title, message, true, false);
         } else {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    imageDownloadDialog.dismiss();
-                    imageDownloadDialog.setTitle(title);
-                    imageDownloadDialog.setMessage(message);
-                    imageDownloadDialog.show();
-                }
-            });
+                        imageDownloadDialog.dismiss();
+                        imageDownloadDialog.setTitle(title);
+                        imageDownloadDialog.setMessage(message);
+                        imageDownloadDialog.show();
+                    }
+                });
+            }
 
 
         }
@@ -467,7 +469,9 @@ public class ProfileFragment extends Fragment{
                                 ivUserProfileImage.setImageBitmap(b);
                             }
                         };
-                        getActivity().runOnUiThread(r);
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(r);
+                        }
                     }
                 }
 
@@ -507,13 +511,18 @@ public class ProfileFragment extends Fragment{
                         if (response != null) {
                             // Binding View to real data
                             try {
-                                txtName.setText(response.getString("username"));
+                                if (!response.isNull("username")) {
+                                    txtName.setText(response.getString("username"));
+                                }
                                 //txtInstruments.setText(response.getString("instruments"));    // need some work
                                 //txtGenres.setText(response.getString("genres"));              // need some work
                                 txtFanStar.setText("Bob Marley");
                                 txtStatus.setText("Searching for band");        // need to create list of available options to choose
                                 txtPercentage.setText("45%");                   // needs match % value
-                                txtAboutMe.setText(response.getString("aboutme"));  // done
+
+                                if (!response.isNull("aboutme")) {
+                                    txtAboutMe.setText(response.getString("aboutme"));  // done
+                                }
 
                                 if (!response.isNull("image")) {
                                     getProfilePhoto(response.getJSONObject("image").toString());
@@ -543,11 +552,14 @@ public class ProfileFragment extends Fragment{
         startActivityForResult(aboutMeIntent, 2);
     }
 
-    @Override
+
+
+    // All onActivityResults are handled by the activity.
+    // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Toast.makeText(getActivity(), "onActivityResuld Called", Toast.LENGTH_LONG).show();
-        if (requestCode == 2) {
+        if (resultCode == 2) {
             if (data != null) {
                 Toast.makeText(getActivity(), "OK", Toast.LENGTH_LONG).show();
                 String message = data.getStringExtra("MESSAGE");

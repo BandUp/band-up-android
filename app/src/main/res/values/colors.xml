@@ -9,5 +9,7 @@
     <color name="colorBlack">#000000</color>
     <color name="transparent">#FFFFFFFF</color>
     <color name="colorLikeGreen">#20943F</color>
+    <color name="colorLikeGreenSelected">#176A2D</color>
     <color name="colorDetailsYellow">#FECA0A</color>
+    <color name="colorDetailsYellowSelected">#A18005</color>
 </resources>

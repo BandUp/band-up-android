@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.helper_classes.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +60,7 @@ public class MatchesFragment extends Fragment {
     }
 
     MyMatchesRecyclerViewAdapter mmrva;
-    List<UserListController.User> matchItems;
+    List<User> matchItems;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,7 @@ public class MatchesFragment extends Fragment {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject item = response.getJSONObject(i);
-                                UserListController.User user = new UserListController.User();
+                                User user = new User();
                                 if (!item.isNull("_id"))      user.id = item.getString("_id");
                                 if (!item.isNull("username")) user.name = item.getString("username");
                                 if (!item.isNull("image")) {
@@ -155,7 +156,7 @@ public class MatchesFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(UserListController.User item);
+        void onListFragmentInteraction(User item);
     }
 
     public void onClickChat(String id) {

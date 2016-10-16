@@ -61,7 +61,7 @@
     <string name="user_image_error">Það tókst ekki að senda myndina á vefþjóninn. Vinsamlega reyndu aftur.</string>
     <string name="user_image_success">Mynd vistuð á vefþjón</string>
     <string name="user_allow_storage">Vinsamlega leyfðu aðgang til þess að velja mynd</string>
-    <string name="action_sign_in">Innskráning eða nýskráning</string>
+    <string name="action_sign_in">Skrá inn á SoundCloud</string>
     <string name="action_sign_in_short">Innskráning</string>
     <string name="error_field_required">Það þarf að skrá þessar upplýsingar</string>
     <string name="error_incorrect_password">Lykilorð er ekki rétt</string>

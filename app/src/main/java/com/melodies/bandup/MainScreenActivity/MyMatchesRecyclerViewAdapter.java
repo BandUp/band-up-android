@@ -9,20 +9,21 @@ import android.widget.TextView;
 
 import com.melodies.bandup.MainScreenActivity.MatchesFragment.OnListFragmentInteractionListener;
 import com.melodies.bandup.R;
+import com.melodies.bandup.helper_classes.User;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link UserListController.User} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link User} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatchesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<UserListController.User> mValues;
+    private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMatchesRecyclerViewAdapter(List<UserListController.User> items, OnListFragmentInteractionListener listener) {
+    public MyMatchesRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -50,7 +51,7 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
             }
         });
     }
-    public void addUser(UserListController.User user) {
+    public void addUser(User user) {
         this.mValues.add(user);
         this.notifyItemInserted(mValues.size() - 1);
     }
@@ -64,7 +65,7 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
         public final View mView;
         public final TextView mContentView;
         public final ImageView mImageView;
-        public UserListController.User mItem;
+        public User mItem;
 
         public ViewHolder(View view) {
             super(view);

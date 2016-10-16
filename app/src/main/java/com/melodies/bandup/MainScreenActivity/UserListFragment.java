@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.helper_classes.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +69,7 @@ public class UserListFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName, txtStatus, txtDistance, txtPercentage, txtInstruments, txtGenres;
+    private TextView txtName, txtDistance, txtInstruments;
     private View     partialView;
     private ImageView ivUserProfileImage;
     UserListController ulc;
@@ -91,7 +92,7 @@ public class UserListFragment extends Fragment {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject item = response.getJSONObject(i);
-                                UserListController.User user = new UserListController.User();
+                                User user = new User();
                                 if (!item.isNull("_id"))      user.id = item.getString("_id");
                                 if (!item.isNull("username")) user.name = item.getString("username");
                                 if (!item.isNull("status"))   user.status = item.getString("status");
@@ -200,6 +201,8 @@ public class UserListFragment extends Fragment {
                             Boolean isMatch = response.getBoolean("isMatch");
                             if (isMatch) {
                                 Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You liked this person", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -235,12 +238,17 @@ public class UserListFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void displayUser(UserListController.User u) {
+    private void displayUser(User u) {
         txtName.setText(u.name);
         txtInstruments.setText("");
         txtDistance.setText(u.distance + " km. away from you");
+
         for (int i = 0; i < u.instruments.size(); i++) {
-            txtInstruments.append(u.instruments.get(i)+" ");
+            if (i != u.instruments.size()-1) {
+                txtInstruments.append(u.instruments.get(i) + ", ");
+            } else {
+                txtInstruments.append(u.instruments.get(i));
+            }
         }
 
         ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
@@ -260,7 +268,6 @@ public class UserListFragment extends Fragment {
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(r);
                         }
-
                     }
                 }
 
@@ -273,7 +280,7 @@ public class UserListFragment extends Fragment {
     }
 
     public void onClickNextUser(View view) {
-        UserListController.User u = ulc.getNextUser();
+        User u = ulc.getNextUser();
         if (u == null) {
             return;
         }
@@ -281,7 +288,7 @@ public class UserListFragment extends Fragment {
     }
 
     public void onClickPreviousUser(View view) {
-        UserListController.User u = ulc.getPrevUser();
+        User u = ulc.getPrevUser();
         if (u == null) {
             return;
         }

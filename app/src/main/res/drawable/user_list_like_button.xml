@@ -4,7 +4,7 @@
 
     <item android:state_pressed="true" >
         <shape>
-            <solid android:color="@color/colorLikeGreen" />
+            <solid android:color="@color/colorLikeGreenSelected" />
         </shape>
     </item>
 

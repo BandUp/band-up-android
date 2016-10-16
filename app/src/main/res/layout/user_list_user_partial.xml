@@ -66,7 +66,8 @@
             android:background="@drawable/user_list_details_button"
             android:id="@+id/btnDetails"
             android:textSize="20sp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="onClickDetails"/>
 
         <Button
             android:text="@string/user_list_like"

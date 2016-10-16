@@ -1,5 +1,6 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.melodies.bandup.MainScreenActivity.MatchesFragment.OnListFragmentInteractionListener;
 import com.melodies.bandup.R;
 import com.melodies.bandup.helper_classes.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,10 +24,14 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
 
     private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private ImageLoader mImageLoader;
+    private Context mContext;
 
-    public MyMatchesRecyclerViewAdapter(List<User> items, OnListFragmentInteractionListener listener) {
+    public MyMatchesRecyclerViewAdapter(Context context, List<User> items, OnListFragmentInteractionListener listener, ImageLoader imageLoader) {
         mValues = items;
         mListener = listener;
+        mImageLoader = imageLoader;
+        mContext = context;
     }
 
     @Override
@@ -39,6 +45,9 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).name);
+        holder.mImageView.setImageBitmap(null);
+
+        Picasso.with(mContext).load(mValues.get(position).imgURL).into(holder.mImageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +88,4 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
-
-
 }

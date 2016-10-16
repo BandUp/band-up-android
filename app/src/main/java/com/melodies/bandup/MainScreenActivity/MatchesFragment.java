@@ -61,14 +61,18 @@ public class MatchesFragment extends Fragment {
 
     MyMatchesRecyclerViewAdapter mmrva;
     List<User> matchItems;
+    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         matchItems = new ArrayList<>();
-        mmrva = new MyMatchesRecyclerViewAdapter(matchItems, mListener);
+        imageLoader = new com.melodies.bandup.MainScreenActivity.ImageLoader(getActivity());
+        mmrva = new MyMatchesRecyclerViewAdapter(getActivity(), matchItems, mListener, imageLoader);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
 
         String url = getActivity().getResources().getString(R.string.api_address).concat("/matches");
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -87,8 +91,11 @@ public class MatchesFragment extends Fragment {
                                 if (!item.isNull("image")) {
                                     JSONObject imgObj = item.getJSONObject("image");
                                     if (!imgObj.isNull("url")) user.imgURL = imgObj.getString("url");
+
                                 }
                                 mmrva.addUser(user);
+
+
                             } catch (JSONException e) {
                                 Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();

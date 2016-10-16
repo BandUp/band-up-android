@@ -30,7 +30,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
@@ -88,6 +87,7 @@ public class ProfileFragment extends Fragment{
     private int getProgressMaxValue = 200;   // Max X Km radius
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
+    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
 
 
     // TODO: Rename and change types of parameters
@@ -129,6 +129,7 @@ public class ProfileFragment extends Fragment{
         galleryPhoto = new GalleryPhoto(getActivity());
         myThread = new MyThread();
         myThread.start();
+        imageLoader = new com.melodies.bandup.MainScreenActivity.ImageLoader(getActivity());
 
     }
 
@@ -324,7 +325,7 @@ public class ProfileFragment extends Fragment{
                             imageDownloadDialog.dismiss();
                         }
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        getProfilePhoto(urlResponse, imageDownloadDialog);
+                        imageLoader.getProfilePhoto(urlResponse, ivUserProfileImage, imageDownloadDialog);
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
                                 System.out.println("FILE DELETION SUCCEEDED");
@@ -425,63 +426,7 @@ public class ProfileFragment extends Fragment{
         alertDialog.show();
     }
 
-    String validateJSON(String json) {
-        System.out.println("JSON");
-        System.out.println(json);
-        String imageURL = null;
-        try {
-            JSONObject urlObject = new JSONObject(json);
-            if (!urlObject.isNull("url")) {
-                imageURL = urlObject.getString("url");
-            } else {
-                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
-                return null;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (imageURL == null || imageURL.equals("")) {
-            return null;
-        }
-        return imageURL;
-    }
 
-    public void getProfilePhoto(String urlResponse, ProgressDialog pDialog) {
-        getProfilePhoto(urlResponse);
-        pDialog.dismiss();
-    }
-
-    public void getProfilePhoto(String urlResponse) {
-        ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
-        ivUserProfileImage.setImageResource(R.color.transparent);
-
-        String imageUrl = validateJSON(urlResponse);
-        if (imageUrl != null) {
-            il.get(imageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    final Bitmap b = response.getBitmap();
-                    if (b != null) {
-                        Runnable r = new Runnable() {
-                            @Override
-                            public void run() {
-                                ivUserProfileImage.setImageBitmap(b);
-                            }
-                        };
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(r);
-                        }
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                }
-            });
-        }
-    }
 
     // Get the userid of logged in user
     public String getUserId() throws JSONException {
@@ -525,7 +470,7 @@ public class ProfileFragment extends Fragment{
                                 }
 
                                 if (!response.isNull("image")) {
-                                    getProfilePhoto(response.getJSONObject("image").toString());
+                                    imageLoader.getProfilePhoto(response.getJSONObject("image").toString(), ivUserProfileImage);
                                 } else {
                                     // TODO: Could not get image, display the placeholder.
                                 }

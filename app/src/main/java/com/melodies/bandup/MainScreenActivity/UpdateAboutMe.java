@@ -25,6 +25,7 @@ public class UpdateAboutMe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updateaboutme);
+        setTitle("About Me");
         userRequest();
     }
 

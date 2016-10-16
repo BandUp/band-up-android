@@ -127,10 +127,9 @@ public class ProfileFragment extends Fragment{
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
+        imageLoader = new ImageLoader(getActivity());
         myThread = new MyThread();
         myThread.start();
-        imageLoader = new com.melodies.bandup.MainScreenActivity.ImageLoader(getActivity());
-
     }
 
     @Override
@@ -503,10 +502,8 @@ public class ProfileFragment extends Fragment{
     // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getActivity(), "onActivityResuld Called", Toast.LENGTH_LONG).show();
         if (resultCode == 2) {
             if (data != null) {
-                Toast.makeText(getActivity(), "OK", Toast.LENGTH_LONG).show();
                 String message = data.getStringExtra("MESSAGE");
                 txtAboutMe.setText(message);
             }

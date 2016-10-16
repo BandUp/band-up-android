@@ -86,8 +86,6 @@ public class UpdateAboutMe extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(UpdateAboutMe.this, "Updated", Toast.LENGTH_SHORT).show();
-
                         Intent i = new Intent();
                         i.putExtra("MESSAGE", aboutMe);
                         setResult(2, i);

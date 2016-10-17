@@ -33,7 +33,7 @@ public class Genres extends AppCompatActivity {
         sShared     = new SetupShared();
 
         // Gets the list of genres.
-        sShared.getSetupItems(Genres.this, url, gridView, progressBar);
+        sShared.getGenres(Genres.this, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -13,39 +13,53 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.JsonArrayToObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.repositories.BandUpDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A shared class that both Genres and Instruments
  * use to GET and POST data to and from the server.
  */
 public class SetupShared {
+    private BandUpDatabase repo;
 
     /**
      * This function GETs instruments or genres, depending on the URL.
      * @param context     The context we are working in.
-     * @param url         The URL where we are going to GET the data.
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
      */
-    public void getSetupItems(Context context, String url, GridView gridView, ProgressBar progressBar) {
+    public void getInstruments(Context context, GridView gridView, ProgressBar progressBar) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                new JSONArray(),
-                this.getSetupItemsListener(context, gridView, progressBar),
-                this.getSetupItemsErrorListener(context, progressBar)
-        );
+        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
+        repo.getInstruments(context,
+                getSetupItemsListener(context, gridView, progressBar),
+                getSetupItemsErrorListener(context, progressBar));
+    }
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+    /**
+     * This function GETs instruments or genres, depending on the URL.
+     * @param context     The context we are working in.
+     * @param gridView    The GridView we are going to put the data into.
+     * @param progressBar The ProgressBar that displays when we are getting the data.
+     */
+    public void getGenres(Context context, GridView gridView, ProgressBar progressBar) {
+        progressBar.setVisibility(progressBar.VISIBLE);
+        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
+        repo.getGenres(context,
+                getSetupItemsListener(context, gridView, progressBar),
+                getSetupItemsErrorListener(context, progressBar));
     }
 
     /**
@@ -67,19 +81,22 @@ public class SetupShared {
      * @return             the listener
      * @see DoubleListAdapter
      */
-    private Response.Listener<JSONArray> getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
-        return new Response.Listener<JSONArray>() {
+    private BandUpResponseListener getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
+        return new BandUpResponseListener() {
             @Override
-            public void onResponse(JSONArray response) {
-
+            public void onBandUpResponse(Object response) {
+                JSONArray responseArr = null;
+                if (response instanceof JSONArray) {
+                    responseArr = (JSONArray) response;
+                }
                 // Create a new adapter for the GridView.
                 DoubleListAdapter dlAdapter = new DoubleListAdapter(context);
                 gridView.setAdapter(dlAdapter);
 
                 // Go through every item in the list the server sent us.
-                for (int i = 0; i < response.length(); i++) {
+                for (int i = 0; i < responseArr.length(); i++) {
                     try {
-                        JSONObject item = response.getJSONObject(i);
+                        JSONObject item = responseArr.getJSONObject(i);
                         String id    = item.getString("_id");
                         String name  = item.getString("name");
 
@@ -106,10 +123,10 @@ public class SetupShared {
      * @param progressBar The ProgressBar in the view.
      * @return the listener.
      */
-    private Response.ErrorListener getSetupItemsErrorListener(final Context context, final ProgressBar progressBar) {
-        return new Response.ErrorListener() {
+    private BandUpErrorListener getSetupItemsErrorListener(final Context context, final ProgressBar progressBar) {
+        return new BandUpErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onBandUpErrorResponse(VolleyError error) {
                 VolleySingleton.getInstance(context).checkCauseOfError(error);
                 progressBar.setVisibility(progressBar.GONE);
             }

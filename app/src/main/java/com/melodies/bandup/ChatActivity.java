@@ -182,7 +182,8 @@ public class ChatActivity extends AppCompatActivity {
                             VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(error);
                         }
                     }
-                });
+                }
+        );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }

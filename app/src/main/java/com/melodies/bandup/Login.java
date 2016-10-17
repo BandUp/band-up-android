@@ -46,6 +46,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.repositories.BandUpDatabase;
 import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
@@ -65,6 +68,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
+    private BandUpDatabase repo;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -104,6 +108,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
@@ -455,31 +460,35 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
+
+        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
+        repo.local_login(
+                Login.this,
                 user,
-                new Response.Listener<JSONObject>() {
+                new BandUpResponseListener() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        saveUserReponse(response);
-                        saveUserId(response);
+                    public void onBandUpResponse(Object response) {
+                        JSONObject responseObj = null;
+                        if (response instanceof JSONObject) {
+                            responseObj = (JSONObject) response;
+                        }
+
+                        saveUserReponse(responseObj);
+                        saveUserId(responseObj);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
-                        openCorrectIntent(response);
+                        openCorrectIntent(responseObj);
                         loginDialog.dismiss();
+
                     }
                 },
-                new Response.ErrorListener() {
+                new BandUpErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onBandUpErrorResponse(VolleyError error) {
                         loginDialog.dismiss();
                         errorHandlerLogin(error);
                     }
                 }
         );
-
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     // Handling errors that can occur while SignIn request

@@ -33,7 +33,7 @@ public class Instruments extends AppCompatActivity {
         sShared     = new SetupShared();
 
         // Gets the list of instruments.
-        sShared.getSetupItems(Instruments.this, url, gridView, progressBar);
+        sShared.getInstruments(Instruments.this, gridView, progressBar);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

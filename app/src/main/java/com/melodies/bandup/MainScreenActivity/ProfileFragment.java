@@ -27,15 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.melodies.bandup.repositories.BandUpRepository;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -444,51 +446,50 @@ public class ProfileFragment extends Fragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/get-user");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            // Binding View to real data
-                            try {
-                                if (!response.isNull("username")) {
-                                    txtName.setText(response.getString("username"));
-                                }
-                                //txtInstruments.setText(response.getString("instruments"));    // need some work
-                                //txtGenres.setText(response.getString("genres"));              // need some work
-                                txtFanStar.setText("Bob Marley");
-                                txtStatus.setText("Searching for band");        // need to create list of available options to choose
-                                txtPercentage.setText("45%");                   // needs match % value
 
-                                if (!response.isNull("aboutme")) {
-                                    txtAboutMe.setText(response.getString("aboutme"));  // done
-                                }
 
-                                if (!response.isNull("image")) {
-                                    imageLoader.getProfilePhoto(response.getJSONObject("image").toString(), ivUserProfileImage);
-                                } else {
-                                    // TODO: Could not get image, display the placeholder.
-                                }
+        BandUpRepository bandUpDB = new BandUpRepository();
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+        bandUpDB.getUserProfile(getActivity(), user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+                if (response instanceof JSONArray) {
+                    responseObj = (JSONObject) response;
+                }
+                if (response != null) {
+                    // Binding View to real data
+                    try {
+                        if (!responseObj.isNull("username")) {
+                            txtName.setText(responseObj.getString("username"));
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Bad response: " + error.toString(), Toast.LENGTH_LONG).show();
+                        //txtInstruments.setText(response.getString("instruments"));    // need some work
+                        //txtGenres.setText(response.getString("genres"));              // need some work
+                        txtFanStar.setText("Bob Marley");
+                        txtStatus.setText("Searching for band");        // need to create list of available options to choose
+                        txtPercentage.setText("45%");                   // needs match % value
+
+                        if (!responseObj.isNull("aboutme")) {
+                            txtAboutMe.setText(responseObj.getString("aboutme"));  // done
+                        }
+
+                        if (!responseObj.isNull("image")) {
+                            imageLoader.getProfilePhoto(responseObj.getJSONObject("image").toString(), ivUserProfileImage);
+                        } else {
+                            // TODO: Could not get image, display the placeholder.
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                System.out.println("ERROR");
+            }
+        });
     }
 
     public void onClickAboutMe (View view) {

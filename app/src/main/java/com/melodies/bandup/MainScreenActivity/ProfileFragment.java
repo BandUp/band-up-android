@@ -31,13 +31,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
-import com.melodies.bandup.repositories.BandUpRepository;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.repositories.BandUpRepository;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -454,7 +453,7 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onBandUpResponse(Object response) {
                 JSONObject responseObj = null;
-                if (response instanceof JSONArray) {
+                if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
                 }
                 if (response != null) {

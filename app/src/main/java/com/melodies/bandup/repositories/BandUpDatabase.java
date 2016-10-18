@@ -14,32 +14,26 @@ import org.json.JSONObject;
 
 public interface BandUpDatabase {
 
-    void local_login(Context context,
-                     JSONObject user,
+    void local_login(JSONObject user,
                      BandUpResponseListener responseListener,
                      BandUpErrorListener errorListener);
 
 
-    void getUserProfile(final Context context,
-                        final JSONObject user,
+    void getUserProfile(final JSONObject user,
                         final BandUpResponseListener responseListener,
                         final BandUpErrorListener errorListener);
 
-    void getInstruments(final Context context,
-                        final BandUpResponseListener responseListener,
+    void getInstruments(final BandUpResponseListener responseListener,
                         final BandUpErrorListener errorListener);
 
-    void getGenres(final Context context,
-                   final BandUpResponseListener setupItemsListener,
+    void getGenres(final BandUpResponseListener setupItemsListener,
                    final BandUpErrorListener setupItemsErrorListener);
 
-    void postInstruments(final Context context,
-                         final JSONArray instruments,
+    void postInstruments(final JSONArray instruments,
                          final BandUpResponseListener responseListener,
                          final BandUpErrorListener errorListener);
 
-    void postGenres(final Context context,
-                    final JSONArray genres,
+    void postGenres(final JSONArray genres,
                     final BandUpResponseListener responseListener,
                     final BandUpErrorListener errorListener);
 

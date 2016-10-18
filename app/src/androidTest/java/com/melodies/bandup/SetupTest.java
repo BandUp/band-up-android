@@ -84,7 +84,7 @@ public class SetupTest {
     public void checkInstruments() {
         BandUpMockRepository mockRepository = new BandUpMockRepository() {
             @Override
-            public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONObject obj = new JSONObject();
                 try {
                     obj.put("sessionID", "ASDF");
@@ -97,7 +97,7 @@ public class SetupTest {
             }
 
             @Override
-            public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
 
                 JSONArray arr = null;
                 try {
@@ -129,7 +129,7 @@ public class SetupTest {
     public void checkEmptyInstruments() {
         BandUpMockRepository mockRepository = new BandUpMockRepository() {
             @Override
-            public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONObject obj = new JSONObject();
                 try {
                     obj.put("sessionID", "ASDF");
@@ -142,7 +142,7 @@ public class SetupTest {
             }
 
             @Override
-            public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
 
                 JSONArray arr = new JSONArray();
                 responseListener.onBandUpResponse(arr);
@@ -164,7 +164,7 @@ public class SetupTest {
     public void checkNoSelectionInstruments() {
         BandUpMockRepository mockRepository = new BandUpMockRepository() {
             @Override
-            public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONObject obj = new JSONObject();
                 try {
                     obj.put("sessionID", "ASDF");
@@ -177,7 +177,7 @@ public class SetupTest {
             }
 
             @Override
-            public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
 
                 JSONArray arr = null;
                 try {

@@ -38,7 +38,7 @@ public class SetupShared {
      */
     public void getInstruments(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoInstruments) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getInstruments(context,
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getInstruments(
                 getSetupItemsListener(context, gridView, progressBar, txtNoInstruments),
                 getSetupItemsErrorListener(context, progressBar));
     }
@@ -52,7 +52,6 @@ public class SetupShared {
     public void getGenres(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoGenres) {
         progressBar.setVisibility(progressBar.VISIBLE);
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getGenres(
-                context,
                 getSetupItemsListener(context, gridView, progressBar, txtNoGenres),
                 getSetupItemsErrorListener(context, progressBar)
         );
@@ -165,7 +164,6 @@ public class SetupShared {
 
     public void postInstruments(Context c, JSONArray instrumentArr) {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
-                c,
                 instrumentArr,
                 getPickListener(),
                 getPickErrorListener(c)
@@ -174,7 +172,6 @@ public class SetupShared {
 
     public void postGenres(Context c, JSONArray instrumentArr) {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postGenres(
-                c,
                 instrumentArr,
                 getPickListener(),
                 getPickErrorListener(c)

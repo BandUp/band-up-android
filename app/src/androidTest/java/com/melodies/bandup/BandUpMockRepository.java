@@ -6,6 +6,7 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.repositories.BandUpDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -14,22 +15,32 @@ import org.json.JSONObject;
 
 public class BandUpMockRepository implements BandUpDatabase {
     @Override
-    public void getUserProfile(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getUserProfile(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void getGenres(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void postInstruments(JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
+    public void postGenres(JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
+    public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 

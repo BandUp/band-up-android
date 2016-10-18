@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:id="@+id/login_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,6 +20,13 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="0dp"
         android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
 
         <ImageView
             android:id="@+id/band_up_login_logo"

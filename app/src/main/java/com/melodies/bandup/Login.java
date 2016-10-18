@@ -459,7 +459,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
 
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().local_login(
-                Login.this,
                 user,
                 new BandUpResponseListener() {
                     @Override
@@ -496,7 +495,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void saveUserReponse(JSONObject response) {
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("response", response.toString());
+        editor.putString("sessionID", response.toString());
         editor.apply();
     }
 

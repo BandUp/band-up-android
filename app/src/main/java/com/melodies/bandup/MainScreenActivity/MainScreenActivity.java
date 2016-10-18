@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.*;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -83,6 +84,10 @@ public class MainScreenActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);
         ft.commit();
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        AdView mAdview = (AdView)findViewById(R.id.adView);
+        AdRequest mAdRequest = new AdRequest.Builder().build();
+//        mAdview.loadAd(mAdRequest);
     }
 
     @Override

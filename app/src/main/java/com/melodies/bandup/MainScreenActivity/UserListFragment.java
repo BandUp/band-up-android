@@ -85,7 +85,7 @@ public class UserListFragment extends Fragment {
         ulc = new UserListController();
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
 
-        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(getActivity(), new BandUpResponseListener() {
+        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 JSONArray responseArr = null;

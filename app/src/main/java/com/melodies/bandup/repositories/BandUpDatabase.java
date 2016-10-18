@@ -1,7 +1,5 @@
 package com.melodies.bandup.repositories;
 
-import android.content.Context;
-
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -37,8 +35,7 @@ public interface BandUpDatabase {
                     final BandUpResponseListener responseListener,
                     final BandUpErrorListener errorListener);
 
-    void getUserList(final Context context,
-                     final BandUpResponseListener setupItemsListener,
+    void getUserList(final BandUpResponseListener setupItemsListener,
                      final BandUpErrorListener setupItemsErrorListener);
 }
 

@@ -18,7 +18,6 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,11 +168,11 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     @Override
-    public void getUserList(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        String url = context.getResources().getString(R.string.api_address).concat("/nearby-users");
+    public void getUserList(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/nearby-users");
 
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 }

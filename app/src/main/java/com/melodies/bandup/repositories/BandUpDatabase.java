@@ -42,5 +42,9 @@ public interface BandUpDatabase {
                     final JSONArray genres,
                     final BandUpResponseListener responseListener,
                     final BandUpErrorListener errorListener);
+
+    void getUserList(final Context context,
+                     final BandUpResponseListener setupItemsListener,
+                     final BandUpErrorListener setupItemsErrorListener);
 }
 

@@ -16,11 +16,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,64 +84,63 @@ public class UserListFragment extends Fragment {
         }
         ulc = new UserListController();
         String url = getResources().getString(R.string.api_address).concat("/nearby-users");
-        JsonArrayRequest jsonInstrumentRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                new JSONArray(),
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject item = response.getJSONObject(i);
-                                User user = new User();
-                                if (!item.isNull("_id"))      user.id = item.getString("_id");
-                                if (!item.isNull("username")) user.name = item.getString("username");
-                                if (!item.isNull("status"))   user.status = item.getString("status");
-                                if (!item.isNull("distance")) user.distance = item.getInt("distance");
 
-                                user.percentage = item.getInt("percentage");
-                                if(!item.isNull("image")) {
-                                    JSONObject userImg = item.getJSONObject("image");
-                                    if (!userImg.isNull("url")) {
-                                        user.imgURL = userImg.getString("url");
-                                    }
-                                }
+        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(getActivity(), new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONArray responseArr = null;
 
-                                JSONArray instrumentArray = item.getJSONArray("instruments");
+                if (response instanceof JSONArray) {
+                    responseArr = (JSONArray) response;
+                } else {
+                    return;
+                }
 
-                                for (int j = 0; j < instrumentArray.length(); j++) {
-                                    user.instruments.add(instrumentArray.getString(j));
-                                }
+                for (int i = 0; i < responseArr.length(); i++) {
+                    try {
+                        JSONObject item = responseArr.getJSONObject(i);
+                        User user = new User();
+                        if (!item.isNull("_id"))      user.id = item.getString("_id");
+                        if (!item.isNull("username")) user.name = item.getString("username");
+                        if (!item.isNull("status"))   user.status = item.getString("status");
+                        if (!item.isNull("distance")) user.distance = item.getInt("distance");
 
-                                JSONArray genreArray = item.getJSONArray("genres");
-
-                                for (int j = 0; j < genreArray.length(); j++) {
-                                    user.genres.add(genreArray.getString(j));
-                                }
-                                ulc.addUser(user);
-                            } catch (JSONException e) {
-                                Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
+                        user.percentage = item.getInt("percentage");
+                        if(!item.isNull("image")) {
+                            JSONObject userImg = item.getJSONObject("image");
+                            if (!userImg.isNull("url")) {
+                                user.imgURL = userImg.getString("url");
                             }
                         }
-                        partialView.setVisibility(partialView.VISIBLE);
-                        if (ulc.users.size() > 0) {
-                            displayUser(ulc.getUser(0));
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
 
+                        JSONArray instrumentArray = item.getJSONArray("instruments");
+
+                        for (int j = 0; j < instrumentArray.length(); j++) {
+                            user.instruments.add(instrumentArray.getString(j));
+                        }
+
+                        JSONArray genreArray = item.getJSONArray("genres");
+
+                        for (int j = 0; j < genreArray.length(); j++) {
+                            user.genres.add(genreArray.getString(j));
+                        }
+                        ulc.addUser(user);
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
                     }
                 }
-        );
-
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonInstrumentRequest);
-
+                partialView.setVisibility(partialView.VISIBLE);
+                if (ulc.users.size() > 0) {
+                    displayUser(ulc.getUser(0));
+                }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+            }
+        });
     }
 
     @Override

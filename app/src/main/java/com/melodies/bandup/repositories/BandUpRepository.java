@@ -146,4 +146,13 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
     }
+
+    @Override
+    public void getUserList(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = context.getResources().getString(R.string.api_address).concat("/nearby-users");
+
+        JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
+
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+    }
 }

@@ -24,6 +24,11 @@ public class BandUpMockRepository implements BandUpDatabase {
     }
 
     @Override
+    public void getGenres(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
     public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }

@@ -89,4 +89,7 @@
     <string name="profile_uploading">Uploading Photo</string>
     <string name="main_title_edit_profile">Edit Profile</string>
     <string name="main_nav_log_out">Log Out</string>
+    <string name="setup_no_instruments">No Instruments Available</string>
+    <string name="setup_no_genres">No Genres Available</string>
+    <string name="setup_selection_low">You need to select at least one item.</string>
 </resources>

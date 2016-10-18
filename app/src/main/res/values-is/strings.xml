@@ -84,6 +84,9 @@
     <string name="profile_uploading">Hleð upp mynd</string>
     <string name="main_title_edit_profile">Breyta prófíl</string>
     <string name="main_nav_log_out">Útskrá</string>
+    <string name="setup_no_genres">Engar stefnur tiltækar</string>
+    <string name="setup_no_instruments">Engin hljóðfæri tiltæk</string>
+    <string name="setup_selection_low">Þú verður að velja a.m.k. einn hlut</string>
 
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melodies.bandup.R;
@@ -16,24 +17,26 @@ import com.melodies.bandup.R;
  * An activity class that controls the Instruments view.
  */
 public class Instruments extends AppCompatActivity {
-    private String url;
-    private String route = "/instruments";
-    private GridView gridView;
+    private String      url;
+    private String      route = "/instruments";
+    private GridView    gridView;
     private ProgressBar progressBar;
     private SetupShared sShared;
+    private TextView    txtNoInstruments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
 
-        url         = getResources().getString(R.string.api_address).concat(route);
-        gridView    = (GridView) findViewById(R.id.instrumentGridView);
-        progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
-        sShared     = new SetupShared();
+        url              = getResources().getString(R.string.api_address).concat(route);
+        gridView         = (GridView) findViewById(R.id.instrumentGridView);
+        progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
+        txtNoInstruments = (TextView) findViewById(R.id.txtNoInstruments);
+        sShared          = new SetupShared();
 
         // Gets the list of instruments.
-        sShared.getInstruments(Instruments.this, gridView, progressBar);
+        sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

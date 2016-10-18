@@ -48,7 +48,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpDatabase;
 import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
@@ -68,7 +67,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
-    private BandUpDatabase repo;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -108,7 +106,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
@@ -461,8 +458,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             e.printStackTrace();
         }
 
-        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
-        repo.local_login(
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().local_login(
                 Login.this,
                 user,
                 new BandUpResponseListener() {

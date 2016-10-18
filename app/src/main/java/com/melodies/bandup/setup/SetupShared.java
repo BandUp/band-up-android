@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,7 +20,6 @@ import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +32,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * use to GET and POST data to and from the server.
  */
 public class SetupShared {
-    private BandUpDatabase repo;
 
     /**
      * This function GETs instruments or genres, depending on the URL.
@@ -40,11 +39,10 @@ public class SetupShared {
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
      */
-    public void getInstruments(Context context, GridView gridView, ProgressBar progressBar) {
+    public void getInstruments(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoInstruments) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
-        repo.getInstruments(context,
-                getSetupItemsListener(context, gridView, progressBar),
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getInstruments(context,
+                getSetupItemsListener(context, gridView, progressBar, txtNoInstruments),
                 getSetupItemsErrorListener(context, progressBar));
     }
 
@@ -54,12 +52,13 @@ public class SetupShared {
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
      */
-    public void getGenres(Context context, GridView gridView, ProgressBar progressBar) {
+    public void getGenres(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoGenres) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        repo = DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase();
-        repo.getGenres(context,
-                getSetupItemsListener(context, gridView, progressBar),
-                getSetupItemsErrorListener(context, progressBar));
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getGenres(
+                context,
+                getSetupItemsListener(context, gridView, progressBar, txtNoGenres),
+                getSetupItemsErrorListener(context, progressBar)
+        );
     }
 
     /**
@@ -81,31 +80,45 @@ public class SetupShared {
      * @return             the listener
      * @see DoubleListAdapter
      */
-    private BandUpResponseListener getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar) {
+    private BandUpResponseListener getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar, final TextView txtNoItems) {
         return new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                if (response == "" || response == null) {
+                    txtNoItems.setVisibility(TextView.VISIBLE);
+                    return;
+                }
+
                 JSONArray responseArr = null;
+
                 if (response instanceof JSONArray) {
                     responseArr = (JSONArray) response;
+                } else {
+                    txtNoItems.setVisibility(TextView.VISIBLE);
+                    return;
                 }
-                // Create a new adapter for the GridView.
-                DoubleListAdapter dlAdapter = new DoubleListAdapter(context);
-                gridView.setAdapter(dlAdapter);
 
-                // Go through every item in the list the server sent us.
-                for (int i = 0; i < responseArr.length(); i++) {
-                    try {
-                        JSONObject item = responseArr.getJSONObject(i);
-                        String id    = item.getString("_id");
-                        String name  = item.getString("name");
+                if (responseArr.length() == 0) {
+                    txtNoItems.setVisibility(TextView.VISIBLE);
+                } else {
+                    // Create a new adapter for the GridView.
+                    DoubleListAdapter dlAdapter = new DoubleListAdapter(context);
+                    gridView.setAdapter(dlAdapter);
 
-                        DoubleListItem dlItem = new DoubleListItem(id, i, name);
-                        dlAdapter.addItem(dlItem);
+                    // Go through every item in the list the server sent us.
+                    for (int i = 0; i < responseArr.length(); i++) {
+                        try {
+                            JSONObject item = responseArr.getJSONObject(i);
+                            String id    = item.getString("_id");
+                            String name  = item.getString("name");
 
-                    } catch (JSONException e) {
-                        Toast.makeText(context, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
+                            DoubleListItem dlItem = new DoubleListItem(id, i, name);
+                            dlAdapter.addItem(dlItem);
+
+                        } catch (JSONException e) {
+                            Toast.makeText(context, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
                     }
                 }
                 progressBar.setVisibility(progressBar.GONE);
@@ -152,7 +165,7 @@ public class SetupShared {
         }
 
         if (selectedItems.length() == 0) {
-            Toast.makeText(c, "You need to select at least one item.", Toast.LENGTH_LONG).show();
+            Toast.makeText(c, R.string.setup_selection_low, Toast.LENGTH_LONG).show();
             return false;
         }
 

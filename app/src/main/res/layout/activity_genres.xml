@@ -67,4 +67,17 @@
         tools:visibility="visible"
         android:indeterminate="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/setup_no_genres"
+        android:id="@+id/txtNoGenres"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

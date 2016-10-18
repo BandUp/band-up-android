@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melodies.bandup.R;
@@ -21,6 +22,7 @@ public class Genres extends AppCompatActivity {
     private GridView gridView;
     private ProgressBar progressBar;
     private SetupShared sShared;
+    private TextView txtNoGenres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +32,11 @@ public class Genres extends AppCompatActivity {
         url         = getResources().getString(R.string.api_address).concat(route);
         gridView    = (GridView) findViewById(R.id.genreGridView);
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
+        txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
         sShared     = new SetupShared();
 
         // Gets the list of genres.
-        sShared.getGenres(Genres.this, gridView, progressBar);
+        sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -86,7 +86,8 @@
     <string name="main_nav_log_out">Útskrá</string>
     <string name="setup_no_genres">Engar stefnur tiltækar</string>
     <string name="setup_no_instruments">Engin hljóðfæri tiltæk</string>
-    <string name="setup_selection_low">Þú verður að velja a.m.k. einn hlut</string>
+    <string name="setup_no_genre_selection">Þú verður að velja a.m.k. eina tónlistarstefnu</string>
+    <string name="setup_no_instrument_selection">Þú verður að velja a.m.k. eitt hljóðfæri</string>
 
 
 </resources>

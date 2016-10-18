@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.melodies.bandup.JsonArrayToObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -14,8 +15,6 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Bergthor on 16.10.2016.
@@ -61,12 +60,27 @@ public class BandUpRepository implements BandUpDatabase {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         errorListener.onBandUpErrorResponse(error);
-                        try {
-                            String s2 = new String(error.networkResponse.data, "UTF-8");
-                            System.out.println(s2);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                    }
+                }
+        );
+    }
+
+    private JsonArrayToObjectRequest createArrayObjectRequest(int httpMethod, String url, JSONArray data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
+
+        return new JsonArrayToObjectRequest(
+                httpMethod,
+                url,
+                data,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        responseListener.onBandUpResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorListener.onBandUpErrorResponse(error);
                     }
                 }
         );
@@ -111,6 +125,24 @@ public class BandUpRepository implements BandUpDatabase {
         String url = context.getResources().getString(R.string.api_address).concat("/genres");
 
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
+
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+    }
+
+    @Override
+    public void postInstruments(Context context, JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = context.getResources().getString(R.string.api_address).concat("/instruments");
+        System.out.println(instruments);
+        JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, instruments, responseListener, errorListener);
+
+        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+    }
+
+    @Override
+    public void postGenres(Context context, JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = context.getResources().getString(R.string.api_address).concat("/genres");
+
+        JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, genres, responseListener, errorListener);
 
         VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
     }

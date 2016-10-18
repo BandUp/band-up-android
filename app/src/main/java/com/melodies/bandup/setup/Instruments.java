@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.melodies.bandup.R;
 
+import org.json.JSONArray;
+
 
 /**
  * An activity class that controls the Instruments view.
@@ -58,11 +60,15 @@ public class Instruments extends AppCompatActivity {
             }
 
             // Send the items that the user selected to the server.
-            if (sShared.postSelectedItems(Instruments.this, dla, url)) {
-                Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
-                Instruments.this.startActivity(toInstrumentsIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            JSONArray selectedInstruments = sShared.prepareSelectedList(Instruments.this, dla);
+            if (selectedInstruments.length() > 0) {
+                sShared.postInstruments(Instruments.this, selectedInstruments);
+                Intent toUserListIntent = new Intent(Instruments.this, Genres.class);
+                Instruments.this.startActivity(toUserListIntent);
+                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 finish();
+            } else {
+                Toast.makeText(Instruments.this, R.string.setup_no_instrument_selection, Toast.LENGTH_LONG).show();
             }
         }
     }

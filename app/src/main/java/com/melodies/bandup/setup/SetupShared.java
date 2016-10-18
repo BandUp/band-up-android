@@ -11,11 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
-import com.melodies.bandup.JsonArrayToObjectRequest;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -151,10 +148,9 @@ public class SetupShared {
      *
      * @param c   The context we are working in.
      * @param dla The DoubleListAdapter we want to read from.
-     * @param url The URL where we are going to POST the data.
      * @return True if all preconditions are met. False otherwise.
      */
-    public Boolean postSelectedItems(Context c, DoubleListAdapter dla, String url) {
+    public JSONArray prepareSelectedList(Context c, DoubleListAdapter dla) {
         JSONArray selectedItems = new JSONArray();
 
         // Go through all items in the GridView and put its IDs into an array.
@@ -164,22 +160,28 @@ public class SetupShared {
             }
         }
 
-        if (selectedItems.length() == 0) {
-            Toast.makeText(c, R.string.setup_selection_low, Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        JsonArrayToObjectRequest postItems = new JsonArrayToObjectRequest(
-                Request.Method.POST,
-                url,
-                selectedItems,
-                this.getPickListener(),
-                this.getPickErrorListener(c)
-        );
-
-        VolleySingleton.getInstance(c).addToRequestQueue(postItems);
-        return true;
+        return selectedItems;
     }
+
+    public void postInstruments(Context c, JSONArray instrumentArr) {
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
+                c,
+                instrumentArr,
+                getPickListener(),
+                getPickErrorListener(c)
+        );
+    }
+
+    public void postGenres(Context c, JSONArray instrumentArr) {
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postGenres(
+                c,
+                instrumentArr,
+                getPickListener(),
+                getPickErrorListener(c)
+        );
+    }
+
+
 
     /**
      * This listener is used when listening to responses to
@@ -187,10 +189,11 @@ public class SetupShared {
      *
      * @return the listener
      */
-    private Response.Listener<JSONObject> getPickListener() {
-        return new Response.Listener<JSONObject>() {
+    private BandUpResponseListener getPickListener() {
+        return new BandUpResponseListener() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onBandUpResponse(Object response) {
+
             }
         };
     }
@@ -202,10 +205,10 @@ public class SetupShared {
      * @param context The context we are working in.
      * @return the listener.
      */
-    private Response.ErrorListener getPickErrorListener(final Context context) {
-        return new Response.ErrorListener() {
+    private BandUpErrorListener getPickErrorListener(final Context context) {
+        return new BandUpErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onBandUpErrorResponse(VolleyError error) {
                 VolleySingleton.getInstance(context).checkCauseOfError(error);
             }
         };

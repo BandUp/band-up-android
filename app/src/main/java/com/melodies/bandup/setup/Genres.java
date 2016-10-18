@@ -10,8 +10,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melodies.bandup.R;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.R;
+
+import org.json.JSONArray;
 
 /**
  * An activity class that controls the Genres view.
@@ -21,8 +23,8 @@ public class Genres extends AppCompatActivity {
     private String route = "/genres";
     private GridView gridView;
     private ProgressBar progressBar;
-    private SetupShared sShared;
     private TextView txtNoGenres;
+    private SetupShared sShared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +60,15 @@ public class Genres extends AppCompatActivity {
             }
 
             // Send the items that the user selected to the server.
-            if (sShared.postSelectedItems(Genres.this, dla, url)) {
+            JSONArray selectedGenres = sShared.prepareSelectedList(Genres.this, dla);
+            if (selectedGenres.length() > 0) {
+                sShared.postGenres(Genres.this, selectedGenres);
                 Intent toUserListIntent = new Intent(Genres.this, MainScreenActivity.class);
                 Genres.this.startActivity(toUserListIntent);
                 overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 finish();
+            } else {
+                Toast.makeText(Genres.this, R.string.setup_no_genre_selection, Toast.LENGTH_LONG).show();
             }
         }
     }

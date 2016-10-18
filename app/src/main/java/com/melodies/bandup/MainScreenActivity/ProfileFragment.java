@@ -447,9 +447,9 @@ public class ProfileFragment extends Fragment{
         }
 
 
-        BandUpRepository bandUpDB = new BandUpRepository();
+        BandUpRepository bandUpDB = new BandUpRepository(getActivity());
 
-        bandUpDB.getUserProfile(getActivity(), user, new BandUpResponseListener() {
+        bandUpDB.getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 JSONObject responseObj = null;

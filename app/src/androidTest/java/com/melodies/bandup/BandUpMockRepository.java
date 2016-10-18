@@ -14,22 +14,22 @@ import org.json.JSONObject;
 
 public class BandUpMockRepository implements BandUpDatabase {
     @Override
-    public void getUserProfile(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getUserProfile(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void getGenres(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
     @Override
-    public void local_login(Context context, JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 

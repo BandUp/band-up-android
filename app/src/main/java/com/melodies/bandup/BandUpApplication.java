@@ -19,7 +19,7 @@ public class BandUpApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        setRepository(new BandUpRepository());
+        setRepository(new BandUpRepository(this));
     }
 
     @Override

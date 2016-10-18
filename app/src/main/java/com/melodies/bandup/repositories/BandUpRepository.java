@@ -1,7 +1,9 @@
 package com.melodies.bandup.repositories;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,12 +18,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Bergthor on 16.10.2016.
  */
 
 public class BandUpRepository implements BandUpDatabase {
+
+    private Context mContext;
+
+    public BandUpRepository(Context _context){
+        mContext = _context;
+    }
 
 
     private JsonObjectRequest createObjectRequest(int httpMethod, String url, JSONObject data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
@@ -42,7 +52,17 @@ public class BandUpRepository implements BandUpDatabase {
                         errorListener.onBandUpErrorResponse(error);
                     }
                 }
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                SharedPreferences sh = mContext.getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+                headers.put("content-type", "application/json");
+                headers.put("cookie", "connect.sid=".concat(sh.getString("sessionID", "")));
+                headers.put("connect.sid", sh.getString("sessionID", "")); // just to be sure
+                return headers;
+            }
+        };
     }
 
     private JsonArrayRequest createArrayRequest(int httpMethod, String url, JSONArray data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
@@ -73,45 +93,43 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     @Override
-    public void local_login(final Context context,
-                            final JSONObject user,
+    public void local_login(final JSONObject user,
                             final BandUpResponseListener responseListener,
                             final BandUpErrorListener errorListener) {
 
-        String url = context.getResources().getString(R.string.api_address).concat("/login-local");
+        String url = mContext.getResources().getString(R.string.api_address).concat("/login-local");
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
 
         // Insert request into queue
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void getUserProfile(final Context context,
-                               final JSONObject user,
+    public void getUserProfile(final JSONObject user,
                                final BandUpResponseListener responseListener,
                                final BandUpErrorListener errorListener) {
 
-        String url = context.getResources().getString(R.string.api_address).concat("/get-user");
+        String url = mContext.getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
 
         // insert request into queue
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
 
     @Override
-    public void getInstruments(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        String url = context.getResources().getString(R.string.api_address).concat("/instruments");
+    public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/instruments");
 
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 
     @Override
-    public void getGenres(Context context, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        String url = context.getResources().getString(R.string.api_address).concat("/genres");
+    public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/genres");
 
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 }

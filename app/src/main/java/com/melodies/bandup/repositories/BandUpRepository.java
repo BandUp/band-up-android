@@ -146,25 +146,25 @@ public class BandUpRepository implements BandUpDatabase {
 
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 
     @Override
-    public void postInstruments(Context context, JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        String url = context.getResources().getString(R.string.api_address).concat("/instruments");
+    public void postInstruments(JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/instruments");
         System.out.println(instruments);
         JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, instruments, responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 
     @Override
-    public void postGenres(Context context, JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        String url = context.getResources().getString(R.string.api_address).concat("/genres");
+    public void postGenres(JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/genres");
 
         JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, genres, responseListener, errorListener);
 
-        VolleySingleton.getInstance(context).addToRequestQueue(jsonInstrumentRequest);
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
     }
 }

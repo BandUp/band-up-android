@@ -6,6 +6,7 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.repositories.BandUpDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -25,6 +26,16 @@ public class BandUpMockRepository implements BandUpDatabase {
 
     @Override
     public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
+    public void postInstruments(JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
+    public void postGenres(JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 

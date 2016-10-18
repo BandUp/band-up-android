@@ -164,7 +164,6 @@ public class SetupShared {
 
     public void postInstruments(Context c, JSONArray instrumentArr) {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
-                c,
                 instrumentArr,
                 getPickListener(),
                 getPickErrorListener(c)
@@ -173,7 +172,6 @@ public class SetupShared {
 
     public void postGenres(Context c, JSONArray instrumentArr) {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postGenres(
-                c,
                 instrumentArr,
                 getPickListener(),
                 getPickErrorListener(c)

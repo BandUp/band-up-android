@@ -29,13 +29,11 @@ public interface BandUpDatabase {
     void getGenres(final BandUpResponseListener setupItemsListener,
                    final BandUpErrorListener setupItemsErrorListener);
 
-    void postInstruments(final Context context,
-                         final JSONArray instruments,
+    void postInstruments(final JSONArray instruments,
                          final BandUpResponseListener responseListener,
                          final BandUpErrorListener errorListener);
 
-    void postGenres(final Context context,
-                    final JSONArray genres,
+    void postGenres(final JSONArray genres,
                     final BandUpResponseListener responseListener,
                     final BandUpErrorListener errorListener);
 }

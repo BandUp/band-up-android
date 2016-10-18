@@ -5,6 +5,7 @@ import android.content.Context;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -27,5 +28,15 @@ public interface BandUpDatabase {
 
     void getGenres(final BandUpResponseListener setupItemsListener,
                    final BandUpErrorListener setupItemsErrorListener);
+
+    void postInstruments(final Context context,
+                         final JSONArray instruments,
+                         final BandUpResponseListener responseListener,
+                         final BandUpErrorListener errorListener);
+
+    void postGenres(final Context context,
+                    final JSONArray genres,
+                    final BandUpResponseListener responseListener,
+                    final BandUpErrorListener errorListener);
 }
 

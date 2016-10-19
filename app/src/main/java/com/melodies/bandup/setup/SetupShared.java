@@ -38,7 +38,7 @@ public class SetupShared {
      */
     public void getInstruments(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoInstruments) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getInstruments(
+        DatabaseSingleton.getInstance(context).getBandUpDatabase().getInstruments(
                 getSetupItemsListener(context, gridView, progressBar, txtNoInstruments),
                 getSetupItemsErrorListener(context, progressBar));
     }

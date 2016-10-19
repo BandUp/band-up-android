@@ -1,6 +1,5 @@
 package com.melodies.bandup;
 
-import android.content.Context;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;

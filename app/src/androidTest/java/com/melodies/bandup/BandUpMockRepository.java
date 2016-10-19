@@ -1,7 +1,5 @@
 package com.melodies.bandup;
 
-import android.content.Context;
-
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.repositories.BandUpDatabase;
@@ -36,6 +34,11 @@ public class BandUpMockRepository implements BandUpDatabase {
 
     @Override
     public void postGenres(JSONArray genres, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
+    public void getUserList(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 

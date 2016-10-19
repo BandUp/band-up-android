@@ -20,7 +20,7 @@ android {
         }
     }
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
     packagingOptions {
         exclude 'META-INF/**'
         exclude 'META-INF/**'
@@ -45,6 +45,11 @@ android {
             signingConfig signingConfigs.config
         }
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     useLibrary 'org.apache.http.legacy'
 }
 

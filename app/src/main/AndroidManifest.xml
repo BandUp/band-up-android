@@ -36,6 +36,8 @@
 
         <service android:name=".gcm_tools.RegistrationIntentService"
             android:exported="false"/>
+        <service android:name=".gcm_tools.BandUpGCMListenerService"
+            android:exported="false"/>
 
         <!-- This is main login View -->
         <activity

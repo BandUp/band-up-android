@@ -37,5 +37,9 @@ public interface BandUpDatabase {
 
     void getUserList(final BandUpResponseListener setupItemsListener,
                      final BandUpErrorListener setupItemsErrorListener);
+
+    void sendGCMRegToken(final JSONObject tokenObject,
+                         final BandUpResponseListener responseListener,
+                         final BandUpErrorListener errorListener);
 }
 

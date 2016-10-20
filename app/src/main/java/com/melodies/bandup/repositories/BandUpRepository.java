@@ -83,7 +83,17 @@ public class BandUpRepository implements BandUpDatabase {
                         errorListener.onBandUpErrorResponse(error);
                     }
                 }
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                SharedPreferences sh = mContext.getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+                headers.put("content-type", "application/json");
+                headers.put("cookie", "connect.sid=".concat(sh.getString("sessionID", "")));
+                headers.put("connect.sid", sh.getString("sessionID", "")); // just to be sure
+                return headers;
+            }
+        };
     }
 
     private JsonArrayToObjectRequest createArrayObjectRequest(int httpMethod, String url, JSONArray data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
@@ -104,7 +114,17 @@ public class BandUpRepository implements BandUpDatabase {
                         errorListener.onBandUpErrorResponse(error);
                     }
                 }
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                SharedPreferences sh = mContext.getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
+                headers.put("content-type", "application/json");
+                headers.put("cookie", "connect.sid=".concat(sh.getString("sessionID", "")));
+                headers.put("connect.sid", sh.getString("sessionID", "")); // just to be sure
+                return headers;
+            }
+        };
     }
 
     @Override
@@ -174,5 +194,15 @@ public class BandUpRepository implements BandUpDatabase {
         JsonArrayRequest jsonInstrumentRequest = createArrayRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
+    }
+
+    @Override
+    public void sendGCMRegToken(final JSONObject tokenObject,
+                                final BandUpResponseListener responseListener,
+                                final BandUpErrorListener errorListener){
+        String url = mContext.getResources().getString(R.string.api_address).concat("/gcmRegToken");
+
+        JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url,
+                tokenObject, responseListener, errorListener);
     }
 }

@@ -8,7 +8,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.setup.Instruments;
+import com.melodies.bandup.setup.Genres;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +32,11 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class InstrumentsTest {
+public class GenresTest {
 
     @Rule
-    public ActivityTestRule<Instruments> mActivityRule = new ActivityTestRule<>(
-            Instruments.class, true, false);
+    public ActivityTestRule<Genres> mActivityRule = new ActivityTestRule<>(
+            Genres.class, true, false);
 
     private BandUpMockRepository getMockWithItems() {
         final List<String> list = new ArrayList<>();
@@ -46,7 +46,7 @@ public class InstrumentsTest {
         return new BandUpMockRepository() {
 
             @Override
-            public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONArray arr = null;
                 try {
                     arr = new JSONArray();
@@ -68,7 +68,7 @@ public class InstrumentsTest {
     private BandUpMockRepository getMockWithNoItems() {
         return new BandUpMockRepository() {
             @Override
-            public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+            public void getGenres(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONArray arr = new JSONArray();
                 responseListener.onBandUpResponse(arr);
             }
@@ -76,7 +76,7 @@ public class InstrumentsTest {
     }
 
     @Test
-    public void checkInstrumentsCheckmarkNotShownOnOtherItems() {
+    public void checkGenresCheckmarkNotShownOnOtherItems() {
 
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithItems());
@@ -84,25 +84,25 @@ public class InstrumentsTest {
         mActivityRule.launchActivity(new Intent());
 
         // Click on the first grid view item.
-        onData(anything()).inAdapterView(withId(R.id.instrumentGridView))
+        onData(anything()).inAdapterView(withId(R.id.genreGridView))
                 .atPosition(0)
                 .perform(click());
 
         // Check if the checkmark is visible on the first item
-        onData(anything()).inAdapterView(withId(R.id.instrumentGridView))
+        onData(anything()).inAdapterView(withId(R.id.genreGridView))
                 .atPosition(0)
                 .onChildView(withId(R.id.itemSelected))
                 .check(matches(isDisplayed()));
 
         // Check if the checkmark is not visible on the second item
-        onData(anything()).inAdapterView(withId(R.id.instrumentGridView))
+        onData(anything()).inAdapterView(withId(R.id.genreGridView))
                 .atPosition(1)
                 .onChildView(withId(R.id.itemSelected))
                 .check(matches(not(isDisplayed())));
     }
 
     @Test
-    public void checkInstrumentsShownInRightOrder() {
+    public void checkGenresShownInRightOrder() {
 
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithItems());
@@ -110,45 +110,45 @@ public class InstrumentsTest {
         mActivityRule.launchActivity(new Intent());
 
         // Check if text is right on the first item.
-        onData(anything()).inAdapterView(withId(R.id.instrumentGridView))
+        onData(anything()).inAdapterView(withId(R.id.genreGridView))
                 .atPosition(0)
                 .onChildView(withId(R.id.itemName))
                 .check(matches(withText("Bongo Drums")));
 
         // Check if text is right on the second item.
-        onData(anything()).inAdapterView(withId(R.id.instrumentGridView))
+        onData(anything()).inAdapterView(withId(R.id.genreGridView))
                 .atPosition(1)
                 .onChildView(withId(R.id.itemName))
                 .check(matches(withText("Banjo")));
     }
 
     @Test
-    public void checkNoInstrumentsNotDisplayed() {
+    public void checkNoGenresNotDisplayed() {
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithItems());
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withId(R.id.txtNoInstruments)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.txtNoGenres)).check(matches(not(isDisplayed())));
     }
 
     @Test
-    public void checkEmptyInstruments() {
+    public void checkEmptyGenres() {
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithNoItems());
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withText(mActivityRule.getActivity().getResources().getString(R.string.setup_no_instruments))).check(matches(isDisplayed()));
+        onView(withText(mActivityRule.getActivity().getResources().getString(R.string.setup_no_genres))).check(matches(isDisplayed()));
     }
 
     @Test
-    public void checkNoSelectionInstruments() {
+    public void checkNoSelectionGenres() {
         BandUpApplication app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithItems());
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withId(R.id.btnNext)).perform(click());
+        onView(withId(R.id.btnFinish)).perform(click());
     }
 }

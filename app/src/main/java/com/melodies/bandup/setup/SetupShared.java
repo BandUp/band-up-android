@@ -51,7 +51,7 @@ public class SetupShared {
      */
     public void getGenres(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoGenres) {
         progressBar.setVisibility(progressBar.VISIBLE);
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getGenres(
+        DatabaseSingleton.getInstance(context).getBandUpDatabase().getGenres(
                 getSetupItemsListener(context, gridView, progressBar, txtNoGenres),
                 getSetupItemsErrorListener(context, progressBar)
         );

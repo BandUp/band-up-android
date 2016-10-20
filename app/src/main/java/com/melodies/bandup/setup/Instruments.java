@@ -49,7 +49,7 @@ public class Instruments extends AppCompatActivity {
     }
 
     public void onClickNext (View v) {
-        if (v.getId() == R.id.btnNext) {
+        if (v.getId() == R.id.btnSave) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
 
             // The adapter for the GridView hasn't been set.

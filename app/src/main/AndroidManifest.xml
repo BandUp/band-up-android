@@ -22,12 +22,12 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name=".BandUpApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".BandUpApplication">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -50,8 +50,9 @@
         <activity
             android:name=".setup.Genres"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatActivity"
-            android:label="Chat"/>
+        <activity
+            android:name=".ChatActivity"
+            android:label="Chat" />
         <activity
             android:name=".MainScreenActivity.MainScreenActivity"
             android:label="@string/main_title_user_list"
@@ -82,12 +83,17 @@
         <activity
             android:name=".SoundCloud"
             android:label="@string/title_activity_sound_cloud" />
-        <activity android:name=".UserDetailsActivity"
+        <activity
+            android:name=".UserDetailsActivity"
             android:parentActivityName=".MainScreenActivity.MainScreenActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainScreenActivity.MainScreenActivity"/>
+                android:value=".MainScreenActivity.MainScreenActivity" />
         </activity>
+        <activity
+            android:name=".Filter"
+            android:label="@string/filter_title"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

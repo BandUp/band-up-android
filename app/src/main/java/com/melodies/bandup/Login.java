@@ -526,7 +526,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         try{
             Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
-            sendLocation(location);
+//            sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
         }

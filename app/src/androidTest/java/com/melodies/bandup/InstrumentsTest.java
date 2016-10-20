@@ -149,6 +149,6 @@ public class InstrumentsTest {
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withId(R.id.btnNext)).perform(click());
+        onView(withId(R.id.btnSave)).perform(click());
     }
 }

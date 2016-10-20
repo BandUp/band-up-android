@@ -18,6 +18,15 @@
     <string name="setup_instruments_next">Next</string>
     <string name="setup_genres_hint">What is your music taste?</string>
     <string name="setup_genres_finish">Finish</string>
+    <string name="setup_no_instruments">No Instruments Available</string>
+    <string name="setup_no_genres">No Genres Available</string>
+    <string name="setup_no_genre_selection">You need to select at least one genre</string>
+    <string name="setup_no_instrument_selection">You need to select at least one instrument</string>
+
+    <!-- Filter Screen -->
+    <string name="filter_title">Filter</string>
+    <string name="filter_instruments_hint">What instruments do you want to filter?</string>
+    <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
     <string name="login_username">Username</string>
@@ -91,8 +100,4 @@
     <string name="profile_uploading">Uploading Photo</string>
     <string name="main_title_edit_profile">Edit Profile</string>
     <string name="main_nav_log_out">Log Out</string>
-    <string name="setup_no_instruments">No Instruments Available</string>
-    <string name="setup_no_genres">No Genres Available</string>
-    <string name="setup_no_genre_selection">You need to select at least one genre</string>
-    <string name="setup_no_instrument_selection">You need to select at least one instrument</string>
 </resources>

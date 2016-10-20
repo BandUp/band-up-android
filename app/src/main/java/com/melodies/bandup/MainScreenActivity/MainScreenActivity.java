@@ -86,8 +86,10 @@ public class MainScreenActivity extends AppCompatActivity
         ft.commit();
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
         AdView mAdview = (AdView)findViewById(R.id.adView);
-        AdRequest mAdRequest = new AdRequest.Builder().build();
-//        mAdview.loadAd(mAdRequest);
+        AdRequest mAdRequest = new AdRequest.Builder()
+                                            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                                            .build();
+        mAdview.loadAd(mAdRequest);
     }
 
     @Override

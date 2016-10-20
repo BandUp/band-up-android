@@ -95,4 +95,5 @@
     <string name="setup_no_genres">No Genres Available</string>
     <string name="setup_no_genre_selection">You need to select at least one genre</string>
     <string name="setup_no_instrument_selection">You need to select at least one instrument</string>
+    <string name="title_activity_filter">Filter</string>
 </resources>

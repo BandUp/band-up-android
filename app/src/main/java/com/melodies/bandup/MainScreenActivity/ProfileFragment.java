@@ -31,11 +31,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -439,16 +439,12 @@ public class ProfileFragment extends Fragment{
     public void userRequest() {
         JSONObject user = new JSONObject();
         try {
-            String userid = getUserId();
             user.put("userId", getUserId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        BandUpRepository bandUpDB = new BandUpRepository(getActivity());
-
-        bandUpDB.getUserProfile(user, new BandUpResponseListener() {
+        DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 JSONObject responseObj = null;

@@ -89,8 +89,7 @@ public class VolleySingleton {
             Toast.makeText(mCtx, "Connection error!", Toast.LENGTH_LONG).show();
         }
         else if (error instanceof AuthFailureError) {
-            Intent intent = new Intent(mCtx, Login.class);
-            mCtx.startActivity(intent);
+            mCtx.startActivity(new Intent(mCtx, Login.class));
         }
         else if (error instanceof ServerError) {
             String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);

@@ -146,6 +146,6 @@ public class InstrumentsTest {
         instrumentation.setRepository(mockRepository);
         mActivityRule.launchActivity(new Intent());
 
-        onView(withId(R.id.btnNext)).perform(click());
+        onView(withId(R.id.btnSave)).perform(click());
     }
 }

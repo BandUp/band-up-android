@@ -3,7 +3,7 @@ package com.melodies.bandup.setup;
 /**
  * An item class that the DoubleListAdapter uses.
  */
-class DoubleListItem {
+public class DoubleListItem {
     public final String name;
     final int drawableId;
     Boolean isSelected;

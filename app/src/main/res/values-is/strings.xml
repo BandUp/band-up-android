@@ -17,8 +17,15 @@
     <string name="setup_instruments_hint">Á hvaða hljóðfæri spilar þú?</string>
     <string name="setup_genres_hint">Hvaða tónlist fílar þú?</string>
     <string name="setup_genres_finish">Lokið</string>
+    <string name="setup_no_genres">Engar stefnur tiltækar</string>
+    <string name="setup_no_instruments">Engin hljóðfæri tiltæk</string>
+    <string name="setup_no_genre_selection">Þú verður að velja a.m.k. eina tónlistarstefnu</string>
+    <string name="setup_no_instrument_selection">Þú verður að velja a.m.k. eitt hljóðfæri</string>
 
-
+    <!-- Filter Screen -->
+    <string name="filter_title">Sía</string>
+    <string name="filter_save">Vista</string>
+    <string name="filter_instruments_hint">Hvaða hljóðfæri viltu sía út?</string>
 
     <!-- Login Screen -->
     <string name="login_username">Notandanafn</string>
@@ -84,10 +91,4 @@
     <string name="profile_uploading">Hleð upp mynd</string>
     <string name="main_title_edit_profile">Breyta prófíl</string>
     <string name="main_nav_log_out">Útskrá</string>
-    <string name="setup_no_genres">Engar stefnur tiltækar</string>
-    <string name="setup_no_instruments">Engin hljóðfæri tiltæk</string>
-    <string name="setup_no_genre_selection">Þú verður að velja a.m.k. eina tónlistarstefnu</string>
-    <string name="setup_no_instrument_selection">Þú verður að velja a.m.k. eitt hljóðfæri</string>
-
-
 </resources>

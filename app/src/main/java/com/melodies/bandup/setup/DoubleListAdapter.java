@@ -12,7 +12,7 @@ import com.melodies.bandup.R;
 import java.util.ArrayList;
 import java.util.List;
 
-final class DoubleListAdapter extends BaseAdapter {
+public final class DoubleListAdapter extends BaseAdapter {
     private List<DoubleListItem> doubleList = new ArrayList<>();
     private final LayoutInflater mInflater;
 

@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/instrumentGridView"
+        android:id="@+id/filterGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="2"
@@ -17,14 +17,14 @@
         android:fadeScrollbars="false"
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnNext"
+        android:layout_above="@+id/btnSave"
         android:layout_marginBottom="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/filter_save"
-        android:id="@+id/btnNext"
+        android:id="@+id/btnSave"
         android:layout_gravity="end"
         android:onClick="onClickSave"
         android:layout_marginBottom="5dp"
@@ -36,7 +36,7 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/instrumentProgressBar"
+        android:id="@+id/filterProgressBar"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="visible"
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/filter_filter_title"
+        android:text="@string/filter_title"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"

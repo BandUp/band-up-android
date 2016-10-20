@@ -1,4 +1,4 @@
-package com.melodies.bandup.setup;
+package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,8 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
-import com.melodies.bandup.R;
+import com.melodies.bandup.setup.DoubleListAdapter;
+import com.melodies.bandup.setup.SetupShared;
 
 import org.json.JSONArray;
 
@@ -27,7 +28,7 @@ public class Filter extends AppCompatActivity {
     }
 
     public void onClickSave (View v) {
-        if (v.getId() == R.id.btnNext) {
+        if (v.getId() == R.id.btnSave) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
 
             // The adapter for the GridView hasn't been set.

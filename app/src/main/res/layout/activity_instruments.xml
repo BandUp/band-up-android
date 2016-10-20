@@ -40,14 +40,14 @@
         android:fadeScrollbars="false"
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnNext"
+        android:layout_above="@+id/btnSave"
         android:layout_marginBottom="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/setup_instruments_next"
-        android:id="@+id/btnNext"
+        android:id="@+id/btnSave"
         android:layout_gravity="end"
         android:onClick="onClickNext"
         android:layout_marginBottom="5dp"

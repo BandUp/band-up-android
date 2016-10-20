@@ -20,6 +20,8 @@ import com.melodies.bandup.VolleySingleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+
 public class UpdateAboutMe extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,13 @@ public class UpdateAboutMe extends AppCompatActivity {
         setContentView(R.layout.activity_updateaboutme);
         setTitle("About Me");
         userRequest();
+    }
+
+    // Get the userid of logged in user
+    public String getUserId() throws JSONException {
+        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String id = srdPref.getString("userID", DEFAULT);
+        return (!id.equals(DEFAULT)) ? id : "No data Found";
     }
 
     // Request REAL user info from server
@@ -115,15 +124,6 @@ public class UpdateAboutMe extends AppCompatActivity {
         else if (about.isEmpty()) {
             updateUser(getUserId(), " ");
         }
-    }
-
-    // get user ID
-    public String getUserId() throws JSONException {
-        SharedPreferences srdPref = UpdateAboutMe.this.getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
-        String response = srdPref.getString("response", "N/A");
-        JSONObject obj = new JSONObject(response);
-        String id = obj.get("userID").toString();
-        return (!id.equals("N/A")) ? id : "No data Found";
     }
 
     @Override

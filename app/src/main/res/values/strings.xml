@@ -19,6 +19,11 @@
     <string name="setup_genres_hint">What is your music taste?</string>
     <string name="setup_genres_finish">Finish</string>
 
+    <!-- Filter Screen -->
+    <string name="filter_filter_title">Filter</string>
+    <string name="filter_instruments_hint">What instruments do you want to filter?</string>
+    <string name="filter_save">Save</string>
+
     <!-- Login Screen -->
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>

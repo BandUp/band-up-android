@@ -33,9 +33,7 @@ public class BandUpRepository implements BandUpDatabase {
         mContext = _context;
     }
 
-
     private JsonObjectRequest createObjectRequest(int httpMethod, String url, JSONObject data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
-
         return new JsonObjectRequest (
                 httpMethod,
                 url,

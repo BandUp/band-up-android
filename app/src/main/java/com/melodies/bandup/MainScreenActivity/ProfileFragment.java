@@ -430,10 +430,8 @@ public class ProfileFragment extends Fragment{
 
     // Get the userid of logged in user
     public String getUserId() throws JSONException {
-        SharedPreferences srdPref = getActivity().getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
-        String response = srdPref.getString("response", DEFAULT);
-        JSONObject obj = new JSONObject(response);
-        String id = obj.get("userID").toString();
+        SharedPreferences srdPref = getActivity().getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String id = srdPref.getString("userID", DEFAULT);
         return (!id.equals(DEFAULT)) ? id : "No data Found";
     }
 
@@ -441,6 +439,7 @@ public class ProfileFragment extends Fragment{
     public void userRequest() {
         JSONObject user = new JSONObject();
         try {
+            String userid = getUserId();
             user.put("userId", getUserId());
         } catch (JSONException e) {
             e.printStackTrace();

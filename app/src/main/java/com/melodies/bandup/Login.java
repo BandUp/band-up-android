@@ -448,7 +448,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
             SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = srdPref.edit();
-            editor.putString("userId", id);
+            editor.putString("userID", id);
             editor.apply();
             return true;
         } catch (JSONException e) {

@@ -38,6 +38,11 @@ public class BandUpMockRepository implements BandUpDatabase {
     }
 
     @Override
+    public void getFilter(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
     public void getUserList(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }

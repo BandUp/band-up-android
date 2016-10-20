@@ -35,6 +35,9 @@ public interface BandUpDatabase {
                     final BandUpResponseListener responseListener,
                     final BandUpErrorListener errorListener);
 
+    void getFilter(final BandUpResponseListener setupItemsListener,
+                   final BandUpErrorListener setupItemsErrorListener);
+
     void getUserList(final BandUpResponseListener setupItemsListener,
                      final BandUpErrorListener setupItemsErrorListener);
 

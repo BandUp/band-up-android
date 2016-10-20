@@ -31,7 +31,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class SetupShared {
 
     /**
-     * This function GETs instruments or genres, depending on the URL.
+     * This function GETs instruments.
      * @param context     The context we are working in.
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
@@ -44,7 +44,7 @@ public class SetupShared {
     }
 
     /**
-     * This function GETs instruments or genres, depending on the URL.
+     * This function GETs genres.
      * @param context     The context we are working in.
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
@@ -54,6 +54,24 @@ public class SetupShared {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getGenres(
                 getSetupItemsListener(context, gridView, progressBar, txtNoGenres),
                 getSetupItemsErrorListener(context, progressBar)
+        );
+    }
+
+    public void getFilter(Context c, JSONArray filteredInstruments){
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
+                filteredInstruments,
+                new BandUpResponseListener() {
+                    @Override
+                    public void onBandUpResponse(Object response) {
+
+                    }
+                },
+                new BandUpErrorListener() {
+                    @Override
+                    public void onBandUpErrorResponse(VolleyError error) {
+
+                    }
+                }
         );
     }
 
@@ -170,15 +188,13 @@ public class SetupShared {
         );
     }
 
-    public void postGenres(Context c, JSONArray instrumentArr) {
+    public void postGenres(Context c, JSONArray genresArr) {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postGenres(
-                instrumentArr,
+                genresArr,
                 getPickListener(),
                 getPickErrorListener(c)
         );
     }
-
-
 
     /**
      * This listener is used when listening to responses to

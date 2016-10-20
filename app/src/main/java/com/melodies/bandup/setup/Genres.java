@@ -19,8 +19,6 @@ import org.json.JSONArray;
  * An activity class that controls the Genres view.
  */
 public class Genres extends AppCompatActivity {
-    private String url;
-    private String route = "/genres";
     private GridView gridView;
     private ProgressBar progressBar;
     private TextView txtNoGenres;
@@ -31,7 +29,6 @@ public class Genres extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
 
-        url         = getResources().getString(R.string.api_address).concat(route);
         gridView    = (GridView) findViewById(R.id.genreGridView);
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);

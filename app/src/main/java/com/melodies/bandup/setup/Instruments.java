@@ -19,8 +19,6 @@ import org.json.JSONArray;
  * An activity class that controls the Instruments view.
  */
 public class Instruments extends AppCompatActivity {
-    private String      url;
-    private String      route = "/instruments";
     private GridView    gridView;
     private ProgressBar progressBar;
     private SetupShared sShared;
@@ -31,7 +29,6 @@ public class Instruments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
 
-        url              = getResources().getString(R.string.api_address).concat(route);
         gridView         = (GridView) findViewById(R.id.instrumentGridView);
         progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         txtNoInstruments = (TextView) findViewById(R.id.txtNoInstruments);

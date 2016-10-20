@@ -108,9 +108,7 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     @Override
-    public void local_login(final JSONObject user,
-                            final BandUpResponseListener responseListener,
-                            final BandUpErrorListener errorListener) {
+    public void local_login(final JSONObject user, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
 
         String url = mContext.getResources().getString(R.string.api_address).concat("/login-local");
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
@@ -119,9 +117,7 @@ public class BandUpRepository implements BandUpDatabase {
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void getUserProfile(final JSONObject user,
-                               final BandUpResponseListener responseListener,
-                               final BandUpErrorListener errorListener) {
+    public void getUserProfile(final JSONObject user, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
 
         String url = mContext.getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
@@ -164,7 +160,15 @@ public class BandUpRepository implements BandUpDatabase {
         JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, genres, responseListener, errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
-        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);
+    }
+
+    @Override
+    public void getFilter(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/filter");
+
+        JsonArrayToObjectRequest jsonFilterRequest = createArrayObjectRequest(Request.Method.GET, url, new JSONArray(), responseListener, errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonFilterRequest);
     }
 
     @Override

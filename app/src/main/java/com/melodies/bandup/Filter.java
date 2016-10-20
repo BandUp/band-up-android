@@ -23,8 +23,8 @@ public class Filter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
+        gridView         = (GridView) findViewById(R.id.filterGridView);
         sShared          = new SetupShared();
-        gridView         = (GridView) findViewById(R.id.instrumentGridView);
     }
 
     public void onClickSave (View v) {
@@ -40,15 +40,11 @@ public class Filter extends AppCompatActivity {
 
             // Send the items that the user selected to the server.
             JSONArray selectedInstruments = sShared.prepareSelectedList(Filter.this, dla);
-            if (selectedInstruments.length() > 0) {
-                sShared.postInstruments(Filter.this, selectedInstruments);
-                Intent toUserListIntent = new Intent(Filter.this, MainScreenActivity.class);
-                Filter.this.startActivity(toUserListIntent);
-                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
-                finish();
-            } else {
-                Toast.makeText(Filter.this, R.string.setup_no_instrument_selection, Toast.LENGTH_LONG).show();
-            }
+            sShared.getFilter(Filter.this, selectedInstruments);
+            Intent toUserListIntent = new Intent(Filter.this, MainScreenActivity.class);
+            Filter.this.startActivity(toUserListIntent);
+            overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+            finish();
         }
     }
 }

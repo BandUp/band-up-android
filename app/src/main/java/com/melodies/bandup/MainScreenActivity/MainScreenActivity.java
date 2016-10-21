@@ -22,6 +22,8 @@ import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserDetailsActivity;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.gcm_tools.BandUpGCMListenerService;
+import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 
 import org.json.JSONObject;
@@ -83,6 +85,10 @@ public class MainScreenActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);
         ft.commit();
+
+        // we know user is logged in time to start services
+        startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
+        //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
     }
 
     @Override

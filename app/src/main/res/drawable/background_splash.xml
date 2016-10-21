@@ -1,12 +1,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/colorGray"/>
+        android:drawable="@drawable/login_background"/>
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_band_up_125"/>
+            android:src="@drawable/ic_band_up_logo"/>
     </item>
 
 </layer-list>

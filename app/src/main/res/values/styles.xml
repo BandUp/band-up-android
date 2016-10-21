@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/bandUpYellow</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,11 +19,19 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorControlActivated">@color/bandUpYellow</item>
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="LoginBackground" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/login_background</item>
     </style>
 
 </resources>

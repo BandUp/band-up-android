@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,6 +64,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
+    private LinearLayout linearLayoutParent;
     private LinearLayout mainLinearLayout;
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
@@ -96,13 +95,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
 
         int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
+        int parentHeight = linearLayoutParent.getHeight();
         int activityHeight = mainLinearLayout.getHeight();
-        int statusBarHeight = screenHeight - activityHeight;
+        int statusBarHeight = screenHeight - parentHeight;
         int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
+        System.out.println("HEIGHTS");
+        System.out.println(parentHeight);
+        System.out.println(statusBarHeight);
+        System.out.println(activityHeight);
+        System.out.println(parentHeight - activityHeight);
         if (hasSoftNavigation(Login.this)) {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop + (parentHeight-activityHeight);
         } else {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop + (parentHeight - activityHeight);
         }
     }
 
@@ -112,6 +117,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
+        linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
@@ -121,14 +127,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
         mAdview.loadAd(mAdRequest);
 
-        mainLinearLayout.post(new Runnable() {
-            public void run() {
-                mainLinearLayout.setY(getIconCenter());
-                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
-                mainLinearLayout.animate().translationY(0).setDuration(500);
-                linearLayoutInput.startAnimation(testAnimation);
-            }
-        });
+//        mainLinearLayout.post(new Runnable() {
+//            public void run() {
+//                mainLinearLayout.setY(getIconCenter());
+//                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
+//                mainLinearLayout.animate().translationY(0).setDuration(500);
+//                linearLayoutInput.startAnimation(testAnimation);
+//            }
+//        });
 
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
@@ -301,7 +307,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Signed In", Toast.LENGTH_SHORT).show();
 
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -375,7 +381,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
     }
 
     // Google+ Sign In

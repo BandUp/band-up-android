@@ -12,4 +12,7 @@
     <color name="colorLikeGreenSelected">#176A2D</color>
     <color name="colorDetailsYellow">#FECA0A</color>
     <color name="colorDetailsYellowSelected">#A18005</color>
+    <color name="bandUpYellow">#FFD302</color>
+    <color name="bandUpGreen">#00A651</color>
+    <color name="bandUpGray">#0D0D0D</color>
 </resources>

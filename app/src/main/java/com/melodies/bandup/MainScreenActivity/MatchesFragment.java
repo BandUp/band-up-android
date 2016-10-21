@@ -166,9 +166,11 @@ public class MatchesFragment extends Fragment {
         void onListFragmentInteraction(User item);
     }
 
-    public void onClickChat(String id) {
+    public void onClickChat(User user) {
         Intent myIntent = new Intent(getActivity(), ChatActivity.class);
-        myIntent.putExtra("SEND_TO_USER_ID", id);
+        myIntent.putExtra("SEND_TO_USER_ID", user.id);
+        myIntent.putExtra("SEND_TO_USERNAME", user.name);
         startActivity(myIntent);
+
     }
 }

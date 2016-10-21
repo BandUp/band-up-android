@@ -33,6 +33,7 @@ import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 public class ChatActivity extends AppCompatActivity {
 
     private String sendTo;
+    private String sendToUsername;
     private Socket mSocket;
 
     Ack sendMessageAck = new Ack() {
@@ -130,11 +131,13 @@ public class ChatActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             sendTo = extras.getString("SEND_TO_USER_ID");
+            sendToUsername = extras.getString("SEND_TO_USERNAME");
         }
         else {
             finish();
         }
 
+        setTitle("Chat with ".concat(sendToUsername));
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
         } catch (URISyntaxException e) {

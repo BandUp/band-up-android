@@ -185,7 +185,7 @@ public class MainScreenActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(User user) {
-        matchesFragment.onClickChat(user.id);
+        matchesFragment.onClickChat(user);
     }
 
     public void onClickDisplayModal(View view) {

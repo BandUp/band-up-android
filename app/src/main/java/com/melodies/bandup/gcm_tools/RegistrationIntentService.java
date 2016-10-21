@@ -28,6 +28,7 @@ import java.io.IOException;
 public class RegistrationIntentService extends IntentService {
 
     private static final String[] TOPICS = {"global"};
+    private static final String TAG = "RegistrationService";
 
 
     /**
@@ -44,7 +45,7 @@ public class RegistrationIntentService extends IntentService {
      *
      */
     public RegistrationIntentService() {
-        super("RegistrationService");
+        super(TAG);
     }
 
     /**
@@ -81,12 +82,14 @@ public class RegistrationIntentService extends IntentService {
             DatabaseSingleton.getInstance(this).getBandUpDatabase().sendGCMRegToken(jsonObject, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
-                    Log.d("token", response.toString());
+                    Log.d(TAG, response.toString());
+                    System.out.println(response.toString());
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
-                    Log.d("token", error.getMessage());
+                    Log.d(TAG, error.getMessage());
+                    System.out.println(error.getMessage());
                 }
             });
 

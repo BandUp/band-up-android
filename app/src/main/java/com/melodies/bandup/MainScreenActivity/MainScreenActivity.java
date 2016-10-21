@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.ads.*;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,7 +52,7 @@ public class MainScreenActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-
+        profileFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

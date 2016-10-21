@@ -300,14 +300,13 @@ public class ProfileFragment extends Fragment{
 
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
+            displayDownloadMessage("Uploading Photo", "Please wait...");
             if (requestCode == CAMERA_REQUEST) {
-                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
             if (requestCode == GALLERY_REQUEST) {
                 // Get the URI from the intent result.
-                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendMessage(data);
 
             }

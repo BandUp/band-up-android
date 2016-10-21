@@ -120,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public String getUserId() {
         SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
-        String userId = srdPref.getString("userId", DEFAULT);
+        String userId = srdPref.getString("userID", DEFAULT);
         return (!userId.equals(DEFAULT)) ? userId : "No data Found";
     }
 

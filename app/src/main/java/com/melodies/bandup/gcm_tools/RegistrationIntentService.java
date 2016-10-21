@@ -2,9 +2,7 @@ package com.melodies.bandup.gcm_tools;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.android.gms.gcm.GcmPubSub;
@@ -14,7 +12,6 @@ import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,7 +71,6 @@ public class RegistrationIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token){
         JSONObject jsonObject = new JSONObject();
-        Toast.makeText(this, "token:" + token, Toast.LENGTH_LONG).show();
 
         try {
             jsonObject.put("regToken", token);

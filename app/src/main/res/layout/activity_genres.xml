@@ -63,6 +63,8 @@
             android:numColumns="2"
             android:stretchMode="columnWidth"
             android:gravity="center"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
             android:layout_weight="1"
             android:fadingEdge="vertical"
             android:layout_marginBottom="5dp"

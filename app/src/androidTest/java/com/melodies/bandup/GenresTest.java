@@ -75,7 +75,8 @@ public class GenresTest {
         };
     }
 
-    @Test
+    // This test is not relevant with new design
+    /*@Test
     public void checkGenresCheckmarkNotShownOnOtherItems() {
 
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
@@ -99,7 +100,7 @@ public class GenresTest {
                 .atPosition(1)
                 .onChildView(withId(R.id.itemSelected))
                 .check(matches(not(isDisplayed())));
-    }
+    }*/
 
     @Test
     public void checkGenresShownInRightOrder() {

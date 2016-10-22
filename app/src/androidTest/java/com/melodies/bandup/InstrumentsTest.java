@@ -75,7 +75,8 @@ public class InstrumentsTest {
         };
     }
 
-    @Test
+    // This test is not relevant with new design
+    /*@Test
     public void checkInstrumentsCheckmarkNotShownOnOtherItems() {
 
         BandUpApplication  app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
@@ -99,7 +100,7 @@ public class InstrumentsTest {
                 .atPosition(1)
                 .onChildView(withId(R.id.itemSelected))
                 .check(matches(not(isDisplayed())));
-    }
+    }*/
 
     @Test
     public void checkInstrumentsShownInRightOrder() {
@@ -149,6 +150,6 @@ public class InstrumentsTest {
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withId(R.id.btnSave)).perform(click());
+        onView(withId(R.id.btnNext)).perform(click());
     }
 }

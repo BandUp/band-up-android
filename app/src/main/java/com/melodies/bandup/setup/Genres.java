@@ -35,12 +35,15 @@ public class Genres extends AppCompatActivity {
         txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
         sShared     = new SetupShared();
 
-        TextView txt1 = (TextView) findViewById(R.id.textView);
-        TextView txt2 = (TextView) findViewById(R.id.textView2);
-        TextView txt3 = (TextView) findViewById(R.id.textView3);
-        txt1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txt3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txt2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        TextView txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
+
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoGenres.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
         // Gets the list of genres.
         sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);

@@ -23,7 +23,6 @@ public class Instruments extends AppCompatActivity {
     private GridView    gridView;
     private ProgressBar progressBar;
     private SetupShared sShared;
-    private TextView    txtNoInstruments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +31,15 @@ public class Instruments extends AppCompatActivity {
         progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        TextView txt1 = (TextView) findViewById(R.id.textView);
-        TextView txt2 = (TextView) findViewById(R.id.textView2);
-        TextView txt3 = (TextView) findViewById(R.id.textView3);
-        txt1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txt3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txt2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        TextView txtNoInstruments   = (TextView) findViewById(R.id.txtNoInstruments);
+
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoInstruments.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
         gridView         = (GridView) findViewById(R.id.instrumentGridView);
         txtNoInstruments = (TextView) findViewById(R.id.txtNoInstruments);

@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:text="@string/setup_get_started"
-                    android:id="@+id/textView"
+                    android:id="@+id/txt_title_get_started"
                     android:textColor="@color/bandUpYellow"
                     android:layout_gravity="center_horizontal" />
 
@@ -40,7 +40,7 @@
                     android:gravity="end"
                     android:textSize="13sp"
                     android:text="1/2"
-                    android:id="@+id/textView3"
+                    android:id="@+id/txt_title_progress"
                     android:textColor="@color/bandUpYellow" />
             </LinearLayout>
 
@@ -50,8 +50,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:text="@string/setup_instruments_hint"
-                android:id="@+id/textView2"
-
+                android:id="@+id/txt_title_hint"
                 android:textColor="@color/bandUpYellow"/>
         </LinearLayout>
 
@@ -87,5 +86,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/instrumentProgressBar"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNoInstruments"
+        android:text="@string/setup_no_instruments"
+        android:visibility="invisible"
+        android:textSize="25sp"
+        android:textColor="@color/bandUpYellow"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

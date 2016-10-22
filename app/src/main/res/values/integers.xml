@@ -2,5 +2,6 @@
 <resources>
     <integer name="setup_item_height" translatable="false">100</integer>
     <integer name="setup_selected_padding" translatable="false">10</integer>
+    <integer name="setup_imitial_text_size" translatable="false">30</integer>
 
 </resources>

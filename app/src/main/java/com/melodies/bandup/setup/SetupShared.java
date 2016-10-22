@@ -254,7 +254,6 @@ public class SetupShared {
         final int itemHeightDp = (int) dpToPx(context, itemHeight);
 
 
-        // TODO: Find a better solution
         if (inst.isSelected) {
             ValueAnimator animator = ValueAnimator.ofInt(selectedPaddingDp, 0);
 
@@ -264,7 +263,6 @@ public class SetupShared {
                     int animVal = (Integer) valueAnimator.getAnimatedValue();
                     backView.setMaxHeight(itemHeightDp-(animVal*2));
                     view.setPadding(animVal, animVal, animVal, animVal);
-                    System.out.println(backView.getHeight() + " - " + animVal * 2);
                 }
             });
 

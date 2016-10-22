@@ -176,5 +176,7 @@ public class BandUpRepository implements BandUpDatabase {
 
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url,
                 tokenObject, responseListener, errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
 }

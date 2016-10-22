@@ -53,9 +53,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".setup.Instruments"
+            android:theme="@style/BandUpTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".setup.Genres"
+            android:theme="@style/BandUpTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChatActivity"

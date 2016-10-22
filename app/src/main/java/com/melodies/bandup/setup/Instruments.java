@@ -1,6 +1,7 @@
 package com.melodies.bandup.setup;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,9 +29,17 @@ public class Instruments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
+        progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        TextView txt1 = (TextView) findViewById(R.id.textView);
+        TextView txt2 = (TextView) findViewById(R.id.textView2);
+        TextView txt3 = (TextView) findViewById(R.id.textView3);
+        txt1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txt3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txt2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
         gridView         = (GridView) findViewById(R.id.instrumentGridView);
-        progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         txtNoInstruments = (TextView) findViewById(R.id.txtNoInstruments);
         sShared          = new SetupShared();
 
@@ -45,8 +54,8 @@ public class Instruments extends AppCompatActivity {
         });
     }
 
-    public void onClickNext (View v) {
-        if (v.getId() == R.id.btnSave) {
+    public void onClickNext(View v) {
+        if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
 
             // The adapter for the GridView hasn't been set.

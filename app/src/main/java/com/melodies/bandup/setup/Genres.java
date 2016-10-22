@@ -1,6 +1,7 @@
 package com.melodies.bandup.setup;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +34,13 @@ public class Genres extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
         sShared     = new SetupShared();
+
+        TextView txt1 = (TextView) findViewById(R.id.textView);
+        TextView txt2 = (TextView) findViewById(R.id.textView2);
+        TextView txt3 = (TextView) findViewById(R.id.textView3);
+        txt1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txt3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txt2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
         // Gets the list of genres.
         sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);

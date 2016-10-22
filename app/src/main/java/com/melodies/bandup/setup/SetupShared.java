@@ -1,9 +1,10 @@
 package com.melodies.bandup.setup;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -30,6 +31,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class SetupShared {
 
+    int SELECTED_BORDER_SIZE = 15;
+
+    public static float dpToPx(final Context context, final float px) {
+        return px * (context.getResources().getDisplayMetrics().density);
+    }
     /**
      * This function GETs instruments.
      * @param context     The context we are working in.
@@ -236,21 +242,76 @@ public class SetupShared {
      * @param view     The view we are working with.
      * @param position The index of the item that was tapped.
      */
-    public void toggleItemSelection(Context context, AdapterView<?> parent, View view, int position) {
+    public void toggleItemSelection(final Context context, AdapterView<?> parent, final View view, int position) {
         DoubleListItem inst = (DoubleListItem) parent.getAdapter().getItem(position);
-        ImageView itemSelected = (ImageView) view.findViewById(R.id.itemSelected);
+        final ImageView backView = (ImageView) view.findViewById(R.id.itemBackground);
+        final TextView textView = (TextView) view.findViewById(R.id.itemName);
+
+        int selectedPadding = context.getResources().getInteger(R.integer.setup_selected_padding);
+        int selectedPaddingDp = (int) dpToPx(context, selectedPadding);
+
+        final int itemHeight = context.getResources().getInteger(R.integer.setup_item_height);
+        final int itemHeightDp = (int) dpToPx(context, itemHeight);
+
 
         // TODO: Find a better solution
-        if (itemSelected.getVisibility() == view.VISIBLE) {
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.shrink);
-            itemSelected.startAnimation(animation);
-            itemSelected.setVisibility(view.INVISIBLE);
+        if (inst.isSelected) {
+            ValueAnimator animator = ValueAnimator.ofInt(selectedPaddingDp, 0);
+
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    int animVal = (Integer) valueAnimator.getAnimatedValue();
+                    backView.setMaxHeight(itemHeightDp-(animVal*2));
+                    view.setPadding(animVal, animVal, animVal, animVal);
+                    System.out.println(backView.getHeight() + " - " + animVal * 2);
+                }
+            });
+
+            final ValueAnimator animator1 = ValueAnimator.ofFloat(textView.getTextSize(), textView.getTextSize()+(selectedPaddingDp/2));
+
+            animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator){
+                    float animVal = (Float) valueAnimator.getAnimatedValue();
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animVal);
+                }
+            });
+
+            animator.setDuration(200);
+            animator1.setDuration(200);
+            animator.start();
+            animator1.start();
             inst.isSelected = false;
-        }
-        else {
-            itemSelected.setVisibility(view.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.pop);
-            itemSelected.startAnimation(animation);
+        } else {
+
+
+            ValueAnimator animator = ValueAnimator.ofInt(0, selectedPaddingDp);
+            final ValueAnimator animator1 = ValueAnimator.ofFloat(textView.getTextSize(), textView.getTextSize()-(selectedPaddingDp/2));
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator){
+                    int animVal = (Integer) valueAnimator.getAnimatedValue();
+                    backView.setMaxHeight(itemHeightDp-(animVal*2));
+                    view.setPadding(animVal, animVal, animVal, animVal);
+                }
+            });
+
+            animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator){
+                    float animVal = (Float) valueAnimator.getAnimatedValue();
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animVal);
+                }
+            });
+
+            animator.setDuration(200);
+            animator1.setDuration(200);
+
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.bandUpYellow));
+            animator.start();
+            animator1.start();
+
             inst.isSelected = true;
         }
     }

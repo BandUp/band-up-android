@@ -17,6 +17,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BandUpTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorBackground">@color/bandUpGray</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
         <!-- Hint color and label color in FALSE state -->
@@ -32,6 +36,14 @@
 
     <style name="LoginBackground" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/login_background</item>
+    </style>
+
+    <style name="DoubleListItemText">
+            <item name="android:textColor">#ffffff</item>
+            <item name="android:shadowColor">#000000</item>
+            <item name="android:shadowDx">0</item>
+            <item name="android:shadowDy">0</item>
+            <item name="android:shadowRadius">20</item>
     </style>
 
 </resources>

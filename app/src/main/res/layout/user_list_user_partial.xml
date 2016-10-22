@@ -79,6 +79,5 @@
             android:onClick="onClickLike"
             android:textSize="20sp"
             android:layout_weight="1"/>
-
     </LinearLayout>
 </LinearLayout>

@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_width="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/setup_get_started"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/setup_instruments_hint"
-        android:id="@+id/textView2"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
-
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/instrumentGridView"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:fadingEdge="vertical"
-        android:background="@drawable/instrument_border"
-        android:fadeScrollbars="false"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnSave"
-        android:layout_marginBottom="5dp"/>
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setup_instruments_next"
-        android:id="@+id/btnSave"
-        android:layout_gravity="end"
-        android:onClick="onClickNext"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="@string/setup_get_started"
+                    android:id="@+id/textView"
+                    android:textColor="@color/bandUpYellow"
+                    android:layout_gravity="center_horizontal" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="end"
+                    android:textSize="13sp"
+                    android:text="1/2"
+                    android:id="@+id/textView3"
+                    android:textColor="@color/bandUpYellow" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/setup_instruments_hint"
+                android:id="@+id/textView2"
+
+                android:textColor="@color/bandUpYellow"/>
+        </LinearLayout>
+
+
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/instrumentGridView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:fadingEdge="vertical"
+            android:layout_marginBottom="5dp"
+            android:fadeScrollbars="false"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setup_instruments_next"
+            android:id="@+id/btnNext"
+            android:layout_gravity="right"
+            android:onClick="onClickNext"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"/>
+    </LinearLayout>
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/instrumentProgressBar"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible"
-        android:indeterminate="true"
-        tools:visibility="visible" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/setup_no_instruments"
-        android:id="@+id/txtNoInstruments"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
-
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.melodies.bandup.gcm_tools;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,8 +21,15 @@ import com.melodies.bandup.R;
  */
 
 public class BandUpGCMListenerService extends GcmListenerService {
+    // name for service thread
     private static String TAG = "BandUpGCMListenerService";
 
+    /**
+     * gets called for every notification that arrives
+     * @param from
+     * @param data
+     */
+    @SuppressLint("LongLogTag")
     @Override
     public void onMessageReceived(String from, Bundle data){
         String message = data.getString("message");
@@ -40,24 +48,31 @@ public class BandUpGCMListenerService extends GcmListenerService {
         sendNotification(message);
     }
 
+    /**
+     * display message as notification
+     * @param message
+     */
     private void sendNotification(String message){
+        // create intent to start activity on notification click
         Intent intent = new Intent(this, MainScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /*Request code*/, intent,
                                                                 PendingIntent.FLAG_ONE_SHOT);
+
+        // need uri if we want notification sound (we can make custom sounds if we want)
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.cast_ic_notification_small_icon)
-                .setContentTitle("Bad Melodies")
-                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_band_up_125) // set icon for notification
+                .setContentTitle("Bad Melodies")         // title for notification TODO: get this from notification object
+                .setContentText(message)                 // text to display
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+                .setSound(defaultSoundUri)               // play notification sound
+                .setContentIntent(pendingIntent);        // atach activity intent
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        //display notification
         notificationManager.notify(0 /*ID of notification*/, notificationBuilder.build());
     }
 }

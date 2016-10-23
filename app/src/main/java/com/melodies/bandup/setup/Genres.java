@@ -1,6 +1,7 @@
 package com.melodies.bandup.setup;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +34,18 @@ public class Genres extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
         txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
         sShared     = new SetupShared();
+
+        // Get the TextViews that we want to apply another font to.
+        TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        TextView txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
+
+        // Apply the font to the TextViews.
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoGenres.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
         // Gets the list of genres.
         sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);

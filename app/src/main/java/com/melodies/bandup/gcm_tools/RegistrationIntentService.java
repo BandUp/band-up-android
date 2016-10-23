@@ -78,14 +78,13 @@ public class RegistrationIntentService extends IntentService {
             DatabaseSingleton.getInstance(this).getBandUpDatabase().sendGCMRegToken(jsonObject, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
-                    Log.d(TAG, response.toString());
-                    System.out.println(response.toString());
+                    Log.d(TAG, "it worked");
+                    startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
-                    Log.d(TAG, error.getMessage());
-                    System.out.println(error.getMessage());
+                    Log.d(TAG, "it failed");
                 }
             });
 

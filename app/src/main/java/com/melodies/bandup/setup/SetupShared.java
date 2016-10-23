@@ -253,6 +253,8 @@ public class SetupShared {
         final int itemHeight = context.getResources().getInteger(R.integer.setup_item_height);
         final int itemHeightDp = (int) dpToPx(context, itemHeight);
 
+        int animDuration = context.getResources().getInteger(R.integer.setup_select_animation_time);
+
 
         if (inst.isSelected) {
             ValueAnimator animator = ValueAnimator.ofInt(selectedPaddingDp, 0);
@@ -276,8 +278,8 @@ public class SetupShared {
                 }
             });
 
-            animator.setDuration(200);
-            animator1.setDuration(200);
+            animator.setDuration(animDuration);
+            animator1.setDuration(animDuration);
             animator.start();
             animator1.start();
             inst.isSelected = false;
@@ -303,8 +305,8 @@ public class SetupShared {
                 }
             });
 
-            animator.setDuration(200);
-            animator1.setDuration(200);
+            animator.setDuration(animDuration);
+            animator1.setDuration(animDuration);
 
             view.setBackgroundColor(ContextCompat.getColor(context, R.color.bandUpYellow));
             animator.start();

@@ -2,6 +2,7 @@
 <resources>
     <integer name="setup_item_height" translatable="false">100</integer>
     <integer name="setup_selected_padding" translatable="false">4</integer>
-    <integer name="setup_imitial_text_size" translatable="false">30</integer>
+    <integer name="setup_initial_text_size" translatable="false">30</integer>
+    <integer name="setup_select_animation_time" translatable="false">50</integer>
 
 </resources>

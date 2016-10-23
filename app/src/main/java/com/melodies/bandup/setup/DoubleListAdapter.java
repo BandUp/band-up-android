@@ -89,7 +89,7 @@ public final class DoubleListAdapter extends BaseAdapter {
 
         final int itemHeight = mContext.getResources().getInteger(R.integer.setup_item_height);
         int itemHeightDp = (int) pxToDp(mContext, itemHeight);
-        int textSize = mContext.getResources().getInteger(R.integer.setup_imitial_text_size);
+        int textSize = mContext.getResources().getInteger(R.integer.setup_initial_text_size);
 
         DoubleListItem item = getItem(i);
 

@@ -13,10 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
@@ -73,6 +70,7 @@ public class UserListFragment extends Fragment {
     }
 
     private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge;
+    private Button btnLike, btnDetails;
     private View     partialView;
     private ImageView ivUserProfileImage;
     UserListController ulc;
@@ -84,7 +82,6 @@ public class UserListFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         ulc = new UserListController();
-        String url = getResources().getString(R.string.api_address).concat("/nearby-users");
 
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
@@ -144,11 +141,7 @@ public class UserListFragment extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
+    private void initializeTextViews(View rootView) {
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
         txtName            = (TextView)  rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
@@ -156,23 +149,36 @@ public class UserListFragment extends Fragment {
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+    }
+    private void initializeButtons(View rootView) {
+        btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
+        btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
+    }
 
-        txtName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+    private void setFonts() {
+        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
         txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenres.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-
-
-        Button btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
-        Button btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
+        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
 
         btnLike.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
         btnDetails.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
 
-        partialView        = rootView.findViewById(R.id.user_partial_view);
+        initializeTextViews(rootView);
+        initializeButtons(rootView);
+        partialView = rootView.findViewById(R.id.user_partial_view);
+
+        setFonts();
+
         return rootView;
     }
 
@@ -209,38 +215,41 @@ public class UserListFragment extends Fragment {
             e.printStackTrace();
         }
 
-        String url = getActivity().getResources().getString(R.string.api_address).concat("/like");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Boolean isMatch = response.getBoolean("isMatch");
-                            if (isMatch) {
-                                Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "You liked this person", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
 
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-
-                    }
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
+                } else {
+                    return;
                 }
-        );
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
 
+                try {
+                    Boolean isMatch;
+                    if (!responseObj.isNull("isMatch")) {
+                        isMatch = responseObj.getBoolean("isMatch");
+                    } else {
+                        Toast.makeText(getActivity(), "Error loading match.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (isMatch) {
+                        Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "You liked this person", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
 
+            }
+        });
     }
 
     /**
@@ -293,5 +302,4 @@ public class UserListFragment extends Fragment {
         }
         displayUser(u);
     }
-
 }

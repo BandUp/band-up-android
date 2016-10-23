@@ -1,9 +1,7 @@
 package com.melodies.bandup.repositories;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,9 +15,6 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Bergthor on 16.10.2016.
@@ -176,6 +171,20 @@ public class BandUpRepository implements BandUpDatabase {
 
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url,
                 tokenObject, responseListener, errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
+    }
+
+    @Override
+    public void postLike(JSONObject userObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/like");
+
+        JsonObjectRequest jsonObjectRequest = createObjectRequest(
+                Request.Method.POST,
+                url,
+                userObject,
+                responseListener,
+                errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }

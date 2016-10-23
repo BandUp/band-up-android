@@ -22,7 +22,6 @@ import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserDetailsActivity;
 import com.melodies.bandup.VolleySingleton;
-import com.melodies.bandup.gcm_tools.BandUpGCMListenerService;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 
@@ -124,14 +123,6 @@ public class MainScreenActivity extends AppCompatActivity
             ft.replace(R.id.mainFrame, settingsFragment);
             ft.commit();
             setTitle(getString(R.string.main_title_settings));
-        } else if (id == R.id.nav_about) {
-            ft.replace(R.id.mainFrame, aboutFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_about));
-        } else if (id == R.id.nav_privacy) {
-            ft.replace(R.id.mainFrame, privacyFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_privacy));
         } else if (id == R.id.nav_logout) {
             logout();
             logoutDialog.show();

@@ -2,12 +2,14 @@ package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +73,7 @@ public class UserListFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName, txtDistance, txtInstruments;
+    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge;
     private View     partialView;
     private ImageView ivUserProfileImage;
     UserListController ulc;
@@ -148,12 +150,30 @@ public class UserListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
-        txtName        = (TextView) rootView.findViewById(R.id.txtName);
-        txtInstruments = (TextView) rootView.findViewById(R.id.txtInstruments);
-        partialView        = rootView.findViewById(R.id.user_partial_view);
-        txtDistance    = (TextView) rootView.findViewById(R.id.txtDistance);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
+        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
+        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
+        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
+        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
+        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
 
+        txtName.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtGenres.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+
+
+        Button btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
+        Button btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
+
+        btnLike.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+        btnDetails.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+
+
+        partialView        = rootView.findViewById(R.id.user_partial_view);
         return rootView;
     }
 
@@ -241,16 +261,20 @@ public class UserListFragment extends Fragment {
 
     private void displayUser(User u) {
         txtName.setText(u.name);
-        txtInstruments.setText("");
-        txtDistance.setText(u.distance + " km. away from you");
+        // Getting the first item for now.
+        txtInstruments.setText(u.instruments.get(0));
+        txtGenres.setText(u.genres.get(0));
+        txtPercentage.setText(u.percentage + "%");
+        txtAge.setText(u.age+" years old");
+        txtDistance.setText(u.distance + " km away from you");
 
-        for (int i = 0; i < u.instruments.size(); i++) {
+        /*for (int i = 0; i < u.instruments.size(); i++) {
             if (i != u.instruments.size()-1) {
                 txtInstruments.append(u.instruments.get(i) + ", ");
             } else {
                 txtInstruments.append(u.instruments.get(i));
             }
-        }
+        }*/
 
         ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
         ivUserProfileImage.setImageResource(R.color.transparent);

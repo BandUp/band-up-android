@@ -80,7 +80,7 @@
     <string name="permission_rationale">\"Contacts permissions are needed for providing email         completions.\"</string>
     <string name="main_nav_about">Um okkur</string>
     <string name="main_nav_edit_profile">Breyta prófíl</string>
-    <string name="main_nav_matches">Möts</string>
+    <string name="main_nav_matches">Möts/Spjall</string>
     <string name="main_nav_near_me">Nálægt mér</string>
     <string name="main_nav_privacy">Persónuvernd</string>
     <string name="main_nav_settings">Stillingar</string>

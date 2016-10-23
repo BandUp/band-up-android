@@ -20,5 +20,6 @@ public class User {
     public int distance;
     public int percentage;
     public String imgURL;
+    public int age;
     public Boolean userHasLiked;
 }

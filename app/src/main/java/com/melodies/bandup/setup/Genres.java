@@ -35,11 +35,13 @@ public class Genres extends AppCompatActivity {
         txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
         sShared     = new SetupShared();
 
+        // Get the TextViews that we want to apply another font to.
         TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
         TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
         TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
         TextView txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
 
+        // Apply the font to the TextViews.
         txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
         txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
         txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));

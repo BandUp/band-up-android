@@ -1,7 +1,6 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
@@ -25,6 +23,7 @@ import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -276,32 +275,7 @@ public class UserListFragment extends Fragment {
             }
         }*/
 
-        ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
-        ivUserProfileImage.setImageResource(R.color.transparent);
-        if (u.imgURL != null && !u.imgURL.equals("")) {
-            il.get(u.imgURL, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    final Bitmap b = response.getBitmap();
-                    if (b != null) {
-                        Runnable r = new Runnable() {
-                            @Override
-                            public void run() {
-                                ivUserProfileImage.setImageBitmap(b);
-                            }
-                        };
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(r);
-                        }
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                }
-            });
-        }
+        Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
     }
 
     public void onClickNextUser(View view) {

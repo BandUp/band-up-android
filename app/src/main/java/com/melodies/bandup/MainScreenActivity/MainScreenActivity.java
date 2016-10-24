@@ -236,7 +236,6 @@ public class MainScreenActivity extends AppCompatActivity
                 break;
         }
     }
-    public void onClickDetails(View view) { Intent intent = new Intent(MainScreenActivity.this, UserDetailsActivity.class); startActivity(intent); }
 
     // ======= Location setup ========
     private final int LOCATION_REQUEST_CODE = 333;

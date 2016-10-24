@@ -6,11 +6,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.melodies.bandup.MainScreenActivity.ProfileFragment"
-    >
+    tools:context="com.melodies.bandup.MainScreenActivity.ProfileFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -53,7 +52,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtMainInstrument"
+                    android:id="@+id/txtInstruments"
                     android:layout_below="@+id/txtName"
                     android:layout_toEndOf="@+id/imgProfile"
                     android:textSize="18sp"

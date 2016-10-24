@@ -21,35 +21,47 @@ import org.json.JSONArray;
  */
 public class Genres extends AppCompatActivity {
     private GridView gridView;
-    private ProgressBar progressBar;
-    private TextView txtNoGenres;
+    private TextView txtTitleGetStarted, txtTitleHint, txtTitleProgress, txtNoGenres;
     private SetupShared sShared;
+
+
+    private void initializeTextViews() {
+        txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
+    }
+
+    private void setFonts() {
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint      .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoGenres       .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
 
-        gridView    = (GridView) findViewById(R.id.genreGridView);
-        progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
-        txtNoGenres = (TextView) findViewById(R.id.txtNoGenres);
+        // The shared class between Instruments and Genres.
         sShared     = new SetupShared();
 
-        // Get the TextViews that we want to apply another font to.
-        TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
-        TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
-        TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
-        TextView txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
+        // Find the GridView that should display the instruments.
+        gridView    = (GridView) findViewById(R.id.genreGridView);
 
-        // Apply the font to the TextViews.
-        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtNoGenres.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        // The spinning indicator when loading instruments.
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.genreProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+
+        initializeTextViews();
+        setFonts();
 
         // Gets the list of genres.
         sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);
 
+        // What to do when an item on the GridView is clicked.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,6 +98,8 @@ public class Genres extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        // If there is something on the TaskRoot
+        // then activities are in the background.
         if(!isTaskRoot()) {
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
         }

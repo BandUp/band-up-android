@@ -20,34 +20,46 @@ import org.json.JSONArray;
  * An activity class that controls the Instruments view.
  */
 public class Instruments extends AppCompatActivity {
+    private TextView txtTitleGetStarted, txtTitleHint, txtTitleProgress, txtNoInstruments;
     private GridView    gridView;
-    private ProgressBar progressBar;
     private SetupShared sShared;
+
+    private void initializeTextViews() {
+        txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        txtNoInstruments   = (TextView) findViewById(R.id.txtNoInstruments);
+    }
+
+    private void setFonts() {
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint      .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoInstruments  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
-        progressBar      = (ProgressBar) findViewById(R.id.instrumentProgressBar);
+
+        // The shared class between Instruments and Genres.
+        sShared  = new SetupShared();
+
+        // Find the GridView that should display the instruments.
+        gridView = (GridView) findViewById(R.id.instrumentGridView);
+
+        // The spinning indicator when loading instruments.
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        TextView txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
-        TextView txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
-        TextView txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
-        TextView txtNoInstruments   = (TextView) findViewById(R.id.txtNoInstruments);
-
-        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleProgress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleHint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtNoInstruments.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-
-        gridView         = (GridView) findViewById(R.id.instrumentGridView);
-        txtNoInstruments = (TextView) findViewById(R.id.txtNoInstruments);
-        sShared          = new SetupShared();
+        initializeTextViews();
+        setFonts();
 
         // Gets the list of instruments.
         sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments);
 
+        // What to do when an item on the GridView is clicked.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +96,8 @@ public class Instruments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        // If there is something on the TaskRoot
+        // then activities are in the background.
         if(!isTaskRoot()) {
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
         }

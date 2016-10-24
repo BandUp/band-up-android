@@ -44,5 +44,9 @@ public interface BandUpDatabase {
     void sendGCMRegToken(final JSONObject tokenObject,
                          final BandUpResponseListener responseListener,
                          final BandUpErrorListener errorListener);
+
+    void postLike(final JSONObject userObject,
+                  final BandUpResponseListener responseListener,
+                  final BandUpErrorListener errorListener);
 }
 

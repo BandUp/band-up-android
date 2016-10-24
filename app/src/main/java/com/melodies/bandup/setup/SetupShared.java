@@ -33,9 +33,6 @@ public class SetupShared {
 
     int SELECTED_BORDER_SIZE = 15;
 
-    public static float dpToPx(final Context context, final float px) {
-        return px * (context.getResources().getDisplayMetrics().density);
-    }
     /**
      * This function GETs instruments.
      * @param context     The context we are working in.
@@ -243,76 +240,107 @@ public class SetupShared {
      * @param position The index of the item that was tapped.
      */
     public void toggleItemSelection(final Context context, AdapterView<?> parent, final View view, int position) {
-        DoubleListItem inst = (DoubleListItem) parent.getAdapter().getItem(position);
+        DoubleListItem item = (DoubleListItem) parent.getAdapter().getItem(position);
         final ImageView backView = (ImageView) view.findViewById(R.id.itemBackground);
-        final TextView textView = (TextView) view.findViewById(R.id.itemName);
+        final TextView txtName = (TextView) view.findViewById(R.id.itemName);
 
+        // The border size around the DoubleListItem when it has been selected.
+        // This value is changed in res/values/integers.xml
         int selectedPadding = context.getResources().getInteger(R.integer.setup_selected_padding);
-        int selectedPaddingDp = (int) dpToPx(context, selectedPadding);
 
+        // We need to change pixels to display pixels for it to display the same on all devices.
+        int selectedPaddingDp = (int) pixelsToDisplayPixels(context, selectedPadding);
+
+        // The height of the DoubleListItem.
+        // This value is changed in res/values/integers.xml
         final int itemHeight = context.getResources().getInteger(R.integer.setup_item_height);
-        final int itemHeightDp = (int) dpToPx(context, itemHeight);
 
+        // We need to change pixels to display pixels for it to display the same on all devices.
+        final int itemHeightDp = (int) pixelsToDisplayPixels(context, itemHeight);
+
+        // The duration of the animation when selecting.
         int animDuration = context.getResources().getInteger(R.integer.setup_select_animation_time);
 
+        // We are going to use two ValueAnimators.
+        // One for animating the padding change
+        // and one for animating the change of the text size.
+        ValueAnimator paddingAnimator;
+        ValueAnimator textSizeAnimator;
 
-        if (inst.isSelected) {
-            ValueAnimator animator = ValueAnimator.ofInt(selectedPaddingDp, 0);
+        if (!item.isSelected) {
+            // We are going to animate the selection of the item.
 
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int animVal = (Integer) valueAnimator.getAnimatedValue();
-                    backView.setMaxHeight(itemHeightDp-(animVal*2));
-                    view.setPadding(animVal, animVal, animVal, animVal);
-                }
-            });
+            // Initialize the animators with the values we want to animate from and to.
+            paddingAnimator  = ValueAnimator.ofInt(0, selectedPaddingDp);
+            textSizeAnimator = ValueAnimator.ofFloat(txtName.getTextSize(), txtName.getTextSize()-(selectedPaddingDp/2));
 
-            final ValueAnimator animator1 = ValueAnimator.ofFloat(textView.getTextSize(), textView.getTextSize()+(selectedPaddingDp/2));
+            // Set custom AnimatorUpdateListeners
+            paddingAnimator .addUpdateListener(this.getPaddingChangeListener(backView, view, itemHeightDp));
+            textSizeAnimator.addUpdateListener(this.getTextSizeChangeListener(txtName));
 
-            animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator){
-                    float animVal = (Float) valueAnimator.getAnimatedValue();
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animVal);
-                }
-            });
-
-            animator.setDuration(animDuration);
-            animator1.setDuration(animDuration);
-            animator.start();
-            animator1.start();
-            inst.isSelected = false;
-        } else {
-
-
-            ValueAnimator animator = ValueAnimator.ofInt(0, selectedPaddingDp);
-            final ValueAnimator animator1 = ValueAnimator.ofFloat(textView.getTextSize(), textView.getTextSize()-(selectedPaddingDp/2));
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator){
-                    int animVal = (Integer) valueAnimator.getAnimatedValue();
-                    backView.setMaxHeight(itemHeightDp-(animVal*2));
-                    view.setPadding(animVal, animVal, animVal, animVal);
-                }
-            });
-
-            animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator){
-                    float animVal = (Float) valueAnimator.getAnimatedValue();
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animVal);
-                }
-            });
-
-            animator.setDuration(animDuration);
-            animator1.setDuration(animDuration);
+            paddingAnimator .setDuration(animDuration);
+            textSizeAnimator.setDuration(animDuration);
 
             view.setBackgroundColor(ContextCompat.getColor(context, R.color.bandUpYellow));
-            animator.start();
-            animator1.start();
 
-            inst.isSelected = true;
+            // Start both animators at the same time.
+            paddingAnimator.start();
+            textSizeAnimator.start();
+
+            // And finally keep track in the DoubleListItem
+            item.isSelected = true;
+
+        } else {
+            // We are going to animate the deselection of the item.
+
+            // Initialize the animators with the values we want to animate from and to.
+            paddingAnimator  = ValueAnimator.ofInt(selectedPaddingDp, 0);
+            textSizeAnimator = ValueAnimator.ofFloat(txtName.getTextSize(), txtName.getTextSize()+(selectedPaddingDp/2));
+
+            // Set custom AnimatorUpdateListeners
+            paddingAnimator .addUpdateListener(this.getPaddingChangeListener(backView, view, itemHeightDp));
+            textSizeAnimator.addUpdateListener(this.getTextSizeChangeListener(txtName));
+
+            paddingAnimator.setDuration(animDuration);
+            textSizeAnimator.setDuration(animDuration);
+
+            // Start both animators at the same time.
+            paddingAnimator.start();
+            textSizeAnimator.start();
+
+            // And finally keep track in the DoubleListItem
+            item.isSelected = false;
         }
+    }
+
+    private ValueAnimator.AnimatorUpdateListener getPaddingChangeListener(final ImageView backView, final View view, final int itemHeightDp) {
+        return new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                // A new step of the animation has arrived.
+                // Let's extract it and use it.
+                int animVal = (Integer) valueAnimator.getAnimatedValue();
+                // We need to shrink the image view to give space for the padding border.
+                backView.setMaxHeight(itemHeightDp - (animVal * 2));
+                // Set the padding equally on all sides.
+                view.setPadding(animVal, animVal, animVal, animVal);
+            }
+        };
+    }
+
+    private ValueAnimator.AnimatorUpdateListener getTextSizeChangeListener(final TextView textView) {
+        return new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator){
+                // A new step of the animation has arrived.
+                // Let's extract it and use it.
+                float animVal = (Float) valueAnimator.getAnimatedValue();
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animVal);
+            }
+        };
+    }
+
+    public static float pixelsToDisplayPixels(final Context context, final float px) {
+        return px * (context.getResources().getDisplayMetrics().density);
     }
 }

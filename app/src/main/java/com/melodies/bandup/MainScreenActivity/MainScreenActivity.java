@@ -28,7 +28,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
-import com.melodies.bandup.UserDetailsActivity;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.BandUpGCMListenerService;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
@@ -47,9 +46,11 @@ public class MainScreenActivity extends AppCompatActivity
         SettingsFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
         PrivacyFragment.OnFragmentInteractionListener,
-        ProfileFragment.OnFragmentInteractionListener{
+        ProfileFragment.OnFragmentInteractionListener,
+        UserDetailsFragment.OnFragmentInteractionListener {
 
     UserListFragment userListFragment;
+    UserDetailsFragment userDetailsFragment;
     MatchesFragment matchesFragment;
     SettingsFragment settingsFragment;
     AboutFragment aboutFragment;
@@ -86,11 +87,13 @@ public class MainScreenActivity extends AppCompatActivity
         }
         profileFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
         userListFragment = new UserListFragment();
+        userDetailsFragment = new UserDetailsFragment();
         matchesFragment = new MatchesFragment();
         settingsFragment = new SettingsFragment();
         aboutFragment = new AboutFragment();
@@ -159,7 +162,6 @@ public class MainScreenActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             logout();
             logoutDialog.show();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -210,7 +212,6 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-
     }
 
     @Override
@@ -226,6 +227,15 @@ public class MainScreenActivity extends AppCompatActivity
         profileFragment.onClickAboutMe(view);
     }
 
+    public void onClickDetails(View view) {
+        switch (view.getId()) {
+            case R.id.btnDetails:
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.mainFrame, userDetailsFragment);
+                ft.commit();
+                break;
+        }
+    }
     public void onClickDetails(View view) { Intent intent = new Intent(MainScreenActivity.this, UserDetailsActivity.class); startActivity(intent); }
 
     // ======= Location setup ========

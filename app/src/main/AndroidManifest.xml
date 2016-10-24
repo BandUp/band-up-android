@@ -94,13 +94,6 @@
             android:name=".SoundCloud"
             android:label="@string/title_activity_sound_cloud" />
         <activity
-            android:name=".UserDetailsActivity"
-            android:parentActivityName=".MainScreenActivity.MainScreenActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainScreenActivity.MainScreenActivity" />
-        </activity>
-        <activity
             android:name=".Filter"
             android:label="@string/filter_title"
             android:theme="@style/AppTheme.NoActionBar"></activity>

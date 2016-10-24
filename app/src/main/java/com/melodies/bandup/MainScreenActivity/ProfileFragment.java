@@ -490,8 +490,6 @@ public class ProfileFragment extends Fragment{
         startActivityForResult(aboutMeIntent, 2);
     }
 
-
-
     // All onActivityResults are handled by the activity.
     // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

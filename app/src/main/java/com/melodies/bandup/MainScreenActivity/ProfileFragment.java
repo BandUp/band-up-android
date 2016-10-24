@@ -139,7 +139,7 @@ public class ProfileFragment extends Fragment{
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         txtName            = (TextView) rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
+        txtInstruments     = (TextView) rootView.findViewById(R.id.txtMainInstrument);
         txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
         txtStatus          = (TextView) rootView.findViewById(R.id.txtStatus);
         txtFanStar         = (TextView) rootView.findViewById(R.id.txtFanStar);

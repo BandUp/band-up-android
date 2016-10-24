@@ -53,7 +53,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtInstruments"
+                    android:id="@+id/txtMainInstrument"
                     android:layout_below="@+id/txtName"
                     android:layout_toEndOf="@+id/imgProfile"
                     android:textSize="18sp"
@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtGenres"
-                    android:layout_below="@+id/txtInstruments"
+                    android:layout_below="@+id/txtMainInstrument"
                     android:layout_toEndOf="@+id/imgProfile"
                     android:textSize="18sp"
                     />

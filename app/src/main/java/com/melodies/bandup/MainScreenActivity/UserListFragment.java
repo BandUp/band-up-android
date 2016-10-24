@@ -144,7 +144,7 @@ public class UserListFragment extends Fragment {
     private void initializeTextViews(View rootView) {
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
         txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtMainInstrument);
         txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);

@@ -1,10 +1,16 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +19,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.UserDetailsActivity;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.gcm_tools.BandUpGCMListenerService;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.repositories.BandUpRepository;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainScreenActivity extends AppCompatActivity
@@ -53,6 +66,24 @@ public class MainScreenActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        if (requestCode == LOCATION_REQUEST_CODE){
+            createLocationRequest();
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay! Do the contacts-related task you need to do.
+                createLocationRequest();
+            } else {
+                // permission denied, boo!
+                Toast.makeText(this, R.string.user_allow_location, Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                createLocationRequest();
+            }
+            return;
+        }
         profileFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     @Override
@@ -88,6 +119,8 @@ public class MainScreenActivity extends AppCompatActivity
         // we know user is logged in time to start services
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
         //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
+
+        createLocationRequest();
     }
 
     @Override
@@ -194,4 +227,55 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void onClickDetails(View view) { Intent intent = new Intent(MainScreenActivity.this, UserDetailsActivity.class); startActivity(intent); }
+
+    // ======= Location setup ========
+    private final int LOCATION_REQUEST_CODE = 333;
+
+    protected void createLocationRequest() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // request permissions
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            }, LOCATION_REQUEST_CODE);
+
+            return;
+        }
+        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        try{
+            Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            sendLocation(location);
+        }catch (IllegalArgumentException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void sendLocation(Location location){
+        JSONObject locObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            locObject.put("lon", location.getLongitude());
+            locObject.put("lat", location.getLatitude());
+
+            jsonObject.put("location", locObject);
+
+            DatabaseSingleton.getInstance(this).getBandUpDatabase().postLocation(jsonObject,
+                    new BandUpResponseListener() {
+                        @Override
+                        public void onBandUpResponse(Object response) {
+                            // we were successfull nothing to report
+                        }
+                    }, new BandUpErrorListener() {
+                        @Override
+                        public void onBandUpErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "something went wrong sending location", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

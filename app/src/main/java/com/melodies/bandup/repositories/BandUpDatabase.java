@@ -48,5 +48,9 @@ public interface BandUpDatabase {
     void postLike(final JSONObject userObject,
                   final BandUpResponseListener responseListener,
                   final BandUpErrorListener errorListener);
+
+    void postLocation(final JSONObject locationObject,
+                      final BandUpResponseListener responseListener,
+                      final BandUpErrorListener errorListener);
 }
 

@@ -171,6 +171,5 @@ public class MatchesFragment extends Fragment {
         myIntent.putExtra("SEND_TO_USER_ID", user.id);
         myIntent.putExtra("SEND_TO_USERNAME", user.name);
         startActivity(myIntent);
-
     }
 }

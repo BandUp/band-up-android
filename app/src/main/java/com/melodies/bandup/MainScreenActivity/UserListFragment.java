@@ -74,6 +74,7 @@ public class UserListFragment extends Fragment {
     private View     partialView;
     private ImageView ivUserProfileImage;
     UserListController ulc;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,6 +251,10 @@ public class UserListFragment extends Fragment {
 
             }
         });
+    }
+
+    public User getCurrentUser() {
+        return ulc.getCurrentUser();
     }
 
     /**

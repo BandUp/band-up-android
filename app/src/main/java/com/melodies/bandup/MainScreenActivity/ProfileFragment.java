@@ -21,7 +21,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -431,8 +430,6 @@ public class ProfileFragment extends Fragment{
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-
 
     // Get the userid of logged in user
     public String getUserId() throws JSONException {

@@ -233,6 +233,10 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void onClickDetails(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", userListFragment.getCurrentUser().id);
+        userDetailsFragment.setArguments(bundle);
+
         switch (view.getId()) {
             case R.id.btnDetails:
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -266,7 +270,7 @@ public class MainScreenActivity extends AppCompatActivity
             if (location == null) {
                 locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
             }
-            sendLocation(location);
+            //sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
         }

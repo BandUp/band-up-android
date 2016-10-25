@@ -280,6 +280,7 @@ public class MainScreenActivity extends AppCompatActivity
                     }, new BandUpErrorListener() {
                         @Override
                         public void onBandUpErrorResponse(VolleyError error) {
+                            error.printStackTrace();
                             Toast.makeText(getApplicationContext(), "something went wrong sending location", Toast.LENGTH_LONG).show();
                         }
                     });

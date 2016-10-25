@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,15 +30,15 @@ import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
-import com.melodies.bandup.gcm_tools.BandUpGCMListenerService;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
 public class MainScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -47,7 +48,8 @@ public class MainScreenActivity extends AppCompatActivity
         AboutFragment.OnFragmentInteractionListener,
         PrivacyFragment.OnFragmentInteractionListener,
         ProfileFragment.OnFragmentInteractionListener,
-        UserDetailsFragment.OnFragmentInteractionListener {
+        UserDetailsFragment.OnFragmentInteractionListener,
+        LocationListener{
 
     UserListFragment userListFragment;
     UserDetailsFragment userDetailsFragment;
@@ -58,6 +60,9 @@ public class MainScreenActivity extends AppCompatActivity
     ProfileFragment profileFragment;
 
     ProgressDialog logoutDialog;
+    LocationManager locationManager;
+    Criteria criteria;
+    String bestProvider;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -242,20 +247,25 @@ public class MainScreenActivity extends AppCompatActivity
 
     protected void createLocationRequest() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // request permissions
             ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
             }, LOCATION_REQUEST_CODE);
 
             return;
         }
+
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
+        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
         try{
             Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            if (location == null) {
+                locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+            }
             sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
@@ -275,7 +285,7 @@ public class MainScreenActivity extends AppCompatActivity
                     new BandUpResponseListener() {
                         @Override
                         public void onBandUpResponse(Object response) {
-                            // we were successfull nothing to report
+                            // we were successful nothing to report
                         }
                     }, new BandUpErrorListener() {
                         @Override
@@ -287,5 +297,25 @@ public class MainScreenActivity extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

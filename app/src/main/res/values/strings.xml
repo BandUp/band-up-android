@@ -69,6 +69,7 @@
     <string name="user_error">Something went wrong</string>
     <string name="user_allow_storage">Please allow access to select a photo.</string>
     <string name="title_activity_sound_cloud">Sign Up</string>
+    <string name="user_allow_location">Please allow GPS access for app functionality</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

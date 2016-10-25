@@ -250,9 +250,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
         btnSoundCloud = (ImageView) findViewById(R.id.login_button_soundcloud);
-
-        createLocationRequest();
-
     }
 
     /**
@@ -523,83 +520,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
-        }
-    }
-
-    // ======= Location setup ========
-    private final int LOCATION_REQUEST_CODE = 333;
-
-    protected void createLocationRequest() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // request permissions
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            }, LOCATION_REQUEST_CODE);
-
-            return;
-        }
-        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        try{
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
-//            sendLocation(location);
-        }catch (IllegalArgumentException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void sendLocation(Location location){
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("lon", location.getLongitude());
-            jsonObject.put("lat", location.getLatitude());
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url.concat("/location"), jsonObject, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    //finish();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //finish();
-                }
-            });
-
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    createLocationRequest();
-                } else {
-                    // permission denied, boo!
-                    Toast.makeText(this, "Need location for app functionality", Toast.LENGTH_LONG).show();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    createLocationRequest();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 }

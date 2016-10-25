@@ -37,11 +37,7 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            responseListener.onBandUpResponse(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        responseListener.onBandUpResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -62,11 +58,7 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            responseListener.onBandUpResponse(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        responseListener.onBandUpResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -87,11 +79,7 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            responseListener.onBandUpResponse(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        responseListener.onBandUpResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -120,16 +108,6 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
-
-
-    public void mapInstrumnet(final JSONObject inst, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
-        String url = mContext.getResources().getString(R.string.api_address).concat("/get-instruments");//"http://10.0.2.2:3000/get-instrument"; // route totserver
-
-        JsonObjectRequest jor = createObjectRequest(Request.Method.POST, url, inst, responseListener, errorListener);
-
-        VolleySingleton.getInstance(mContext).addToRequestQueue(jor);
-    }
-
 
 
     @Override

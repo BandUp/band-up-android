@@ -471,20 +471,7 @@ public class ProfileFragment extends Fragment{
                             txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
                         }
                         txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
-                        if (!responseObj.isNull("instruments")) {
 
-                            String[] s = {"57dafe54dcba0f51172fb163","57db08cddcba0f51172fb769"};
-                            ArrayList<String> ins = mapToInstrument(s);
-                            //Toast.makeText(getActivity(), "Getting back" + ins, Toast.LENGTH_SHORT).show();
-
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ins);
-                            lstInstruments.setAdapter(adapter);
-
-                            // just id's of instruments
-                            txtInstruments.setText(responseObj.getString("instruments"));
-
-
-                        }
                         if (!responseObj.isNull("genres")) {
                             txtGenres.setText(responseObj.getString("genres"));
                         }
@@ -508,39 +495,6 @@ public class ProfileFragment extends Fragment{
                 System.out.println("ERROR");
             }
         });
-    }
-
-    // converting id to instruments,
-    private ArrayList<String> mapToInstrument(String[] id) {
-        for (String a : id) {
-            JSONObject inst = new JSONObject();
-            try {
-                inst.put("id", a);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().mapInstrumnet(inst, new BandUpResponseListener() {
-                @Override
-                public void onBandUpResponse(Object response) throws JSONException {
-                    JSONObject responseObj = null;
-                    if (response instanceof JSONObject) {
-                        responseObj = (JSONObject) response;
-                    }
-                    if (response != null) {
-                        items.add(responseObj.getString("name"));
-                    }
-
-                }
-            }, new BandUpErrorListener() {
-                @Override
-                public void onBandUpErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
-                    System.out.println("ERROR");
-                }
-            });
-        }
-        return items;
     }
 
     // when About Me is clicked go to edit view

@@ -49,9 +49,10 @@ public interface BandUpDatabase {
                   final BandUpResponseListener responseListener,
                   final BandUpErrorListener errorListener);
 
-    void mapInstrumnet(final JSONObject inst,
-                       final BandUpResponseListener responseListener,
-                       final BandUpErrorListener error);
+    void  postLocation(JSONObject locationObject,
+                       BandUpResponseListener responseListener,
+                       BandUpErrorListener errorListener);
+
 
 
 }

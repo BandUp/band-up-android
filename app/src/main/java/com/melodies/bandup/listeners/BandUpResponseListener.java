@@ -8,6 +8,6 @@ import org.json.JSONException;
 
 public interface BandUpResponseListener {
 
-    void onBandUpResponse(Object response) throws JSONException;
+    void onBandUpResponse(Object response);
 }
 

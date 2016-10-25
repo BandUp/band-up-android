@@ -87,7 +87,7 @@ public class UpdateAboutMe extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/edit-user");
+        String url = "http://10.0.2.2:3000/edit-user";// getResources().getString(R.string.api_address).concat("/edit-user");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -97,9 +97,11 @@ public class UpdateAboutMe extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Intent i = new Intent();
                         i.putExtra("MESSAGE", aboutMe);
+                        if (aboutMe.isEmpty()) {
+                            i.putExtra("MESSAGE", "About Me");
+                        }
                         setResult(2, i);
                         onBackPressed();
-                        //finishActivity(2);
                     }
                 },
                 new Response.ErrorListener() {
@@ -122,12 +124,12 @@ public class UpdateAboutMe extends AppCompatActivity {
             updateUser(getUserId(), about);
         }
         else if (about.isEmpty()) {
-            updateUser(getUserId(), " ");
+            updateUser(getUserId(), "About Me");
         }
     }
 
     @Override
     public void onBackPressed() {
-        finish(); // finishActivity(2);
+        finish();
     }
 }

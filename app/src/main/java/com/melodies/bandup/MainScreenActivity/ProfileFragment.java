@@ -21,7 +21,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,14 +70,16 @@ public class ProfileFragment extends Fragment{
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
-    private TextView txtStatus;
-    private TextView txtFanStar;
+    private TextView txtSearchRadius;
+    private TextView txtAge;
     private TextView txtPercentage;
     private TextView txtAboutMe;
-    private TextView txtPromotion;
+    private ListView lstInstruments;
+    private ListView lstGenres;
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
+    final ArrayList<String> items = new ArrayList<String>();
     final int CAMERA_REQUEST = 555;
     final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 120000;
@@ -141,14 +145,16 @@ public class ProfileFragment extends Fragment{
         txtName            = (TextView) rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
         txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtStatus          = (TextView) rootView.findViewById(R.id.txtStatus);
-        txtFanStar         = (TextView) rootView.findViewById(R.id.txtFanStar);
+        txtSearchRadius    = (TextView) rootView.findViewById(R.id.txtSearchRadius);
+        txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
         txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
         txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
-        txtSeekValue       = (TextView) rootView.findViewById(R.id.txtSeekValue);
-        txtPromotion       = (TextView) rootView.findViewById(R.id.txtPromotion);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);
+        lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
+        lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
+
+        /*
+        seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);         // seek radius
         seekBarRadius.setMax(getProgressMaxValue);
         seekBarRadius.setProgress(progressMinValue);
         txtSeekValue.setText(progressMinValue + " km");
@@ -169,6 +175,7 @@ public class ProfileFragment extends Fragment{
 
             }
         });
+        */
         return rootView;
     }
 
@@ -456,16 +463,34 @@ public class ProfileFragment extends Fragment{
                         if (!responseObj.isNull("username")) {
                             txtName.setText(responseObj.getString("username"));
                         }
-                        //txtInstruments.setText(response.getString("instruments"));    // need some work
-                        //txtGenres.setText(response.getString("genres"));              // need some work
-                        txtFanStar.setText("Bob Marley");
-                        txtStatus.setText("Searching for band");        // need to create list of available options to choose
-                        txtPercentage.setText("45%");                   // needs match % value
-
-                        if (!responseObj.isNull("aboutme")) {
-                            txtAboutMe.setText(responseObj.getString("aboutme"));  // done
+                        if (!responseObj.isNull("age")) {
+                            txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
                         }
+                        // Favorite Instrument will be here
+                        if (!responseObj.isNull("searchradius")) {
+                            txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
+                        }
+                        txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
+                        if (!responseObj.isNull("instruments")) {
 
+                            String[] s = {"57dafe54dcba0f51172fb163","57db08cddcba0f51172fb769"};
+                            ArrayList<String> ins = mapToInstrument(s);
+                            //Toast.makeText(getActivity(), "Getting back" + ins, Toast.LENGTH_SHORT).show();
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ins);
+                            lstInstruments.setAdapter(adapter);
+
+                            // just id's of instruments
+                            txtInstruments.setText(responseObj.getString("instruments"));
+
+
+                        }
+                        if (!responseObj.isNull("genres")) {
+                            txtGenres.setText(responseObj.getString("genres"));
+                        }
+                        if (!responseObj.isNull("aboutme")) {
+                            txtAboutMe.setText(responseObj.getString("aboutme"));
+                        }
                         if (!responseObj.isNull("image")) {
                             imageLoader.getProfilePhoto(responseObj.getJSONObject("image").toString(), ivUserProfileImage);
                         } else {
@@ -485,11 +510,44 @@ public class ProfileFragment extends Fragment{
         });
     }
 
+    // converting id to instruments,
+    private ArrayList<String> mapToInstrument(String[] id) {
+        for (String a : id) {
+            JSONObject inst = new JSONObject();
+            try {
+                inst.put("id", a);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().mapInstrumnet(inst, new BandUpResponseListener() {
+                @Override
+                public void onBandUpResponse(Object response) throws JSONException {
+                    JSONObject responseObj = null;
+                    if (response instanceof JSONObject) {
+                        responseObj = (JSONObject) response;
+                    }
+                    if (response != null) {
+                        items.add(responseObj.getString("name"));
+                    }
+
+                }
+            }, new BandUpErrorListener() {
+                @Override
+                public void onBandUpErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+                    System.out.println("ERROR");
+                }
+            });
+        }
+        return items;
+    }
+
+    // when About Me is clicked go to edit view
     public void onClickAboutMe (View view) {
         Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
         startActivityForResult(aboutMeIntent, 2);
     }
-
 
 
     // All onActivityResults are handled by the activity.
@@ -502,10 +560,6 @@ public class ProfileFragment extends Fragment{
                 txtAboutMe.setText(message);
             }
         }
-    }
-
-    public void setAbout(String a) {
-        txtAboutMe.setText(a);
     }
 
     public void openGallery() {

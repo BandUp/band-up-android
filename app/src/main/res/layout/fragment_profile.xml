@@ -24,12 +24,12 @@
 
             <ImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_profile_picture_placeholder"
-                android:onClick="onClickDisplayModal"/>
+                android:onClick="onClickDisplayModal"
+                android:layout_width="150dp"
+                android:layout_height="150dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -45,55 +45,120 @@
                     android:id="@+id/txtName"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/imgProfile"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtAge"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:text="Instruments"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtInstruments"
-                    android:layout_below="@+id/txtName"
-                    android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp"
-                    />
-
-                <TextView
-                    android:text="Genres"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtGenres"
-                    android:layout_below="@+id/txtInstruments"
-                    android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp"
-                    />
-
-                <TextView
-                    android:text="Fan Star"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtFanStar"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="18sp"
-                    />
-
-                <TextView
-                    android:text="Status"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtStatus"
+                    android:id="@+id/txtSearchRadius"
                     android:layout_below="@+id/txtGenres"
                     android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp"
-                    />
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtPercentage"
+                    android:textSize="25sp"
+                    android:layout_alignBottom="@+id/txtAboutMe"
+                    android:layout_alignEnd="@+id/txtBeforeSeekBarDescription"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp" />
 
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="156dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:text="Instruments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInstDescription"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"/>
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="118dp"
+                        android:id="@+id/lstInstruments" />
+
+                    <TextView
+                        android:text="Instruments"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInstruments"
+                        android:layout_below="@+id/txtName"
+                        android:layout_toEndOf="@+id/imgProfile"
+                        android:textSize="18sp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:text="Genres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtGenDescription"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="18sp"/>
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="119dp"
+                        android:id="@+id/lstGenres" />
+
+                    <TextView
+                        android:text="Genres"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtGenres"
+                        android:layout_below="@+id/txtInstruments"
+                        android:layout_toEndOf="@+id/imgProfile"
+                        android:textSize="18sp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </ScrollView>
+
         </LinearLayout>
 
         <LinearLayout
@@ -101,82 +166,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:text="00%"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtPercentage"
-                android:textSize="25sp"
-                android:layout_alignBottom="@+id/txtAboutMe"
-                android:layout_alignEnd="@+id/txtBeforeSeekBarDescription"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtAboutMe"
-                android:layout_alignParentStart="true"
-                android:layout_alignEnd="@+id/txtStatus"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="40dp"
-                android:textSize="18sp"
-                android:hint="About Me"
-                android:onClick="onClickAboutMe"
-                android:maxLength="100"
-                />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp">
-
-                <TextView
-                    android:text="Search Radius"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtBeforeSeekBarDescription"
-                    android:layout_below="@+id/txtPercentage"
-                    android:layout_alignParentStart="true"
-                    android:textSize="18sp"
-                    android:layout_weight="1.3" />
-
-                <SeekBar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/seekBarRadius"
-                    android:layout_alignBottom="@+id/txtBeforeSeekBarDescription"
-                    android:layout_toEndOf="@+id/imgProfile"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:text="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtSeekValue"
-                    android:layout_alignBottom="@+id/seekBarRadius"
-                    android:layout_toEndOf="@+id/seekBarRadius"
-                    android:layout_weight="1.7"
-                    android:textSize="18sp"
-                    />
-            </LinearLayout>
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:text="Promotion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/txtAboutMe"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignEnd="@+id/txtSearchRadius"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/txtPromotion"
-                    android:textSize="19sp"
-                    android:gravity="center" />
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="40dp"
+                    android:textSize="18sp"
+                    android:hint="About Me"
+                    android:onClick="onClickAboutMe"
+                    android:maxLength="100"
+                    />
 
                 <TextView
                     android:text="Sound Cloud Will Be HERE"

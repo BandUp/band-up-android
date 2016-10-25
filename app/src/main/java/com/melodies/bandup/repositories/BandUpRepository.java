@@ -14,6 +14,7 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -36,7 +37,11 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        responseListener.onBandUpResponse(response);
+                        try {
+                            responseListener.onBandUpResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -57,7 +62,11 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        responseListener.onBandUpResponse(response);
+                        try {
+                            responseListener.onBandUpResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -78,7 +87,11 @@ public class BandUpRepository implements BandUpDatabase {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        responseListener.onBandUpResponse(response);
+                        try {
+                            responseListener.onBandUpResponse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -105,9 +118,19 @@ public class BandUpRepository implements BandUpDatabase {
         String url = mContext.getResources().getString(R.string.api_address).concat("/get-user");
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
 
-        // insert request into queue
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
+
+
+    public void mapInstrumnet(final JSONObject inst, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/get-instruments");//"http://10.0.2.2:3000/get-instrument"; // route totserver
+
+        JsonObjectRequest jor = createObjectRequest(Request.Method.POST, url, inst, responseListener, errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jor);
+    }
+
+
 
     @Override
     public void getInstruments(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {

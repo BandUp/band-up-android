@@ -1,91 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:background="@color/bandUpGray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity">
 
 
     <ImageView
         android:id="@+id/imgProfile"
-        android:layout_width="100dp"
-        android:layout_marginEnd="20dp"
-        android:layout_height="100dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtDistance"
-        android:layout_below="@+id/txtStatus"
-        android:layout_toEndOf="@+id/imgProfile"
-        android:text="Distance" />
+        android:layout_weight="1"
+        android:layout_gravity="top"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_splash"/>
 
-    <TextView
-        android:text="Status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtStatus"
-        android:layout_below="@+id/txtGenres"
-        android:layout_toEndOf="@+id/imgProfile" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:text="Genres"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtGenres"
-        android:layout_below="@+id/txtInstruments"
-        android:layout_toEndOf="@+id/imgProfile" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
-    <TextView
-        android:text="Instruments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtInstruments"
-        android:layout_below="@+id/txtName"
-        android:layout_toEndOf="@+id/imgProfile" />
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jón Egill"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-    <TextView
-        android:text="Username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtName"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imgProfile"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/txtMainInstrument"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drums"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"/>
 
-    <Button
-        android:text="@string/user_list_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="94dp"
-        android:id="@+id/btnDetails"
-        android:layout_below="@+id/txtPercentage"
-        android:layout_alignParentStart="true" />
+    </LinearLayout>
 
-    <Button
-        android:text="@string/user_list_like"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnLike"
-        android:layout_alignBaseline="@+id/btnDetails"
-        android:layout_alignBottom="@+id/btnDetails"
-        android:layout_alignParentEnd="true"
-        android:onClick="onClickLike"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:text="00%"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22 years old"
+            android:textColor="@color/colorWhite" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/txtGenres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Punk"
+            android:textColor="@color/colorWhite" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:id="@+id/txtPercentage"
-        android:textSize="25sp"
-        android:layout_below="@+id/imgProfile"
-        android:layout_alignEnd="@+id/btnDetails"
-        android:layout_marginEnd="17dp" />
-</RelativeLayout>
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/txtDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 km away from you"
+            android:textColor="@color/colorWhite" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/txtPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="68%"
+            android:textColor="@color/colorWhite" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="@string/user_list_details"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:background="@drawable/user_list_details_button"
+            android:id="@+id/btnDetails"
+            android:textSize="35sp"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:onClick="onClickDetails"
+            android:textAllCaps="false"/>
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="@string/user_list_like"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+
+            android:id="@+id/btnLike"
+            android:background="@drawable/user_list_like_button"
+            android:onClick="onClickLike"
+            android:textSize="35sp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>

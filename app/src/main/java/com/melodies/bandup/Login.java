@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,7 +36,9 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -46,14 +46,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
     private String url;
 
@@ -63,6 +64,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
+    private LinearLayout linearLayoutParent;
     private LinearLayout mainLinearLayout;
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
@@ -93,13 +95,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
 
         int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
+        int parentHeight = linearLayoutParent.getHeight();
         int activityHeight = mainLinearLayout.getHeight();
-        int statusBarHeight = screenHeight - activityHeight;
+        int statusBarHeight = screenHeight - parentHeight;
         int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
+        System.out.println("HEIGHTS");
+        System.out.println(parentHeight);
+        System.out.println(statusBarHeight);
+        System.out.println(activityHeight);
+        System.out.println(parentHeight - activityHeight);
         if (hasSoftNavigation(Login.this)) {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop + (parentHeight-activityHeight);
         } else {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop;
+            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop + (parentHeight - activityHeight);
         }
     }
 
@@ -109,16 +117,27 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_main);
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
+        linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
 
-        mainLinearLayout.post(new Runnable() {
-            public void run() {
-                mainLinearLayout.setY(getIconCenter());
-                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
-                mainLinearLayout.animate().translationY(0).setDuration(500);
-                linearLayoutInput.startAnimation(testAnimation);
-            }
-        });
+        //region advertisement code
+        // current id is for test only TODO: get actual admob ID for release
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        AdView mAdview = (AdView)findViewById(R.id.adView);
+        AdRequest mAdRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) // this line makes ads on emulator
+                .build();
+        mAdview.loadAd(mAdRequest);
+        //endregion
+
+//        mainLinearLayout.post(new Runnable() {
+//            public void run() {
+//                mainLinearLayout.setY(getIconCenter());
+//                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
+//                mainLinearLayout.animate().translationY(0).setDuration(500);
+//                linearLayoutInput.startAnimation(testAnimation);
+//            }
+//        });
 
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
@@ -207,7 +226,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        findViewById(R.id.login_button_google).setOnClickListener(this);
         //findViewById(R.id.sign_out_button).setOnClickListener(this);
         //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
@@ -231,9 +250,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
         btnSoundCloud = (ImageView) findViewById(R.id.login_button_soundcloud);
-
-        createLocationRequest();
-
     }
 
     /**
@@ -257,10 +273,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 @Override
                 public void onResponse(JSONObject response) {
                     saveUserReponse(response);
-                    Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                    Login.this.startActivity(instrumentsIntent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                    finish();
+                    openCorrectIntent(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -294,31 +307,45 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            Toast.makeText(getApplicationContext(), "Signed In ", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Signed In", Toast.LENGTH_SHORT).show();
 
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
 
             final String idToken = acct.getIdToken();
-            String personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            //Uri personPhoto = acct.getPhotoUrl();
-
-            // Sending user info to server
-            sendGoogleUserToServer(personId, idToken, personName, personEmail);
+            sendGoogleUserToServer(idToken);
+        }
+    }
+    private void openCorrectIntent(JSONObject response) {
+        Boolean hasFinishedSetup = null;
+        try {
+            hasFinishedSetup = response.getBoolean("hasFinishedSetup");
+            if (hasFinishedSetup) {
+                Intent userListIntent = new Intent(Login.this, MainScreenActivity.class);
+                Login.this.startActivity(userListIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
+            } else {
+                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                Login.this.startActivity(instrumentsIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
+            }
+        } catch (JSONException e) {
+            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+            Login.this.startActivity(instrumentsIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            finish();
         }
     }
 
     // Sending user info to server
-    private void sendGoogleUserToServer(String personId, String idToken, String personName, String personEmail) {
+    private void sendGoogleUserToServer(String idToken) {
         try {
             url = getResources().getString(R.string.api_address).concat("/login-google");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", personId);
-            jsonObject.put("userToken", idToken);
-            jsonObject.put("userName", personName);
-            jsonObject.put("userEmail", personEmail);
+
+            jsonObject.put("access_token", idToken);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
@@ -326,25 +353,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(getApplicationContext(), "Success Response", Toast.LENGTH_SHORT).show();
                             saveUserReponse(response);
-                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                            Login.this.startActivity(instrumentsIntent);
-                            finish();
+                            openCorrectIntent(response);
                         }
-                    }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    errorHandlerLogin(error);
-                }
-            });
-
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            errorHandlerLogin(error);
+                        }
+                    });
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
-        } catch (JSONException ex) {
-            System.out.println(ex.getMessage());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -360,7 +381,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
     }
 
     // Google+ Sign In
@@ -433,7 +454,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
             SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = srdPref.edit();
-            editor.putString("userId", id);
+            editor.putString("userID", id);
             editor.apply();
             return true;
         } catch (JSONException e) {
@@ -452,47 +473,33 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        saveUserReponse(response);
-                        saveUserId(response);
-                        Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
-                        try {
-                            Boolean hasFinishedSetup = response.getBoolean("hasFinishedSetup");
-                            if (hasFinishedSetup) {
-                                Intent userListIntent = new Intent(Login.this, MainScreenActivity.class);
-                                Login.this.startActivity(userListIntent);
-                            } else {
-                                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                                Login.this.startActivity(instrumentsIntent);
-                            }
-                        } catch (JSONException e) {
-                            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                            Login.this.startActivity(instrumentsIntent);
 
-                        } finally {
-                            loginDialog.dismiss();
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                            finish();
+        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().local_login(
+                user,
+                new BandUpResponseListener() {
+                    @Override
+                    public void onBandUpResponse(Object response) {
+                        JSONObject responseObj = null;
+                        if (response instanceof JSONObject) {
+                            responseObj = (JSONObject) response;
                         }
+
+                        saveUserReponse(responseObj);
+                        saveUserId(responseObj);
+                        Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
+                        openCorrectIntent(responseObj);
+                        loginDialog.dismiss();
+
                     }
                 },
-                new Response.ErrorListener() {
+                new BandUpErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onBandUpErrorResponse(VolleyError error) {
                         loginDialog.dismiss();
                         errorHandlerLogin(error);
                     }
                 }
         );
-
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     // Handling errors that can occur while SignIn request
@@ -504,7 +511,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void saveUserReponse(JSONObject response) {
         SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("response", response.toString());
+        editor.putString("sessionID", response.toString());
         editor.apply();
     }
 
@@ -513,83 +520,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if (v.getId() == R.id.btnSignUp) {
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
-        }
-    }
-
-    // ======= Location setup ========
-    private final int LOCATION_REQUEST_CODE = 333;
-
-    protected void createLocationRequest() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // request permissions
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            }, LOCATION_REQUEST_CODE);
-
-            return;
-        }
-        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        try{
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
-            sendLocation(location);
-        }catch (IllegalArgumentException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void sendLocation(Location location){
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("lon", location.getLongitude());
-            jsonObject.put("lat", location.getLatitude());
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url.concat("/location"), jsonObject, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    //finish();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //finish();
-                }
-            });
-
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    createLocationRequest();
-                } else {
-                    // permission denied, boo!
-                    Toast.makeText(this, "Need location for app functionality", Toast.LENGTH_LONG).show();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    createLocationRequest();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 }

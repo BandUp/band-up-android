@@ -3,14 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/itemBackground"
+        android:src="@drawable/disco" />
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:text="ItemName"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:id="@+id/itemName" />
+        android:id="@+id/itemName"
+        android:theme="@style/DoubleListItemText"/>
 
     <ImageView
         android:layout_width="20dp"
@@ -20,6 +29,7 @@
         android:id="@+id/itemSelected"
         android:src="@drawable/ic_check_circle_black_24dp"
         android:visibility="invisible"
-        android:tint="@color/colorPrimaryDark" />
+        android:tint="@color/bandUpYellow" />
+
 
 </FrameLayout>

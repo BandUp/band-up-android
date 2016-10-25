@@ -1,40 +1,65 @@
 package com.melodies.bandup.setup;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melodies.bandup.R;
+
+import org.json.JSONArray;
 
 
 /**
  * An activity class that controls the Instruments view.
  */
 public class Instruments extends AppCompatActivity {
-    private String url;
-    private String route = "/instruments";
-    private GridView gridView;
-    private ProgressBar progressBar;
+    private TextView txtTitleGetStarted, txtTitleHint, txtTitleProgress, txtNoInstruments;
+    private GridView    gridView;
     private SetupShared sShared;
+
+    private void initializeTextViews() {
+        txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
+        txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
+        txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
+        txtNoInstruments   = (TextView) findViewById(R.id.txtNoInstruments);
+    }
+
+    private void setFonts() {
+        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleProgress  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        txtTitleHint      .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtNoInstruments  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruments);
 
-        url         = getResources().getString(R.string.api_address).concat(route);
-        gridView    = (GridView) findViewById(R.id.instrumentGridView);
-        progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
-        sShared     = new SetupShared();
+        // The shared class between Instruments and Genres.
+        sShared  = new SetupShared();
+
+        // Find the GridView that should display the instruments.
+        gridView = (GridView) findViewById(R.id.instrumentGridView);
+
+        // The spinning indicator when loading instruments.
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.instrumentProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        initializeTextViews();
+        setFonts();
 
         // Gets the list of instruments.
-        sShared.getSetupItems(Instruments.this, url, gridView, progressBar);
+        sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments);
 
+        // What to do when an item on the GridView is clicked.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -43,7 +68,7 @@ public class Instruments extends AppCompatActivity {
         });
     }
 
-    public void onClickNext (View v) {
+    public void onClickNext(View v) {
         if (v.getId() == R.id.btnNext) {
             DoubleListAdapter dla = (DoubleListAdapter) gridView.getAdapter();
 
@@ -55,11 +80,15 @@ public class Instruments extends AppCompatActivity {
             }
 
             // Send the items that the user selected to the server.
-            if (sShared.postSelectedItems(Instruments.this, dla, url)) {
-                Intent toInstrumentsIntent = new Intent(Instruments.this, Genres.class);
-                Instruments.this.startActivity(toInstrumentsIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+            JSONArray selectedInstruments = sShared.prepareSelectedList(Instruments.this, dla);
+            if (selectedInstruments.length() > 0) {
+                sShared.postInstruments(Instruments.this, selectedInstruments);
+                Intent toUserListIntent = new Intent(Instruments.this, Genres.class);
+                Instruments.this.startActivity(toUserListIntent);
+                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 finish();
+            } else {
+                Toast.makeText(Instruments.this, R.string.setup_no_instrument_selection, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -67,6 +96,8 @@ public class Instruments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        // If there is something on the TaskRoot
+        // then activities are in the background.
         if(!isTaskRoot()) {
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
         }

@@ -21,21 +21,23 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,14 +70,16 @@ public class ProfileFragment extends Fragment{
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
-    private TextView txtStatus;
-    private TextView txtFanStar;
+    private TextView txtSearchRadius;
+    private TextView txtAge;
     private TextView txtPercentage;
     private TextView txtAboutMe;
-    private TextView txtPromotion;
+    private ListView lstInstruments;
+    private ListView lstGenres;
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
+    final ArrayList<String> items = new ArrayList<String>();
     final int CAMERA_REQUEST = 555;
     final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 120000;
@@ -88,6 +92,7 @@ public class ProfileFragment extends Fragment{
     private int getProgressMaxValue = 200;   // Max X Km radius
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
+    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
 
 
     // TODO: Rename and change types of parameters
@@ -96,9 +101,8 @@ public class ProfileFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    // Required empty public constructor
+    public ProfileFragment() {}
 
     /**
      * Use this factory method to create a new instance of
@@ -128,9 +132,9 @@ public class ProfileFragment extends Fragment{
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
+        imageLoader = new ImageLoader(getActivity());
         myThread = new MyThread();
         myThread.start();
-
     }
 
     @Override
@@ -141,14 +145,16 @@ public class ProfileFragment extends Fragment{
         txtName            = (TextView) rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
         txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtStatus          = (TextView) rootView.findViewById(R.id.txtStatus);
-        txtFanStar         = (TextView) rootView.findViewById(R.id.txtFanStar);
+        txtSearchRadius    = (TextView) rootView.findViewById(R.id.txtSearchRadius);
+        txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
         txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe          = (TextView) rootView.findViewById(R.id.txtAboutMe);
-        txtSeekValue       = (TextView) rootView.findViewById(R.id.txtSeekValue);
-        txtPromotion       = (TextView) rootView.findViewById(R.id.txtPromotion);
+        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);
+        lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
+        lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
+
+        /*
+        seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);         // seek radius
         seekBarRadius.setMax(getProgressMaxValue);
         seekBarRadius.setProgress(progressMinValue);
         txtSeekValue.setText(progressMinValue + " km");
@@ -169,6 +175,7 @@ public class ProfileFragment extends Fragment{
 
             }
         });
+        */
         return rootView;
     }
 
@@ -176,17 +183,18 @@ public class ProfileFragment extends Fragment{
         if (imageDownloadDialog == null) {
             imageDownloadDialog = ProgressDialog.show(getActivity(), title, message, true, false);
         } else {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    imageDownloadDialog.dismiss();
-                    imageDownloadDialog.setTitle(title);
-                    imageDownloadDialog.setMessage(message);
-                    imageDownloadDialog.show();
-
-                }
-            });
+                        imageDownloadDialog.dismiss();
+                        imageDownloadDialog.setTitle(title);
+                        imageDownloadDialog.setMessage(message);
+                        imageDownloadDialog.show();
+                    }
+                });
+            }
 
 
         }
@@ -299,14 +307,13 @@ public class ProfileFragment extends Fragment{
 
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
+            displayDownloadMessage("Uploading Photo", "Please wait...");
             if (requestCode == CAMERA_REQUEST) {
-                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
             if (requestCode == GALLERY_REQUEST) {
                 // Get the URI from the intent result.
-                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendMessage(data);
 
             }
@@ -324,7 +331,7 @@ public class ProfileFragment extends Fragment{
                             imageDownloadDialog.dismiss();
                         }
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        getProfilePhoto(urlResponse, imageDownloadDialog);
+                        imageLoader.getProfilePhoto(urlResponse, ivUserProfileImage, imageDownloadDialog);
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
                                 System.out.println("FILE DELETION SUCCEEDED");
@@ -425,68 +432,12 @@ public class ProfileFragment extends Fragment{
         alertDialog.show();
     }
 
-    String validateJSON(String json) {
-        System.out.println("JSON");
-        System.out.println(json);
-        String imageURL = null;
-        try {
-            JSONObject urlObject = new JSONObject(json);
-            if (!urlObject.isNull("url")) {
-                imageURL = urlObject.getString("url");
-            } else {
-                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
-                return null;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (imageURL == null || imageURL.equals("")) {
-            return null;
-        }
-        return imageURL;
-    }
 
-    public void getProfilePhoto(String urlResponse, ProgressDialog pDialog) {
-        getProfilePhoto(urlResponse);
-        pDialog.dismiss();
-    }
-
-    public void getProfilePhoto(String urlResponse) {
-        ImageLoader il = VolleySingleton.getInstance(getActivity()).getImageLoader();
-        ivUserProfileImage.setImageResource(R.color.transparent);
-
-        String imageUrl = validateJSON(urlResponse);
-        if (imageUrl != null) {
-            il.get(imageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    final Bitmap b = response.getBitmap();
-                    if (b != null) {
-                        Runnable r = new Runnable() {
-                            @Override
-                            public void run() {
-                                ivUserProfileImage.setImageBitmap(b);
-                            }
-                        };
-                        getActivity().runOnUiThread(r);
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                }
-            });
-        }
-    }
 
     // Get the userid of logged in user
     public String getUserId() throws JSONException {
-        SharedPreferences srdPref = getActivity().getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
-        String response = srdPref.getString("response", DEFAULT);
-        JSONObject obj = new JSONObject(response);
-        String id = obj.get("userID").toString();
+        SharedPreferences srdPref = getActivity().getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String id = srdPref.getString("userID", DEFAULT);
         return (!id.equals(DEFAULT)) ? id : "No data Found";
     }
 
@@ -498,51 +449,117 @@ public class ProfileFragment extends Fragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url =getResources().getString(R.string.api_address).concat("/get-user");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            // Binding View to real data
-                            try {
-                                txtName.setText(response.getString("username"));
-                                //txtInstruments.setText(response.getString("instruments"));    // need some work
-                                //txtGenres.setText(response.getString("genres"));              // need some work
-                                txtFanStar.setText("Bob Marley");
-                                txtStatus.setText("Searching for band");        // need to create list of available options to choose
-                                txtPercentage.setText("45%");                   // needs match % value
-                                //txtAboutMe.setText("About Me...");
 
-                                if (!response.isNull("image")) {
-                                    getProfilePhoto(response.getJSONObject("image").toString());
-                                } else {
-                                    // TODO: Could not get image, display the placeholder.
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+        DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
+                }
+                if (response != null) {
+                    // Binding View to real data
+                    try {
+                        if (!responseObj.isNull("username")) {
+                            txtName.setText(responseObj.getString("username"));
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "Bad response: " + error.toString(), Toast.LENGTH_LONG).show();
+                        if (!responseObj.isNull("age")) {
+                            txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
+                        }
+                        // Favorite Instrument will be here
+                        if (!responseObj.isNull("searchradius")) {
+                            txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
+                        }
+                        txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
+                        if (!responseObj.isNull("instruments")) {
+
+                            String[] s = {"57dafe54dcba0f51172fb163","57db08cddcba0f51172fb769"};
+                            ArrayList<String> ins = mapToInstrument(s);
+                            //Toast.makeText(getActivity(), "Getting back" + ins, Toast.LENGTH_SHORT).show();
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ins);
+                            lstInstruments.setAdapter(adapter);
+
+                            // just id's of instruments
+                            txtInstruments.setText(responseObj.getString("instruments"));
+
+
+                        }
+                        if (!responseObj.isNull("genres")) {
+                            txtGenres.setText(responseObj.getString("genres"));
+                        }
+                        if (!responseObj.isNull("aboutme")) {
+                            txtAboutMe.setText(responseObj.getString("aboutme"));
+                        }
+                        if (!responseObj.isNull("image")) {
+                            imageLoader.getProfilePhoto(responseObj.getJSONObject("image").toString(), ivUserProfileImage);
+                        } else {
+                            // TODO: Could not get image, display the placeholder.
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                System.out.println("ERROR");
+            }
+        });
     }
 
+    // converting id to instruments,
+    private ArrayList<String> mapToInstrument(String[] id) {
+        for (String a : id) {
+            JSONObject inst = new JSONObject();
+            try {
+                inst.put("id", a);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().mapInstrumnet(inst, new BandUpResponseListener() {
+                @Override
+                public void onBandUpResponse(Object response) throws JSONException {
+                    JSONObject responseObj = null;
+                    if (response instanceof JSONObject) {
+                        responseObj = (JSONObject) response;
+                    }
+                    if (response != null) {
+                        items.add(responseObj.getString("name"));
+                    }
+
+                }
+            }, new BandUpErrorListener() {
+                @Override
+                public void onBandUpErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+                    System.out.println("ERROR");
+                }
+            });
+        }
+        return items;
+    }
+
+    // when About Me is clicked go to edit view
     public void onClickAboutMe (View view) {
         Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
-        getActivity().startActivity(aboutMeIntent);
+        startActivityForResult(aboutMeIntent, 2);
+    }
+
+
+    // All onActivityResults are handled by the activity.
+    // The onActivityResult function in MainScreenActivity calls this function.
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 2) {
+            if (data != null) {
+                String message = data.getStringExtra("MESSAGE");
+                txtAboutMe.setText(message);
+            }
+        }
     }
 
     public void openGallery() {

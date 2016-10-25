@@ -1,5 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import com.melodies.bandup.helper_classes.User;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -9,7 +11,7 @@ public class UserListControllerTest {
     public void addUser() throws Exception {
         String username = "User 1";
         UserListController ulc = new UserListController();
-        UserListController.User u = new UserListController.User();
+        User u = new User();
         u.name = username;
         ulc.addUser(u);
         assertEquals(ulc.users.size(), 1);
@@ -20,7 +22,7 @@ public class UserListControllerTest {
     public void getUser() throws Exception {
         String username = "User 1";
         UserListController ulc = new UserListController();
-        UserListController.User u = new UserListController.User();
+        User u = new User();
         u.name = username;
         ulc.addUser(u);
         assertEquals(ulc.getUser(0).name, username);
@@ -29,13 +31,13 @@ public class UserListControllerTest {
     @Test
     public void getNextUser() throws Exception {
         UserListController ulc = new UserListController();
-        UserListController.User u1 = new UserListController.User();
+        User u1 = new User();
         String username1 = "User 1";
 
-        UserListController.User u2 = new UserListController.User();
+        User u2 = new User();
         String username2 = "User 2";
 
-        UserListController.User u3 = new UserListController.User();
+        User u3 = new User();
         String username3 = "User 3";
 
         u1.name = username1;
@@ -56,13 +58,13 @@ public class UserListControllerTest {
     @Test
     public void getPrevUser() throws Exception {
         UserListController ulc = new UserListController();
-        UserListController.User u1 = new UserListController.User();
+        User u1 = new User();
         String username1 = "User 1";
 
-        UserListController.User u2 = new UserListController.User();
+        User u2 = new User();
         String username2 = "User 2";
 
-        UserListController.User u3 = new UserListController.User();
+        User u3 = new User();
         String username3 = "User 3";
 
         u1.name = username1;

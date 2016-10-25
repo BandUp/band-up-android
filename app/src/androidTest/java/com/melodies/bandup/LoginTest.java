@@ -22,6 +22,8 @@ public class LoginTest {
 
     private String mUsernameToBetyped;
     private String mPasswordToBetyped;
+    BandUpApplication app;
+
 
     @Rule
     public ActivityTestRule<Login> mActivityRule = new ActivityTestRule<>(
@@ -30,8 +32,10 @@ public class LoginTest {
     @Before
     public void initValidString() {
         // Specify a valid string.
-        mUsernameToBetyped = "mmm";
-        mPasswordToBetyped = "mmm";
+        mUsernameToBetyped = "aaa";
+        mPasswordToBetyped = "aaa";
+
+        app = (BandUpApplication) mActivityRule.getActivity().getApplication();
     }
 
     @Test
@@ -64,4 +68,5 @@ public class LoginTest {
         onView(withId(R.id.tilPassword)).check(matches(TextInputMatchers.hasTextInputLayoutErrorText(mActivityRule.getActivity().getString(R.string.login_password_validation))));
 
     }
+
 }

@@ -41,9 +41,9 @@ public class ChatActivity extends AppCompatActivity {
         public void call(Object... args) {
             // If the message transmission succeeded or not
             if (args[0].equals(false)) {
-                System.out.println("Sending message failed");
+                System.out.println("Sending message. Message saved to server");
             } else {
-                System.out.println("Sending message succeeded");
+                System.out.println("Sending message. Receiver online.");
             }
         }
     };
@@ -105,7 +105,13 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (!mSocket.connected()) {
+                    mSocket.connect();
+                }
+
                 txtMessage.setText("");
+
+
 
                 // Create the JSON object to send the message.
                 final JSONObject msgObject = new JSONObject();

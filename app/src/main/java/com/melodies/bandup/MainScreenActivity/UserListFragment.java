@@ -151,6 +151,7 @@ public class UserListFragment extends Fragment {
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
     }
+
     private void initializeButtons(View rootView) {
         btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
         btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
@@ -179,6 +180,10 @@ public class UserListFragment extends Fragment {
         partialView = rootView.findViewById(R.id.user_partial_view);
 
         setFonts();
+
+        if (ulc.getCurrentUser() != null){
+            displayUser(ulc.getCurrentUser());
+        }
 
         return rootView;
     }

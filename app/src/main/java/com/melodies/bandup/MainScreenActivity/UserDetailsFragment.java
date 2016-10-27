@@ -1,12 +1,14 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,8 +22,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.melodies.bandup.R.id.imgProfile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,13 +68,43 @@ public class UserDetailsFragment extends Fragment {
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
-    private TextView txtSearchRadius;
     private TextView txtAge;
+    private TextView txtFavorite;
     private TextView txtPercentage;
+    private TextView txtDistance;
     private TextView txtAboutMe;
+    private Button   btnLike;
     private ListView lstInstruments;
     private ListView lstGenres;
     private ImageView ivUserProfileImage;
+
+    private void initializeTextViews(View rootView) {
+        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
+        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
+        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
+        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
+        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
+    }
+
+    private void initializeButtons(View rootView) {
+        btnLike = (Button) rootView.findViewById(R.id.btnLike);
+    }
+
+    private void setFonts() {
+        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+
+        btnLike       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,24 +113,19 @@ public class UserDetailsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // Gets the user_id from userListFragment
         userCurrentUser(getArguments().getString("user_id"));
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        txtName            = (TextView) rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
-        txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtSearchRadius    = (TextView) rootView.findViewById(R.id.txtSearchRadius);
-        txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
-        txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
-        ivUserProfileImage = (ImageView) rootView.findViewById(imgProfile);
-        lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
-        lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
+        final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
+
+        initializeTextViews(rootView);
+        initializeButtons(rootView);
+        setFonts();
+
         return rootView;
     }
 
@@ -129,14 +154,16 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("age")) {
                             txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
                         }
-                        // Favorite Instrument will be here
-                        if (!responseObj.isNull("searchradius")) {
-                            txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
-                        }
-                        txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
+
+                        txtFavorite.setText("Drums");
+
+                        txtPercentage.setText("45%");
 
                         if (!responseObj.isNull("genres")) {
                             txtGenres.setText(responseObj.getString("genres"));
+                        }
+                        if (!responseObj.isNull("instruments")) {
+                            txtInstruments.setText(responseObj.getString("instruments"));
                         }
                         if (!responseObj.isNull("aboutme")) {
                             txtAboutMe.setText(responseObj.getString("aboutme"));

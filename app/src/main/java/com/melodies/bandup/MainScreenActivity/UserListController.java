@@ -26,6 +26,9 @@ public class UserListController {
     }
 
     public User getCurrentUser() {
+        if (users.size() == 0){
+            return null;
+        }
         return users.get(currentIndex);
     }
 

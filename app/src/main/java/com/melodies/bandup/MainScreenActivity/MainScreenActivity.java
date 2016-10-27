@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -134,8 +135,13 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (count != 0){
+            getSupportFragmentManager().popBackStack();
+
         } else {
             super.onBackPressed();
         }
@@ -239,9 +245,8 @@ public class MainScreenActivity extends AppCompatActivity
 
         switch (view.getId()) {
             case R.id.btnDetails:
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.mainFrame, userDetailsFragment);
-                ft.commit();
+                FragmentManager ft = getSupportFragmentManager();
+                ft.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null).commit();
                 break;
         }
     }

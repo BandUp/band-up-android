@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,29 +67,6 @@ public class ProfileFragment extends Fragment{
 
     public static final String DEFAULT = "N/A";
 
-    private TextView txtName;
-    private TextView txtInstruments;
-    private TextView txtGenres;
-    private TextView txtAge;
-    private TextView txtFavorite;
-    private TextView txtPercentage;
-    private TextView txtAboutMe;
-    private ListView lstInstruments;
-    private ListView lstGenres;
-    private ImageView ivUserProfileImage;
-    private CameraPhoto cameraPhoto;
-    private GalleryPhoto galleryPhoto;
-    final ArrayList<String> items = new ArrayList<String>();
-    final int CAMERA_REQUEST = 555;
-    final int GALLERY_REQUEST = 666;
-    final int REQUEST_TIMEOUT = 120000;
-    final int REQUEST_RETRY = 0;
-    final int REQUEST_TAKE_PICTURE = 200;
-    final int REQUEST_READ_GALLERY = 300;
-    ProgressDialog imageDownloadDialog;
-    MyThread myThread;
-    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -115,6 +94,52 @@ public class ProfileFragment extends Fragment{
         return fragment;
     }
 
+    private TextView txtName;
+    private TextView txtInstruments;
+    private TextView txtGenres;
+    private TextView txtAge;
+    private TextView txtFavorite;
+    private TextView txtPercentage;
+    private TextView txtDistance;
+    private TextView txtAboutMe;
+    private Button btnLike;
+    private ListView lstInstruments;
+    private ListView lstGenres;
+    private ImageView ivUserProfileImage;
+    private CameraPhoto cameraPhoto;
+    private GalleryPhoto galleryPhoto;
+    final ArrayList<String> items = new ArrayList<String>();
+    final int CAMERA_REQUEST = 555;
+    final int GALLERY_REQUEST = 666;
+    final int REQUEST_TIMEOUT = 120000;
+    final int REQUEST_RETRY = 0;
+    final int REQUEST_TAKE_PICTURE = 200;
+    final int REQUEST_READ_GALLERY = 300;
+    ProgressDialog imageDownloadDialog;
+    MyThread myThread;
+    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
+
+    private void initializeTextViews(View rootView) {
+        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
+        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
+        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
+        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
+        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
+        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
+    }
+
+    private void setFonts() {
+        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,16 +159,10 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        txtName            = (TextView) rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
-        txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
-        txtFavorite        = (TextView) rootView.findViewById(R.id.txtFavorite);
-        txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
-        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
-        lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
+
+        initializeTextViews(rootView);
+        setFonts();
+
         return rootView;
     }
 

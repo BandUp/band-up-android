@@ -22,7 +22,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -102,7 +101,6 @@ public class ProfileFragment extends Fragment{
     private TextView txtPercentage;
     private TextView txtDistance;
     private TextView txtAboutMe;
-    private Button btnLike;
     private ListView lstInstruments;
     private ListView lstGenres;
     private ImageView ivUserProfileImage;
@@ -122,8 +120,8 @@ public class ProfileFragment extends Fragment{
     private void initializeTextViews(View rootView) {
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
         txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
-        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
@@ -138,6 +136,7 @@ public class ProfileFragment extends Fragment{
         txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
         txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
         txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
     }
 
     @Override

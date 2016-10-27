@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.melodies.bandup.UserDetailsActivity">
+    tools:context="com.melodies.bandup.MainScreenActivity.UserDetailsFragment"
+    >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_profile_picture_placeholder"
@@ -44,7 +45,7 @@
                     android:id="@+id/txtName"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp" />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:text="Age"
@@ -58,15 +59,13 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:text="Main Instrument"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:text="Favorite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtMainInstrument"
-                    android:layout_below="@+id/txtAge"
-                    android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp" />
+                    android:id="@+id/txtFavorite"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp" />
 
                 <TextView
                     android:text="Distance"
@@ -93,21 +92,64 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
             android:orientation="horizontal"
-            android:layout_height="120dp">
-            <ListView
-                android:id="@+id/txtInstruments"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"/>
-            <ListView
-                android:id="@+id/txtGenres"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"/>
+            android:layout_width="match_parent"
+            android:layout_height="156dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:text="Instruments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInstDescription"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"/>
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:id="@+id/lstInstruments" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInstrument"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:text="Genres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtGenDescription"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="18sp"/>
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:id="@+id/lstGenres" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
 
         <LinearLayout

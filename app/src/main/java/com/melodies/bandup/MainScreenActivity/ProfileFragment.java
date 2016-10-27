@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,8 +68,8 @@ public class ProfileFragment extends Fragment{
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
-    private TextView txtSearchRadius;
     private TextView txtAge;
+    private TextView txtFavorite;
     private TextView txtPercentage;
     private TextView txtAboutMe;
     private ListView lstInstruments;
@@ -85,14 +84,9 @@ public class ProfileFragment extends Fragment{
     final int REQUEST_RETRY = 0;
     final int REQUEST_TAKE_PICTURE = 200;
     final int REQUEST_READ_GALLERY = 300;
-    private SeekBar seekBarRadius;
-    private TextView txtSeekValue;  // displaying searching value
-    private int progressMinValue = 1;       // Min 1 Km radius
-    private int getProgressMaxValue = 200;   // Max X Km radius
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
     com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
-
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -137,44 +131,19 @@ public class ProfileFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         txtName            = (TextView) rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
         txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtSearchRadius    = (TextView) rootView.findViewById(R.id.txtSearchRadius);
         txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
+        txtFavorite        = (TextView) rootView.findViewById(R.id.txtFavorite);
         txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
         txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
         lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
         lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
-
-        /*
-        seekBarRadius  = (SeekBar) rootView.findViewById(R.id.seekBarRadius);         // seek radius
-        seekBarRadius.setMax(getProgressMaxValue);
-        seekBarRadius.setProgress(progressMinValue);
-        txtSeekValue.setText(progressMinValue + " km");
-        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                progressMinValue = i;
-                txtSeekValue.setText(progressMinValue + " km");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        */
         return rootView;
     }
 
@@ -186,7 +155,6 @@ public class ProfileFragment extends Fragment{
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         imageDownloadDialog.dismiss();
                         imageDownloadDialog.setTitle(title);
                         imageDownloadDialog.setMessage(message);
@@ -194,8 +162,6 @@ public class ProfileFragment extends Fragment{
                     }
                 });
             }
-
-
         }
     }
 
@@ -229,8 +195,6 @@ public class ProfileFragment extends Fragment{
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } finally {
-
-
                         try {
                             inputStream.close();
                         } catch (IOException e) {
@@ -254,7 +218,6 @@ public class ProfileFragment extends Fragment{
             handler = new Handler();
             Looper.loop();
         }
-
     }
 
     @Override
@@ -338,7 +301,6 @@ public class ProfileFragment extends Fragment{
                                 System.out.println("FILE DELETION FAILED");
                             }
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -463,14 +425,16 @@ public class ProfileFragment extends Fragment{
                         if (!responseObj.isNull("age")) {
                             txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
                         }
-                        // Favorite Instrument will be here
-                        if (!responseObj.isNull("searchradius")) {
-                            txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
-                        }
+
+                        txtFavorite.setText("Drums");
+
                         txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
 
                         if (!responseObj.isNull("genres")) {
                             txtGenres.setText(responseObj.getString("genres"));
+                        }
+                        if (!responseObj.isNull("instruments")) {
+                            txtInstruments.setText(responseObj.getString("instruments"));
                         }
                         if (!responseObj.isNull("aboutme")) {
                             txtAboutMe.setText(responseObj.getString("aboutme"));

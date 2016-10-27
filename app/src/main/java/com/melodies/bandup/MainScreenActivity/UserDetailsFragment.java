@@ -68,8 +68,8 @@ public class UserDetailsFragment extends Fragment {
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
-    private TextView txtSearchRadius;
     private TextView txtAge;
+    private TextView txtFavorite;
     private TextView txtPercentage;
     private TextView txtAboutMe;
     private ListView lstInstruments;
@@ -83,6 +83,7 @@ public class UserDetailsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // Gets the user_id from userListFragment
         userCurrentUser(getArguments().getString("user_id"));
     }
 
@@ -91,16 +92,16 @@ public class UserDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        txtName            = (TextView) rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView) rootView.findViewById(R.id.txtInstruments);
-        txtGenres          = (TextView) rootView.findViewById(R.id.txtGenres);
-        txtSearchRadius    = (TextView) rootView.findViewById(R.id.txtSearchRadius);
-        txtAge             = (TextView) rootView.findViewById(R.id.txtAge);
-        txtPercentage      = (TextView) rootView.findViewById(R.id.txtPercentage);
-        txtAboutMe         = (TextView) rootView.findViewById(R.id.txtAboutMe);
+        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
+        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstruments);
+        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
+        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
+        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
+        txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
         ivUserProfileImage = (ImageView) rootView.findViewById(imgProfile);
-        lstInstruments     = (ListView) rootView.findViewById(R.id.lstInstruments);
-        lstGenres     = (ListView) rootView.findViewById(R.id.lstGenres);
+        lstInstruments     = (ListView)  rootView.findViewById(R.id.lstInstruments);
+        lstGenres          = (ListView)  rootView.findViewById(R.id.lstGenres);
         return rootView;
     }
 
@@ -129,14 +130,16 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("age")) {
                             txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
                         }
-                        // Favorite Instrument will be here
-                        if (!responseObj.isNull("searchradius")) {
-                            txtSearchRadius.setText(String.format("%s%s" ,responseObj.getString("searchradius"), " km away"));
-                        }
-                        txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
+
+                        txtFavorite.setText("Drums");
+
+                        txtPercentage.setText("45%");
 
                         if (!responseObj.isNull("genres")) {
                             txtGenres.setText(responseObj.getString("genres"));
+                        }
+                        if (!responseObj.isNull("instruments")) {
+                            txtInstruments.setText(responseObj.getString("instruments"));
                         }
                         if (!responseObj.isNull("aboutme")) {
                             txtAboutMe.setText(responseObj.getString("aboutme"));

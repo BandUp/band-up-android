@@ -63,11 +63,11 @@
     <string name="register_password_mismatch">Lykilorð passa ekki!</string>
     <string name="register_progress_title">Nýskrái þig</string>
     <string name="register_success">Nýskráning tókst!\\nÞú getur nú skráð þig inn.</string>
-    <string name="user_allow_camera">Vinsamlega leyfðu aðgang til þess að taka mynd</string>
+    <string name="user_allow_camera">Vinsamlegast leyfðu aðgang til þess að taka mynd</string>
     <string name="user_error">Eitthvað fór úrskeiðis</string>
     <string name="user_image_error">Það tókst ekki að senda myndina á vefþjóninn. Vinsamlega reyndu aftur.</string>
     <string name="user_image_success">Mynd vistuð á vefþjón</string>
-    <string name="user_allow_storage">Vinsamlega leyfðu aðgang til þess að velja mynd</string>
+    <string name="user_allow_storage">Vinsamlegast leyfðu aðgang til þess að velja mynd</string>
     <string name="action_sign_in">Skrá inn á SoundCloud</string>
     <string name="action_sign_in_short">Innskráning</string>
     <string name="error_field_required">Það þarf að skrá þessar upplýsingar</string>
@@ -91,4 +91,5 @@
     <string name="profile_uploading">Hleð upp mynd</string>
     <string name="main_title_edit_profile">Breyta prófíl</string>
     <string name="main_nav_log_out">Útskrá</string>
+    <string name="user_allow_location">Vinsamlegast leyfðu GPS aðgang virkni</string>
 </resources>

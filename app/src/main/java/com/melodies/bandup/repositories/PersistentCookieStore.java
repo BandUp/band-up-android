@@ -23,7 +23,8 @@ public class PersistentCookieStore implements CookieStore, Runnable {
 
     private final String PREFS_LOC = "Band_up_cookie_store";
 
-    public PersistentCookieStore(){
+    public PersistentCookieStore(Context c){
+        mCtx = c;
         store = new CookieManager().getCookieStore();
         SharedPreferences sh = mCtx.getSharedPreferences(PREFS_LOC, Context.MODE_PRIVATE);
 

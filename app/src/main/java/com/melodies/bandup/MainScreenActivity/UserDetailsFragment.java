@@ -76,6 +76,7 @@ public class UserDetailsFragment extends Fragment {
     private Button   btnLike;
     private ListView lstInstruments;
     private ListView lstGenres;
+
     private ImageView ivUserProfileImage;
 
     private void initializeTextViews(View rootView) {
@@ -114,7 +115,7 @@ public class UserDetailsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         // Gets the user_id from userListFragment
-        userCurrentUser(getArguments().getString("user_id"));
+        fetchCurrentUser(getArguments().getString("user_id"));
     }
 
     @Override
@@ -130,7 +131,7 @@ public class UserDetailsFragment extends Fragment {
     }
 
     // Request REAL user info from server
-    public void userCurrentUser(String userid) {
+    public void fetchCurrentUser(String userid) {
         JSONObject user = new JSONObject();
         try {
             user.put("userId", userid);

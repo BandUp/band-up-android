@@ -240,6 +240,9 @@ public class MainScreenActivity extends AppCompatActivity
 
     public void onClickDetails(View view) {
         Bundle bundle = new Bundle();
+        if (userListFragment.getCurrentUser() == null) {
+            return;
+        }
         bundle.putString("user_id", userListFragment.getCurrentUser().id);
         userDetailsFragment.setArguments(bundle);
 

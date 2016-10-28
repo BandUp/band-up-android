@@ -14,7 +14,6 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -30,6 +29,9 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     private JsonObjectRequest createObjectRequest(int httpMethod, String url, JSONObject data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
+        System.out.println("DATA1");
+        System.out.println(data);
+        System.out.println("DATA2");
         return new JsonObjectRequest (
                 httpMethod,
                 url,
@@ -103,7 +105,8 @@ public class BandUpRepository implements BandUpDatabase {
 
     public void getUserProfile(final JSONObject user, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
 
-        String url = mContext.getResources().getString(R.string.api_address).concat("/get-user");
+        String url = mContext.getResources().getString(R.string.api_address).concat("/user");
+        System.out.println(user);
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);

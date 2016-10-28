@@ -35,6 +35,8 @@ import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.setup.Genres;
+import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -336,5 +338,13 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    public void onClickEditInstruments(View view) {
+        startActivity(new Intent(MainScreenActivity.this, Instruments.class));
+    }
+
+    public void onClickEditGenres(View view) {
+        startActivity(new Intent(MainScreenActivity.this, Genres.class));
     }
 }

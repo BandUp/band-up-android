@@ -100,7 +100,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:text="Instruments"
+                        android:text="@string/details_instruments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtInstrumentTitle"
@@ -124,7 +124,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:text="Genres"
+                        android:text="@string/details_genres"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtGenresTitle"

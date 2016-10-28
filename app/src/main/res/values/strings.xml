@@ -101,4 +101,6 @@
     <string name="profile_uploading">Uploading Photo</string>
     <string name="main_title_edit_profile">Edit Profile</string>
     <string name="main_nav_log_out">Log Out</string>
+    <string name="details_instruments">Instruments</string>
+    <string name="details_genres">Genres</string>
 </resources>

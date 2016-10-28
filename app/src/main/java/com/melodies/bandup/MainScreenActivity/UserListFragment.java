@@ -129,7 +129,9 @@ public class UserListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                partialView.setVisibility(partialView.VISIBLE);
+                if (partialView != null) {
+                    partialView.setVisibility(partialView.VISIBLE);
+                }
                 if (ulc.users.size() > 0) {
                     displayUser(ulc.getUser(0));
                 }

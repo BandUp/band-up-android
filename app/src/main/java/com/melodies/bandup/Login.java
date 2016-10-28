@@ -1,18 +1,12 @@
 package com.melodies.bandup;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -213,8 +207,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onCancel() {
-                System.out.println("login canceled");
-                Toast.makeText(Login.this, "login cancelled", Toast.LENGTH_LONG).show();
+                System.out.println("Login Cancelled");
+                Toast.makeText(Login.this, "Login Cancelled", Toast.LENGTH_LONG).show();
             }
 
             @Override

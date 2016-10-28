@@ -149,7 +149,9 @@ public class UserDetailsFragment extends Fragment {
     }
 
     private void displayUser(User u) {
-        Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+        if (u.imgURL != null) {
+            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+        }
 
         txtName.setText(u.name);
         txtAge.setText(String.format("%s %s", u.age, "years old"));

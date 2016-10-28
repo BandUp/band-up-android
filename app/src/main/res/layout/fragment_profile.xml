@@ -2,178 +2,178 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.melodies.bandup.MainScreenActivity.ProfileFragment">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.melodies.bandup.MainScreenActivity.UserDetailsFragment">
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|center"
-            android:layout_gravity="top|center">
-
-            <ImageView
-                android:id="@+id/imgProfile"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_profile_picture_placeholder"
-                android:onClick="onClickDisplayModal"
-                android:layout_width="150dp"
-                android:layout_height="150dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Username"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtName"
-                    android:textSize="30sp"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/imgProfile" />
-
-                <TextView
-                    android:text="Age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtAge"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:text="Distance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtDistance"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:text="Favorite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtFavorite"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:text="00 %"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtPercentage"
-                    android:layout_below="@+id/txtFavorite"
-                    android:layout_toEndOf="@+id/imgProfile"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:text="Instruments"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtInstrumentTitle"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="18sp"/>
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:id="@+id/lstInstruments" />
-                </LinearLayout>
-            </ScrollView>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:text="Genres"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtGenresTitle"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="18sp"/>
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:id="@+id/lstGenres" />
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="top|center"
+                android:layout_gravity="top|center"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_profile_picture_placeholder"
+                        android:onClick="onClickDisplayModal"/>
+
+                    <ImageView
+                        android:id="@+id/outside_imageview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/imgProfile"
+                        android:layout_alignBottom="@id/imgProfile"
+                        android:layout_alignStart="@id/imgProfile"
+                        android:layout_alignEnd="@id/imgProfile"
+                        android:src="@drawable/add_image_plus"
+                        android:padding="15dp"
+                        android:scaleType="fitXY" />
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:text="Username"
+
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtName"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/imgProfile"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:text="Age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtAge"
+                        android:layout_below="@+id/txtName"
+                        android:layout_toEndOf="@+id/imgProfile"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:text="Favorite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtFavorite"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:onClick="onClickEditInstruments">
+
+                    <TextView
+                        android:text="@string/details_instruments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtInstrumentTitle"
+                        android:gravity="center"
+                        android:textSize="19sp"
+                        android:layout_marginBottom="15dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/txtLstInstruments"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:onClick="onClickEditGenres">
+
+                    <TextView
+                        android:text="@string/details_genres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtGenresTitle"
+                        android:gravity="center"
+                        android:textSize="19sp"
+                        android:layout_marginBottom="15dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/txtLstGenres"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="#FFFFFF" />
+            <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAboutMe"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignEnd="@+id/txtStatus"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="10dp"
                     android:textSize="18sp"
                     android:hint="About Me"
                     android:onClick="onClickAboutMe"
-                    android:maxLength="100"
-                    />
+                    android:maxLength="100" />
 
-                <TextView
-                    android:text="Sound Cloud Will Be HERE"
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtSoundCloud"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center" />
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/soundcloud_player"/>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </FrameLayout>

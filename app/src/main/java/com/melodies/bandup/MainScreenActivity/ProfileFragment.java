@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +34,12 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,11 +100,9 @@ public class ProfileFragment extends Fragment{
     private TextView txtGenres;
     private TextView txtAge;
     private TextView txtFavorite;
-    private TextView txtPercentage;
-    private TextView txtDistance;
     private TextView txtAboutMe;
-    private ListView lstInstruments;
-    private ListView lstGenres;
+    private TextView txtLstInstruments;
+    private TextView txtLstGenres;
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
@@ -116,27 +116,29 @@ public class ProfileFragment extends Fragment{
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
     com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
+    User currentUser;
 
     private void initializeTextViews(View rootView) {
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
         txtName            = (TextView)  rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
         txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
-        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
-        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
         txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
         txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
+        txtLstInstruments  = (TextView)  rootView.findViewById(R.id.txtLstInstruments);
+        txtLstGenres       = (TextView)  rootView.findViewById(R.id.txtLstGenres);
     }
 
     private void setFonts() {
-        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtName          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstruments   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtGenres        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtLstInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtLstGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge           .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAboutMe       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
     }
 
     @Override
@@ -163,6 +165,26 @@ public class ProfileFragment extends Fragment{
         setFonts();
 
         return rootView;
+    }
+
+    private void displayUser(User u) {
+        if (u.imgURL != null) {
+            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+        }
+
+        txtName.setText(u.name);
+        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtFavorite.setText("Drums");
+        txtAboutMe.setText(u.aboutme);
+
+
+        for (int i = 0; i < u.genres.size(); i++) {
+            txtLstGenres.append(u.genres.get(i) + "\n");
+        }
+
+        for (int i = 0; i < u.instruments.size(); i++) {
+            txtLstInstruments.append(u.instruments.get(i) + "\n");
+        }
     }
 
     public void displayDownloadMessage(final String title, final String message) {
@@ -434,39 +456,58 @@ public class ProfileFragment extends Fragment{
                 if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
                 }
-                if (response != null) {
-                    // Binding View to real data
-                    try {
-                        if (!responseObj.isNull("username")) {
-                            txtName.setText(responseObj.getString("username"));
-                        }
-                        if (!responseObj.isNull("age")) {
-                            txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
-                        }
-
-                        txtFavorite.setText("Drums");
-
-                        txtPercentage.setText("45%");               //<== HERE WILL COME MATCH VALUE NOT EDITABLE
-
-                        if (!responseObj.isNull("genres")) {
-                            txtGenres.setText(responseObj.getString("genres"));
-                        }
-                        if (!responseObj.isNull("instruments")) {
-                            txtInstruments.setText(responseObj.getString("instruments"));
-                        }
-                        if (!responseObj.isNull("aboutme")) {
-                            txtAboutMe.setText(responseObj.getString("aboutme"));
-                        }
-                        if (!responseObj.isNull("image")) {
-                            imageLoader.getProfilePhoto(responseObj.getJSONObject("image").toString(), ivUserProfileImage);
-                        } else {
-                            // TODO: Could not get image, display the placeholder.
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                currentUser = new User();
+                try {
+                    if (!responseObj.isNull("_id")) {
+                        currentUser.id = responseObj.getString("_id");
                     }
+                    if (!responseObj.isNull("username")) {
+                        currentUser.name = responseObj.getString("username");
+                    }
+                    if (!responseObj.isNull("age")) {
+                        currentUser.age = responseObj.getInt("age");
+                    }
+
+                    if (!responseObj.isNull("distance")) {
+                        currentUser.distance = responseObj.getInt("distance");
+                    } else {
+                        currentUser.distance = null;
+                    }
+
+                    if (!responseObj.isNull("percentage")) {
+                        currentUser.percentage = responseObj.getInt("percentage");
+                    }
+
+                    if (!responseObj.isNull("genres")) {
+                        JSONArray genreArray = responseObj.getJSONArray("genres");
+                        for (int i = 0; i < genreArray.length(); i++) {
+                            currentUser.genres.add(genreArray.getString(i));
+                        }
+                    }
+
+                    if (!responseObj.isNull("instruments")) {
+                        JSONArray instrumentArray = responseObj.getJSONArray("instruments");
+                        for (int i = 0; i < instrumentArray.length(); i++) {
+                            currentUser.instruments.add(instrumentArray.getString(i));
+                        }
+                    }
+
+                    if (!responseObj.isNull("aboutme")) {
+                        currentUser.aboutme = responseObj.getString("aboutme");
+                    }
+
+                    if (!responseObj.isNull("image")) {
+                        JSONObject imageObj = responseObj.getJSONObject("image");
+
+                        if (!imageObj.isNull("url")) {
+                            currentUser.imgURL = imageObj.getString("url");
+                        }
+                    }
+                    displayUser(currentUser);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             }
         }, new BandUpErrorListener() {
             @Override

@@ -166,14 +166,11 @@
                 android:onClick="onClickAboutMe"
                 android:maxLength="100" />
 
-            <TextView
-                android:text="Sound Cloud Will Be HERE"
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtSoundCloud"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center" />
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/soundcloud_player"/>
 
             <Button
                 android:text="@string/user_list_like"

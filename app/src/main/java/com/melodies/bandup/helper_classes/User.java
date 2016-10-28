@@ -22,4 +22,5 @@ public class User {
     public String imgURL;
     public int age;
     public Boolean userHasLiked;
+    public String aboutme;
 }

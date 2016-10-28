@@ -17,7 +17,7 @@
 
         <include layout="@layout/user_list_user_partial"
             android:id="@+id/user_partial_view"
-            android:visibility="visible" />
+            android:visibility="invisible" />
         <!-- Temporary layout -->
         <LinearLayout
             android:gravity="bottom"

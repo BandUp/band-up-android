@@ -14,6 +14,7 @@
 
     <style name="BandUpTheme" parent="Theme.AppCompat">
         <item name="android:colorBackground">@color/bandUpGray</item>
+        <item name="colorControlActivated">@color/bandUpYellow</item>
     </style>
 
     <style name="BandUpThemeNoActionBar" parent="BandUpTheme">
@@ -25,8 +26,6 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textSize">20sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-        <item name="colorControlActivated">@color/bandUpYellow</item>
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat">

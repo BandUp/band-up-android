@@ -239,17 +239,24 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void onClickDetails(View view) {
-        Bundle bundle = new Bundle();
-        if (userListFragment.getCurrentUser() == null) {
-            return;
-        }
-        bundle.putString("user_id", userListFragment.getCurrentUser().id);
-        userDetailsFragment.setArguments(bundle);
-
         switch (view.getId()) {
             case R.id.btnDetails:
-                FragmentManager ft = getSupportFragmentManager();
-                ft.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null).commit();
+                Bundle bundle = new Bundle();
+                if (userListFragment.getCurrentUser() == null) {
+                    return;
+                }
+                bundle.putString("user_id", userListFragment.getCurrentUser().id);
+                System.out.println(userDetailsFragment.getArguments());
+
+                if (userDetailsFragment.getArguments() != null) {
+                    userDetailsFragment.getArguments().clear();
+                    userDetailsFragment.getArguments().putAll(bundle);
+                } else {
+                    userDetailsFragment.setArguments(bundle);
+                }
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null);
+                ft.commit();
                 break;
         }
     }

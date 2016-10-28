@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
@@ -37,6 +38,7 @@ public class UserDetailsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private User currentUser;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -123,7 +125,7 @@ public class UserDetailsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         // Gets the user_id from userListFragment
-        fetchCurrentUser(getArguments().getString("user_id"));
+
     }
 
     @Override
@@ -134,8 +136,40 @@ public class UserDetailsFragment extends Fragment {
         initializeTextViews(rootView);
         initializeButtons(rootView);
         setFonts();
-
+        System.out.println("CURRENTUSER");
+        System.out.println(currentUser);
+        String argumentUserID = getArguments().getString("user_id");
+        if (currentUser == null || !currentUser.id.equals(argumentUserID)) {
+            fetchCurrentUser(getArguments().getString("user_id"));
+        } else {
+            System.out.println(currentUser.id);
+            displayUser(currentUser);
+        }
         return rootView;
+    }
+
+    private void displayUser(User u) {
+        Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+
+        txtName.setText(u.name);
+        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtFavorite.setText("Drums");
+        txtPercentage.setText(u.percentage + "%");
+        txtAboutMe.setText(u.aboutme);
+
+        if (txtDistance == null) {
+            txtDistance.setText(u.distance + " km away from you");
+        } else {
+            txtDistance.setText("-- km away from you");
+        }
+
+        for (int i = 0; i < u.genres.size(); i++) {
+            txtLstGenres.append(u.genres.get(i) + "\n");
+        }
+
+        for (int i = 0; i < u.instruments.size(); i++) {
+            txtLstInstruments.append(u.instruments.get(i) + "\n");
+        }
     }
 
     // Request REAL user info from server
@@ -156,52 +190,54 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (response != null) {
                     // Binding View to real data
+                    currentUser = new User();
                     try {
+                        if (!responseObj.isNull("_id")) {
+                            currentUser.id = responseObj.getString("_id");
+                        }
                         if (!responseObj.isNull("username")) {
-                            txtName.setText(responseObj.getString("username"));
+                            currentUser.name = responseObj.getString("username");
                         }
                         if (!responseObj.isNull("age")) {
-                            txtAge.setText(String.format("%s%s", responseObj.getString("age"), " years old"));
+                            currentUser.age = responseObj.getInt("age");
                         }
 
-                        txtFavorite.setText("Drums");
-
                         if (!responseObj.isNull("distance")) {
-                            txtDistance.setText(responseObj.getInt("distance")+" km away from you");
+                            currentUser.distance = responseObj.getInt("distance");
                         } else {
-                            txtDistance.setText("-- km away from you");
+                            currentUser.distance = null;
                         }
 
                         if (!responseObj.isNull("percentage")) {
-                            txtPercentage.setText(responseObj.getInt("percentage")+"%");
+                            currentUser.percentage = responseObj.getInt("percentage");
                         }
-                        System.out.println(responseObj.getJSONArray("genres"));
+
                         if (!responseObj.isNull("genres")) {
                             JSONArray genreArray = responseObj.getJSONArray("genres");
-                            System.out.println(genreArray.length());
                             for (int i = 0; i < genreArray.length(); i++) {
-                                txtLstGenres.append(genreArray.get(i) + "\n");
+                                currentUser.genres.add(genreArray.getString(i));
                             }
                         }
+
                         if (!responseObj.isNull("instruments")) {
                             JSONArray instrumentArray = responseObj.getJSONArray("instruments");
-
                             for (int i = 0; i < instrumentArray.length(); i++) {
-                                txtLstInstruments.append(instrumentArray.get(i) + "\n");
+                                currentUser.instruments.add(instrumentArray.getString(i));
                             }
                         }
+
                         if (!responseObj.isNull("aboutme")) {
-                            txtAboutMe.setText(responseObj.getString("aboutme"));
+                            currentUser.aboutme = responseObj.getString("aboutme");
                         }
+
                         if (!responseObj.isNull("image")) {
                             JSONObject imageObj = responseObj.getJSONObject("image");
-                            if (!imageObj.isNull("url")) {
-                                Picasso.with(getActivity()).load(imageObj.getString("url")).into(ivUserProfileImage);
-                            }
-                        } else {
-                            // TODO: Could not get image, display the placeholder.
-                        }
 
+                            if (!imageObj.isNull("url")) {
+                                currentUser.imgURL = imageObj.getString("url");
+                            }
+                        }
+                        displayUser(currentUser);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

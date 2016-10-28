@@ -183,6 +183,7 @@ public class UserListFragment extends Fragment {
 
         if (ulc.getCurrentUser() != null){
             displayUser(ulc.getCurrentUser());
+            partialView.setVisibility(partialView.VISIBLE);
         }
 
         return rootView;
@@ -303,7 +304,12 @@ public class UserListFragment extends Fragment {
             }
         }*/
 
-        Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+        if (u.imgURL == null) {
+            Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_big).into(ivUserProfileImage);
+        } else {
+            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+
+        }
     }
 
     public void onClickNextUser(View view) {

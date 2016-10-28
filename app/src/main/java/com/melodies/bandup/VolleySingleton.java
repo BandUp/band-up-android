@@ -2,7 +2,6 @@ package com.melodies.bandup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 import android.widget.Toast;
@@ -26,9 +25,6 @@ import org.json.JSONObject;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.CookieStore;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -44,7 +40,7 @@ public class VolleySingleton {
         mCtx = context;
         mRequestQueue = getRequestQueue();
 
-        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(), CookiePolicy.ACCEPT_ALL);
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(mCtx), CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
         mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache(){

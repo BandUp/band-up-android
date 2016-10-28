@@ -20,6 +20,7 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,6 +69,8 @@ public class UserDetailsFragment extends Fragment {
     private TextView txtName;
     private TextView txtInstruments;
     private TextView txtGenres;
+    private TextView txtLstInstruments;
+    private TextView txtLstGenres;
     private TextView txtAge;
     private TextView txtFavorite;
     private TextView txtPercentage;
@@ -84,6 +87,8 @@ public class UserDetailsFragment extends Fragment {
         txtName            = (TextView)  rootView.findViewById(R.id.txtName);
         txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
         txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
+        txtLstInstruments  = (TextView)  rootView.findViewById(R.id.txtLstInstruments);
+        txtLstGenres       = (TextView)  rootView.findViewById(R.id.txtLstGenres);
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
@@ -96,15 +101,18 @@ public class UserDetailsFragment extends Fragment {
     }
 
     private void setFonts() {
-        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtName          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstruments   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtGenres        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtLstInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtLstGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage    .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge           .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAboutMe       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
 
-        btnLike       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+        btnLike          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
     }
 
     @Override
@@ -158,13 +166,29 @@ public class UserDetailsFragment extends Fragment {
 
                         txtFavorite.setText("Drums");
 
-                        txtPercentage.setText("45%");
+                        if (!responseObj.isNull("distance")) {
+                            txtDistance.setText(responseObj.getInt("distance")+" km away from you");
+                        } else {
+                            txtDistance.setText("-- km away from you");
+                        }
 
+                        if (!responseObj.isNull("percentage")) {
+                            txtPercentage.setText(responseObj.getInt("percentage")+"%");
+                        }
+                        System.out.println(responseObj.getJSONArray("genres"));
                         if (!responseObj.isNull("genres")) {
-                            txtGenres.setText(responseObj.getString("genres"));
+                            JSONArray genreArray = responseObj.getJSONArray("genres");
+                            System.out.println(genreArray.length());
+                            for (int i = 0; i < genreArray.length(); i++) {
+                                txtLstGenres.append(genreArray.get(i) + "\n");
+                            }
                         }
                         if (!responseObj.isNull("instruments")) {
-                            txtInstruments.setText(responseObj.getString("instruments"));
+                            JSONArray instrumentArray = responseObj.getJSONArray("instruments");
+
+                            for (int i = 0; i < instrumentArray.length(); i++) {
+                                txtLstInstruments.append(instrumentArray.get(i) + "\n");
+                            }
                         }
                         if (!responseObj.isNull("aboutme")) {
                             txtAboutMe.setText(responseObj.getString("aboutme"));

@@ -17,7 +17,7 @@ public class User {
     public List<String> instruments;
     public List<String> genres;
     public String status;
-    public int distance;
+    public Integer distance;
     public int percentage;
     public String imgURL;
     public int age;

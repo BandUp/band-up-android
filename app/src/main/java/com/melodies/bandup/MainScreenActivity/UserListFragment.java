@@ -283,8 +283,17 @@ public class UserListFragment extends Fragment {
         txtInstruments.setText(u.instruments.get(0));
         txtGenres.setText(u.genres.get(0));
         txtPercentage.setText(u.percentage + "%");
-        txtAge.setText(u.age+" years old");
-        txtDistance.setText(u.distance + " km away from you");
+        if (u.age == 1) {
+            txtAge.setText(u.age + " year old");
+        } else {
+            txtAge.setText(u.age + " years old");
+        }
+
+        if (u.distance != null) {
+            txtDistance.setText(u.distance + " km away from you");
+        } else {
+            txtDistance.setText("-- km away from you");
+        }
 
         /*for (int i = 0; i < u.instruments.size(); i++) {
             if (i != u.instruments.size()-1) {

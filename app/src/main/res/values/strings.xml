@@ -103,4 +103,5 @@
     <string name="main_nav_log_out">Log Out</string>
     <string name="details_instruments">Instruments</string>
     <string name="details_genres">Genres</string>
+    <string name="dateOfBirth">Date Of Birth</string>
 </resources>

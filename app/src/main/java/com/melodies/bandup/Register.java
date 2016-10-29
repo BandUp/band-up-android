@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,11 +21,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Register extends AppCompatActivity {
     private String url;
     private String route = "/signup-local";
     private ProgressDialog registerDialog;
-
+    private TextView txtDateOfBirth;
+    private Date dateOfBirth = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +39,31 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
+        txtDateOfBirth = (TextView) findViewById(R.id.txtDateOfBirth);
     }
 
-    //
-    @SuppressWarnings("UnusedAssignment")
+    public void showDatePickerDialog(View v) {
+        DialogFragment dialogFragment = new DatePickerFragment();
+        dialogFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void onDateSet(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        dateOfBirth = cal.getTime();
+        DateFormat df = android.text.format.DateFormat.getDateFormat(getApplicationContext());
+        txtDateOfBirth.setText(df.format(dateOfBirth));
+    }
+
     public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final EditText etPassword2 = (EditText) findViewById(R.id.etPassword2);
-        final EditText etAge = (EditText) findViewById(R.id.etAge);
+
         final Button btnRegister = (Button) findViewById(R.id.btnRegister);
 
         // converting to string
@@ -50,7 +71,6 @@ public class Register extends AppCompatActivity {
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();
         final String password2 = etPassword2.getText().toString();
-        final String age = etAge.getText().toString();
 
         // when button Register is pushed:
         if (v.getId() == R.id.btnRegister) {
@@ -67,19 +87,19 @@ public class Register extends AppCompatActivity {
             else if (password.isEmpty()) {
                 Toast.makeText(getApplicationContext(), R.string.register_enter_password, Toast.LENGTH_SHORT).show();
             }
-            else if (age.isEmpty()) {
-                Toast.makeText(getApplicationContext(), R.string.register_enter_age, Toast.LENGTH_SHORT).show();
+            else if (dateOfBirth == null) {
+                Toast.makeText(getApplicationContext(), "Please enter your Date Of Birth", Toast.LENGTH_SHORT).show();
             }
             else {
                 registerDialog = ProgressDialog.show(this, getString(R.string.register_progress_title), getString(R.string.register_progress_description), true, false);
                 // create request
-                createRegisterRequest(username, password, email, age);
+                createRegisterRequest(username, password, email, dateOfBirth);
             }
         }
     }
 
     // creating user registration form and sending request to server
-    public void createRegisterRequest(String username, String password, String email, String age) {
+    public void createRegisterRequest(String username, String password, String email, Date age) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", username);

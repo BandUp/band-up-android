@@ -63,10 +63,12 @@ public class BandUpMockRepository implements BandUpDatabase {
     }
 
     @Override
-    public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+    public void isLoggedIn(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }
 
-
-
+    @Override
+    public void local_login(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
 }

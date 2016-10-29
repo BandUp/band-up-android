@@ -48,6 +48,8 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieHandler;
+
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
     private String url;
@@ -266,7 +268,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    saveUserReponse(response);
                     openCorrectIntent(response);
                 }
             }, new Response.ErrorListener() {
@@ -347,7 +348,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            saveUserReponse(response);
                             openCorrectIntent(response);
                         }
                     },
@@ -478,7 +478,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             responseObj = (JSONObject) response;
                         }
 
-                        saveUserReponse(responseObj);
                         saveUserId(responseObj);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         openCorrectIntent(responseObj);
@@ -499,14 +498,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Handling errors that can occur while SignIn request
     private void errorHandlerLogin(VolleyError error) {
         VolleySingleton.getInstance(Login.this).checkCauseOfError(error);
-    }
-
-    // Storing user sessionId, hasFinishedSetup & userID in SessionIdData folder, which only this app can access
-    public void saveUserReponse(JSONObject response) {
-        SharedPreferences srdPref = getSharedPreferences("SessionIdData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = srdPref.edit();
-        editor.putString("sessionID", response.toString());
-        editor.apply();
     }
 
     // when Sign Up is Clicked go to Registration View

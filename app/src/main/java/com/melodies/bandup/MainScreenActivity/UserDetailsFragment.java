@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -68,53 +67,46 @@ public class UserDetailsFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName;
-    private TextView txtInstruments;
-    private TextView txtGenres;
-    private TextView txtLstInstruments;
-    private TextView txtLstGenres;
-    private TextView txtAge;
-    private TextView txtFavorite;
-    private TextView txtPercentage;
-    private TextView txtDistance;
-    private TextView txtAboutMe;
-    private Button   btnLike;
-    private ListView lstInstruments;
-    private ListView lstGenres;
-
+    private TextView  txtName;
+    private TextView  txtAge;
+    private TextView  txtFavorite;
+    private TextView  txtPercentage;
+    private TextView  txtDistance;
+    private TextView  txtAboutMe;
+    private TextView  txtInstrumentsTitle;
+    private TextView  txtGenresTitle;
+    private TextView  txtInstrumentsList;
+    private TextView  txtGenresList;
     private ImageView ivUserProfileImage;
+    private Button    btnLike;
 
-    private void initializeTextViews(View rootView) {
-        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
-        txtLstInstruments  = (TextView)  rootView.findViewById(R.id.txtLstInstruments);
-        txtLstGenres       = (TextView)  rootView.findViewById(R.id.txtLstGenres);
-        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
-        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
-        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
-    }
-
-    private void initializeButtons(View rootView) {
-        btnLike = (Button) rootView.findViewById(R.id.btnLike);
+    private void initializeViews(View rootView) {
+        txtName             = (TextView)  rootView.findViewById(R.id.txtName);
+        txtDistance         = (TextView)  rootView.findViewById(R.id.txtDistance);
+        txtPercentage       = (TextView)  rootView.findViewById(R.id.txtPercentage);
+        txtAge              = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtFavorite         = (TextView)  rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe          = (TextView)  rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle      = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList  = (TextView)  rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
+        ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
+        btnLike             = (Button)    rootView.findViewById(R.id.btnLike);
     }
 
     private void setFonts() {
-        txtName          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtGenres        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtLstInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtLstGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage    .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge           .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAboutMe       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-
-        btnLike          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+        txtName            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtDistance        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtPercentage      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge             .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAboutMe         .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstrumentsTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtGenresTitle     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtInstrumentsList .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtGenresList      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        btnLike            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
     }
 
     @Override
@@ -133,12 +125,11 @@ public class UserDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
 
-        initializeTextViews(rootView);
-        initializeButtons(rootView);
+        initializeViews(rootView);
         setFonts();
-        System.out.println("CURRENTUSER");
-        System.out.println(currentUser);
+
         String argumentUserID = getArguments().getString("user_id");
+
         if (currentUser == null || !currentUser.id.equals(argumentUserID)) {
             fetchCurrentUser(getArguments().getString("user_id"));
         } else {
@@ -166,11 +157,11 @@ public class UserDetailsFragment extends Fragment {
         }
 
         for (int i = 0; i < u.genres.size(); i++) {
-            txtLstGenres.append(u.genres.get(i) + "\n");
+            txtGenresList.append(u.genres.get(i) + "\n");
         }
 
         for (int i = 0; i < u.instruments.size(); i++) {
-            txtLstInstruments.append(u.instruments.get(i) + "\n");
+            txtInstrumentsList.append(u.instruments.get(i) + "\n");
         }
     }
 

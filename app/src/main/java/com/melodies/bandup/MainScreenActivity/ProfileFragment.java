@@ -96,17 +96,16 @@ public class ProfileFragment extends Fragment{
     }
 
     private TextView txtName;
-    private TextView txtInstruments;
-    private TextView txtGenres;
+    private TextView txtInstrumentsTitle;
+    private TextView txtGenresTitle;
     private TextView txtAge;
     private TextView txtFavorite;
     private TextView txtAboutMe;
-    private TextView txtLstInstruments;
-    private TextView txtLstGenres;
+    private TextView txtInstrumentsList;
+    private TextView txtGenresList;
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
-    final ArrayList<String> items = new ArrayList<String>();
     final int CAMERA_REQUEST = 555;
     final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 120000;
@@ -118,27 +117,27 @@ public class ProfileFragment extends Fragment{
     com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
     User currentUser;
 
-    private void initializeTextViews(View rootView) {
-        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
-        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtFavorite        = (TextView)  rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe         = (TextView)  rootView.findViewById(R.id.txtAboutMe);
-        txtLstInstruments  = (TextView)  rootView.findViewById(R.id.txtLstInstruments);
-        txtLstGenres       = (TextView)  rootView.findViewById(R.id.txtLstGenres);
+    private void initializeViews(View rootView) {
+        txtName             = (TextView)  rootView.findViewById(R.id.txtName);
+        txtAge              = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtFavorite         = (TextView)  rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe          = (TextView)  rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle      = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList  = (TextView)  rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
+        ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
     }
 
     private void setFonts() {
-        txtName          .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtGenres        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtLstInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtLstGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge           .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAboutMe       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtName            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAge             .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtFavorite        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtAboutMe         .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtInstrumentsTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtGenresTitle     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        txtInstrumentsList .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        txtGenresList      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
     }
 
     @Override
@@ -161,7 +160,7 @@ public class ProfileFragment extends Fragment{
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        initializeTextViews(rootView);
+        initializeViews(rootView);
         setFonts();
 
         return rootView;
@@ -179,11 +178,11 @@ public class ProfileFragment extends Fragment{
 
 
         for (int i = 0; i < u.genres.size(); i++) {
-            txtLstGenres.append(u.genres.get(i) + "\n");
+            txtGenresList.append(u.genres.get(i) + "\n");
         }
 
         for (int i = 0; i < u.instruments.size(); i++) {
-            txtLstInstruments.append(u.instruments.get(i) + "\n");
+            txtInstrumentsList.append(u.instruments.get(i) + "\n");
         }
     }
 

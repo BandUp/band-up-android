@@ -2,19 +2,13 @@ package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpDatabase;
-import com.melodies.bandup.repositories.BandUpRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,11 +44,16 @@ public class SplashActivity extends AppCompatActivity {
                             responseObj = (JSONObject) response;
                         }
                         try {
-                            if (responseObj.getBoolean("loggedIn")){
-                                openMainActivity();
-                            }else{
+                            if (!responseObj.isNull("isLoggedIn")) {
+                                if (responseObj.getBoolean("isLoggedIn")){
+                                    openMainActivity();
+                                }else{
+                                    openLoginActivity();
+                                }
+                            } else {
                                 openLoginActivity();
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

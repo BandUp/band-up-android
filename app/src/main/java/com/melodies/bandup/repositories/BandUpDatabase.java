@@ -53,6 +53,9 @@ public interface BandUpDatabase {
                        BandUpResponseListener responseListener,
                        BandUpErrorListener errorListener);
 
+    void isLoggedIn(BandUpResponseListener responseListener,
+                    BandUpErrorListener errorListener);
+
 
 
 }

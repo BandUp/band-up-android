@@ -206,4 +206,18 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
+
+    @Override
+    public void isLoggedIn(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/isloggedin");
+
+        JsonObjectRequest jsonObjectRequest = createObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                responseListener,
+                errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
+    }
 }

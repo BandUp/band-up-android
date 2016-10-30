@@ -54,8 +54,15 @@ public class SplashActivity extends AppCompatActivity {
                         try {
                             if (!responseObj.isNull("isLoggedIn")) {
                                 if (responseObj.getBoolean("isLoggedIn")){
-                                    if (!responseObj.isNull("hasFinishedSetup")) openSetupActivities();
-                                    else openMainActivity();
+                                    if (!responseObj.isNull("hasFinishedSetup")) {
+                                        if (!responseObj.getBoolean("hasFinishedSetup")) {
+                                            openSetupActivities();
+                                        } else {
+                                            openMainActivity();
+                                        }
+                                    } else {
+                                        openLoginActivity();
+                                    }
                                 } else {
                                     openLoginActivity();
                                 }

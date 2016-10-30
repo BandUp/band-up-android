@@ -23,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * A shared class that both Genres and Instruments
  * use to GET and POST data to and from the server.
@@ -61,7 +59,7 @@ public class SetupShared {
     }
 
     public void getFilter(Context c, JSONArray filteredInstruments){
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
+        DatabaseSingleton.getInstance(c).getBandUpDatabase().postInstruments(
                 filteredInstruments,
                 new BandUpResponseListener() {
                     @Override
@@ -184,7 +182,7 @@ public class SetupShared {
     }
 
     public void postInstruments(Context c, JSONArray instrumentArr) {
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postInstruments(
+        DatabaseSingleton.getInstance(c).getBandUpDatabase().postInstruments(
                 instrumentArr,
                 getPickListener(),
                 getPickErrorListener(c)
@@ -192,7 +190,7 @@ public class SetupShared {
     }
 
     public void postGenres(Context c, JSONArray genresArr) {
-        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().postGenres(
+        DatabaseSingleton.getInstance(c).getBandUpDatabase().postGenres(
                 genresArr,
                 getPickListener(),
                 getPickErrorListener(c)

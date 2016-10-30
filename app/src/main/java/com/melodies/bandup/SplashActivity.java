@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,13 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    private void openSetupActivities() {
+        Intent userListIntent = new Intent(SplashActivity.this, Instruments.class);
+        SplashActivity.this.startActivity(userListIntent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
     private void isLoggedIn() {
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().isLoggedIn(
                 new BandUpResponseListener() {
@@ -46,8 +54,9 @@ public class SplashActivity extends AppCompatActivity {
                         try {
                             if (!responseObj.isNull("isLoggedIn")) {
                                 if (responseObj.getBoolean("isLoggedIn")){
-                                    openMainActivity();
-                                }else{
+                                    if (!responseObj.isNull("hasFinishedSetup")) openSetupActivities();
+                                    else openMainActivity();
+                                } else {
                                     openLoginActivity();
                                 }
                             } else {

@@ -121,9 +121,9 @@
             android:id="@+id/btnDetails"
             android:textSize="35sp"
             android:layout_weight="1"
-            android:theme="@style/LikeDetailsButtonTextColor"
             android:layout_marginBottom="10dp"
             android:onClick="onClickDetails"
+            android:textColor="#000000"
             android:textAllCaps="false"/>
         <Space
             android:layout_width="10dp"
@@ -138,7 +138,7 @@
             android:background="@drawable/user_list_like_button"
             android:onClick="onClickLike"
             android:textSize="35sp"
-            android:theme="@style/LikeDetailsButtonTextColor"
+            android:textColor="#000000"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:textAllCaps="false"/>

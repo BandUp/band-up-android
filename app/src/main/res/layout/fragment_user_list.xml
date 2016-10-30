@@ -1,52 +1,75 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
-    tools:context="com.melodies.bandup.MainScreenActivity.UserListFragment">
+    android:layout_width="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <FrameLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity"
-        tools:showIn="@layout/app_bar_user_list">
+        android:background="@color/colorGray"
+        tools:context="com.melodies.bandup.MainScreenActivity.UserListFragment">
 
-        <include layout="@layout/user_list_user_partial"
-            android:id="@+id/user_partial_view"
-            android:visibility="invisible" />
-        <!-- Temporary layout -->
-        <LinearLayout
-            android:gravity="bottom"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:id="@+id/user_linear_layout"
+            android:visibility="invisible"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity"
+            tools:showIn="@layout/app_bar_user_list">
 
-            <Button
-                android:text="@string/user_list_previous_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button3"
-                android:layout_gravity="bottom"
-                android:onClick="onClickPreviousUser"/>
+            <include layout="@layout/user_list_user_partial"
+                android:id="@+id/user_partial_view" />
+            <!-- Temporary layout -->
+            <LinearLayout
+                android:gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <Button
-                android:text="@string/user_list_next_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button5"
-                android:layout_gravity="bottom"
-                android:onClick="onClickNextUser"/>
+                <Button
+                    android:text="@string/user_list_previous_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button3"
+                    android:layout_gravity="bottom"
+                    android:onClick="onClickPreviousUser"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <Button
+                    android:text="@string/user_list_next_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button5"
+                    android:layout_gravity="bottom"
+                    android:onClick="onClickNextUser"/>
+            </LinearLayout>
+            <!-- Temporary layout -->
         </LinearLayout>
-        <!-- Temporary layout -->
+    </FrameLayout>
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userListProgressBar"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-    </LinearLayout>
-
-
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNoUsers"
+        android:text="@string/user_list_no_users"
+        android:visibility="invisible"
+        android:textSize="25sp"
+        android:textColor="@color/bandUpYellow"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

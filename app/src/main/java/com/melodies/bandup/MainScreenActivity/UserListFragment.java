@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,8 @@ public class UserListFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge;
+    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge, txtNoUsers;
+    private ProgressBar progressBar;
     private Button btnLike, btnDetails;
     private View     partialView;
     private ImageView ivUserProfileImage;
@@ -83,15 +85,24 @@ public class UserListFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         ulc = new UserListController();
+    }
 
+    private void getUserList() {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
 
                 if (response instanceof JSONArray) {
                     responseArr = (JSONArray) response;
                 } else {
+                    txtNoUsers.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (responseArr.length() == 0) {
+                    txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -130,8 +141,17 @@ public class UserListFragment extends Fragment {
                     }
                 }
                 if (partialView != null) {
-                    partialView.setVisibility(partialView.VISIBLE);
+                    partialView.setVisibility(View.VISIBLE);
+                } else {
+                    System.err.println("User List partialView is null");
                 }
+
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    System.err.println("User List progressBar is null");
+                }
+
                 if (ulc.users.size() > 0) {
                     displayUser(ulc.getUser(0));
                 }
@@ -139,6 +159,7 @@ public class UserListFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.INVISIBLE);
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
             }
         });
@@ -152,6 +173,7 @@ public class UserListFragment extends Fragment {
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+        txtNoUsers         = (TextView)  rootView.findViewById(R.id.txtNoUsers);
     }
 
     private void initializeButtons(View rootView) {
@@ -179,15 +201,17 @@ public class UserListFragment extends Fragment {
 
         initializeTextViews(rootView);
         initializeButtons(rootView);
-        partialView = rootView.findViewById(R.id.user_partial_view);
+        partialView = rootView.findViewById(R.id.user_linear_layout);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         setFonts();
 
         if (ulc.getCurrentUser() != null){
             displayUser(ulc.getCurrentUser());
-            partialView.setVisibility(partialView.VISIBLE);
+            partialView.setVisibility(View.VISIBLE);
         }
-
+        getUserList();
         return rootView;
     }
 

@@ -95,4 +95,5 @@
     <string name="details_instruments">Hljóðfæri</string>
     <string name="details_genres">Tónlistarstefnur</string>
     <string name="dateOfBirth">Fæðingardagur</string>
+    <string name="user_list_no_users">Ekkert tónlistarfólk nálægt</string>
 </resources>

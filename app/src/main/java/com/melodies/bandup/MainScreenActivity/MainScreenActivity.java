@@ -44,8 +44,6 @@ public class MainScreenActivity extends AppCompatActivity
         UserListFragment.OnFragmentInteractionListener,
         MatchesFragment.OnListFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener,
-        PrivacyFragment.OnFragmentInteractionListener,
         ProfileFragment.OnFragmentInteractionListener,
         UserDetailsFragment.OnFragmentInteractionListener,
         LocationListener{
@@ -54,8 +52,6 @@ public class MainScreenActivity extends AppCompatActivity
     UserDetailsFragment userDetailsFragment;
     MatchesFragment matchesFragment;
     SettingsFragment settingsFragment;
-    AboutFragment aboutFragment;
-    PrivacyFragment privacyFragment;
     ProfileFragment profileFragment;
 
     ProgressDialog logoutDialog;
@@ -100,8 +96,6 @@ public class MainScreenActivity extends AppCompatActivity
         userDetailsFragment = new UserDetailsFragment();
         matchesFragment = new MatchesFragment();
         settingsFragment = new SettingsFragment();
-        aboutFragment = new AboutFragment();
-        privacyFragment = new PrivacyFragment();
         profileFragment = new ProfileFragment();
         logoutDialog = new ProgressDialog(MainScreenActivity.this);
         logoutDialog.setMessage("Logging out");

@@ -37,7 +37,7 @@ public class BandUpGCMListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data){
         System.out.println("Got a message");
-        String message = data.getString("message");
+        String message = data.getString("body");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 

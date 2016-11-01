@@ -133,7 +133,6 @@ public class MainScreenActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if (count != 0){
             getSupportFragmentManager().popBackStack();
-
         } else {
             super.onBackPressed();
         }
@@ -199,19 +198,6 @@ public class MainScreenActivity extends AppCompatActivity
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-
-    public void onClickNextUser(View view) {
-        userListFragment.onClickNextUser(view);
-    }
-
-    public void onClickPreviousUser(View view) {
-        userListFragment.onClickPreviousUser(view);
-    }
-
-    public void onClickLike(View view) {
-        userListFragment.onClickLike(view);
-    }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -230,14 +216,15 @@ public class MainScreenActivity extends AppCompatActivity
         profileFragment.onClickAboutMe(view);
     }
 
-    public void onClickDetails(View view) {
+    public void onClickDetails(View view, int position) {
+        System.out.println(position);
         switch (view.getId()) {
             case R.id.btnDetails:
                 Bundle bundle = new Bundle();
-                if (userListFragment.getCurrentUser() == null) {
+                if (userListFragment.mAdapter.getUser(position) == null) {
                     return;
                 }
-                bundle.putString("user_id", userListFragment.getCurrentUser().id);
+                bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
                 System.out.println(userDetailsFragment.getArguments());
 
                 if (userDetailsFragment.getArguments() != null) {

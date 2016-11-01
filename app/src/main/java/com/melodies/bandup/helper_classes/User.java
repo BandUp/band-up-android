@@ -1,5 +1,6 @@
 package com.melodies.bandup.helper_classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Bergthor on 15.10.2016.
  */
 
-public class User {
+public class User implements Serializable {
     public User(){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();

@@ -17,41 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/user_linear_layout"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity"
             tools:showIn="@layout/app_bar_user_list">
 
-            <include layout="@layout/user_list_user_partial"
-                android:id="@+id/user_partial_view" />
-            <!-- Temporary layout -->
-            <LinearLayout
-                android:gravity="bottom"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:text="@string/user_list_previous_temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/button3"
-                    android:layout_gravity="bottom"
-                    android:onClick="onClickPreviousUser"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <Button
-                    android:text="@string/user_list_next_temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/button5"
-                    android:layout_gravity="bottom"
-                    android:onClick="onClickNextUser"/>
-            </LinearLayout>
-            <!-- Temporary layout -->
+                android:layout_height="0px"
+                android:layout_weight="1">
+            </android.support.v4.view.ViewPager>
         </LinearLayout>
     </FrameLayout>
     <ProgressBar
@@ -60,6 +37,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/userListProgressBar"
         android:layout_centerVertical="true"
+        android:visibility="invisible"
         android:layout_centerHorizontal="true" />
 
     <TextView

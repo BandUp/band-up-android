@@ -1,6 +1,5 @@
 package com.melodies.bandup.MainScreenActivity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -40,8 +38,6 @@ import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
 public class MainScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -76,11 +72,11 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         if (requestCode == LOCATION_REQUEST_CODE){
-            createLocationRequest();
+           //createLocationRequest();
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission was granted, yay! Do the contacts-related task you need to do.
-                createLocationRequest();
+                //createLocationRequest();
             } else {
                 // permission denied, boo!
                 Toast.makeText(this, R.string.user_allow_location, Toast.LENGTH_LONG).show();
@@ -89,7 +85,7 @@ public class MainScreenActivity extends AppCompatActivity
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                createLocationRequest();
+               // createLocationRequest();
             }
             return;
         }
@@ -131,7 +127,7 @@ public class MainScreenActivity extends AppCompatActivity
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
         //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
 
-        createLocationRequest();
+//        createLocationRequest();
     }
 
     @Override
@@ -265,7 +261,7 @@ public class MainScreenActivity extends AppCompatActivity
 
     // ======= Location setup ========
     private final int LOCATION_REQUEST_CODE = 333;
-
+/*
     protected void createLocationRequest() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -292,7 +288,7 @@ public class MainScreenActivity extends AppCompatActivity
             ex.printStackTrace();
         }
     }
-
+    */
     private void sendLocation(Location location){
         JSONObject locObject = new JSONObject();
         JSONObject jsonObject = new JSONObject();

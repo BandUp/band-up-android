@@ -54,7 +54,26 @@ public class Register extends AppCompatActivity {
         cal.set(Calendar.DAY_OF_MONTH, day);
         dateOfBirth = cal.getTime();
         DateFormat df = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-        txtDateOfBirth.setText(df.format(dateOfBirth));
+        //txtDateOfBirth.setText(df.format(dateOfBirth));
+        txtDateOfBirth.setText(ageCalculator(year, month, day));
+
+    }
+
+    // Calculating real user age and return it
+    private String ageCalculator(int year, int month, int day) {
+        Calendar dayOfBirth = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dayOfBirth.set(year, month, day);
+        Integer userAge = today.get(Calendar.YEAR) - dayOfBirth.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dayOfBirth.get(Calendar.DAY_OF_YEAR)){
+            userAge--;
+        }
+
+        String age = userAge.toString();
+
+        return age;
     }
 
     public void onClickRegister(View v) throws JSONException {

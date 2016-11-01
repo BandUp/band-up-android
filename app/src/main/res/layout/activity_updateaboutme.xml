@@ -18,7 +18,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etAboutMe"
         android:layout_weight="0.05"
@@ -26,8 +26,7 @@
         android:background="@android:color/transparent"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
-        android:maxLength="100"
-        android:singleLine="false" />
+        android:maxLength="100" />
 
     <Button
         android:text="Save"

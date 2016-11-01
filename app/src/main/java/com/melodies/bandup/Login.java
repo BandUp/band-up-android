@@ -48,8 +48,6 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.CookieHandler;
-
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
     private String url;
@@ -223,8 +221,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
         findViewById(R.id.login_button_google).setOnClickListener(this);
-        //findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.disconnect_button).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -196,7 +196,8 @@ public class UserDetailsFragment extends Fragment {
                             currentUser.name = responseObj.getString("username");
                         }
                         if (!responseObj.isNull("age")) {
-                            currentUser.age = responseObj.getInt("age");
+                            // TODO: Change this to a Date object.
+                            //currentUser.age = responseObj.getInt("age");
                         }
 
                         if (!responseObj.isNull("distance")) {

@@ -13,10 +13,12 @@ import java.util.ArrayList;
  */
 
 public class UserListAdapter extends FragmentStatePagerAdapter {
+    ArrayList<User> userList;
+
     public UserListAdapter(FragmentManager fm) {
         super(fm);
+        userList = new ArrayList();
     }
-    ArrayList<User> userList = new ArrayList();
 
     @Override
     public int getCount() {

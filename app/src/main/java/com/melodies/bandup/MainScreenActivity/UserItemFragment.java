@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,25 +27,24 @@ import org.json.JSONObject;
  * Created by Bergthor on 1.11.2016.
  */
 
-public class UserArrayListFragment extends Fragment {
+public class UserItemFragment extends Fragment {
     int mNum;
 
-    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge, txtNoUsers;
-    private ProgressBar progressBar;
+    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge;
     private Button btnLike, btnDetails;
-    private View     partialView;
     private ImageView ivUserProfileImage;
 
     private User mUser;
 
     /**
-     * Create a new instance of CountingFragment, providing "num"
-     * as an argument.
+     * Create a new instance of the UserItemFragment
+     * @param num the index of the user in the list
+     * @param user the user itself.
+     * @return the fragment
      */
-    static UserArrayListFragment newInstance(int num, User user) {
-        UserArrayListFragment f = new UserArrayListFragment();
+    static UserItemFragment newInstance(int num, User user) {
+        UserItemFragment f = new UserItemFragment();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putInt("num", num);
         args.putSerializable("user", user);
@@ -55,12 +53,10 @@ public class UserArrayListFragment extends Fragment {
         return f;
     }
 
-    /**
-     * When creating, retrieve this instance's number from its arguments.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get the arguments from when the fragment was created.
         mUser = (User) (getArguments() != null ? getArguments().getSerializable("user") : 1);
         mNum = (getArguments() != null ? getArguments().getInt("num") : 1);
     }
@@ -73,7 +69,6 @@ public class UserArrayListFragment extends Fragment {
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtNoUsers         = (TextView)  rootView.findViewById(R.id.txtNoUsers);
     }
 
     private void initializeButtons(View rootView) {
@@ -88,29 +83,29 @@ public class UserArrayListFragment extends Fragment {
         btnDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                System.out.println(mNum);
                 ((MainScreenActivity) getActivity()).onClickDetails(v, mNum);
             }
         });
     }
 
     private void setFonts() {
-        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        Typeface caviarDreams = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface masterOfBreak = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
 
-        btnLike.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
-        btnDetails.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+        txtName       .setTypeface(caviarDreams);
+        txtInstruments.setTypeface(caviarDreams);
+        txtGenres     .setTypeface(caviarDreams);
+        txtDistance   .setTypeface(caviarDreams);
+        txtPercentage .setTypeface(caviarDreams);
+        txtAge        .setTypeface(caviarDreams);
+
+        btnLike   .setTypeface(masterOfBreak);
+        btnDetails.setTypeface(masterOfBreak);
     }
 
 
-    /**
-     * The Fragment's UI is just a simple text view showing its
-     * instance number.
+    /*
+     * Set up the view for the fragment.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,11 +120,21 @@ public class UserArrayListFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Displays the user 'u' in the fragment
+     * @param u
+     */
     private void displayUser(User u) {
         txtName.setText(u.name);
-        // Getting the first item for now.
-        txtInstruments.setText(u.instruments.get(0));
-        txtGenres.setText(u.genres.get(0));
+
+        if (u.instruments.size() > 0) {
+            txtInstruments.setText(u.instruments.get(0));
+        }
+
+        if (u.genres.size() > 0) {
+            txtGenres.setText(u.genres.get(0));
+        }
+
         txtPercentage.setText(u.percentage + "%");
         if (u.age == 1) {
             txtAge.setText(u.age + " year old");
@@ -142,14 +147,6 @@ public class UserArrayListFragment extends Fragment {
         } else {
             txtDistance.setText("-- km away from you");
         }
-
-        /*for (int i = 0; i < u.instruments.size(); i++) {
-            if (i != u.instruments.size()-1) {
-                txtInstruments.append(u.instruments.get(i) + ", ");
-            } else {
-                txtInstruments.append(u.instruments.get(i));
-            }
-        }*/
 
         if (u.imgURL == null) {
             Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_big).into(ivUserProfileImage);

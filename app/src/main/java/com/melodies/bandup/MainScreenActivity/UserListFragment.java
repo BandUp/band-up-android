@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,11 +67,9 @@ public class UserListFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge, txtNoUsers;
+    private TextView txtNoUsers;
     private ProgressBar progressBar;
-    private Button btnLike, btnDetails;
     private View     partialView;
-    private ImageView ivUserProfileImage;
 
     UserListAdapter mAdapter;
 
@@ -176,9 +172,11 @@ public class UserListFragment extends Fragment {
 
 
         partialView = rootView.findViewById(R.id.user_linear_layout);
+        txtNoUsers  = (TextView) rootView.findViewById(R.id.txtNoUsers);
+
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         progressBar.setVisibility(View.VISIBLE);
-        mPager = (ViewPager)rootView.findViewById(R.id.pager);
+        mPager = (ViewPager) rootView.findViewById(R.id.pager);
 
         partialView.setVisibility(View.VISIBLE);
 

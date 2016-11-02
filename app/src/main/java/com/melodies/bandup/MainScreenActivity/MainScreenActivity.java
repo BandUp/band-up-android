@@ -92,14 +92,13 @@ public class MainScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-        userListFragment = new UserListFragment();
+
+        // Create all fragments
+        userListFragment    = new UserListFragment();
         userDetailsFragment = new UserDetailsFragment();
-        matchesFragment = new MatchesFragment();
-        settingsFragment = new SettingsFragment();
-        profileFragment = new ProfileFragment();
-        logoutDialog = new ProgressDialog(MainScreenActivity.this);
-        logoutDialog.setMessage("Logging out");
-        logoutDialog.setTitle("Please wait...");
+        matchesFragment     = new MatchesFragment();
+        settingsFragment    = new SettingsFragment();
+        profileFragment     = new ProfileFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -109,15 +108,17 @@ public class MainScreenActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // Set the first item in the drawer to selected.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        // Open the UserListFragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);
         ft.commit();
 
-        // we know user is logged in time to start services
+        // We know the user is logged in time to start services
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
         //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
 
@@ -163,6 +164,9 @@ public class MainScreenActivity extends AppCompatActivity
             setTitle(getString(R.string.main_title_settings));
         } else if (id == R.id.nav_logout) {
             logout();
+            logoutDialog = new ProgressDialog(MainScreenActivity.this);
+            logoutDialog.setMessage("Logging out");
+            logoutDialog.setTitle("Please wait...");
             logoutDialog.show();
         }
 
@@ -199,10 +203,12 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(Uri uri) {}
 
-    }
-
+    /**
+     * Used for the MatchesFragment. When the user taps on another user.
+     * @param user The the user that the current user wants to chat with.
+     */
     @Override
     public void onListFragmentInteraction(User user) {
         matchesFragment.onClickChat(user);

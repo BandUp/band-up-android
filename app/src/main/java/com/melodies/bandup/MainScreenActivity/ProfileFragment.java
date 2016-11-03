@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment{
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
         txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
 

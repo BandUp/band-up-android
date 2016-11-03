@@ -505,7 +505,7 @@ public class ProfileFragment extends Fragment{
                         currentUser.name = responseObj.getString("username");
                     }
                     if (!responseObj.isNull("age")) {
-                        currentUser.age = responseObj.getInt("age");
+                        //currentUser.age = responseObj.getInt("age");
                     }
 
                     if (!responseObj.isNull("distance")) {

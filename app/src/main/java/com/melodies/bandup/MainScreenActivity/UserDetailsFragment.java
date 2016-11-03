@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.helper_classes.User;
@@ -79,6 +81,7 @@ public class UserDetailsFragment extends Fragment {
     private TextView  txtGenresList;
     private ImageView ivUserProfileImage;
     private Button    btnLike;
+    private AdView    mAdView;
 
     private void initializeViews(View rootView) {
         txtName             = (TextView)  rootView.findViewById(R.id.txtName);
@@ -93,6 +96,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
         ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
         btnLike             = (Button)    rootView.findViewById(R.id.btnLike);
+        mAdView             = (AdView)    rootView.findViewById(R.id.adView);
     }
 
     private void setFonts() {
@@ -128,6 +132,7 @@ public class UserDetailsFragment extends Fragment {
         initializeViews(rootView);
         setFonts();
 
+
         String argumentUserID = getArguments().getString("user_id");
 
         if (currentUser == null || !currentUser.id.equals(argumentUserID)) {
@@ -136,10 +141,14 @@ public class UserDetailsFragment extends Fragment {
             System.out.println(currentUser.id);
             displayUser(currentUser);
         }
+
         return rootView;
     }
 
     private void displayUser(User u) {
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }

@@ -29,6 +29,8 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
@@ -106,6 +108,7 @@ public class ProfileFragment extends Fragment{
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
+    private AdView    mAdView;
     final int CAMERA_REQUEST = 555;
     final int GALLERY_REQUEST = 666;
     final int REQUEST_TIMEOUT = 120000;
@@ -127,6 +130,7 @@ public class ProfileFragment extends Fragment{
         txtInstrumentsList  = (TextView)  rootView.findViewById(R.id.txtInstrumentsList);
         txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
         ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
+        mAdView             = (AdView)    rootView.findViewById(R.id.adView);
     }
 
     private void setFonts() {
@@ -167,6 +171,10 @@ public class ProfileFragment extends Fragment{
     }
 
     private void displayUser(User u) {
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }

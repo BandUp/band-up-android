@@ -114,24 +114,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
 
-        //region advertisement code
-        // current id is for test only TODO: get actual admob ID for release
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
-        AdView mAdview = (AdView)findViewById(R.id.adView);
-        AdRequest mAdRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) // this line makes ads on emulator
-                .build();
-        mAdview.loadAd(mAdRequest);
-        //endregion
+        getAd();
 
-//        mainLinearLayout.post(new Runnable() {
-//            public void run() {
-//                mainLinearLayout.setY(getIconCenter());
-//                Animation testAnimation = AnimationUtils.loadAnimation(Login.this, R.anim.fade_in);
-//                mainLinearLayout.animate().translationY(0).setDuration(500);
-//                linearLayoutInput.startAnimation(testAnimation);
-//            }
-//        });
 
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
@@ -242,6 +226,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
         btnSoundCloud = (ImageView) findViewById(R.id.login_button_soundcloud);
+    }
+
+    // creates advertisment
+    private void getAd() {
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        AdView mAdview = (AdView)findViewById(R.id.adView);
+        AdRequest mAdRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) // this line makes ads on emulator
+                .build();
+        mAdview.loadAd(mAdRequest);
     }
 
     /**

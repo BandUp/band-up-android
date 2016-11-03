@@ -15,7 +15,8 @@
         android:orientation="vertical"
         tools:context=".Login">
 
-        <!-- bellow widget and accompanying code inserts an ad -->
+
+        <!-- bellow widget and accompanying code inserts an ad-->
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"

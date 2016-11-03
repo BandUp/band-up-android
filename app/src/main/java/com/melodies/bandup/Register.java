@@ -21,7 +21,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -53,7 +52,6 @@ public class Register extends AppCompatActivity {
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
         dateOfBirth = cal.getTime();
-        DateFormat df = android.text.format.DateFormat.getDateFormat(getApplicationContext());
         txtDateOfBirth.setText(ageCalculator(year, month, day));
     }
 

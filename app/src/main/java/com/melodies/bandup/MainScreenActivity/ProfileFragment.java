@@ -47,8 +47,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -504,8 +508,9 @@ public class ProfileFragment extends Fragment{
                     if (!responseObj.isNull("username")) {
                         currentUser.name = responseObj.getString("username");
                     }
-                    if (!responseObj.isNull("age")) {
-                        //currentUser.age = responseObj.getInt("age");
+                    if (!responseObj.isNull("dateOfBirth")) {
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                     }
 
                     if (!responseObj.isNull("distance")) {
@@ -545,6 +550,8 @@ public class ProfileFragment extends Fragment{
                     }
                     displayUser(currentUser);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 

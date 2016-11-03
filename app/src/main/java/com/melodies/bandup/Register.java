@@ -54,9 +54,7 @@ public class Register extends AppCompatActivity {
         cal.set(Calendar.DAY_OF_MONTH, day);
         dateOfBirth = cal.getTime();
         DateFormat df = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-        //txtDateOfBirth.setText(df.format(dateOfBirth));
         txtDateOfBirth.setText(ageCalculator(year, month, day));
-
     }
 
     // Calculating real user age and return it
@@ -72,7 +70,6 @@ public class Register extends AppCompatActivity {
         }
 
         String age = userAge.toString();
-
         return age;
     }
 
@@ -118,13 +115,13 @@ public class Register extends AppCompatActivity {
     }
 
     // creating user registration form and sending request to server
-    public void createRegisterRequest(String username, String password, String email, Date age) {
+    public void createRegisterRequest(String username, String password, String email, Date dateOfBirth) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", username);
             jsonObject.put("password", password);
             jsonObject.put("email", email);
-            jsonObject.put("age", age);
+            jsonObject.put("dateOfBirth", dateOfBirth);
         } catch (JSONException e) {
             e.printStackTrace();
         }

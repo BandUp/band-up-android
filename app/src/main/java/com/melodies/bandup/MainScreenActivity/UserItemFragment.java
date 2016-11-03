@@ -136,7 +136,8 @@ public class UserItemFragment extends Fragment {
         }
 
         txtPercentage.setText(u.percentage + "%");
-        txtAge.setText(u.ageCalc() + " year old");
+
+        txtAge.setText(u.ageCalc() + " years old");
 
         if (u.distance != null) {
             txtDistance.setText(u.distance + " km away from you");

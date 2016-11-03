@@ -114,7 +114,6 @@ public class ProfileFragment extends Fragment{
     final int REQUEST_READ_GALLERY = 300;
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
-    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
     User currentUser;
 
     private void initializeViews(View rootView) {
@@ -150,7 +149,6 @@ public class ProfileFragment extends Fragment{
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
-        imageLoader = new ImageLoader(getActivity());
         myThread = new MyThread();
         myThread.start();
     }
@@ -361,8 +359,17 @@ public class ProfileFragment extends Fragment{
                         if (imageDownloadDialog != null) {
                             imageDownloadDialog.dismiss();
                         }
+
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        imageLoader.getProfilePhoto(urlResponse, ivUserProfileImage, imageDownloadDialog);
+                        String a = validateJSON(urlResponse);
+                        if (a == null) {
+                            Picasso.with(getActivity()).load(urlResponse).into(ivUserProfileImage);
+                        } else {
+                            Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
+                        }
+
+                        imageDownloadDialog.dismiss();
+
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
                                 System.out.println("FILE DELETION SUCCEEDED");
@@ -581,5 +588,25 @@ public class ProfileFragment extends Fragment{
             Toast.makeText(getActivity(), R.string.user_error, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    String validateJSON(String json) {
+        String imageURL = null;
+        try {
+            JSONObject urlObject = new JSONObject(json);
+            if (!urlObject.isNull("url")) {
+                imageURL = urlObject.getString("url");
+            } else {
+                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (imageURL == null || imageURL.equals("")) {
+            return null;
+        }
+        return imageURL;
     }
 }

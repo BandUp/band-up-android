@@ -1,9 +1,10 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.MainScreenActivity.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.melodies.bandup.MainScreenActivity.UserItemFragment;
 import com.melodies.bandup.helper_classes.User;
 
 import java.util.ArrayList;

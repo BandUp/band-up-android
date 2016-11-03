@@ -42,7 +42,7 @@ public class UserItemFragment extends Fragment {
      * @param user the user itself.
      * @return the fragment
      */
-    static UserItemFragment newInstance(int num, User user) {
+    public static UserItemFragment newInstance(int num, User user) {
         UserItemFragment f = new UserItemFragment();
 
         Bundle args = new Bundle();

@@ -47,8 +47,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -114,7 +118,6 @@ public class ProfileFragment extends Fragment{
     final int REQUEST_READ_GALLERY = 300;
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
-    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
     User currentUser;
 
     private void initializeViews(View rootView) {
@@ -150,7 +153,6 @@ public class ProfileFragment extends Fragment{
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
-        imageLoader = new ImageLoader(getActivity());
         myThread = new MyThread();
         myThread.start();
     }
@@ -176,10 +178,9 @@ public class ProfileFragment extends Fragment{
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
         txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
-
 
         for (int i = 0; i < u.genres.size(); i++) {
             txtGenresList.append(u.genres.get(i) + "\n");
@@ -361,8 +362,17 @@ public class ProfileFragment extends Fragment{
                         if (imageDownloadDialog != null) {
                             imageDownloadDialog.dismiss();
                         }
+
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        imageLoader.getProfilePhoto(urlResponse, ivUserProfileImage, imageDownloadDialog);
+                        String a = validateJSON(urlResponse);
+                        if (a == null) {
+                            Picasso.with(getActivity()).load(urlResponse).into(ivUserProfileImage);
+                        } else {
+                            Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
+                        }
+
+                        imageDownloadDialog.dismiss();
+
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
                                 System.out.println("FILE DELETION SUCCEEDED");
@@ -497,8 +507,9 @@ public class ProfileFragment extends Fragment{
                     if (!responseObj.isNull("username")) {
                         currentUser.name = responseObj.getString("username");
                     }
-                    if (!responseObj.isNull("age")) {
-                        currentUser.age = responseObj.getInt("age");
+                    if (!responseObj.isNull("dateOfBirth")) {
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                     }
 
                     if (!responseObj.isNull("distance")) {
@@ -538,6 +549,8 @@ public class ProfileFragment extends Fragment{
                     }
                     displayUser(currentUser);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -581,5 +594,25 @@ public class ProfileFragment extends Fragment{
             Toast.makeText(getActivity(), R.string.user_error, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    String validateJSON(String json) {
+        String imageURL = null;
+        try {
+            JSONObject urlObject = new JSONObject(json);
+            if (!urlObject.isNull("url")) {
+                imageURL = urlObject.getString("url");
+            } else {
+                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (imageURL == null || imageURL.equals("")) {
+            return null;
+        }
+        return imageURL;
     }
 }

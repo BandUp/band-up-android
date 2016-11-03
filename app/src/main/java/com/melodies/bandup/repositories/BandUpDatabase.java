@@ -57,6 +57,7 @@ public interface BandUpDatabase {
                     BandUpErrorListener errorListener);
 
 
-
+    void logout(BandUpResponseListener responseListener,
+                BandUpErrorListener errorListener);
 }
 

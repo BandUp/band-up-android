@@ -1,9 +1,11 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.MainScreenActivity.adapters;
 
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.melodies.bandup.MainScreenActivity.UserItemFragment;
 import com.melodies.bandup.helper_classes.User;
 
 import java.util.ArrayList;
@@ -76,5 +78,11 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return UserItemFragment.newInstance(position, getUser(position));
+    }
+
+    @Override
+    public void restoreState(Parcelable arg0, ClassLoader arg1) {
+        // Do not restore the state. We restore it by calling the API.
+        // super.restoreState(arg0, arg1);
     }
 }

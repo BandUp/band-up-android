@@ -24,6 +24,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -149,7 +154,7 @@ public class UserDetailsFragment extends Fragment {
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
         txtFavorite.setText("Drums");
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
@@ -195,9 +200,9 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("username")) {
                             currentUser.name = responseObj.getString("username");
                         }
-                        if (!responseObj.isNull("age")) {
-                            // TODO: Change this to a Date object.
-                            //currentUser.age = responseObj.getInt("age");
+                        if (!responseObj.isNull("dateOfBirth")) {
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                         }
 
                         if (!responseObj.isNull("distance")) {
@@ -237,6 +242,8 @@ public class UserDetailsFragment extends Fragment {
                         }
                         displayUser(currentUser);
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }

@@ -21,10 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
@@ -176,30 +173,22 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void logout() {
-        String url = getResources().getString(R.string.api_address).concat("/logout");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                new JSONObject(),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        logoutDialog.dismiss();
-                        Intent intent = new Intent(MainScreenActivity.this, Login.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        logoutDialog.dismiss();
-                        VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
-                    }
-                }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        DatabaseSingleton.getInstance(MainScreenActivity.this).getBandUpDatabase().logout(
+                new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                logoutDialog.dismiss();
+                Intent intent = new Intent(MainScreenActivity.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                logoutDialog.dismiss();
+                VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+            }
+        });
     }
 
     @Override

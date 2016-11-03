@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.melodies.bandup.ChatActivity;
+import com.melodies.bandup.MainScreenActivity.adapters.MyMatchesRecyclerViewAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
@@ -61,14 +62,12 @@ public class MatchesFragment extends Fragment {
 
     MyMatchesRecyclerViewAdapter mmrva;
     List<User> matchItems;
-    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         matchItems = new ArrayList<>();
-        imageLoader = new com.melodies.bandup.MainScreenActivity.ImageLoader(getActivity());
-        mmrva = new MyMatchesRecyclerViewAdapter(getActivity(), matchItems, mListener, imageLoader);
+        mmrva = new MyMatchesRecyclerViewAdapter(getActivity(), matchItems, mListener);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }

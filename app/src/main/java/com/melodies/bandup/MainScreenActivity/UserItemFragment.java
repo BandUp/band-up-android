@@ -42,7 +42,7 @@ public class UserItemFragment extends Fragment {
      * @param user the user itself.
      * @return the fragment
      */
-    static UserItemFragment newInstance(int num, User user) {
+    public static UserItemFragment newInstance(int num, User user) {
         UserItemFragment f = new UserItemFragment();
 
         Bundle args = new Bundle();
@@ -136,11 +136,15 @@ public class UserItemFragment extends Fragment {
         }
 
         txtPercentage.setText(u.percentage + "%");
-        if (u.age == 1) {
-            txtAge.setText(u.age + " year old");
+
+        String age = u.ageCalc();
+        
+        if (age.equals("1")) {
+            txtAge.setText(u.ageCalc() + " year old");
         } else {
-            txtAge.setText(u.age + " years old");
+            txtAge.setText(u.ageCalc() + " years old");
         }
+
 
         if (u.distance != null) {
             txtDistance.setText(u.distance + " km away from you");

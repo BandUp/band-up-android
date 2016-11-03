@@ -79,12 +79,12 @@ public class RegistrationIntentService extends IntentService {
                 @Override
                 public void onBandUpResponse(Object response) {
                     Log.d(TAG, "it worked");
-                    startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
+                    //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
-                    Log.d(TAG, "it failed");
+                    Log.d(TAG, error.getMessage());
                 }
             });
 

@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.MainScreenActivity.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -24,13 +24,11 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
 
     private final List<User> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private ImageLoader mImageLoader;
     private Context mContext;
 
-    public MyMatchesRecyclerViewAdapter(Context context, List<User> items, OnListFragmentInteractionListener listener, ImageLoader imageLoader) {
+    public MyMatchesRecyclerViewAdapter(Context context, List<User> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        mImageLoader = imageLoader;
         mContext = context;
     }
 

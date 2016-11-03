@@ -220,4 +220,19 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
     }
+
+    @Override
+    public void logout(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/logout");
+
+        JsonObjectRequest jsonObjectRequest = createObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                responseListener,
+                errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
+
+    }
 }

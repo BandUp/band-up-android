@@ -26,6 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -100,17 +105,21 @@ public class UserDetailsFragment extends Fragment {
     }
 
     private void setFonts() {
-        txtName            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge             .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAboutMe         .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstrumentsTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtGenresTitle     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtInstrumentsList .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenresList      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        btnLike            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
+        Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
+        Typeface masterOfBreak    = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
+
+        txtName            .setTypeface(caviarDreams);
+        txtDistance        .setTypeface(caviarDreams);
+        txtPercentage      .setTypeface(caviarDreams);
+        txtAge             .setTypeface(caviarDreams);
+        txtFavorite        .setTypeface(caviarDreams);
+        txtAboutMe         .setTypeface(caviarDreams);
+        txtInstrumentsList .setTypeface(caviarDreams);
+        txtGenresList      .setTypeface(caviarDreams);
+        txtInstrumentsTitle.setTypeface(caviarDreamsBold);
+        txtGenresTitle     .setTypeface(caviarDreamsBold);
+        btnLike            .setTypeface(masterOfBreak);
     }
 
     @Override
@@ -154,7 +163,7 @@ public class UserDetailsFragment extends Fragment {
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
         txtFavorite.setText("Drums");
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
@@ -200,8 +209,9 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("username")) {
                             currentUser.name = responseObj.getString("username");
                         }
-                        if (!responseObj.isNull("age")) {
-                            currentUser.age = responseObj.getInt("age");
+                        if (!responseObj.isNull("dateOfBirth")) {
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                         }
 
                         if (!responseObj.isNull("distance")) {
@@ -241,6 +251,8 @@ public class UserDetailsFragment extends Fragment {
                         }
                         displayUser(currentUser);
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }

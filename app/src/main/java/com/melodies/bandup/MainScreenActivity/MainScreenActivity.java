@@ -21,10 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
@@ -44,8 +41,6 @@ public class MainScreenActivity extends AppCompatActivity
         UserListFragment.OnFragmentInteractionListener,
         MatchesFragment.OnListFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener,
-        PrivacyFragment.OnFragmentInteractionListener,
         ProfileFragment.OnFragmentInteractionListener,
         UserDetailsFragment.OnFragmentInteractionListener,
         LocationListener{
@@ -54,8 +49,6 @@ public class MainScreenActivity extends AppCompatActivity
     UserDetailsFragment userDetailsFragment;
     MatchesFragment matchesFragment;
     SettingsFragment settingsFragment;
-    AboutFragment aboutFragment;
-    PrivacyFragment privacyFragment;
     ProfileFragment profileFragment;
 
     ProgressDialog logoutDialog;
@@ -96,16 +89,13 @@ public class MainScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-        userListFragment = new UserListFragment();
+
+        // Create all fragments
+        userListFragment    = new UserListFragment();
         userDetailsFragment = new UserDetailsFragment();
-        matchesFragment = new MatchesFragment();
-        settingsFragment = new SettingsFragment();
-        aboutFragment = new AboutFragment();
-        privacyFragment = new PrivacyFragment();
-        profileFragment = new ProfileFragment();
-        logoutDialog = new ProgressDialog(MainScreenActivity.this);
-        logoutDialog.setMessage("Logging out");
-        logoutDialog.setTitle("Please wait...");
+        matchesFragment     = new MatchesFragment();
+        settingsFragment    = new SettingsFragment();
+        profileFragment     = new ProfileFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,15 +105,17 @@ public class MainScreenActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // Set the first item in the drawer to selected.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        // Open the UserListFragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);
         ft.commit();
 
-        // we know user is logged in time to start services
+        // We know the user is logged in time to start services
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
         //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
 
@@ -139,7 +131,6 @@ public class MainScreenActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if (count != 0){
             getSupportFragmentManager().popBackStack();
-
         } else {
             super.onBackPressed();
         }
@@ -170,6 +161,9 @@ public class MainScreenActivity extends AppCompatActivity
             setTitle(getString(R.string.main_title_settings));
         } else if (id == R.id.nav_logout) {
             logout();
+            logoutDialog = new ProgressDialog(MainScreenActivity.this);
+            logoutDialog.setMessage("Logging out");
+            logoutDialog.setTitle("Please wait...");
             logoutDialog.show();
         }
 
@@ -179,50 +173,31 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void logout() {
-        String url = getResources().getString(R.string.api_address).concat("/logout");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                new JSONObject(),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        logoutDialog.dismiss();
-                        Intent intent = new Intent(MainScreenActivity.this, Login.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        logoutDialog.dismiss();
-                        VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
-                    }
-                }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-
-
-    public void onClickNextUser(View view) {
-        userListFragment.onClickNextUser(view);
-    }
-
-    public void onClickPreviousUser(View view) {
-        userListFragment.onClickPreviousUser(view);
-    }
-
-    public void onClickLike(View view) {
-        userListFragment.onClickLike(view);
+        DatabaseSingleton.getInstance(MainScreenActivity.this).getBandUpDatabase().logout(
+                new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                logoutDialog.dismiss();
+                Intent intent = new Intent(MainScreenActivity.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                logoutDialog.dismiss();
+                VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+            }
+        });
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(Uri uri) {}
 
-    }
-
+    /**
+     * Used for the MatchesFragment. When the user taps on another user.
+     * @param user The the user that the current user wants to chat with.
+     */
     @Override
     public void onListFragmentInteraction(User user) {
         matchesFragment.onClickChat(user);
@@ -236,14 +211,15 @@ public class MainScreenActivity extends AppCompatActivity
         profileFragment.onClickAboutMe(view);
     }
 
-    public void onClickDetails(View view) {
+    public void onClickDetails(View view, int position) {
+        System.out.println(position);
         switch (view.getId()) {
             case R.id.btnDetails:
                 Bundle bundle = new Bundle();
-                if (userListFragment.getCurrentUser() == null) {
+                if (userListFragment.mAdapter.getUser(position) == null) {
                     return;
                 }
-                bundle.putString("user_id", userListFragment.getCurrentUser().id);
+                bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
                 System.out.println(userDetailsFragment.getArguments());
 
                 if (userDetailsFragment.getArguments() != null) {

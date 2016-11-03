@@ -1,13 +1,16 @@
 package com.melodies.bandup.helper_classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Bergthor on 15.10.2016.
  */
 
-public class User {
+public class User implements Serializable {
     public User(){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();
@@ -20,7 +23,24 @@ public class User {
     public Integer distance;
     public int percentage;
     public String imgURL;
-    public int age;
+    public Date dateOfBirth;
     public Boolean userHasLiked;
     public String aboutme;
+    public String ageCalc() {
+        if (dateOfBirth == null) {
+            return "";
+        }
+        Calendar dayOfBirth = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dayOfBirth.setTime(dateOfBirth);
+        Integer userAge = today.get(Calendar.YEAR) - dayOfBirth.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dayOfBirth.get(Calendar.DAY_OF_YEAR)){
+            userAge--;
+        }
+
+        String age = userAge.toString();
+        return age;
+    }
 }

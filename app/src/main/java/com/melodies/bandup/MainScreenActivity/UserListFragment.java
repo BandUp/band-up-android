@@ -1,27 +1,25 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.MainScreenActivity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,12 +68,13 @@ public class UserListFragment extends Fragment {
         return fragment;
     }
 
-    private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge, txtNoUsers;
+    private TextView txtNoUsers;
     private ProgressBar progressBar;
-    private Button btnLike, btnDetails;
     private View     partialView;
-    private ImageView ivUserProfileImage;
-    UserListController ulc;
+
+    UserListAdapter mAdapter;
+
+    ViewPager mPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class UserListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        ulc = new UserListController();
     }
 
     private void getUserList() {
@@ -134,7 +132,7 @@ public class UserListFragment extends Fragment {
                         for (int j = 0; j < genreArray.length(); j++) {
                             user.genres.add(genreArray.getString(j));
                         }
-                        ulc.addUser(user);
+                        mAdapter.addUser(user);
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -152,9 +150,11 @@ public class UserListFragment extends Fragment {
                     System.err.println("User List progressBar is null");
                 }
 
-                if (ulc.users.size() > 0) {
-                    displayUser(ulc.getUser(0));
-                }
+                //if (ulc.users.size() > 0) {
+                    //displayUser(ulc.getUser(0));
+                //}
+                mPager.setAdapter(mAdapter);
+
             }
         }, new BandUpErrorListener() {
             @Override
@@ -165,53 +165,26 @@ public class UserListFragment extends Fragment {
         });
     }
 
-    private void initializeTextViews(View rootView) {
-        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtMainInstrument);
-        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
-        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
-        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
-        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtNoUsers         = (TextView)  rootView.findViewById(R.id.txtNoUsers);
-    }
-
-    private void initializeButtons(View rootView) {
-        btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
-        btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
-    }
-
-    private void setFonts() {
-        txtName       .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstruments.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenres     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtDistance   .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtPercentage .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-
-        btnLike.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
-        btnDetails.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf"));
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
 
-        initializeTextViews(rootView);
-        initializeButtons(rootView);
+
         partialView = rootView.findViewById(R.id.user_linear_layout);
+        txtNoUsers  = (TextView) rootView.findViewById(R.id.txtNoUsers);
+
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         progressBar.setVisibility(View.VISIBLE);
+        mPager = (ViewPager) rootView.findViewById(R.id.pager);
 
-        setFonts();
+        partialView.setVisibility(View.VISIBLE);
 
-        if (ulc.getCurrentUser() != null){
-            displayUser(ulc.getCurrentUser());
-            partialView.setVisibility(View.VISIBLE);
-        }
         getUserList();
+
+        mAdapter = new UserListAdapter(getChildFragmentManager());
+
         return rootView;
     }
 
@@ -239,56 +212,6 @@ public class UserListFragment extends Fragment {
         mListener = null;
     }
 
-    public void onClickLike(View view) {
-        JSONObject user = new JSONObject();
-
-        try {
-            user.put("userID", ulc.getCurrentUser().id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
-            @Override
-            public void onBandUpResponse(Object response) {
-                JSONObject responseObj = null;
-
-                if (response instanceof JSONObject) {
-                    responseObj = (JSONObject) response;
-                } else {
-                    return;
-                }
-
-                try {
-                    Boolean isMatch;
-                    if (!responseObj.isNull("isMatch")) {
-                        isMatch = responseObj.getBoolean("isMatch");
-                    } else {
-                        Toast.makeText(getActivity(), "Error loading match.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (isMatch) {
-                        Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "You liked this person", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new BandUpErrorListener() {
-            @Override
-            public void onBandUpErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-
-            }
-        });
-    }
-
-    public User getCurrentUser() {
-        return ulc.getCurrentUser();
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -302,55 +225,5 @@ public class UserListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private void displayUser(User u) {
-        txtName.setText(u.name);
-        // Getting the first item for now.
-        txtInstruments.setText(u.instruments.get(0));
-        txtGenres.setText(u.genres.get(0));
-        txtPercentage.setText(u.percentage + "%");
-        if (u.age == 1) {
-            txtAge.setText(u.age + " year old");
-        } else {
-            txtAge.setText(u.age + " years old");
-        }
-
-        if (u.distance != null) {
-            txtDistance.setText(u.distance + " km away from you");
-        } else {
-            txtDistance.setText("-- km away from you");
-        }
-
-        /*for (int i = 0; i < u.instruments.size(); i++) {
-            if (i != u.instruments.size()-1) {
-                txtInstruments.append(u.instruments.get(i) + ", ");
-            } else {
-                txtInstruments.append(u.instruments.get(i));
-            }
-        }*/
-
-        if (u.imgURL == null) {
-            Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_big).into(ivUserProfileImage);
-        } else {
-            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
-
-        }
-    }
-
-    public void onClickNextUser(View view) {
-        User u = ulc.getNextUser();
-        if (u == null) {
-            return;
-        }
-        displayUser(u);
-    }
-
-    public void onClickPreviousUser(View view) {
-        User u = ulc.getPrevUser();
-        if (u == null) {
-            return;
-        }
-        displayUser(u);
     }
 }

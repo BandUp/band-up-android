@@ -49,8 +49,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -117,7 +121,6 @@ public class ProfileFragment extends Fragment{
     final int REQUEST_READ_GALLERY = 300;
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
-    com.melodies.bandup.MainScreenActivity.ImageLoader imageLoader;
     User currentUser;
 
     private void initializeViews(View rootView) {
@@ -154,7 +157,6 @@ public class ProfileFragment extends Fragment{
         userRequest();
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
-        imageLoader = new ImageLoader(getActivity());
         myThread = new MyThread();
         myThread.start();
     }
@@ -170,6 +172,10 @@ public class ProfileFragment extends Fragment{
         return rootView;
     }
 
+    /**
+     * Displays the user on the profile fragment
+     * @param u the user that should be displayed.
+     */
     private void displayUser(User u) {
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -180,10 +186,9 @@ public class ProfileFragment extends Fragment{
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.age, "years old"));
+        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
         txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
-
 
         for (int i = 0; i < u.genres.size(); i++) {
             txtGenresList.append(u.genres.get(i) + "\n");
@@ -194,6 +199,11 @@ public class ProfileFragment extends Fragment{
         }
     }
 
+    /**
+     * Opens a ProgressDialog to display that upload is in progress.
+     * @param title
+     * @param message
+     */
     public void displayDownloadMessage(final String title, final String message) {
         if (imageDownloadDialog == null) {
             imageDownloadDialog = ProgressDialog.show(getActivity(), title, message, true, false);
@@ -284,6 +294,13 @@ public class ProfileFragment extends Fragment{
         mListener = null;
     }
 
+    /**
+     * When the user has granted or denied us permissions to the camera,
+     * this function will be called.
+     * @param requestCode Arbitrary value we chose when making the request. Just to be sure we are getting the right request.
+     * @param permissions The name of the permissions we were requestingþ
+     * @param grantResults The results of the permission request.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -312,6 +329,13 @@ public class ProfileFragment extends Fragment{
         }
     }
 
+    /**
+     * When the user has selected an image,
+     * this function will be called.
+     * @param requestCode Arbitrary value we chose when making the request. Just to be sure we are getting the right request.
+     * @param resultCode The result of the request.
+     * @param data The intent data. Contains the URI of the image.
+     */
     public void onImageSelectResult(int requestCode, int resultCode, Intent data) {
 
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
@@ -329,6 +353,13 @@ public class ProfileFragment extends Fragment{
         }
     }
 
+    /**
+     * Sends the image at the path 'path' to the server.
+     * shouldDeleteAfterwards should be true if we downloaded the image from somewhere else
+     * and it was not in the camera roll, so we do not clutter the device's camera roll.
+     * @param path the path to the image on the SD card
+     * @param shouldDeleteAfterwards Should we delete the image after uploading it to the server?
+     */
     public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
         final File image = new File(path);
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
@@ -339,8 +370,17 @@ public class ProfileFragment extends Fragment{
                         if (imageDownloadDialog != null) {
                             imageDownloadDialog.dismiss();
                         }
+
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
-                        imageLoader.getProfilePhoto(urlResponse, ivUserProfileImage, imageDownloadDialog);
+                        String a = validateJSON(urlResponse);
+                        if (a == null) {
+                            Picasso.with(getActivity()).load(urlResponse).into(ivUserProfileImage);
+                        } else {
+                            Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
+                        }
+
+                        imageDownloadDialog.dismiss();
+
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
                                 System.out.println("FILE DELETION SUCCEEDED");
@@ -407,6 +447,10 @@ public class ProfileFragment extends Fragment{
         return hasAllPermissions;
     }
 
+    /**
+     * Opens an AlertDialog that prompts the user to take a photo or select a photo.
+     * @param view
+     */
     public void onClickDisplayModal(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -440,7 +484,7 @@ public class ProfileFragment extends Fragment{
         alertDialog.show();
     }
 
-    // Get the userid of logged in user
+    // Get the User ID of the logged in user
     public String getUserId() throws JSONException {
         SharedPreferences srdPref = getActivity().getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
         String id = srdPref.getString("userID", DEFAULT);
@@ -471,8 +515,9 @@ public class ProfileFragment extends Fragment{
                     if (!responseObj.isNull("username")) {
                         currentUser.name = responseObj.getString("username");
                     }
-                    if (!responseObj.isNull("age")) {
-                        currentUser.age = responseObj.getInt("age");
+                    if (!responseObj.isNull("dateOfBirth")) {
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                     }
 
                     if (!responseObj.isNull("distance")) {
@@ -512,6 +557,8 @@ public class ProfileFragment extends Fragment{
                     }
                     displayUser(currentUser);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -555,5 +602,25 @@ public class ProfileFragment extends Fragment{
             Toast.makeText(getActivity(), R.string.user_error, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    String validateJSON(String json) {
+        String imageURL = null;
+        try {
+            JSONObject urlObject = new JSONObject(json);
+            if (!urlObject.isNull("url")) {
+                imageURL = urlObject.getString("url");
+            } else {
+                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (imageURL == null || imageURL.equals("")) {
+            return null;
+        }
+        return imageURL;
     }
 }

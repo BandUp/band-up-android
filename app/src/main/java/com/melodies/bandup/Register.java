@@ -63,7 +63,7 @@ public class Register extends AppCompatActivity {
         dayOfBirth.set(year, month, day);
         Integer userAge = today.get(Calendar.YEAR) - dayOfBirth.get(Calendar.YEAR);
 
-        if (today.get(Calendar.DAY_OF_YEAR) < dayOfBirth.get(Calendar.DAY_OF_YEAR)){
+        if (today.get(Calendar.DAY_OF_YEAR) < dayOfBirth.get(Calendar.DAY_OF_YEAR)) {
             userAge--;
         }
 

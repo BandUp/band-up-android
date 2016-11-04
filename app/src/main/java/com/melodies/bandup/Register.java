@@ -1,6 +1,5 @@
 package com.melodies.bandup;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +29,7 @@ public class Register extends AppCompatActivity {
     private ProgressDialog registerDialog;
     private TextView txtDateOfBirth;
     private Date dateOfBirth = null;
+    private DatePickerFragment datePickerFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,10 @@ public class Register extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment dialogFragment = new DatePickerFragment();
-        dialogFragment.show(getFragmentManager(), "datePicker");
+        if (datePickerFragment == null) {
+            datePickerFragment = new DatePickerFragment();
+        }
+        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
     public void onDateSet(int year, int month, int day) {
@@ -51,11 +53,19 @@ public class Register extends AppCompatActivity {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
+
+        // Calendar to Date object.
         dateOfBirth = cal.getTime();
+
+        // Get the locale date format.
         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(Register.this);
-        String a = dateFormat.format(dateOfBirth);
-        String b = ageCalculator(year, month, day);
-        String dateString = String.format("%s (%s)", a, b);
+
+        // Formatted date.
+        String date = dateFormat.format(dateOfBirth);
+
+        String age = ageCalculator(year, month, day);
+
+        String dateString = String.format("%s (%s)", date, age);
         txtDateOfBirth.setText(dateString);
     }
 

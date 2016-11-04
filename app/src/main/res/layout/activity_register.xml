@@ -73,14 +73,14 @@
                 android:id="@+id/tilDateOfBirth"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <TextView
+                <EditText
                     android:id="@+id/txtDateOfBirth"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="5dp"
+                    android:ems="10"
+                    android:textIsSelectable="false"
+                    android:focusable="false"
+                    android:editable="false"
                     android:hint="@string/dateOfBirth"
                     android:onClick="showDatePickerDialog"/>
             </android.support.design.widget.TextInputLayout>

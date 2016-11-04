@@ -52,7 +52,11 @@ public class Register extends AppCompatActivity {
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
         dateOfBirth = cal.getTime();
-        txtDateOfBirth.setText(ageCalculator(year, month, day));
+        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(Register.this);
+        String a = dateFormat.format(dateOfBirth);
+        String b = ageCalculator(year, month, day);
+        String dateString = String.format("%s (%s)", a, b);
+        txtDateOfBirth.setText(dateString);
     }
 
     // Calculating real user age and return it

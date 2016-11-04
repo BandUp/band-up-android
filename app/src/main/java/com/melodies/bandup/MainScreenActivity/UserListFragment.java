@@ -25,6 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,6 +126,11 @@ public class UserListFragment extends Fragment {
                             }
                         }
 
+                        if (!item.isNull("dateOfBirth")) {
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
+                        }
+
                         JSONArray instrumentArray = item.getJSONArray("instruments");
 
                         for (int j = 0; j < instrumentArray.length(); j++) {
@@ -135,6 +145,9 @@ public class UserListFragment extends Fragment {
                         mAdapter.addUser(user);
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        Toast.makeText(getActivity(), "Could not parse the Date object.", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }

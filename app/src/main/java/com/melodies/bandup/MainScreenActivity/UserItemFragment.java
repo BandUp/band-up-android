@@ -13,11 +13,13 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -125,6 +127,8 @@ public class UserItemFragment extends Fragment {
      * @param u
      */
     private void displayUser(User u) {
+        LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
+
         txtName.setText(u.name);
 
         if (u.instruments.size() > 0) {
@@ -137,14 +141,18 @@ public class UserItemFragment extends Fragment {
 
         txtPercentage.setText(u.percentage + "%");
 
-        String age = u.ageCalc();
-        
-        if (age.equals("1")) {
-            txtAge.setText(u.ageCalc() + " year old");
-        } else {
-            txtAge.setText(u.ageCalc() + " years old");
+        if (localeRules != null) {
+            Integer age = u.ageCalc();
+            if (age != null) {
+                if (localeRules.ageIsPlural(age)) {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_plural)));
+                    txtAge.setText(ageString);
+                } else {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
+                    txtAge.setText(ageString);
+                }
+            }
         }
-
 
         if (u.distance != null) {
             txtDistance.setText(u.distance + " km away from you");

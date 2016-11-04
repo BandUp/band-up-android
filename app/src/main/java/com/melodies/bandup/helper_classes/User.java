@@ -26,9 +26,9 @@ public class User implements Serializable {
     public Date dateOfBirth;
     public Boolean userHasLiked;
     public String aboutme;
-    public String ageCalc() {
+    public Integer ageCalc() {
         if (dateOfBirth == null) {
-            return "";
+            return null;
         }
         Calendar dayOfBirth = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -40,7 +40,6 @@ public class User implements Serializable {
             userAge--;
         }
 
-        String age = userAge.toString();
-        return age;
+        return userAge;
     }
 }

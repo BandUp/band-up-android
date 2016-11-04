@@ -34,11 +34,13 @@ import com.google.android.gms.ads.AdView;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -181,12 +183,25 @@ public class ProfileFragment extends Fragment{
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
+
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
+        if (localeRules != null) {
+            Integer age = u.ageCalc();
+            if (age != null) {
+                if (localeRules.ageIsPlural(age)) {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_plural)));
+                    txtAge.setText(ageString);
+                } else {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
+                    txtAge.setText(ageString);
+                }
+            }
+        }
         txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
 

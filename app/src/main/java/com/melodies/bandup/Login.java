@@ -492,7 +492,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Toast.makeText(this, R.string.login_credentials_incorrect, Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         VolleySingleton.getInstance(Login.this).checkCauseOfError(error);
     }
 

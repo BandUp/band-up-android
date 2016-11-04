@@ -67,6 +67,13 @@ public class Register extends AppCompatActivity {
             userAge--;
         }
 
+        if (userAge < 13) {
+            Toast.makeText(getApplicationContext(), "You have to be 13 years old or older to register!", Toast.LENGTH_SHORT).show();
+        }
+        else if (userAge > 99) {
+            Toast.makeText(getApplicationContext(), "You have to be 99 years old or younger to register!", Toast.LENGTH_SHORT).show();
+        }
+
         String age = userAge.toString();
         return age;
     }

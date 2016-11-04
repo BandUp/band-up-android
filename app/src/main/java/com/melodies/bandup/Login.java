@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -487,6 +488,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Handling errors that can occur while SignIn request
     private void errorHandlerLogin(VolleyError error) {
+        if (error instanceof AuthFailureError) {
+            Toast.makeText(this, R.string.login_credentials_incorrect, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         VolleySingleton.getInstance(Login.this).checkCauseOfError(error);
     }
 

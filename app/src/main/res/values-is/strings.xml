@@ -96,4 +96,8 @@
     <string name="details_genres">Tónlistarstefnur</string>
     <string name="dateOfBirth">Fæðingardagur</string>
     <string name="user_list_no_users">Ekkert tónlistarfólk nálægt</string>
+    <string name="age_year_plural">" ára"</string>
+    <string name="age_year_singular">" árs"</string>
+    <string name="login_credentials_incorrect">Notandanafn eða lykilorð rangt</string>
+
 </resources>

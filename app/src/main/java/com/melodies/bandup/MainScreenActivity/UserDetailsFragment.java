@@ -13,11 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -84,6 +88,7 @@ public class UserDetailsFragment extends Fragment {
     private TextView  txtGenresList;
     private ImageView ivUserProfileImage;
     private Button    btnLike;
+    private AdView    mAdView;
 
     private void initializeViews(View rootView) {
         txtName             = (TextView)  rootView.findViewById(R.id.txtName);
@@ -98,6 +103,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
         ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
         btnLike             = (Button)    rootView.findViewById(R.id.btnLike);
+        mAdView             = (AdView)    rootView.findViewById(R.id.adView);
     }
 
     private void setFonts() {
@@ -137,6 +143,7 @@ public class UserDetailsFragment extends Fragment {
         initializeViews(rootView);
         setFonts();
 
+
         String argumentUserID = getArguments().getString("user_id");
 
         if (currentUser == null || !currentUser.id.equals(argumentUserID)) {
@@ -145,16 +152,33 @@ public class UserDetailsFragment extends Fragment {
             System.out.println(currentUser.id);
             displayUser(currentUser);
         }
+
         return rootView;
     }
 
     private void displayUser(User u) {
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }
 
         txtName.setText(u.name);
-        txtAge.setText(String.format("%s %s", u.ageCalc(), "years old"));
+        if (localeRules != null) {
+            Integer age = u.ageCalc();
+            if (age != null) {
+                if (localeRules.ageIsPlural(age)) {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_plural)));
+                    txtAge.setText(ageString);
+                } else {
+                    String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
+                    txtAge.setText(ageString);
+                }
+            }
+        }
         txtFavorite.setText("Drums");
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);

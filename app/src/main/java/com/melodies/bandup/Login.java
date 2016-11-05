@@ -45,6 +45,7 @@ import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.setup.Instruments;
+import com.melodies.bandup.setup.SetupShared;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +65,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
+    private SetupShared sShared;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -114,6 +116,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
         linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
+        sShared = new SetupShared();
 
         getAd();
 
@@ -259,6 +262,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 @Override
                 public void onResponse(JSONObject response) {
+                    sShared.saveUserId(Login.this, response);
                     openCorrectIntent(response);
                 }
             }, new Response.ErrorListener() {
@@ -339,6 +343,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            sShared.saveUserId(Login.this, response);
                             openCorrectIntent(response);
                         }
                     },
@@ -469,7 +474,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             responseObj = (JSONObject) response;
                         }
 
-                        saveUserId(responseObj);
+                        sShared.saveUserId(Login.this, responseObj);
                         Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         openCorrectIntent(responseObj);
                         loginDialog.dismiss();

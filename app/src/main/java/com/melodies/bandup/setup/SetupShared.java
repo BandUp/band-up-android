@@ -2,6 +2,7 @@ package com.melodies.bandup.setup;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
@@ -340,5 +341,25 @@ public class SetupShared {
 
     public static float pixelsToDisplayPixels(final Context context, final float px) {
         return px * (context.getResources().getDisplayMetrics().density);
+    }
+
+    // Storing user userId in UserIdData folder, which only this app can access
+    public Boolean saveUserId(Context c, JSONObject response) {
+        try {
+            String id;
+            if (!response.isNull("userID")) {
+                id = response.getString("userID");
+            } else {
+                return false;
+            }
+            SharedPreferences srdPref = c.getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = srdPref.edit();
+            editor.putString("userID", id);
+            editor.apply();
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

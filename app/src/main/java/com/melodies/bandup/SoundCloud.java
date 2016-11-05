@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.melodies.bandup.setup.SetupShared;
 import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Token;
 
@@ -25,11 +26,13 @@ import java.security.KeyStoreException;
 
 public class SoundCloud extends AppCompatActivity {
     private String url;
+    SetupShared sShared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_cloud);
+        sShared = new SetupShared();
     }
 
     public void onSoundCloudSignIn(View view) {
@@ -68,6 +71,7 @@ public class SoundCloud extends AppCompatActivity {
                             new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            sShared.saveUserId(SoundCloud.this, response);
                             System.out.println(response.toString());
                         }
                     }, new Response.ErrorListener() {

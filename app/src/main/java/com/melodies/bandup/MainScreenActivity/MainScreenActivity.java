@@ -1,7 +1,11 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -10,11 +14,13 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -36,6 +42,10 @@ import com.melodies.bandup.setup.Instruments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+
 public class MainScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         UserListFragment.OnFragmentInteractionListener,
@@ -55,6 +65,7 @@ public class MainScreenActivity extends AppCompatActivity
     LocationManager locationManager;
     Criteria criteria;
     String bestProvider;
+    SharedPreferences sharedPrefs;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -63,33 +74,15 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        if (requestCode == LOCATION_REQUEST_CODE){
-           //createLocationRequest();
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // permission was granted, yay! Do the contacts-related task you need to do.
-                //createLocationRequest();
-            } else {
-                // permission denied, boo!
-                Toast.makeText(this, R.string.user_allow_location, Toast.LENGTH_LONG).show();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-               // createLocationRequest();
-            }
-            return;
-        }
-        profileFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-
+        sharedPrefs = getSharedPreferences("permissions", Context.MODE_PRIVATE);
+        if (!sharedPrefs.contains("display_rationale")) {
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putBoolean("display_rationale", true);
+            editor.apply();
+        }
         // Create all fragments
         userListFragment    = new UserListFragment();
         userDetailsFragment = new UserDetailsFragment();
@@ -118,8 +111,41 @@ public class MainScreenActivity extends AppCompatActivity
         // We know the user is logged in time to start services
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
         //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
+        Boolean shouldDisplayRationale = sharedPrefs.getBoolean("display_rationale", false);
 
-//        createLocationRequest();
+        int apiVersion = android.os.Build.VERSION.SDK_INT;
+        if (apiVersion >= android.os.Build.VERSION_CODES.M){
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // If location permissions have NOT been granted.
+                // Tell the user what we are going to do with the location.
+                if (shouldDisplayRationale) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainScreenActivity.this);
+                    builder.setTitle("Location Access")
+                            .setMessage("To find musicians near you we need access to your location.\nWe will only use it to measure distance between you and other musicians.")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(MainScreenActivity.this, new String[]{
+                                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                                    }, LOCATION_REQUEST_CODE);
+                                }
+                            })
+                            .show();
+                }
+            } else {
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putBoolean("display_rationale", true);
+                editor.apply();
+            }
+
+        } else {
+            createLocationRequest();
+        }
+
+
+
+
     }
 
     @Override
@@ -237,7 +263,34 @@ public class MainScreenActivity extends AppCompatActivity
 
     // ======= Location setup ========
     private final int LOCATION_REQUEST_CODE = 333;
-/*
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        if (requestCode == LOCATION_REQUEST_CODE){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted, yay! Do the contacts-related task you need to do.
+
+                // We will display the rationale next time we are denied access to the location.
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putBoolean("display_rationale", true);
+                editor.apply();
+                createLocationRequest();
+            } else {
+                //Toast.makeText(this, R.string.user_allow_location, Toast.LENGTH_LONG).show();
+                // Permission denied, boo!
+                // Since the user has denied, we will not display it again.
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putBoolean("display_rationale", false);
+                editor.apply();
+                //createLocationRequest();
+            }
+            return;
+        }
+        profileFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     protected void createLocationRequest() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -245,27 +298,31 @@ public class MainScreenActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
             }, LOCATION_REQUEST_CODE);
-
             return;
         }
-
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
-        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
-        try{
+        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
+        try {
             Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             if (location == null) {
                 locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
             }
-            //sendLocation(location);
+            sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
         }
     }
-    */
+
     private void sendLocation(Location location){
+        if (location == null){
+            System.err.println("Location is null when sending location.");
+            System.err.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            return;
+        }
+
         JSONObject locObject = new JSONObject();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -273,7 +330,7 @@ public class MainScreenActivity extends AppCompatActivity
             locObject.put("lat", location.getLatitude());
 
             jsonObject.put("location", locObject);
-
+            System.out.println(locObject);
             DatabaseSingleton.getInstance(this).getBandUpDatabase().postLocation(jsonObject,
                     new BandUpResponseListener() {
                         @Override

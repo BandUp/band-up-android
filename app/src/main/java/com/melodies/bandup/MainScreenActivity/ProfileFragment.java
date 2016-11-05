@@ -202,7 +202,7 @@ public class ProfileFragment extends Fragment{
                 }
             }
         }
-        txtFavorite.setText("Drums");
+        //txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
 
         for (int i = 0; i < u.genres.size(); i++) {

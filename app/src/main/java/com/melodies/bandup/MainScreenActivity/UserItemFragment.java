@@ -155,9 +155,10 @@ public class UserItemFragment extends Fragment {
         }
 
         if (u.distance != null) {
-            txtDistance.setText(u.distance + " km away from you");
+            String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
+            txtDistance.setText(distanceString);
         } else {
-            txtDistance.setText("-- km away from you");
+            txtDistance.setText(R.string.no_distance_available);
         }
 
         if (u.imgURL == null) {

@@ -186,7 +186,7 @@ public class UserDetailsFragment extends Fragment {
         if (txtDistance == null) {
             txtDistance.setText(u.distance + " km away from you");
         } else {
-            txtDistance.setText("-- km away from you");
+            txtDistance.setText(R.string.no_distance_available);
         }
 
         for (int i = 0; i < u.genres.size(); i++) {

@@ -99,5 +99,7 @@
     <string name="age_year_plural">"ára"</string>
     <string name="age_year_singular">"árs"</string>
     <string name="login_credentials_incorrect">Notandanafn eða lykilorð rangt</string>
+    <string name="no_distance_available">Vegalengd ekki tiltæk</string>
+    <string name="km_distance">km frá þér</string>
 
 </resources>

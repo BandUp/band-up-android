@@ -108,5 +108,7 @@
     <string name="age_year_singular">"year old"</string>
     <string name="age_year_plural">"years old"</string>
     <string name="login_credentials_incorrect">Username or password incorrect</string>
+    <string name="no_distance_available">Distance not available</string>
+    <string name="km_distance">km away from you</string>
 
 </resources>

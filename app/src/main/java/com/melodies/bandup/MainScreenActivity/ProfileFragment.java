@@ -18,11 +18,14 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -125,17 +129,21 @@ public class ProfileFragment extends Fragment{
     MyThread myThread;
     User currentUser;
 
+    private Fragment soundCloudSelectorFragment;
+    private LinearLayout soundCloudArea;
+
     private void initializeViews(View rootView) {
-        txtName             = (TextView)  rootView.findViewById(R.id.txtName);
-        txtAge              = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtFavorite         = (TextView)  rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe          = (TextView)  rootView.findViewById(R.id.txtAboutMe);
-        txtInstrumentsTitle = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenresTitle      = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
-        txtInstrumentsList  = (TextView)  rootView.findViewById(R.id.txtInstrumentsList);
-        txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
-        ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
-        mAdView             = (AdView)    rootView.findViewById(R.id.adView);
+        txtName             = (TextView)    rootView.findViewById(R.id.txtName);
+        txtAge              = (TextView)    rootView.findViewById(R.id.txtAge);
+        txtFavorite         = (TextView)    rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe          = (TextView)    rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView)    rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle      = (TextView)    rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList  = (TextView)    rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList       = (TextView)    rootView.findViewById(R.id.txtGenresList);
+        ivUserProfileImage  = (ImageView)   rootView.findViewById(R.id.imgProfile);
+        mAdView             = (AdView)      rootView.findViewById(R.id.adView);
+        soundCloudArea      = (LinearLayout)rootView.findViewById(R.id.profile_soundCloudArea);
     }
 
     private void setFonts() {
@@ -163,11 +171,22 @@ public class ProfileFragment extends Fragment{
         myThread.start();
     }
 
+    private void createSoundCloudArea() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        soundCloudArea.setId(new Integer(1234));
+
+        Fragment soundCloudSelectorFragment = SoundCloudSelectorFragment.newInstance(
+                currentUser.soundCloudId,
+                currentUser.soundCloudURL);
+        ft.add(soundCloudArea.getId(), soundCloudSelectorFragment, "soundCloudSelector");
+        ft.commit();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-
         initializeViews(rootView);
         setFonts();
 
@@ -212,6 +231,7 @@ public class ProfileFragment extends Fragment{
         for (int i = 0; i < u.instruments.size(); i++) {
             txtInstrumentsList.append(u.instruments.get(i) + "\n");
         }
+        createSoundCloudArea();
     }
 
     /**

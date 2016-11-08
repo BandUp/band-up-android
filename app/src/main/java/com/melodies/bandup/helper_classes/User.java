@@ -26,6 +26,9 @@ public class User implements Serializable {
     public Date dateOfBirth;
     public Boolean userHasLiked;
     public String aboutme;
+    public int soundCloudId;
+    public String soundCloudURL;
+
     public Integer ageCalc() {
         if (dateOfBirth == null) {
             return null;

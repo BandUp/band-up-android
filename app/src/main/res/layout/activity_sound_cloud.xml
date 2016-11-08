@@ -10,6 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.melodies.bandup.SoundCloud">
 
+    <include layout="@layout/ads"/>
+
     <!-- Login progress -->
     <ScrollView
         android:id="@+id/login_form"

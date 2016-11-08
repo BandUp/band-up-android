@@ -6,6 +6,8 @@
     android:orientation="vertical"
     tools:context=".Register">
 
+    <include layout="@layout/ads"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

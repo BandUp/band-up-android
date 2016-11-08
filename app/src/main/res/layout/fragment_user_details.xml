@@ -164,7 +164,6 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="18sp"
                     android:hint="About Me"
-                    android:onClick="onClickAboutMe"
                     android:maxLength="100" />
 
                 <ImageView

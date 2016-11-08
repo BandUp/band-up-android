@@ -14,6 +14,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 
@@ -24,10 +26,17 @@ import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
 public class UpdateAboutMe extends AppCompatActivity {
 
+    private AdView mAdView;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updateaboutme);
         setTitle("About Me");
+        mAdView = (AdView)findViewById(R.id.adView);
+
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         userRequest();
     }
 

@@ -104,6 +104,13 @@ public class UserDetailsFragment extends Fragment {
         ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
         btnLike             = (Button)    rootView.findViewById(R.id.btnLike);
         mAdView             = (AdView)    rootView.findViewById(R.id.adView);
+
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainScreenActivity)getActivity()).onClickLike(currentUser.id);
+            }
+        });
     }
 
     private void setFonts() {

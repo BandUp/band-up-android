@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.MainScreenActivity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
@@ -48,6 +50,7 @@ public class UserListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private AdView mAdView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -184,6 +187,10 @@ public class UserListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
 
+        // Adding ad Banner
+        mAdView = (AdView)rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         partialView = rootView.findViewById(R.id.user_linear_layout);
         txtNoUsers  = (TextView) rootView.findViewById(R.id.txtNoUsers);

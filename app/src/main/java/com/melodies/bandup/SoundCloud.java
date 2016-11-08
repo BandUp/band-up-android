@@ -2,7 +2,6 @@ package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +10,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 import com.melodies.bandup.setup.SetupShared;
@@ -21,13 +21,7 @@ import com.soundcloud.api.Token;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
 
 /**
  * A login screen that offers login via email/password.
@@ -35,6 +29,7 @@ import java.security.cert.CertificateException;
 
 public class SoundCloud extends AppCompatActivity {
     private String url;
+    private AdView mAdView;
     SetupShared sShared;
 
     @Override
@@ -42,6 +37,14 @@ public class SoundCloud extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_cloud);
         sShared = new SetupShared();
+        getAd();
+    }
+
+    // Adding ad Banner
+    private void getAd() {
+        mAdView = (AdView)findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void onSoundCloudSignIn(View view) {

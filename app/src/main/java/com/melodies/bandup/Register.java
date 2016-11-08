@@ -16,6 +16,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +32,7 @@ public class Register extends AppCompatActivity {
     private TextView txtDateOfBirth;
     private Date dateOfBirth = null;
     private DatePickerFragment datePickerFragment = null;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,14 @@ public class Register extends AppCompatActivity {
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
         txtDateOfBirth = (TextView) findViewById(R.id.txtDateOfBirth);
+        getAd();
+    }
+
+    // Adding ad Banner
+    private void getAd() {
+        mAdView = (AdView)findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void showDatePickerDialog(View v) {

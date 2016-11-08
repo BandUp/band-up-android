@@ -40,10 +40,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
+            resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
         debug {
             signingConfig signingConfigs.config
             debuggable true
+            resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
+            resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
     }
 
@@ -70,7 +74,6 @@ dependencies {
         exclude module: "httpclient"
     }
     compile files('libs/PhotoUtil.jar')
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:design:24.2.1'

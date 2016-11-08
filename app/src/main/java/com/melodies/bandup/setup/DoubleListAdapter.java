@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,12 +112,17 @@ public final class DoubleListAdapter extends BaseAdapter {
         // We need to change pixels to display pixels for it to display the same on all devices.
         int selectedPaddingDp = (int) sShared.pixelsToDisplayPixels(mContext, selectedPadding);
 
+        GridView gv = (GridView)viewGroup;
+        final int itemWidth = gv.getColumnWidth();
+
         // The height of the DoubleListItem.
         // This value is changed in res/values/integers.xml
-        final int itemHeight = mContext.getResources().getInteger(R.integer.setup_item_height);
+        final double itemHeight = (mContext.getResources().getInteger(R.integer.setup_item_height));
+
+        final double actualItemHeight = itemWidth*(itemHeight/100.0);
 
         // We need to change pixels to display pixels for it to display the same on all devices.
-        int itemHeightDp = (int) sShared.pixelsToDisplayPixels(mContext, itemHeight);
+        int itemHeightDp = (int) actualItemHeight;
 
         // The size of the text in the view.
         // This value is changed in res/values/integers.xml

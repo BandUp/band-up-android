@@ -29,9 +29,6 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     private JsonObjectRequest createObjectRequest(int httpMethod, String url, JSONObject data, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
-        System.out.println("DATA1");
-        System.out.println(data);
-        System.out.println("DATA2");
         return new JsonObjectRequest (
                 httpMethod,
                 url,

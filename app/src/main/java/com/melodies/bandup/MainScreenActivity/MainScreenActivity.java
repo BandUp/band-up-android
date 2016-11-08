@@ -378,4 +378,50 @@ public class MainScreenActivity extends AppCompatActivity
     public void onClickEditGenres(View view) {
         startActivity(new Intent(MainScreenActivity.this, Genres.class));
     }
+
+    public void onClickLike(String userID) {
+        JSONObject user = new JSONObject();
+
+        try {
+            user.put("userID", userID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
+                } else {
+                    return;
+                }
+
+                try {
+                    Boolean isMatch;
+                    if (!responseObj.isNull("isMatch")) {
+                        isMatch = responseObj.getBoolean("isMatch");
+                    } else {
+                        Toast.makeText(MainScreenActivity.this, "Error loading match.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (isMatch) {
+                        Toast.makeText(MainScreenActivity.this, "You Matched!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainScreenActivity.this, "You liked this person", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+
+            }
+        });
+    }
 }

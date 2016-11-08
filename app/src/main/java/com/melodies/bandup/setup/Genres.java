@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
 
@@ -23,6 +25,7 @@ public class Genres extends AppCompatActivity {
     private GridView gridView;
     private TextView txtTitleGetStarted, txtTitleHint, txtTitleProgress, txtNoGenres;
     private SetupShared sShared;
+    private AdView mAdView;
 
 
     private void initializeTextViews() {
@@ -30,6 +33,7 @@ public class Genres extends AppCompatActivity {
         txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
         txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
         txtNoGenres        = (TextView) findViewById(R.id.txtNoGenres);
+        mAdView            = (AdView)   findViewById(R.id.adView);
     }
 
     private void setFonts() {
@@ -68,6 +72,10 @@ public class Genres extends AppCompatActivity {
                 sShared.toggleItemSelection(getApplicationContext(), parent, view, position);
             }
         });
+
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void onClickFinish(View v) {

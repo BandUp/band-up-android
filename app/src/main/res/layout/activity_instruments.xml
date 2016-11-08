@@ -69,6 +69,8 @@
             android:layout_marginBottom="5dp"
             android:fadeScrollbars="false"/>
 
+        <include layout="@layout/ads"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -13,10 +13,10 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     signingConfigs {
         config {
-            keyAlias 'band-up-key'
-            keyPassword '43kkxdVR5RnhXpaBbMR9mx'
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
             storeFile file("keystore.jks")
-            storePassword 'fqw7ork5jcDjogo79fM2Zu'
+            storePassword keystoreProperties['storePassword']
         }
     }
     compileSdkVersion 24

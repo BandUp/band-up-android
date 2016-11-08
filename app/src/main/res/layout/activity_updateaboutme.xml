@@ -5,6 +5,8 @@
     android:weightSum="1"
     >
 
+    <include layout="@layout/ads"/>
+
     <TextView
         android:text="Tell us more about your music experience: "
         android:textSize="20sp"
@@ -40,4 +42,5 @@
         android:onClick="onClickSave"
         android:background="@drawable/button_fancy"
         />
+
 </LinearLayout>

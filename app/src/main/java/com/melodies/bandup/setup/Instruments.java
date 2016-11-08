@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.R;
 
 import org.json.JSONArray;
@@ -23,12 +25,14 @@ public class Instruments extends AppCompatActivity {
     private TextView txtTitleGetStarted, txtTitleHint, txtTitleProgress, txtNoInstruments;
     private GridView    gridView;
     private SetupShared sShared;
+    private AdView mAdView;
 
     private void initializeTextViews() {
         txtTitleGetStarted = (TextView) findViewById(R.id.txt_title_get_started);
         txtTitleHint       = (TextView) findViewById(R.id.txt_title_hint);
         txtTitleProgress   = (TextView) findViewById(R.id.txt_title_progress);
         txtNoInstruments   = (TextView) findViewById(R.id.txtNoInstruments);
+        mAdView            = (AdView)   findViewById(R.id.adView);
     }
 
     private void setFonts() {
@@ -66,6 +70,10 @@ public class Instruments extends AppCompatActivity {
                 sShared.toggleItemSelection(getApplicationContext(), parent, view, position);
             }
         });
+
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void onClickNext(View v) {

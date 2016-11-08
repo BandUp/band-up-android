@@ -250,12 +250,17 @@ public class SetupShared {
         // We need to change pixels to display pixels for it to display the same on all devices.
         int selectedPaddingDp = (int) pixelsToDisplayPixels(context, selectedPadding);
 
+        GridView gv = (GridView)parent;
+        final int itemWidth = gv.getColumnWidth();
+
         // The height of the DoubleListItem.
         // This value is changed in res/values/integers.xml
-        final int itemHeight = context.getResources().getInteger(R.integer.setup_item_height);
+        final double itemHeight = (context.getResources().getInteger(R.integer.setup_item_height));
+
+        final double actualItemHeight = itemWidth*(itemHeight/100.0);
 
         // We need to change pixels to display pixels for it to display the same on all devices.
-        final int itemHeightDp = (int) pixelsToDisplayPixels(context, itemHeight);
+        int itemHeightDp = (int) actualItemHeight;
 
         // The duration of the animation when selecting.
         int animDuration = context.getResources().getInteger(R.integer.setup_select_animation_time);
@@ -341,6 +346,10 @@ public class SetupShared {
 
     public static float pixelsToDisplayPixels(final Context context, final float px) {
         return px * (context.getResources().getDisplayMetrics().density);
+    }
+
+    public static float displayPixelsToPixels(final Context context, final float px) {
+        return px / (context.getResources().getDisplayMetrics().density);
     }
 
     // Storing user userId in UserIdData folder, which only this app can access

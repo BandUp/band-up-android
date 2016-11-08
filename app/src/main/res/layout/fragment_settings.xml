@@ -8,10 +8,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.melodies.bandup.MainScreenActivity.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="The settings for the app" />
+        android:layout_height="match_parent">
+
+        <include layout="@layout/ads"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="The settings for the app" />
+
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
 
 </FrameLayout>

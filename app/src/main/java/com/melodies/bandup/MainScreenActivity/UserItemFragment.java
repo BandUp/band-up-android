@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
@@ -35,7 +37,7 @@ public class UserItemFragment extends Fragment {
     private TextView txtName, txtDistance, txtInstruments, txtGenres, txtPercentage, txtAge;
     private Button btnLike, btnDetails;
     private ImageView ivUserProfileImage;
-
+    private AdView mAdView;
     private User mUser;
 
     /**
@@ -71,6 +73,7 @@ public class UserItemFragment extends Fragment {
         txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
         txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
         txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
+        mAdView            = (AdView)    rootView.findViewById(R.id.adView);
     }
 
     private void initializeButtons(View rootView) {
@@ -127,6 +130,10 @@ public class UserItemFragment extends Fragment {
      * @param u
      */
     private void displayUser(User u) {
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
         txtName.setText(u.name);

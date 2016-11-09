@@ -39,7 +39,7 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
-import com.melodies.bandup.SoundCloudSelectorFragment;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;

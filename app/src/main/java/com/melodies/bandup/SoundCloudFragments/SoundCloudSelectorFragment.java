@@ -1,21 +1,19 @@
-package com.melodies.bandup;
+package com.melodies.bandup.SoundCloudFragments;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.R;
 
 
 /**
+ * Fragment allowing user to select a track from his(or her) soundcloud account
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link SoundCloudSelectorFragment.OnFragmentInteractionListener} interface
@@ -60,29 +58,11 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         }
     }
 
-    private void createSoundCloudWidget() {
-        if (soundCloudId == 0){
-            // needs to add soudcloud link
-            // load appropriate image
-            ImageView imageView = new ImageView(getContext());
-            imageView.setBackground(getResources().getDrawable(R.drawable.soundcloud_big));
-            //imageView.setMaxHeight(100);
-            ((FrameLayout)mRootView).addView(imageView);
-        }else if (soundCloudURL == null){
-            // has not chosen a sound byte
-            // start from soundbyte selection
-        }else{
-            // we have both values we can create widget
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_soundcloudselector, container, false);
-        mRootView.setOnClickListener(this);
-        createSoundCloudWidget();
         return mRootView;
     }
 
@@ -105,14 +85,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (soundCloudId == 0){
-            System.out.println("loggin in with soundcloud");
-        }else if (soundCloudURL == null){
-            // has not chosen a sound byte
-            // start from soundbyte selection
-        }else{
-            // we have both values we can create widget
-        }
+
     }
 
     /**

@@ -31,7 +31,7 @@ import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
-import com.melodies.bandup.SoundCloudSelectorFragment;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;

@@ -60,6 +60,10 @@ public interface BandUpDatabase {
     void logout(BandUpResponseListener responseListener,
                 BandUpErrorListener errorListener);
 
+    void updateUser(final JSONObject updatedObject,
+                    final BandUpResponseListener responseListener,
+                    final BandUpErrorListener errorListener);
+
     void sendSoundCloudId(JSONObject requestObject,
                           BandUpResponseListener responseListener,
                           BandUpErrorListener errorListener);

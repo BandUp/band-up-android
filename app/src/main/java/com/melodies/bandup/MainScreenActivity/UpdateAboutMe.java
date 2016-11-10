@@ -91,7 +91,7 @@ public class UpdateAboutMe extends AppCompatActivity {
             userUpdated.put("aboutMe", aboutMe);
             Toast.makeText(UpdateAboutMe.this, "sending to server: "+ userUpdated.toString(), Toast.LENGTH_LONG).show();
 
-            DatabaseSingleton.getInstance(this).getBandUpDatabase().postLocation(userUpdated, new BandUpResponseListener() {
+            DatabaseSingleton.getInstance(this).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 // response spposed to be aboutme String

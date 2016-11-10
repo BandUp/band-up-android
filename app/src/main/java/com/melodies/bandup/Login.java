@@ -3,7 +3,6 @@ package com.melodies.bandup;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -435,26 +434,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 createloginRequest(username, password);
             }
         }
-    }
-
-    // Storing user userId in UserIdData folder, which only this app can access
-    public Boolean saveUserId(JSONObject response) {
-        try {
-            String id;
-            if (!response.isNull("userID")) {
-                id = response.getString("userID");
-            } else {
-                return false;
-            }
-            SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = srdPref.edit();
-            editor.putString("userID", id);
-            editor.apply();
-            return true;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
     
     // Login user into app

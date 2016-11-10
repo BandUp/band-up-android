@@ -16,6 +16,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.adapters.MyMatchesRecyclerViewAdapter;
 import com.melodies.bandup.R;
@@ -42,6 +44,7 @@ public class MatchesFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private AdView mAdView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -118,6 +121,11 @@ public class MatchesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_matches_list, container, false);
+
+        // Adding ad Banner
+        mAdView = (AdView)view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Set the adapter
         if (view instanceof RecyclerView) {

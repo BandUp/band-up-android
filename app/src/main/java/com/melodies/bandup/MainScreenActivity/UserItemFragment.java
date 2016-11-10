@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
@@ -130,9 +129,6 @@ public class UserItemFragment extends Fragment {
      * @param u
      */
     private void displayUser(User u) {
-        // Adding ad Banner
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
         txtName.setText(u.name);

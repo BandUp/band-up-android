@@ -51,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Date;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
@@ -68,6 +69,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
     private SetupShared sShared;
+    private Date dateOfBirth = null;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -373,7 +375,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        //Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
     }
 
     // Google+ Sign In
@@ -383,12 +385,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     }
 
     // Google+ Sign Out
-    private void signOut() {
+    public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient);
     }
 
     // Google+ Disconnecting Google account from the app
-    private void revokeAccess() {
+    public void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
     }
 

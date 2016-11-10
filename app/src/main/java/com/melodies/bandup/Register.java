@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements DatePickable {
     private String url;
     private String route = "/signup-local";
     private ProgressDialog registerDialog;

@@ -50,9 +50,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, DatePickable {
     // server url location for login
     private String url;
 
@@ -490,5 +491,23 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             Intent signUpIntent = new Intent(Login.this, Register.class);
             Login.this.startActivity(signUpIntent);
         }
+    }
+
+    @Override
+    public void onDateSet(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+
+        // Calendar to Date object.
+        dateOfBirth = cal.getTime();
+
+        // Get the locale date format.
+        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(Login.this);
+
+        // Formatted date.
+        String date = dateFormat.format(dateOfBirth);
+
     }
 }

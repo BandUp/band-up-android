@@ -50,6 +50,8 @@ import com.melodies.bandup.setup.SetupShared;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     // server url location for login
     private String url;
@@ -184,7 +186,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
-        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions(Arrays.asList("email", "user_birthday"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override

@@ -10,7 +10,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity">
 
-    <include layout="@layout/ads"/>
+
 
 
     <ImageView
@@ -145,4 +145,5 @@
                 android:textAllCaps="false"/>
         </LinearLayout>
     </LinearLayout>
+    <include layout="@layout/ads"/>
 </LinearLayout>

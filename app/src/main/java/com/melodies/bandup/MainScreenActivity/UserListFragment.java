@@ -91,6 +91,8 @@ public class UserListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mAdapter = new UserListAdapter(getChildFragmentManager());
+
     }
 
     private void getUserList() {
@@ -145,6 +147,8 @@ public class UserListFragment extends Fragment {
                         for (int j = 0; j < genreArray.length(); j++) {
                             user.genres.add(genreArray.getString(j));
                         }
+                        System.out.println("MADAPTER");
+                        System.out.println(mAdapter);
                         mAdapter.addUser(user);
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
@@ -202,8 +206,6 @@ public class UserListFragment extends Fragment {
         partialView.setVisibility(View.VISIBLE);
 
         getUserList();
-
-        mAdapter = new UserListAdapter(getChildFragmentManager());
 
         return rootView;
     }

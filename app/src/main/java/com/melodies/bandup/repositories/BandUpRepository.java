@@ -234,6 +234,20 @@ public class BandUpRepository implements BandUpDatabase {
     }
 
     @Override
+    public void updateUser(JSONObject updatedObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/edit-user");
+
+        JsonObjectRequest jsonObjectRequest = createObjectRequest(
+                Request.Method.POST,
+                url,
+                updatedObject,
+                responseListener,
+                errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
+    }
+
+    @Override
     public void sendSoundCloudId(JSONObject requestObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         String url = mContext.getResources().getString(R.string.api_address).concat("/soundcloudid");
 

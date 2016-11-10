@@ -10,14 +10,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
-import com.melodies.bandup.VolleySingleton;
+import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +26,7 @@ import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
 public class UpdateAboutMe extends AppCompatActivity {
 
+    User currentUser;
     private AdView mAdView;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,73 +56,65 @@ public class UpdateAboutMe extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/get-user");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response != null) {
-                            try {
-                                // putting user description into EditText
-                                EditText et = (EditText)findViewById(R.id.etAboutMe);
-                                String s = response.getString("aboutme");
-                                et.setText(s);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(UpdateAboutMe.this, "Bad response: " + error.toString(), Toast.LENGTH_LONG).show();
-                    }
+        DatabaseSingleton.getInstance(UpdateAboutMe.this).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
                 }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(UpdateAboutMe.this).addToRequestQueue(jsonObjectRequest);
+                currentUser = new User();
+                    try {
+                        // putting user description into EditText
+                        if (!responseObj.isNull("aboutme")) {
+                            EditText et = (EditText) findViewById(R.id.etAboutMe);
+                            String s = currentUser.aboutme = responseObj.getString("aboutme");
+                            et.setText(s);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                System.out.println("ERROR");
+            }
+        });
     }
 
     // Send user AboutMe data to server
     public void updateUser(String id, final String aboutMe) {
-        JSONObject user = new JSONObject();
+        JSONObject userUpdated = new JSONObject();
         try {
-            user.put("userId", id);
-            user.put("aboutMe", aboutMe);
+            userUpdated.put("userId", id);
+            userUpdated.put("aboutMe", aboutMe);
+            Toast.makeText(UpdateAboutMe.this, "sending to server: "+ userUpdated.toString(), Toast.LENGTH_LONG).show();
+
+            DatabaseSingleton.getInstance(this).getBandUpDatabase().postLocation(userUpdated, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                // response spposed to be aboutme String
+                Toast.makeText(UpdateAboutMe.this, "response from the server is: "+ response.toString(), Toast.LENGTH_LONG).show();
+                // we were successful send about me data to previous view:
+                Intent i = new Intent();
+                i.putExtra("MESSAGE", aboutMe);
+                if (aboutMe.isEmpty()) {
+                    i.putExtra("MESSAGE", "About Me");
+                }
+                setResult(2, i);
+                onBackPressed();
+            }
+            }, new BandUpErrorListener() {
+                @Override
+                public void onBandUpErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error: " + error, Toast.LENGTH_LONG).show();
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = getResources().getString(R.string.api_address).concat("/edit-user");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                user,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Intent i = new Intent();
-                        i.putExtra("MESSAGE", aboutMe);
-                        if (aboutMe.isEmpty()) {
-                            i.putExtra("MESSAGE", "About Me");
-                        }
-                        setResult(2, i);
-                        onBackPressed();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(UpdateAboutMe.this, "Bad response: " + error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        // insert request into queue
-        VolleySingleton.getInstance(UpdateAboutMe.this).addToRequestQueue(jsonObjectRequest);
     }
 
     // get users essay and send it to server

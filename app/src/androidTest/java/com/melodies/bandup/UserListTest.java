@@ -45,8 +45,8 @@ public class UserListTest {
                 insArr.put("ASDF");
                 insArr.put("FDSA");
                 JSONArray genArr = new JSONArray();
-                insArr.put("QWERTY");
-                insArr.put("YTREWQ");
+                genArr.put("QWERTY");
+                genArr.put("YTREWQ");
                 try {
                     arr = new JSONArray();
                     JSONObject obj = new JSONObject();
@@ -100,10 +100,10 @@ public class UserListTest {
 
         onView(withText(mActivityRule.getActivity().getResources().getString(R.string.user_list_no_users))).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.txtName)).check(matches(withText("TestUser")));
-        onView(withId(R.id.txtPercentage)).check(matches(withText("55%")));
-        onView(withId(R.id.txtDistance)).check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
-        onView(withId(R.id.txtAge)).check(matches(withText("19 " + mActivityRule.getActivity().getResources().getString(R.string.age_year_plural))));
-        //onView(withId(R.id.))
+        onView(withId(R.id.txtName))          .check(matches(withText("TestUser")));
+        onView(withId(R.id.txtPercentage))    .check(matches(withText("55%")));
+        onView(withId(R.id.txtDistance))      .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
+        onView(withId(R.id.txtGenres))        .check(matches(withText("QWERTY")));
+        onView(withId(R.id.txtMainInstrument)).check(matches(withText("ASDF")));
     }
 }

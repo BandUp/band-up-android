@@ -31,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudPlayerFragment;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
@@ -55,6 +57,8 @@ public class MainScreenActivity extends AppCompatActivity
         ProfileFragment.OnFragmentInteractionListener,
         UserDetailsFragment.OnFragmentInteractionListener,
         SoundCloudSelectorFragment.OnFragmentInteractionListener,
+        SoundCloudLoginFragment.OnFragmentInteractionListener,
+        SoundCloudPlayerFragment.OnFragmentInteractionListener,
         LocationListener{
 
     UserListFragment userListFragment;

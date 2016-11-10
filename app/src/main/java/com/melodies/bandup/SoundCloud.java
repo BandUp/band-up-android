@@ -80,7 +80,7 @@ public class SoundCloud extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             sShared.saveUserId(SoundCloud.this, response);
-                            Intent i = new Intent();
+                            openCorrectIntent(response);
                         }
                     }, new Response.ErrorListener() {
                         @Override

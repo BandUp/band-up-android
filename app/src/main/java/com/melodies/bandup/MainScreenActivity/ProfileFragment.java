@@ -39,6 +39,7 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
@@ -176,11 +177,15 @@ public class ProfileFragment extends Fragment{
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         soundCloudArea.setId(new Integer(1234));
+        Fragment soundCloudFragment;
+        if (currentUser.soundCloudId == 0){
+            soundCloudFragment = SoundCloudLoginFragment.newInstance();
+        }else {
+            soundCloudFragment = SoundCloudSelectorFragment.newInstance(currentUser.soundCloudId,
+                                                                        currentUser.soundCloudURL);
+        }
 
-        Fragment soundCloudSelectorFragment = SoundCloudSelectorFragment.newInstance(
-                currentUser.soundCloudId,
-                currentUser.soundCloudURL);
-        ft.add(soundCloudArea.getId(), soundCloudSelectorFragment, "soundCloudSelector");
+        ft.add(soundCloudArea.getId(), soundCloudFragment, "soundCloudFragment");
         ft.commit();
     }
 
@@ -589,6 +594,10 @@ public class ProfileFragment extends Fragment{
                         if (!imageObj.isNull("url")) {
                             currentUser.imgURL = imageObj.getString("url");
                         }
+                    }
+
+                    if (!responseObj.isNull("soundCloudId")){
+                        currentUser.soundCloudId = responseObj.getInt("soundCloudId");
                     }
                     displayUser(currentUser);
                 } catch (JSONException e) {

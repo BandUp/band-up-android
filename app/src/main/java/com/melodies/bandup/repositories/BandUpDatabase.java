@@ -59,5 +59,9 @@ public interface BandUpDatabase {
 
     void logout(BandUpResponseListener responseListener,
                 BandUpErrorListener errorListener);
+
+    void sendSoundCloudId(JSONObject requestObject,
+                          BandUpResponseListener responseListener,
+                          BandUpErrorListener errorListener);
 }
 

@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.melodies.bandup.R;
 
@@ -21,10 +23,12 @@ import com.melodies.bandup.R;
  * Use the {@link SoundCloudSelectorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SoundCloudSelectorFragment extends Fragment implements View.OnClickListener {
+public class SoundCloudSelectorFragment extends Fragment implements View.OnClickListener{
 
     private OnFragmentInteractionListener mListener;
-    private View mRootView;
+
+    private Button selectionButton;
+    private TextView songNameText;
 
     private int soundCloudId;
     private String soundCloudURL;
@@ -62,8 +66,23 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.fragment_soundcloudselector, container, false);
-        return mRootView;
+        View rootView = inflater.inflate(R.layout.fragment_soundcloudselector, container, false);
+
+        setupViews(rootView);
+
+        return rootView;
+    }
+
+    private void setupViews(View rootView) {
+        selectionButton = (Button) rootView.findViewById(R.id.select_song_btn);
+        songNameText    = (TextView) rootView.findViewById(R.id.current_song_text);
+        if (soundCloudURL == null){
+            songNameText.setText("No song selected");
+        }else {
+            songNameText.setText(soundCloudURL);
+        }
+
+        selectionButton.setOnClickListener(this);
     }
 
     @Override

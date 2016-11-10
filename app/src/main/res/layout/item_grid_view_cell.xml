@@ -30,6 +30,4 @@
         android:src="@drawable/ic_check_circle_black_24dp"
         android:visibility="invisible"
         android:tint="@color/bandUpYellow" />
-
-
 </FrameLayout>

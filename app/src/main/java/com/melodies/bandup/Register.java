@@ -92,11 +92,11 @@ public class Register extends AppCompatActivity {
             userAge--;
         }
 
-        if (userAge <= 13) {
-            Toast.makeText(getApplicationContext(), "You have to be 13 years old or older to register!", Toast.LENGTH_SHORT).show();
+        if (userAge < 13) {
+            Toast.makeText(getApplicationContext(), R.string.register_min_age, Toast.LENGTH_SHORT).show();
         }
-        else if (userAge >= 99) {
-            Toast.makeText(getApplicationContext(), "You have to be 99 years old or younger to register!", Toast.LENGTH_SHORT).show();
+        else if (userAge > 99) {
+            Toast.makeText(getApplicationContext(), R.string.register_max_age, Toast.LENGTH_SHORT).show();
         }
 
         String age = userAge.toString();
@@ -134,7 +134,7 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.register_enter_password, Toast.LENGTH_SHORT).show();
             }
             else if (dateOfBirth == null) {
-                Toast.makeText(getApplicationContext(), "Please enter your Date Of Birth", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.register_enter_dateofbirth, Toast.LENGTH_SHORT).show();
             }
             else {
                 registerDialog = ProgressDialog.show(this, getString(R.string.register_progress_title), getString(R.string.register_progress_description), true, false);

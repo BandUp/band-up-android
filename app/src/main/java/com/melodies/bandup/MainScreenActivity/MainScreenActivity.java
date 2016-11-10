@@ -28,6 +28,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
@@ -72,6 +74,7 @@ public class MainScreenActivity extends AppCompatActivity
     Criteria criteria;
     String bestProvider;
     SharedPreferences sharedPrefs;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,10 +151,6 @@ public class MainScreenActivity extends AppCompatActivity
         } else {
             createLocationRequest();
         }
-
-
-
-
     }
 
     @Override
@@ -197,6 +196,8 @@ public class MainScreenActivity extends AppCompatActivity
             logoutDialog.setMessage("Logging out");
             logoutDialog.setTitle("Please wait...");
             logoutDialog.show();
+            System.out.println(mGoogleApiClient);
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

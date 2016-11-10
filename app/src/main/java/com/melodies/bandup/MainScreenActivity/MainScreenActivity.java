@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
@@ -196,8 +195,8 @@ public class MainScreenActivity extends AppCompatActivity
             logoutDialog.setMessage("Logging out");
             logoutDialog.setTitle("Please wait...");
             logoutDialog.show();
-            System.out.println(mGoogleApiClient);
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            // Not working returns null.
+            //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

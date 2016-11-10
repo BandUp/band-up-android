@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.melodies.bandup.R;
 
@@ -23,6 +24,8 @@ public class SoundCloudPlayerFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    WebView mSoundCloudPlayer;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +68,9 @@ public class SoundCloudPlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sound_cloud_player, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_sound_cloud_player, container, false);
+        mSoundCloudPlayer = (WebView) rootView.findViewById(R.id.webview_soundcloud_player);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +95,22 @@ public class SoundCloudPlayerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void instantiatePlayer(){
+        String VIDEO_URL = "https://soundcloud.com/neongoldrecords/tigertown-lonely-cities-wingtip-remix-1";
+
+        String html = "<!DOCTYPE html><html> <head> <meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"target-densitydpi=high-dpi\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <link rel=\"stylesheet\" media=\"screen and (-webkit-device-pixel-ratio:1.5)\" href=\"hdpi.css\" /></head> <body style=\"background:black;margin:0 0 0 0; padding:0 0 0 0;\"> <iframe id=\"sc-widget " +
+                "\" width=\"100%\" height=\"50%\"" + // Set Appropriate Width and Height that you want for SoundCloud Player
+                " src=\"" + VIDEO_URL   // Set Embedded url
+                + "\" frameborder=\"no\" scrolling=\"no\"></iframe>" +
+                "<script src=\"https://w.soundcloud.com/player/api.js\" type=\"text/javascript\"></script> </body> </html> ";
+
+        mSoundCloudPlayer.setVisibility(View.VISIBLE);
+        mSoundCloudPlayer.getSettings().setJavaScriptEnabled(true);
+        mSoundCloudPlayer.getSettings().setLoadWithOverviewMode(true);
+        mSoundCloudPlayer.getSettings().setUseWideViewPort(true);
+        mSoundCloudPlayer.loadDataWithBaseURL("",html,"text/html", "UTF-8", "");
     }
 
     /**

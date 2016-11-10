@@ -49,6 +49,14 @@ android {
             resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
             resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
+        Alpha {
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.config
+            renderscriptDebuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+        }
     }
 
     dexOptions {

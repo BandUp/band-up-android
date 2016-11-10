@@ -49,7 +49,6 @@ import com.melodies.bandup.setup.SetupShared;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -189,12 +188,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
-        loginButton.setReadPermissions(Arrays.asList("email", "user_birthday"));
+        loginButton.setReadPermissions("email");
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                //Toast.makeText(Login.this, loginResult.getAccessToken().getToken(), Toast.LENGTH_LONG).show();
                 facebookCreateUser(loginResult);
             }
 
@@ -260,6 +258,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             JSONObject jsonObject = new JSONObject();
 
             jsonObject.put("access_token", loginResult.getAccessToken().getToken());
+            jsonObject.put("dateOfBirth", dateOfBirth);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url,
@@ -308,7 +307,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             final String idToken = acct.getIdToken();
 
-            sendGoogleUserToServer(idToken, dateOfBirth);
+            sendGoogleUserToServer(idToken);
         }
     }
     private void openCorrectIntent(JSONObject response) {
@@ -322,10 +321,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 finish();
             } else {
                 showDatePickerDialog();
-                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                Login.this.startActivity(instrumentsIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
-                finish();
             }
         } catch (JSONException e) {
             Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
@@ -342,20 +337,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
-    public void onDateSet(int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-
-        // Calendar to Date object.
-        dateOfBirth = cal.getTime();
-
-        datePickerFragment.ageCalculator(year, month, day);
-    }
-
     // Sending user info to server
-    private void sendGoogleUserToServer(String idToken, Date dateOfBirth) {
+    private void sendGoogleUserToServer(String idToken) {
         try {
             url = getResources().getString(R.string.api_address).concat("/login-google");
             JSONObject jsonObject = new JSONObject();
@@ -515,11 +498,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         // Calendar to Date object.
         dateOfBirth = cal.getTime();
 
-        // Get the locale date format.
-        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(Login.this);
+        datePickerFragment.ageCalculator(year, month, day);
 
-        // Formatted date.
-        String date = dateFormat.format(dateOfBirth);
-
+        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+        Login.this.startActivity(instrumentsIntent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+        finish();
     }
 }

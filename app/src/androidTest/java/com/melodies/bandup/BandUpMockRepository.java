@@ -73,6 +73,11 @@ public class BandUpMockRepository implements BandUpDatabase {
     }
 
     @Override
+    public void updateUser(JSONObject updatedObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        responseListener.onBandUpResponse("");
+    }
+
+    @Override
     public void sendSoundCloudId(JSONObject requestObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         responseListener.onBandUpResponse("");
     }

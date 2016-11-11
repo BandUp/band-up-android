@@ -22,14 +22,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A login screen that offers login via email/password.
  */
 
-public class SoundCloud extends AppCompatActivity {
+public class SoundCloud extends AppCompatActivity implements DatePickable {
     private String url;
     private AdView mAdView;
+    private Date dateOfBirth = null;
+    private DatePickerFragment datePickerFragment = null;
     SetupShared sShared;
 
     @Override
@@ -71,6 +75,7 @@ public class SoundCloud extends AppCompatActivity {
 
                     jsonObject.put("access_token", token.access);
                     jsonObject.put("email", username);
+                    jsonObject.put("dateOfBirth", dateOfBirth);
 
                     JsonObjectRequest request = new JsonObjectRequest(
                             Request.Method.GET,
@@ -122,6 +127,24 @@ public class SoundCloud extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
             finish();
         }
+    }
+
+    @Override
+    public void onDateSet(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+
+        // Calendar to Date object.
+        dateOfBirth = cal.getTime();
+
+        datePickerFragment.ageCalculator(year, month, day);
+
+        Intent instrumentsIntent = new Intent(SoundCloud.this, Instruments.class);
+        SoundCloud.this.startActivity(instrumentsIntent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+        finish();
     }
 }
 

@@ -45,7 +45,7 @@ public class UpdateAboutMe extends AppCompatActivity {
     public String getUserId() throws JSONException {
         SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
         String id = srdPref.getString("userID", DEFAULT);
-        return (!id.equals(DEFAULT)) ? id : "No data Found";
+        return (!id.equals(DEFAULT)) ? id : "User ID Not Found";
     }
 
     // Request REAL user info from server
@@ -87,15 +87,12 @@ public class UpdateAboutMe extends AppCompatActivity {
     public void updateUser(String id, final String aboutMe) {
         JSONObject userUpdated = new JSONObject();
         try {
-            userUpdated.put("userId", id);
-            userUpdated.put("aboutMe", aboutMe);
-            Toast.makeText(UpdateAboutMe.this, "sending to server: "+ userUpdated.toString(), Toast.LENGTH_LONG).show();
+            userUpdated.put("_id", id);
+            userUpdated.put("aboutme", aboutMe);
 
             DatabaseSingleton.getInstance(this).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                // response spposed to be aboutme String
-                Toast.makeText(UpdateAboutMe.this, "response from the server is: "+ response.toString(), Toast.LENGTH_LONG).show();
                 // we were successful send about me data to previous view:
                 Intent i = new Intent();
                 i.putExtra("MESSAGE", aboutMe);
@@ -109,7 +106,7 @@ public class UpdateAboutMe extends AppCompatActivity {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
                     error.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error: " + error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error" + error, Toast.LENGTH_LONG).show();
                 }
             });
         } catch (JSONException e) {
@@ -117,7 +114,7 @@ public class UpdateAboutMe extends AppCompatActivity {
         }
     }
 
-    // get users essay and send it to server
+    // Update About Me and send it to server
     public void onClickSave(View view) throws JSONException {
         final EditText etAboutMe = (EditText)findViewById(R.id.etAboutMe);
         String about = etAboutMe.getText().toString();

@@ -7,40 +7,52 @@
 
     <include layout="@layout/ads"/>
 
-    <TextView
-        android:text="Tell us more about your music experience: "
-        android:textSize="20sp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtAboutMeDescription"
-        android:layout_weight="0.05"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/etAboutMe"
-        android:layout_weight="0.05"
-        android:hint="About Me ..."
-        android:background="@android:color/transparent"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:maxLength="100" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <Button
-        android:text="Save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnSaveChanges"
-        android:layout_weight="0.05"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:onClick="onClickSave"
-        android:background="@drawable/button_fancy"
-        />
+            <TextView
+                android:text="Tell us more about your music experience: "
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtAboutMeDescription"
+                android:layout_weight="0.05"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/etAboutMe"
+                android:layout_weight="0.05"
+                android:hint="About Me ..."
+                android:background="@android:color/transparent"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:maxLength="100" />
+
+            <Button
+                android:text="Save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSaveChanges"
+                android:layout_weight="0.05"
+                android:layout_marginTop="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:onClick="onClickSave"
+                android:background="@drawable/button_fancy"
+                />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

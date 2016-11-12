@@ -15,4 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--ignorewarnings
+-dontnote
+-keep class com.squareup.picasso.**
+-keep class com.kosalgeek.android.photoutil.**
+-dontwarn com.squareup.picasso.**
+-dontwarn com.kosalgeek.android.photoutil.**

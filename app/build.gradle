@@ -30,16 +30,20 @@ android {
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
-        versionName "0.5"
+        versionName "0.6"
         multiDexEnabled false
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            jniDebuggable false
             signingConfig signingConfigs.config
+            renderscriptDebuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
             resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
@@ -49,13 +53,14 @@ android {
             resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
             resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
-        Alpha {
+        alpha {
             debuggable false
             jniDebuggable false
             signingConfig signingConfigs.config
             renderscriptDebuggable false
             minifyEnabled true
             zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
             resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }
@@ -70,7 +75,7 @@ android {
 
 configurations.all {
     resolutionStrategy {
-        force 'com.android.support:support-annotations:23.1.1'
+        force 'com.android.support:support-annotations:24.0.0'
     }
 }
 

@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/ads"
-            android:layout_width="match_parent" />
+        <include layout="@layout/ads" />
 
         <TextView
             android:layout_width="match_parent"

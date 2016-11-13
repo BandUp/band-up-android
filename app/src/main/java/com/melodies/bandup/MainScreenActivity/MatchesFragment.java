@@ -124,19 +124,21 @@ public class MatchesFragment extends Fragment {
 
         // Adding ad Banner
         mAdView = (AdView)view.findViewById(R.id.adView);
+        RecyclerView myRecycler = (RecyclerView) view.findViewById(R.id.recyclerList);
+
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (myRecycler instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                myRecycler.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                myRecycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(mmrva);
+            myRecycler.setAdapter(mmrva);
         }
         return view;
     }

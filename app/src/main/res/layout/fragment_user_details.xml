@@ -164,11 +164,10 @@
                     android:hint="About Me"
                     android:maxLength="100" />
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/soundcloud_player"/>
+                    android:layout_height="match_parent"
+                    android:id="@+id/soundcloud_player_area"></LinearLayout>
 
                 <Button
                     android:text="@string/user_list_like"

@@ -5,11 +5,14 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -18,6 +21,9 @@ import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudPlayerFragment;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -76,34 +82,36 @@ public class UserDetailsFragment extends Fragment {
         return fragment;
     }
 
-    private TextView  txtName;
-    private TextView  txtAge;
-    private TextView  txtFavorite;
-    private TextView  txtPercentage;
-    private TextView  txtDistance;
-    private TextView  txtAboutMe;
-    private TextView  txtInstrumentsTitle;
-    private TextView  txtGenresTitle;
-    private TextView  txtInstrumentsList;
-    private TextView  txtGenresList;
-    private ImageView ivUserProfileImage;
-    private Button    btnLike;
-    private AdView    mAdView;
+    private TextView    txtName;
+    private TextView    txtAge;
+    private TextView    txtFavorite;
+    private TextView    txtPercentage;
+    private TextView    txtDistance;
+    private TextView    txtAboutMe;
+    private TextView    txtInstrumentsTitle;
+    private TextView    txtGenresTitle;
+    private TextView    txtInstrumentsList;
+    private TextView    txtGenresList;
+    private ImageView   ivUserProfileImage;
+    private Button      btnLike;
+    private AdView      mAdView;
+    private LinearLayout mSoundcloudArea;
 
     private void initializeViews(View rootView) {
-        txtName             = (TextView)  rootView.findViewById(R.id.txtName);
-        txtDistance         = (TextView)  rootView.findViewById(R.id.txtDistance);
-        txtPercentage       = (TextView)  rootView.findViewById(R.id.txtPercentage);
-        txtAge              = (TextView)  rootView.findViewById(R.id.txtAge);
-        txtFavorite         = (TextView)  rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe          = (TextView)  rootView.findViewById(R.id.txtAboutMe);
-        txtInstrumentsTitle = (TextView)  rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenresTitle      = (TextView)  rootView.findViewById(R.id.txtGenresTitle);
-        txtInstrumentsList  = (TextView)  rootView.findViewById(R.id.txtInstrumentsList);
-        txtGenresList       = (TextView)  rootView.findViewById(R.id.txtGenresList);
-        ivUserProfileImage  = (ImageView) rootView.findViewById(R.id.imgProfile);
-        btnLike             = (Button)    rootView.findViewById(R.id.btnLike);
-        mAdView             = (AdView)    rootView.findViewById(R.id.adView);
+        txtName             = (TextView)     rootView.findViewById(R.id.txtName);
+        txtDistance         = (TextView)     rootView.findViewById(R.id.txtDistance);
+        txtPercentage       = (TextView)     rootView.findViewById(R.id.txtPercentage);
+        txtAge              = (TextView)     rootView.findViewById(R.id.txtAge);
+        txtFavorite         = (TextView)     rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe          = (TextView)     rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView)     rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle      = (TextView)     rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList  = (TextView)     rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList       = (TextView)     rootView.findViewById(R.id.txtGenresList);
+        ivUserProfileImage  = (ImageView)    rootView.findViewById(R.id.imgProfile);
+        btnLike             = (Button)       rootView.findViewById(R.id.btnLike);
+        mAdView             = (AdView)       rootView.findViewById(R.id.adView);
+        mSoundcloudArea     = (LinearLayout) rootView.findViewById(R.id.soundcloud_player_area);
 
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +211,25 @@ public class UserDetailsFragment extends Fragment {
         for (int i = 0; i < u.instruments.size(); i++) {
             txtInstrumentsList.append(u.instruments.get(i) + "\n");
         }
+
+        createSoundCloudPlayer(u);
+    }
+
+    private void createSoundCloudPlayer(User user) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        mSoundcloudArea.setId(new Integer(1234));
+        Fragment soundCloudFragment;
+        if (user.soundCloudId == 0){
+            soundCloudFragment = SoundCloudPlayerFragment.newInstance(null);
+        }else {
+            soundCloudFragment = SoundCloudPlayerFragment.newInstance(user.soundCloudURL);
+        }
+
+        ft.add(mSoundcloudArea.getId(), soundCloudFragment, "soundCloudFragment");
+        ft.commit();
+
     }
 
     // Request REAL user info from server

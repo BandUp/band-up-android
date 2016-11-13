@@ -4,13 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.Volley;
 import com.melodies.bandup.R;
+import com.soundcloud.api.ApiWrapper;
+import com.soundcloud.api.Http;
+import com.soundcloud.api.Request;
+
+import org.apache.http.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInput;
 
 
 /**
@@ -104,7 +119,39 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        // all http requests must be in own thread (so we start a new one)
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ApiWrapper soundcloud = new ApiWrapper(
+                        getResources().getString(R.string.soundCloudClient),
+                        getResources().getString(R.string.soundCloudSecret), null, null);
 
+                try {
+                    HttpResponse response = soundcloud.get(Request.to(String.format("/users/%d/tracks", soundCloudId)));
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                    JSONArray arr = new JSONArray();
+                    JsonReader reader = new JsonReader(rd);
+                    reader.beginArray();
+                    while (reader.hasNext()){
+                        arr.put(parseTracksObject(reader));
+                    }
+                    reader.endArray();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private JSONObject parseTracksObject(JsonReader reader) {
+        try {
+            JSONObject track = new JSONObject(reader.toString());
+            return track;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

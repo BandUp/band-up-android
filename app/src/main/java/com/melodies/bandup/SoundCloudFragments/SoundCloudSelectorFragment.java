@@ -145,10 +145,30 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     }
 
     private JSONObject parseTracksObject(JsonReader reader) {
+        JSONObject track = new JSONObject();
         try {
-            JSONObject track = new JSONObject(reader.toString());
-            return track;
+            reader.beginObject();
+            while (reader.hasNext()){
+                String name = reader.nextName();
+
+                switch (name){
+                    case "id":
+                        track.put("id", reader.nextInt());
+                        break;
+                    case "permalink_url":
+                        track.put("permalink_url", reader.nextString());
+                        break;
+                    case "title":
+                        track.put("title", reader.nextString());
+                    default:
+                        break;
+                }
+            }
+            reader.endObject();
+
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

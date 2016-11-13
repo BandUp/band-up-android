@@ -320,7 +320,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                 finish();
             } else {
-                showDatePickerDialog();
+                //showDatePickerDialog();
+                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+                Login.this.startActivity(instrumentsIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+                finish();
             }
         } catch (JSONException e) {
             Intent instrumentsIntent = new Intent(Login.this, Instruments.class);

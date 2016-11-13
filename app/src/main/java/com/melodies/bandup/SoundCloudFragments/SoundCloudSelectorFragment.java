@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.Volley;
 import com.melodies.bandup.R;
 import com.soundcloud.api.ApiWrapper;
-import com.soundcloud.api.Http;
 import com.soundcloud.api.Request;
 
 import org.apache.http.HttpResponse;
@@ -25,7 +23,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInput;
 
 
 /**
@@ -160,7 +157,9 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                         break;
                     case "title":
                         track.put("title", reader.nextString());
+                        break;
                     default:
+                        reader.skipValue();
                         break;
                 }
             }
@@ -171,7 +170,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return track;
     }
 
     /**

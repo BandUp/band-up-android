@@ -37,8 +37,8 @@ android {
     }
     buildTypes {
         release {
-            debuggable false
-            jniDebuggable false
+            debuggable true
+            jniDebuggable true
             signingConfig signingConfigs.config
             renderscriptDebuggable false
             minifyEnabled true

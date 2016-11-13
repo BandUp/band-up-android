@@ -413,8 +413,8 @@ public class ProfileFragment extends Fragment{
 
                         Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         String a = validateJSON(urlResponse);
-                        if (a == null) {
-                            Picasso.with(getActivity()).load(urlResponse).into(ivUserProfileImage);
+                        if (a != null) {
+                            Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
                         } else {
                             Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
                         }

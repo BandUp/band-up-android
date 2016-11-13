@@ -32,12 +32,11 @@
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:id="@+id/etAboutMe"
-                android:layout_weight="0.05"
                 android:hint="About Me ..."
                 android:background="@android:color/transparent"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
-                android:maxLength="100" />
+                android:maxLength="150" />
 
             <Button
                 android:text="Save"
@@ -45,11 +44,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnSaveChanges"
                 android:layout_weight="0.05"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:onClick="onClickSave"
                 android:background="@drawable/button_fancy"
+                android:textColor="@color/colorBlack"
                 />
 
         </LinearLayout>

@@ -21,9 +21,7 @@ import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
-import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudPlayerFragment;
-import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -124,7 +122,6 @@ public class UserDetailsFragment extends Fragment {
     private void setFonts() {
         Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
         Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
-        Typeface masterOfBreak    = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
 
         txtName            .setTypeface(caviarDreams);
         txtDistance        .setTypeface(caviarDreams);
@@ -136,7 +133,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresList      .setTypeface(caviarDreams);
         txtInstrumentsTitle.setTypeface(caviarDreamsBold);
         txtGenresTitle     .setTypeface(caviarDreamsBold);
-        btnLike            .setTypeface(masterOfBreak);
+        btnLike            .setTypeface(caviarDreamsBold);
     }
 
     @Override
@@ -194,12 +191,13 @@ public class UserDetailsFragment extends Fragment {
                 }
             }
         }
-        txtFavorite.setText("Drums");
+        //txtFavorite.setText("Drums");
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
 
-        if (txtDistance == null) {
-            txtDistance.setText(u.distance + " km away from you");
+        if (u.distance != null) {
+            String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
+            txtDistance.setText(distanceString);
         } else {
             txtDistance.setText(R.string.no_distance_available);
         }
@@ -248,7 +246,7 @@ public class UserDetailsFragment extends Fragment {
                 if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
                 }
-                if (response != null) {
+                if (responseObj != null) {
                     // Binding View to real data
                     currentUser = new User();
                     try {

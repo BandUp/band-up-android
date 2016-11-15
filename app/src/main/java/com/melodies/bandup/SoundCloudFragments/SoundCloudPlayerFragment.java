@@ -87,7 +87,7 @@ public class SoundCloudPlayerFragment extends Fragment {
 
     private void instantiatePlayer(){
         String html = getString(R.string.no_soundcloud_html);
-        if (url != null) {
+        if (!url.equals("")) {
             html = String.format(getString(R.string.soundcloud_html), url);
         }
 

@@ -149,6 +149,11 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="#FFFFFF" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -171,11 +176,6 @@
                     android:hint="About Me"
                     android:maxLength="100" />
             </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:background="#FFFFFF" />
 
             <LinearLayout
                 android:id="@+id/profile_soundCloudArea"

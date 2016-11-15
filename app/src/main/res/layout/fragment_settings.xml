@@ -15,13 +15,208 @@
 
         <include layout="@layout/ads" />
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="The settings for the app" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:text="radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtRadius"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp" />
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/seekBarRadius"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:text="ages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtAges"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp" />
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:id="@+id/seekBarAges" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="#FFFFFF" />
+
+                <TextView
+                    android:text="Notifications (Push)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textNotification"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="#FFFFFF" />
+
+                <Switch
+                    android:text="New matches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchMatches"
+                    android:checked="true"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <Switch
+                    android:text="Messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchMessages"
+                    android:checked="true"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <Switch
+                    android:text="Inactive alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchAlert"
+                    android:textSize="18sp"
+                    android:checked="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="#FFFFFF" />
+
+                <Switch
+                    android:text="Unit (km/m)"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchUnit"
+                    android:textSize="18sp"
+                    android:checked="false"
+                    android:textOff="km"
+                    android:textOn="m"
+                    android:showText="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="#FFFFFF" />
+
+                <TextView
+                    android:text="Contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtContact"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:text="Help"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtHelp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <TextView
+                    android:text="Support"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtSupport"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="#FFFFFF" />
+
+                <TextView
+                    android:text="Legal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtLegal"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp" />
+
+                <TextView
+                    android:text="Licenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtLicenses"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:text="Privacy policy"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtPPolicy"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:text="Terms of service"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/txtTermsOfService"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"/>
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
-
-    <!-- TODO: Update blank fragment layout -->
 
 </FrameLayout>

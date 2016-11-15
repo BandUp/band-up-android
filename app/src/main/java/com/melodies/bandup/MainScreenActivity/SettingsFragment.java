@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -29,13 +32,26 @@ public class SettingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private AdView mAdView;
-
     private OnFragmentInteractionListener mListener;
 
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
+    private AdView mAdView;
+    private SeekBar seekBarRadius;
+    private SeekBar seekBarAges;
+    private Switch switchMatches;
+    private Switch switchMessages;
+    private Switch switchAlert;
+    private Switch switchUnit;
+    private TextView txtContact;
+    private TextView txtHelp;
+    private TextView txtSupport;
+    private TextView txtLegal;
+    private TextView txtLicenses;
+    private TextView txtPPolicy;
+    private TextView txtTermsOfService;
+
+
+    // Required empty public constructor
+    public SettingsFragment() {}
 
     /**
      * Use this factory method to create a new instance of
@@ -70,19 +86,34 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        // Adding ad Banner
-        mAdView = (AdView)rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        initializeViews(rootView);
+        initializeActions(rootView);
 
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private void initializeActions(View rootView) {
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+    }
+
+    private void initializeViews(View rootView) {
+        mAdView = (AdView)rootView.findViewById(R.id.adView);
+        seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
+        seekBarAges = (SeekBar)rootView.findViewById(R.id.seekBarAges);
+        switchMatches = (Switch)rootView.findViewById(R.id.switchMatches);
+        switchMessages = (Switch)rootView.findViewById(R.id.switchMessages);
+        switchAlert = (Switch)rootView.findViewById(R.id.switchAlert);
+        switchUnit = (Switch)rootView.findViewById(R.id.switchUnit);
+        txtContact = (TextView)rootView.findViewById(R.id.txtContact);
+        txtHelp = (TextView)rootView.findViewById(R.id.txtHelp);
+        txtSupport = (TextView)rootView.findViewById(R.id.txtSupport);
+        txtLegal = (TextView)rootView.findViewById(R.id.txtLegal);
+        txtLicenses = (TextView)rootView.findViewById(R.id.txtLicenses);
+        txtPPolicy = (TextView)rootView.findViewById(R.id.txtPPolicy);
+        txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
     }
 
     @Override
@@ -100,6 +131,13 @@ public class SettingsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     /**

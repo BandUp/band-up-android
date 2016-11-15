@@ -18,13 +18,13 @@
 
             <TextView
                 android:text="Tell us more about your music experience: "
-                android:textSize="20sp"
+                android:textSize="19sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtAboutMeDescription"
                 android:layout_weight="0.05"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginStart="10dp" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:hint="About Me ..."
                 android:background="@android:color/transparent"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:maxLength="150" />
 
             <Button

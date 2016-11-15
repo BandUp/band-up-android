@@ -86,9 +86,10 @@ public class SoundCloudPlayerFragment extends Fragment {
     }
 
     private void instantiatePlayer(){
-        String VIDEO_URL = "https://soundcloud.com/neongoldrecords/tigertown-lonely-cities-wingtip-remix-1";
-
-        String html = String.format(getString(R.string.soundcloud_html), VIDEO_URL);
+        String html = getString(R.string.no_soundcloud_html);
+        if (url != null) {
+            html = String.format(getString(R.string.soundcloud_html), url);
+        }
 
         mSoundCloudPlayer.setVisibility(View.VISIBLE);
         mSoundCloudPlayer.getSettings().setJavaScriptEnabled(true);

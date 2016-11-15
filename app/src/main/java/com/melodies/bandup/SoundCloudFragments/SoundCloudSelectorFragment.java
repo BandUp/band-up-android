@@ -1,17 +1,27 @@
 package com.melodies.bandup.SoundCloudFragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.melodies.bandup.BandUpApplication;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.repositories.BandUpRepository;
 import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Request;
 
@@ -23,27 +33,25 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Fragment allowing user to select a track from his(or her) soundcloud account
  *
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SoundCloudSelectorFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SoundCloudSelectorFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class SoundCloudSelectorFragment extends Fragment implements View.OnClickListener{
-
+public class SoundCloudSelectorFragment extends Fragment implements View.OnClickListener, Dialog.OnClickListener{
+    private static String TAG = "SoundCloudSelector";
     private OnFragmentInteractionListener mListener;
 
-    private Button selectionButton;
-    private TextView songNameText;
+    private Button mSelectionButton;
+    private TextView mSongName;
 
-    private int soundCloudId;
-    private String soundCloudURL;
+    final JSONArray mTracksArray = new JSONArray();
+    
+    private int mSoundCloudID;
+    private String mSoundCloudUrl;
 
     public SoundCloudSelectorFragment() {
         // Required empty public constructor
@@ -69,8 +77,8 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            soundCloudId = getArguments().getInt("soundcloudID");
-            soundCloudURL = getArguments().getString("soundcloudURL");
+            mSoundCloudID = getArguments().getInt("soundcloudID");
+            mSoundCloudUrl = getArguments().getString("soundcloudURL");
         }
     }
 
@@ -85,16 +93,21 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         return rootView;
     }
 
+    /**
+     * populate object variables
+     *
+     * @param rootView
+     */
     private void setupViews(View rootView) {
-        selectionButton = (Button) rootView.findViewById(R.id.select_song_btn);
-        songNameText    = (TextView) rootView.findViewById(R.id.current_song_text);
-        if (soundCloudURL == null){
-            songNameText.setText("No song selected");
+        mSelectionButton = (Button)   rootView.findViewById(R.id.select_song_btn);
+        mSongName        = (TextView) rootView.findViewById(R.id.current_song_text);
+        if (mSoundCloudUrl == null){
+            mSongName.setText("No song selected");
         }else {
-            songNameText.setText(soundCloudURL);
+            mSongName.setText(mSoundCloudUrl);
         }
 
-        selectionButton.setOnClickListener(this);
+        mSelectionButton.setOnClickListener(this);
     }
 
     @Override
@@ -114,6 +127,11 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         mListener = null;
     }
 
+    /**
+     * Called when the user wants to change currently selected sound sample
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         // all http requests must be in own thread (so we start a new one)
@@ -125,15 +143,23 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                         getResources().getString(R.string.soundCloudSecret), null, null);
 
                 try {
-                    HttpResponse response = soundcloud.get(Request.to(String.format("/users/%d/tracks", soundCloudId)));
+                    HttpResponse response = soundcloud.get(Request.to(String.format("/users/%d/tracks", mSoundCloudID)));
+                    // cannot get JSON array directly from response we must use reader
                     BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    JSONArray arr = new JSONArray();
                     JsonReader reader = new JsonReader(rd);
                     reader.beginArray();
                     while (reader.hasNext()){
-                        arr.put(parseTracksObject(reader));
+                        mTracksArray.put(parseTracksObject(reader));
                     }
                     reader.endArray();
+                    // all dialog activity must run on UI thread
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final Dialog dialog = makeSelector(mTracksArray);
+                            dialog.show();
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -141,6 +167,36 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         }).start();
     }
 
+    /**
+     * create a list pop-up dialog that includes all tracks from arr
+     *
+     * @param arr
+     * @return selectionDialog
+     */
+    private Dialog makeSelector(JSONArray arr) {
+        List<String> titles = new ArrayList<>();
+        try {
+
+            for (int i = 0; i < arr.length(); i++) {
+                titles.add(arr.getJSONObject(i).getString("title"));
+            }
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+            dialogBuilder.setTitle("Please select a sound")
+                    .setItems(titles.toArray(new CharSequence[titles.size()]), this);
+            return dialogBuilder.create();
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * parse a track from JsonReader and return a new JSONObject
+     * with all values we are interested in
+     *
+     * @param reader
+     * @return TrackJsonObject
+     */
     private JSONObject parseTracksObject(JsonReader reader) {
         JSONObject track = new JSONObject();
         try {
@@ -165,12 +221,44 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
             }
             reader.endObject();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return track;
+    }
+
+    /**
+     * get the selected JSON object and send it to Band-up backend
+     * also set currently selected text to appropriate title
+     *
+     * @param dialog
+     * @param which
+     */
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        try {
+            JSONObject selected = mTracksArray.getJSONObject(which);
+            JSONObject requestJson = new JSONObject();
+            requestJson.put("soundcloudurl", selected.getString("permalink_url"));
+
+            DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().sendSoundCloudUrl(requestJson,
+                    new BandUpResponseListener() {
+                        @Override
+                        public void onBandUpResponse(Object response) {
+                            // everything was succesfull we do not need to respond
+                            Log.d(TAG, "Succesfully saved");
+                        }
+                    }, new BandUpErrorListener() {
+                        @Override
+                        public void onBandUpErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                        }
+                    });
+
+            mSongName.setText(selected.getString("title"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

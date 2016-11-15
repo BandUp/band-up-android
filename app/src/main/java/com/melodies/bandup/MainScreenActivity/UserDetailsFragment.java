@@ -221,7 +221,7 @@ public class UserDetailsFragment extends Fragment {
 
         mSoundcloudArea.setId(new Integer(1234));
         Fragment soundCloudFragment;
-        if (user.soundCloudId == 0){
+        if (user.soundCloudURL == null){
             soundCloudFragment = SoundCloudPlayerFragment.newInstance(null);
         }else {
             soundCloudFragment = SoundCloudPlayerFragment.newInstance(user.soundCloudURL);
@@ -297,6 +297,10 @@ public class UserDetailsFragment extends Fragment {
                             if (!imageObj.isNull("url")) {
                                 currentUser.imgURL = imageObj.getString("url");
                             }
+                        }
+
+                        if (!responseObj.isNull("soundcloudurl")){
+                            currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
                         }
                         displayUser(currentUser);
                     } catch (JSONException e) {

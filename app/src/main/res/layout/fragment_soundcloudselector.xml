@@ -27,7 +27,7 @@
             android:id="@+id/current_song_text"
             tools:text="Currently selected song"
             android:layout_gravity="right"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/soundcloud_logo" />
 

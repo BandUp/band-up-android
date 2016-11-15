@@ -32,7 +32,7 @@
             android:layout_toEndOf="@+id/soundcloud_logo" />
 
         <Button
-            android:text="Select song"
+            android:text="@string/profile_select_song"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/select_song_btn"

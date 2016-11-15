@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,12 +34,25 @@ public class UpdateAboutMe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updateaboutme);
         setTitle("About Me");
-        mAdView = (AdView)findViewById(R.id.adView);
+        userRequest();
+
+        // back to activit before
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView = (AdView)findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
-        userRequest();
+
+    }
+
+    // Return to previous Activity
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
+        return true;
     }
 
     // Get the userid of logged in user

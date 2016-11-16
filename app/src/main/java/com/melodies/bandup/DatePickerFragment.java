@@ -1,5 +1,6 @@
 package com.melodies.bandup;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -22,7 +23,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if (mDay == null) mDay = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        return new DatePickerDialog(getActivity(),
+                AlertDialog.THEME_HOLO_DARK, this, mYear, mMonth, mDay);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

@@ -322,6 +322,8 @@ public class MainScreenActivity extends AppCompatActivity
             sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
+        }catch (SecurityException ex){
+            ex.printStackTrace();
         }
     }
 

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import static android.R.attr.minDate;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -21,10 +22,32 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if (mYear == null) mYear = c.get(Calendar.YEAR);
         if (mMonth == null) mMonth = c.get(Calendar.MONTH);
         if (mDay == null) mDay = c.get(Calendar.DAY_OF_MONTH);
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
 
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(),
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 AlertDialog.THEME_HOLO_DARK, this, mYear, mMonth, mDay);
+
+        // Get the DatePicker of the DatePickerDialog
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+
+        // Set the boundaries for the DatePicker
+        final Calendar maxDate = Calendar.getInstance();
+        maxDate.set(Calendar.YEAR, c.get(Calendar.YEAR)-14);
+
+        // Max age is 99. Then we need to subtract 100 and then add one day.
+        final Calendar minDate = Calendar.getInstance();
+        minDate.set(Calendar.YEAR, c.get(Calendar.YEAR)-100);
+
+        // We add one day (not subtract) because adding to a min value brings us forward in time.
+        minDate.add(Calendar.MILLISECOND, 86400000);
+
+        datePicker.setMaxDate(maxDate.getTimeInMillis());
+        datePicker.setMinDate(minDate.getTimeInMillis()-1000);
+
+        return datePickerDialog;
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

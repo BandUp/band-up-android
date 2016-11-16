@@ -19,11 +19,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -34,45 +40,56 @@ public class UserListTest {
     public ActivityTestRule<MainScreenActivity> mActivityRule = new ActivityTestRule<>(
             MainScreenActivity.class, true, false);
 
-    private BandUpMockRepository getMockWithItems() {
-
-
+    private BandUpMockRepository getMockWithItems(final int users) {
         return new BandUpMockRepository() {
-            private JSONObject getUser() {
+
+            private JSONObject getUser(int id) {
                 JSONArray insArr = new JSONArray();
-                insArr.put("ASDF");
-                insArr.put("FDSA");
+                insArr.put("ASDF" + id);
+                insArr.put("FDSA" + id);
                 JSONArray genArr = new JSONArray();
-                genArr.put("QWERTY");
-                genArr.put("YTREWQ");
+                genArr.put("QWERTY" + id);
+                genArr.put("YTREWQ" + id);
                 JSONObject obj = new JSONObject();
                 try {
 
-                    obj.put("_id", "di");
-                    obj.put("username", "TestUser");
-                    obj.put("status", "Looking for a band");
+                    obj.put("_id", "myId-" + id);
+                    obj.put("username", "TestUser" + id);
+                    obj.put("status", "Looking for a band + id");
                     obj.put("instruments", insArr);
                     obj.put("genres", genArr);
-                    obj.put("distance", 5.4);
-                    obj.put("percentage", 55);
+                    obj.put("distance", 5.4 * (id + 1));
+                    obj.put("percentage", 10 + id + 1);
                     obj.put("image", null);
                     obj.put("dateOfBirth", "1997-11-08T20:44:36.000Z");
-                    obj.put("aboutme", "I AM ZE BEST");
+                    obj.put("aboutme", "I AM ZE BEST" + id);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 return obj;
             }
             @Override
             public void getUserList(BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
                 JSONArray arr = new JSONArray();
-                arr.put(getUser());
+                for (int i = 0; i < users; i++) {
+                    arr.put(getUser(i));
+                }
                 responseListener.onBandUpResponse(arr);
             }
 
             @Override
             public void getUserProfile(JSONObject user, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-                responseListener.onBandUpResponse(getUser());
+
+                try {
+                    if (user.getString("userId").equals("myId-0")) {
+                        responseListener.onBandUpResponse(getUser(0));
+                    } else if (user.getString("userId").equals("myId-1")) {
+                        responseListener.onBandUpResponse(getUser(1));
+                    }
+                } catch (JSONException e) {
+                    responseListener.onBandUpResponse("");
+                }
             }
         };
     }
@@ -100,24 +117,24 @@ public class UserListTest {
     @Test
     public void checkUsersNearby() {
         BandUpApplication app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
-        app.setRepository(getMockWithItems());
+        app.setRepository(getMockWithItems(1));
         app.setLocale(new LocaleRulesDefault(app));
 
         mActivityRule.launchActivity(new Intent());
 
         onView(withText(mActivityRule.getActivity().getResources().getString(R.string.user_list_no_users))).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.txtName))          .check(matches(withText("TestUser")));
-        onView(withId(R.id.txtPercentage))    .check(matches(withText("55%")));
+        onView(withId(R.id.txtName))          .check(matches(withText("TestUser0")));
+        onView(withId(R.id.txtPercentage))    .check(matches(withText("11%")));
         onView(withId(R.id.txtDistance))      .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
-        onView(withId(R.id.txtGenres))        .check(matches(withText("QWERTY")));
-        onView(withId(R.id.txtMainInstrument)).check(matches(withText("ASDF")));
+        onView(withId(R.id.txtGenres))        .check(matches(withText("QWERTY0")));
+        onView(withId(R.id.txtMainInstrument)).check(matches(withText("ASDF0")));
     }
 
     @Test
-    public void checkDetails() {
+    public void checkSingleUserDetails() {
         BandUpApplication app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
-        app.setRepository(getMockWithItems());
+        app.setRepository(getMockWithItems(1));
         app.setLocale(new LocaleRulesDefault(app));
 
         mActivityRule.launchActivity(new Intent());
@@ -126,10 +143,58 @@ public class UserListTest {
         System.out.println();
         onView(withId(R.id.btnDetails)).perform(click());
         System.out.println();
-        onView(withId(R.id.txtName))           .check(matches(withText("TestUser")));
-        onView(withId(R.id.txtPercentage))     .check(matches(withText("55%")));
+        onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
+        onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
         onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
-        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY\nYTREWQ\n")));
-        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF\nFDSA\n")));
+        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
+        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
+
+        pressBack();
+
+        onView(withId(R.id.btnDetails)).perform(click());
+
+        onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
+        onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
+        onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
+        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
+        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
+
+        //onView(withId(R.id.pager)).perform(swipeLeft());
+
+
+
+    }
+
+    @Test
+    public void checkMultipleUserDetails() {
+        BandUpApplication app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
+        app.setRepository(getMockWithItems(2));
+        app.setLocale(new LocaleRulesDefault(app));
+
+        mActivityRule.launchActivity(new Intent());
+
+        onView(withText(mActivityRule.getActivity().getResources().getString(R.string.user_list_no_users))).check(matches(not(isDisplayed())));
+
+        // Tap on the button that is inside the view that contains the username TestUser0
+        onView(allOf(withId(R.id.btnDetails), withParent(hasSibling(allOf(withId(R.id.user_top_row), withChild(withText("TestUser0"))))))).perform(click());
+
+        onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
+        onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
+        onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
+        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
+        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
+
+        pressBack();
+
+        onView(withId(R.id.pager)).perform(swipeLeft());
+
+        // Tap on the button that is inside the view that contains the username TestUser1
+        onView(allOf(withId(R.id.btnDetails), withParent(hasSibling(allOf(withId(R.id.user_top_row), withChild(withText("TestUser1"))))))).perform(click());
+
+        onView(withId(R.id.txtName))           .check(matches(withText("TestUser1")));
+        onView(withId(R.id.txtPercentage))     .check(matches(withText("12%")));
+        onView(withId(R.id.txtDistance))       .check(matches(withText("10 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
+        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY1\nYTREWQ1\n")));
+        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF1\nFDSA1\n")));
     }
 }

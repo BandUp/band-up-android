@@ -145,6 +145,7 @@ public class MainScreenActivity extends AppCompatActivity
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putBoolean("display_rationale", true);
                 editor.apply();
+                createLocationRequest();
             }
 
         } else {
@@ -308,8 +309,8 @@ public class MainScreenActivity extends AppCompatActivity
         }
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
         bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
         try {
             Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);

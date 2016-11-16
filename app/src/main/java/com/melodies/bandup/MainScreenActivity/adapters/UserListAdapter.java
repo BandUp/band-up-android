@@ -53,6 +53,11 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
         }
     }
 
+    public void clear() {
+        userList.clear();
+        this.notifyDataSetChanged();
+    }
+
 
     /**
      * Adds the user 'u' to the list.
@@ -63,6 +68,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
     public Boolean addUser(User u) {
         if (u != null) {
             userList.add(u);
+            this.notifyDataSetChanged();
             return true;
         } else {
             return false;

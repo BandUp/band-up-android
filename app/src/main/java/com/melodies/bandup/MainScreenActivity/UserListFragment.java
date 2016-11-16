@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class UserListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private AdView mAdView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private OnFragmentInteractionListener mListener;
 
@@ -114,6 +116,9 @@ public class UserListFragment extends Fragment {
                     return;
                 }
 
+                // TODO: Check if not 304.
+                mAdapter.clear();
+
                 for (int i = 0; i < responseArr.length(); i++) {
                     try {
                         JSONObject item = responseArr.getJSONObject(i);
@@ -147,8 +152,6 @@ public class UserListFragment extends Fragment {
                         for (int j = 0; j < genreArray.length(); j++) {
                             user.genres.add(genreArray.getString(j));
                         }
-                        System.out.println("MADAPTER");
-                        System.out.println(mAdapter);
                         mAdapter.addUser(user);
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
@@ -170,10 +173,7 @@ public class UserListFragment extends Fragment {
                     System.err.println("User List progressBar is null");
                 }
 
-                //if (ulc.users.size() > 0) {
-                    //displayUser(ulc.getUser(0));
-                //}
-                mPager.setAdapter(mAdapter);
+                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         }, new BandUpErrorListener() {
@@ -181,6 +181,7 @@ public class UserListFragment extends Fragment {
             public void onBandUpErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.INVISIBLE);
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -202,9 +203,21 @@ public class UserListFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         progressBar.setVisibility(View.VISIBLE);
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // TODO: Do not clear, but replace the items that are different.
+                getUserList();
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
 
         partialView.setVisibility(View.VISIBLE);
-
         getUserList();
 
         return rootView;

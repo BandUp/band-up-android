@@ -88,6 +88,7 @@ dependencies {
     compile('org.apache.httpcomponents:httpmime:4.3') {
         exclude module: "httpclient"
     }
+    compile 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
     compile files('libs/PhotoUtil.jar')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.volley:volley:1.0.0'

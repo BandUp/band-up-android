@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.R;
+import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,20 +35,21 @@ public class SettingsFragment extends Fragment {
     private String mParam2;
     private OnFragmentInteractionListener mListener;
 
-    private AdView mAdView;
-    private SeekBar seekBarRadius;
-    private SeekBar seekBarAges;
-    private Switch switchMatches;
-    private Switch switchMessages;
-    private Switch switchAlert;
-    private Switch switchUnit;
-    private TextView txtContact;
-    private TextView txtHelp;
-    private TextView txtSupport;
-    private TextView txtLegal;
-    private TextView txtLicenses;
-    private TextView txtPPolicy;
-    private TextView txtTermsOfService;
+    private AdView       mAdView;
+    private TextView     txtRadius;
+    private SeekBar      seekBarRadius;
+    private RangeSeekBar seekBarAges;
+    private Switch       switchMatches;
+    private Switch       switchMessages;
+    private Switch       switchAlert;
+    private Switch       switchUnit;
+    private TextView     txtContact;
+    private TextView     txtHelp;
+    private TextView     txtSupport;
+    private TextView     txtLegal;
+    private TextView     txtLicenses;
+    private TextView     txtPPolicy;
+    private TextView     txtTermsOfService;
 
 
     // Required empty public constructor
@@ -100,20 +102,54 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        mAdView = (AdView)rootView.findViewById(R.id.adView);
-        seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
-        seekBarAges = (SeekBar)rootView.findViewById(R.id.seekBarAges);
-        switchMatches = (Switch)rootView.findViewById(R.id.switchMatches);
-        switchMessages = (Switch)rootView.findViewById(R.id.switchMessages);
-        switchAlert = (Switch)rootView.findViewById(R.id.switchAlert);
-        switchUnit = (Switch)rootView.findViewById(R.id.switchUnit);
-        txtContact = (TextView)rootView.findViewById(R.id.txtContact);
-        txtHelp = (TextView)rootView.findViewById(R.id.txtHelp);
-        txtSupport = (TextView)rootView.findViewById(R.id.txtSupport);
-        txtLegal = (TextView)rootView.findViewById(R.id.txtLegal);
-        txtLicenses = (TextView)rootView.findViewById(R.id.txtLicenses);
-        txtPPolicy = (TextView)rootView.findViewById(R.id.txtPPolicy);
+        mAdView           = (AdView)rootView.findViewById(R.id.adView);
+        radiusInitializer(rootView);
+        seekBarAges       = (RangeSeekBar) rootView.findViewById(R.id.seekBarAges);
+        switchMatches     = (Switch)rootView.findViewById(R.id.switchMatches);
+        switchMessages    = (Switch)rootView.findViewById(R.id.switchMessages);
+        switchAlert       = (Switch)rootView.findViewById(R.id.switchAlert);
+        switchUnit        = (Switch)rootView.findViewById(R.id.switchUnit);
+        txtContact        = (TextView)rootView.findViewById(R.id.txtContact);
+        txtHelp           = (TextView)rootView.findViewById(R.id.txtHelp);
+        txtSupport        = (TextView)rootView.findViewById(R.id.txtSupport);
+        txtLegal          = (TextView)rootView.findViewById(R.id.txtLegal);
+        txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
+        txtPPolicy        = (TextView)rootView.findViewById(R.id.txtPPolicy);
         txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
+    }
+
+    // all behaviour of radiusBarUnit
+    private void radiusInitializer(View rootView) {
+        txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
+        seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
+        seekBarRadius.setProgress(25);      // Default progress value
+
+        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO: At this point ask user to turn on GPS, if it's off, and get user location
+
+                // if unit switch is mi, put km in text view else km
+                if (switchUnit.isChecked()) {
+                    seekBarRadius.setMax(186);      // Maximum value of search range in Mi
+                    String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Mi");
+                    txtRadius.setText(radius);
+                }
+                else {
+                    seekBarRadius.setMax(300);      // Maximum value of search range in Km
+                    String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Km");
+                    txtRadius.setText(radius);
+                }
+                // display only users that are in 'progress' range
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
     }
 
     @Override

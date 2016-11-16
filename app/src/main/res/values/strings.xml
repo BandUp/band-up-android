@@ -113,5 +113,6 @@
     <string name="no_distance_available">Distance not available</string>
     <string name="km_distance">km away from you</string>
     <string name="profile_select_song">Select Song</string>
+    <string name="register_dob_hint">What is your date of birth?</string>
 
 </resources>

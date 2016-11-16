@@ -48,7 +48,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     private Button mSelectionButton;
     private TextView mSongName;
 
-    final JSONArray mTracksArray = new JSONArray();
+    JSONArray mTracksArray = new JSONArray();
     
     private int mSoundCloudID;
     private String mSoundCloudUrl;
@@ -256,6 +256,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                     });
 
             mSongName.setText(selected.getString("title"));
+            mTracksArray = new JSONArray();
         } catch (JSONException e) {
             e.printStackTrace();
         }

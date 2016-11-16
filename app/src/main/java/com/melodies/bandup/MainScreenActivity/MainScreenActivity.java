@@ -225,7 +225,9 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {}
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
     /**
      * Used for the MatchesFragment. When the user taps on another user.

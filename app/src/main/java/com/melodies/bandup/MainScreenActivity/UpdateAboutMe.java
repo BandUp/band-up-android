@@ -36,7 +36,7 @@ public class UpdateAboutMe extends AppCompatActivity {
         setTitle("About Me");
         userRequest();
 
-        // back to activit before
+        // back to activity before
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

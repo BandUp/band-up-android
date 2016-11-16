@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.MainScreenActivity.ProfileFragment;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -43,6 +44,8 @@ import java.io.IOException;
  */
 public class SoundCloudLoginFragment extends Fragment implements View.OnClickListener {
     private ImageButton mLoginButton;
+
+    private int mSoundCloudID;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,13 +87,6 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
         mLoginButton.setOnClickListener(this);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -114,6 +110,12 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
         myDialog.show();
     }
 
+    /**
+     * create a login dialog accepting a email and password
+     * registers callbacks to log in and cancel
+     *
+     * @return
+     */
     private Dialog createLoginDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -143,6 +145,13 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
     private void cancel() {
     }
 
+    /**
+     * create log in request to soundcloud to recieve a user id
+     * if successful send result to server and force re-draw on parent fragment
+     *
+     * @param email
+     * @param pass
+     */
     private void logIn(final String email, final String pass){
         new Thread(new Runnable() {
             @Override
@@ -155,7 +164,9 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
                     HttpResponse resp = soundcloud.get(Request.to("/me"));
                     JSONObject json = Http.getJSON(resp);
                     JSONObject requestJSON = new JSONObject();
-                    requestJSON.put("soundCloudId", json.getInt("id"));
+                    mSoundCloudID = json.getInt("id");
+                    requestJSON.put("soundCloudId", mSoundCloudID);
+
                     DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().sendSoundCloudId(requestJSON,
                             new BandUpResponseListener() {
                                 @Override
@@ -179,10 +190,9 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
     }
 
     private void finish() {
-        // reload activity
-        Activity curr = getActivity();
-        curr.finish();
-        curr.startActivity(curr.getIntent());
+        // redraw soundcloud area
+        ProfileFragment fr = (ProfileFragment) getParentFragment();
+        fr.updateCurrentUserSoundCloud(mSoundCloudID);
     }
 
     /**

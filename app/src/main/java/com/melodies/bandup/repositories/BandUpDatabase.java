@@ -75,5 +75,9 @@ public interface BandUpDatabase {
     void getEmailInUse(JSONObject requestObject,
                            BandUpResponseListener responseListener,
                            BandUpErrorListener errorListener);
+
+    void register(JSONObject requestObject,
+                  BandUpResponseListener responseListener,
+                  BandUpErrorListener errorListener);
 }
 

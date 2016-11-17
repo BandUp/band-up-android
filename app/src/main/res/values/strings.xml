@@ -114,11 +114,13 @@
     <string name="km_distance">km away from you</string>
     <string name="profile_select_song">Select Song</string>
     <string name="register_dob_hint">What is your date of birth?</string>
-    <string name="register_til_fill_password">You must fill in a password</string>
-    <string name="register_til_password_match">Passwords do not match</string>
+    <string name="register_til_error_fill_password">You must fill in a password</string>
+    <string name="register_til_error_password_mismatch">Passwords do not match</string>
     <string name="register_til_error_full_name">You must fill in your full name</string>
     <string name="register_til_error_email_linked">This email is already associated with an account</string>
     <string name="register_til_error_email_format">This email address is not in the correct format</string>
     <string name="register_til_error_fill_email">You must fill in your email address</string>
+    <string name="register_til_error_password_length">Your password must be at least 6 characters long</string>
+    <string name="register_fix_errors">Please fix the remaining errors.</string>
 
 </resources>

@@ -15,14 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -34,26 +30,12 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.melodies.bandup.R.id.etPassword;
-
 public class Register extends AppCompatActivity implements DatePickable {
-    private String url;
-    private String route = "/signup-local";
     private ProgressDialog registerDialog;
-    private TextView txtDateOfBirth;
     private Date dateOfBirth = null;
     private DatePickerFragment datePickerFragment = null;
-    private AdView mAdView;
-    private TextInputLayout tilEmail;
-    private TextInputLayout tilUsername;
-    private TextInputLayout tilPassword1;
-    private TextInputLayout tilPassword2;
-    private TextInputLayout tilDob;
-    private EditText etEmail;
-    private EditText etUsername;
-    private EditText etPassword1;
-    private EditText etPassword2;
-    private EditText etDateOfBirth;
+    private TextInputLayout tilEmail, tilUsername, tilPassword1, tilPassword2, tilDob;
+    private EditText etEmail, etUsername, etPassword1, etPassword2, etDateOfBirth;
     private ImageView ivSuccess, ivError;
     private ProgressBar progEmailLoading;
 
@@ -155,7 +137,9 @@ public class Register extends AppCompatActivity implements DatePickable {
                 String textValue = etPassword1.getText().toString();
                 if (!hasFocus) {
                     if (textValue.equals("")) {
-                        tilPassword1.setError(getString(R.string.register_til_fill_password));
+                        tilPassword1.setError(getString(R.string.register_til_error_fill_password));
+                    } else if (textValue.length() < 6) {
+                        tilPassword1.setError(getString(R.string.register_til_error_password_length));
                     }
                 }
             }
@@ -169,7 +153,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                     String pass2 = etPassword2.getText().toString();
 
                     if (!pass1.equals(pass2)) {
-                        tilPassword2.setError(getString(R.string.register_til_password_match));
+                        tilPassword2.setError(getString(R.string.register_til_error_password_mismatch));
                     } else {
                         tilPassword2.setError(null);
                     }
@@ -204,48 +188,44 @@ public class Register extends AppCompatActivity implements DatePickable {
 
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilUsername.setErrorEnabled(false);
             }
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        etPassword1.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                tilPassword1.setErrorEnabled(false);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
+
         etPassword2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tilPassword2.setErrorEnabled(false);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        url = getResources().getString(R.string.api_address).concat(route);
-        setContentView(R.layout.activity_register);
-
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etUsername = (EditText) findViewById(R.id.etUsername);
-        etPassword1 = (EditText) findViewById(etPassword);
-        etPassword2 = (EditText) findViewById(R.id.etPassword2);
+    private void initializeViews() {
+        etEmail       = (EditText) findViewById(R.id.etEmail);
+        etUsername    = (EditText) findViewById(R.id.etUsername);
+        etPassword1   = (EditText) findViewById(R.id.etPassword);
+        etPassword2   = (EditText) findViewById(R.id.etPassword2);
         etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
 
         tilEmail     = (TextInputLayout) findViewById(R.id.tilEmail);
@@ -254,23 +234,30 @@ public class Register extends AppCompatActivity implements DatePickable {
         tilPassword2 = (TextInputLayout) findViewById(R.id.tilPassword2);
         tilDob       = (TextInputLayout) findViewById(R.id.tilDateOfBirth);
 
-        ivError = (ImageView) findViewById(R.id.emailValidationError);
-        ivSuccess = (ImageView) findViewById(R.id.emailValidationSuccess);
+        ivError   = (ImageView) findViewById(R.id.emailValidationError);
+        ivSuccess = (ImageView)  findViewById(R.id.emailValidationSuccess);
+
         progEmailLoading = (ProgressBar) findViewById(R.id.emailValidationLoading);
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
 
+        initializeViews();
         initializeOnClickListeners();
         initializeOnTextChangedListeners();
         initializeOnFocusChangeListeners();
 
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
-        txtDateOfBirth = (TextView) findViewById(R.id.etDateOfBirth);
         getAd();
     }
 
     // Adding ad Banner
     private void getAd() {
+        AdView mAdView;
         mAdView = (AdView)findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -294,9 +281,16 @@ public class Register extends AppCompatActivity implements DatePickable {
         String age = datePickerFragment.ageCalculator(year, month, day);
 
         String dateString = String.format("%s (%s)", date, age);
-        txtDateOfBirth.setText(dateString);
+        etDateOfBirth.setText(dateString);
     }
 
+    private Boolean formIsClean() {
+        return  !tilEmail.isErrorEnabled()     &&
+                !tilUsername.isErrorEnabled()  &&
+                !tilPassword1.isErrorEnabled() &&
+                !tilPassword2.isErrorEnabled() &&
+                !tilDob.isErrorEnabled();
+    }
     public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
 
@@ -325,6 +319,8 @@ public class Register extends AppCompatActivity implements DatePickable {
             }
             else if (dateOfBirth == null) {
                 Toast.makeText(getApplicationContext(), R.string.register_enter_dateofbirth, Toast.LENGTH_SHORT).show();
+            } else if (!formIsClean()) {
+                Toast.makeText(getApplicationContext(), R.string.register_fix_errors, Toast.LENGTH_SHORT).show();
             }
             else {
                 registerDialog = ProgressDialog.show(this, getString(R.string.register_progress_title), getString(R.string.register_progress_description), true, false);
@@ -346,33 +342,28 @@ public class Register extends AppCompatActivity implements DatePickable {
             e.printStackTrace();
         }
 
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                jsonObject,
-                new Response.Listener<JSONObject>(){
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // if response is not error, then userId is stored and redirect to SignIn view.
-                        saveUserId(response);
-                        System.out.println("\"Registration successful!");
-                        Toast.makeText(Register.this, R.string.register_success, Toast.LENGTH_LONG).show();
-                        Intent registerIntent = new Intent(Register.this, Login.class);
-                        registerDialog.dismiss();
-                        Register.this.startActivity(registerIntent);
-                        finish();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        registerDialog.dismiss();
-                        errorHandlerRegister(error);
-                    }
+        DatabaseSingleton.getInstance(Register.this).getBandUpDatabase().register(jsonObject, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
                 }
-        );
-        // send request
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+                // if response is not error, then userId is stored and redirect to SignIn view.
+                saveUserId(responseObj);
+                Toast.makeText(Register.this, R.string.register_success, Toast.LENGTH_LONG).show();
+                Intent registerIntent = new Intent(Register.this, Login.class);
+                registerDialog.dismiss();
+                Register.this.startActivity(registerIntent);
+                finish();
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                registerDialog.dismiss();
+                errorHandlerRegister(error);
+            }
+        });
     }
 
     // Handling errors that can occur while Sign Up request

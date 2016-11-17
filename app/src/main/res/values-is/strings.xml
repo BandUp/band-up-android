@@ -109,7 +109,9 @@
     <string name="register_til_error_email_linked">Þetta tölvupóstfang er nú þegar skráð</string>
     <string name="register_til_error_fill_email">Þú verður að setja inn tölvupóstfang</string>
     <string name="register_til_error_full_name">Þú verður að setja inn fullt nafn</string>
-    <string name="register_til_fill_password">Þú verður að setja inn lykilorð</string>
-    <string name="register_til_password_match">Lykilorð passa ekki</string>
+    <string name="register_til_error_fill_password">Þú verður að setja inn lykilorð</string>
+    <string name="register_til_error_password_mismatch">Lykilorð passa ekki</string>
+    <string name="register_til_error_password_length">Lykilorðið þitt verður að vera a.m.k. 6 stafir</string>
+    <string name="register_fix_errors">Vinsamlegast lagið eftirstandandi villur.</string>
 
 </resources>

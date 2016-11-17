@@ -158,7 +158,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tilUsername.setError(null);
+                tilUsername.setErrorEnabled(false);
             }
 
             @Override
@@ -175,7 +175,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tilPassword.setError(null);
+                tilPassword.setErrorEnabled(false);
             }
 
             @Override

@@ -71,5 +71,9 @@ public interface BandUpDatabase {
     void sendSoundCloudUrl(JSONObject requestObject,
                            BandUpResponseListener responseListener,
                            BandUpErrorListener errorListener);
+
+    void getEmailInUse(JSONObject requestObject,
+                           BandUpResponseListener responseListener,
+                           BandUpErrorListener errorListener);
 }
 

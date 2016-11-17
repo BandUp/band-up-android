@@ -272,4 +272,17 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(request);
     }
+
+    @Override
+    public void getEmailInUse(JSONObject requestObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/email");
+
+        JsonObjectRequest request = createObjectRequest(Request.Method.POST,
+                url,
+                requestObject,
+                responseListener,
+                errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
 }

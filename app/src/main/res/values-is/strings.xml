@@ -5,7 +5,7 @@
 
     <!-- Register Screen -->
     <string name="register_email">Tölvupóstur</string>
-    <string name="register_username">Notandanafn</string>
+    <string name="register_username">Fullt nafn</string>
     <string name="register_password">Lykilorð</string>
     <string name="register_confirm_password">Staðfesta lykilorð</string>
     <string name="register_age">Aldur</string>
@@ -62,7 +62,7 @@
     <string name="register_progress_description">Vinsamlega bíðið...</string>
     <string name="register_password_mismatch">Lykilorð passa ekki!</string>
     <string name="register_progress_title">Nýskrái þig</string>
-    <string name="register_success">Nýskráning tókst!\\nÞú getur nú skráð þig inn.</string>
+    <string name="register_success">Nýskráning tókst!\nÞú getur nú skráð þig inn.</string>
     <string name="user_allow_camera">Vinsamlegast leyfðu aðgang til þess að taka mynd</string>
     <string name="user_error">Eitthvað fór úrskeiðis</string>
     <string name="user_image_error">Það tókst ekki að senda myndina á vefþjóninn. Vinsamlega reyndu aftur.</string>
@@ -105,5 +105,11 @@
     <string name="register_min_age">Þú þarft að vera 14 ára eða eldri til að skrá þig!</string>
     <string name="profile_select_song">Velja lag</string>
     <string name="register_dob_hint">Hvaða dag fæddist þú?</string>
+    <string name="register_til_error_email_format">Þetta tölvupóstfang er ekki á réttu formi</string>
+    <string name="register_til_error_email_linked">Þetta tölvupóstfang er nú þegar skráð</string>
+    <string name="register_til_error_fill_email">Þú verður að setja inn tölvupóstfang</string>
+    <string name="register_til_error_full_name">Þú verður að setja inn fullt nafn</string>
+    <string name="register_til_fill_password">Þú verður að setja inn lykilorð</string>
+    <string name="register_til_password_match">Lykilorð passa ekki</string>
 
 </resources>

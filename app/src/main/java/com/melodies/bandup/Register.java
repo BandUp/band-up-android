@@ -1,31 +1,40 @@
 package com.melodies.bandup;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.melodies.bandup.R.id.etPassword;
 
 public class Register extends AppCompatActivity implements DatePickable {
     private String url;
@@ -35,15 +44,228 @@ public class Register extends AppCompatActivity implements DatePickable {
     private Date dateOfBirth = null;
     private DatePickerFragment datePickerFragment = null;
     private AdView mAdView;
+    private TextInputLayout tilEmail;
+    private TextInputLayout tilUsername;
+    private TextInputLayout tilPassword1;
+    private TextInputLayout tilPassword2;
+    private TextInputLayout tilDob;
+    private EditText etEmail;
+    private EditText etUsername;
+    private EditText etPassword1;
+    private EditText etPassword2;
+    private EditText etDateOfBirth;
+    private ImageView ivSuccess, ivError;
+    private ProgressBar progEmailLoading;
+
+    public static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private void initializeOnClickListeners() {
+        etDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (datePickerFragment == null) {
+                    datePickerFragment = new DatePickerFragment();
+                }
+                datePickerFragment.show(getFragmentManager(), "datePicker");
+                tilPassword2.clearFocus();
+
+            }
+        });
+    }
+
+    private void initializeOnFocusChangeListeners() {
+        etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String textValue = etEmail.getText().toString();
+                if (!hasFocus) {
+                    if (textValue.equals("")) {
+                        tilEmail.setError(getString(R.string.register_til_error_fill_email));
+                    } else if (isValidEmail(textValue)) {
+                        JSONObject email = new JSONObject();
+                        try {
+                            email.put("email", textValue);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ivSuccess.setVisibility(View.INVISIBLE);
+                        ivError.setVisibility(View.INVISIBLE);
+                        progEmailLoading.setVisibility(View.VISIBLE);
+                        DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().getEmailInUse(email, new BandUpResponseListener() {
+                            @Override
+                            public void onBandUpResponse(Object response) {
+                                progEmailLoading.setVisibility(View.INVISIBLE);
+                                JSONObject responseObj = null;
+                                if (response instanceof JSONObject) {
+                                    responseObj = (JSONObject) response;
+                                }
+                                if (isValidEmail(etEmail.getText().toString())) {
+                                    try {
+                                        Boolean emailInUse;
+                                        if (!responseObj.isNull("emailInUse")) emailInUse = responseObj.getBoolean("emailInUse");
+                                        else return;
+
+                                        if (!emailInUse) {
+                                            ivError.setVisibility(View.INVISIBLE);
+                                            ivSuccess.setVisibility(View.VISIBLE);
+                                        } else {
+                                            tilEmail.setError(getString(R.string.register_til_error_email_linked));
+                                            ivError.setVisibility(View.VISIBLE);
+                                            ivSuccess.setVisibility(View.INVISIBLE);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+                        }, new BandUpErrorListener() {
+                            @Override
+                            public void onBandUpErrorResponse(VolleyError error) {
+                                progEmailLoading.setVisibility(View.INVISIBLE);
+                                VolleySingleton.getInstance(Register.this).checkCauseOfError(error);
+                            }
+                        });
+                    } else if (!isValidEmail(textValue)) {
+                        tilEmail.setError(getString(R.string.register_til_error_email_format));
+                    } else {
+                        tilEmail.setErrorEnabled(false);
+                    }
+                }
+            }
+        });
+
+        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String textValue = etUsername.getText().toString();
+                if (!hasFocus) {
+                    if (textValue.equals("")) {
+                        tilUsername.setError(getString(R.string.register_til_error_full_name));
+                    }
+                }
+            }
+        });
+
+        etPassword1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String textValue = etPassword1.getText().toString();
+                if (!hasFocus) {
+                    if (textValue.equals("")) {
+                        tilPassword1.setError(getString(R.string.register_til_fill_password));
+                    }
+                }
+            }
+        });
+
+        etPassword2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String pass1 = etPassword1.getText().toString();
+                    String pass2 = etPassword2.getText().toString();
+
+                    if (!pass1.equals(pass2)) {
+                        tilPassword2.setError(getString(R.string.register_til_password_match));
+                    } else {
+                        tilPassword2.setError(null);
+                    }
+                }
+            }
+        });
+    }
+
+    private void initializeOnTextChangedListeners() {
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                final String checkString = s.toString();
+                if (isValidEmail(checkString)) {
+                    ivSuccess.setVisibility(View.INVISIBLE);
+                    ivError.setVisibility(View.INVISIBLE);
+                    progEmailLoading.setVisibility(View.INVISIBLE);
+                    tilEmail.setErrorEnabled(false);
+                } else {
+                    ivSuccess.setVisibility(View.INVISIBLE);
+                    ivError.setVisibility(View.INVISIBLE);
+                    progEmailLoading.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etPassword2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilPassword2.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getResources().getString(R.string.api_address).concat(route);
         setContentView(R.layout.activity_register);
+
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etPassword1 = (EditText) findViewById(etPassword);
+        etPassword2 = (EditText) findViewById(R.id.etPassword2);
+        etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
+
+        tilEmail     = (TextInputLayout) findViewById(R.id.tilEmail);
+        tilUsername  = (TextInputLayout) findViewById(R.id.tilUsername);
+        tilPassword1 = (TextInputLayout) findViewById(R.id.tilPassword1);
+        tilPassword2 = (TextInputLayout) findViewById(R.id.tilPassword2);
+        tilDob       = (TextInputLayout) findViewById(R.id.tilDateOfBirth);
+
+        ivError = (ImageView) findViewById(R.id.emailValidationError);
+        ivSuccess = (ImageView) findViewById(R.id.emailValidationSuccess);
+        progEmailLoading = (ProgressBar) findViewById(R.id.emailValidationLoading);
+
+
+        initializeOnClickListeners();
+        initializeOnTextChangedListeners();
+        initializeOnFocusChangeListeners();
+
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
-        txtDateOfBirth = (TextView) findViewById(R.id.txtDateOfBirth);
+        txtDateOfBirth = (TextView) findViewById(R.id.etDateOfBirth);
         getAd();
     }
 
@@ -52,13 +274,6 @@ public class Register extends AppCompatActivity implements DatePickable {
         mAdView = (AdView)findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-    }
-
-    public void showDatePickerDialog(View v) {
-        if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment();
-        }
-        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
     public void onDateSet(int year, int month, int day) {
@@ -84,17 +299,13 @@ public class Register extends AppCompatActivity implements DatePickable {
 
     public void onClickRegister(View v) throws JSONException {
         // binding vire to variables
-        final EditText etEmail = (EditText) findViewById(R.id.etEmail);
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-        final EditText etPassword2 = (EditText) findViewById(R.id.etPassword2);
 
         final Button btnRegister = (Button) findViewById(R.id.btnRegister);
 
         // converting to string
-        final String email = etEmail.getText().toString();
-        final String username = etUsername.getText().toString();
-        final String password = etPassword.getText().toString();
+        final String email     = etEmail    .getText().toString();
+        final String username  = etUsername .getText().toString();
+        final String password  = etPassword1.getText().toString();
         final String password2 = etPassword2.getText().toString();
 
         // when button Register is pushed:
@@ -166,6 +377,10 @@ public class Register extends AppCompatActivity implements DatePickable {
 
     // Handling errors that can occur while Sign Up request
     private void errorHandlerRegister(VolleyError error) {
+        if (error instanceof AuthFailureError) {
+            Toast.makeText(this, "User already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
         VolleySingleton.getInstance(Register.this).checkCauseOfError(error);
     }
 

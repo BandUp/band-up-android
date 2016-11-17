@@ -21,17 +21,51 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tilEmail"
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/etEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilEmail"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/register_email" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:hint="@string/register_email" />
+
+
+                </android.support.design.widget.TextInputLayout>
+                <FrameLayout
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/checkbox_marked_circle"
+                        android:tint="@color/bandUpGreen"
+                        android:id="@+id/emailValidationSuccess"
+                        android:visibility="invisible"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/emailValidationLoading"
+                        android:visibility="invisible"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/close_circle"
+                        android:tint="@color/bandUpRed"
+                        android:id="@+id/emailValidationError"
+                        android:visibility="invisible"/>
+                </FrameLayout>
+
+            </RelativeLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilUsername"
@@ -76,15 +110,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/txtDateOfBirth"
+                    android:id="@+id/etDateOfBirth"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:textIsSelectable="false"
                     android:focusable="false"
                     android:editable="false"
-                    android:hint="@string/dateOfBirth"
-                    android:onClick="showDatePickerDialog"/>
+                    android:hint="@string/dateOfBirth"/>
             </android.support.design.widget.TextInputLayout>
 
             <Button

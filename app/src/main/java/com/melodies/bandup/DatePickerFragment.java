@@ -27,7 +27,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+        @SuppressWarnings("ResourceType") DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 AlertDialog.THEME_HOLO_DARK, this, mYear, mMonth, mDay);
         datePickerDialog.setMessage(getString(R.string.register_dob_hint));
 

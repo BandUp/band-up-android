@@ -116,7 +116,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
         linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
         linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
@@ -152,36 +152,24 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tilUsername.setErrorEnabled(false);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tilPassword.setErrorEnabled(false);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         });
 
         // -----------------------------Facebook START ------------------------------------------------------------

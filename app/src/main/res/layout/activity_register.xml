@@ -102,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/register_confirm_password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:imeOptions="actionNext"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

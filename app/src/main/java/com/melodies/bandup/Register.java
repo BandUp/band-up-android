@@ -10,11 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +33,8 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.melodies.bandup.R.id.etPassword;
+
 public class Register extends AppCompatActivity implements DatePickable {
     private ProgressDialog registerDialog;
     private Date dateOfBirth = null;
@@ -42,17 +47,19 @@ public class Register extends AppCompatActivity implements DatePickable {
     public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
+    private void showDatePicker() {
+        if (datePickerFragment == null) {
+            datePickerFragment = new DatePickerFragment();
+        }
+        datePickerFragment.show(getFragmentManager(), "datePicker");
+        tilPassword2.clearFocus();
+    }
 
     private void initializeOnClickListeners() {
         etDateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (datePickerFragment == null) {
-                    datePickerFragment = new DatePickerFragment();
-                }
-                datePickerFragment.show(getFragmentManager(), "datePicker");
-                tilPassword2.clearFocus();
-
+                showDatePicker();
             }
         });
     }
@@ -63,7 +70,7 @@ public class Register extends AppCompatActivity implements DatePickable {
             public void onFocusChange(View v, boolean hasFocus) {
                 String textValue = etEmail.getText().toString();
                 if (!hasFocus) {
-                    if (textValue.equals("")) {
+                    if (textValue.isEmpty()) {
                         tilEmail.setError(getString(R.string.register_til_error_fill_email));
                     } else if (isValidEmail(textValue)) {
                         JSONObject email = new JSONObject();
@@ -124,7 +131,7 @@ public class Register extends AppCompatActivity implements DatePickable {
             public void onFocusChange(View v, boolean hasFocus) {
                 String textValue = etUsername.getText().toString();
                 if (!hasFocus) {
-                    if (textValue.equals("")) {
+                    if (textValue.isEmpty()) {
                         tilUsername.setError(getString(R.string.register_til_error_full_name));
                     }
                 }
@@ -136,7 +143,7 @@ public class Register extends AppCompatActivity implements DatePickable {
             public void onFocusChange(View v, boolean hasFocus) {
                 String textValue = etPassword1.getText().toString();
                 if (!hasFocus) {
-                    if (textValue.equals("")) {
+                    if (textValue.isEmpty()) {
                         tilPassword1.setError(getString(R.string.register_til_error_fill_password));
                     } else if (textValue.length() < 6) {
                         tilPassword1.setError(getString(R.string.register_til_error_password_length));
@@ -224,7 +231,7 @@ public class Register extends AppCompatActivity implements DatePickable {
     private void initializeViews() {
         etEmail       = (EditText) findViewById(R.id.etEmail);
         etUsername    = (EditText) findViewById(R.id.etUsername);
-        etPassword1   = (EditText) findViewById(R.id.etPassword);
+        etPassword1   = (EditText) findViewById(etPassword);
         etPassword2   = (EditText) findViewById(R.id.etPassword2);
         etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
 
@@ -240,6 +247,36 @@ public class Register extends AppCompatActivity implements DatePickable {
         progEmailLoading = (ProgressBar) findViewById(R.id.emailValidationLoading);
     }
 
+    private void initializeOnKeyListeners() {
+        etPassword2.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    showDatePicker();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        etPassword2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    if (v.getId() == R.id.etPassword2) {
+                        showDatePicker();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,6 +286,7 @@ public class Register extends AppCompatActivity implements DatePickable {
         initializeOnClickListeners();
         initializeOnTextChangedListeners();
         initializeOnFocusChangeListeners();
+        initializeOnKeyListeners();
 
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
@@ -264,6 +302,7 @@ public class Register extends AppCompatActivity implements DatePickable {
     }
 
     public void onDateSet(int year, int month, int day) {
+        tilDob.setErrorEnabled(false);
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
@@ -305,21 +344,30 @@ public class Register extends AppCompatActivity implements DatePickable {
         // when button Register is pushed:
         if (v.getId() == R.id.btnRegister) {
             // check if passwords match
-            if (!password.equals(password2)) {
-                Toast.makeText(Register.this, R.string.register_password_mismatch, Toast.LENGTH_SHORT).show();
-            }
-            else if (email.isEmpty()) {
-                Toast.makeText(getApplicationContext(), R.string.register_enter_email, Toast.LENGTH_SHORT).show();
+
+            if (email.isEmpty()) {
+                tilEmail.setError(getString(R.string.register_til_error_fill_email));
+                etEmail.requestFocus();
             }
             else if (username.isEmpty()) {
-                Toast.makeText(getApplicationContext(), R.string.register_enter_username, Toast.LENGTH_SHORT).show();
+                tilUsername.setError(getString(R.string.register_til_error_full_name));
+                etUsername.requestFocus();
             }
             else if (password.isEmpty()) {
-                Toast.makeText(getApplicationContext(), R.string.register_enter_password, Toast.LENGTH_SHORT).show();
+                tilPassword1.setError(getString(R.string.register_til_error_fill_password));
+                etPassword1.requestFocus();
+            }
+            else if (password2.isEmpty() && !password.isEmpty()) {
+                tilPassword2.setError(getString(R.string.register_til_error_fill_password_again));
+                etPassword2.requestFocus();
+            }
+            else if (!password.equals(password2)) {
+                tilPassword1.setError(getString(R.string.register_password_mismatch));
             }
             else if (dateOfBirth == null) {
-                Toast.makeText(getApplicationContext(), R.string.register_enter_dateofbirth, Toast.LENGTH_SHORT).show();
-            } else if (!formIsClean()) {
+                tilDob.setError(getString(R.string.register_enter_dateofbirth));
+            }
+            else if (!formIsClean()) {
                 Toast.makeText(getApplicationContext(), R.string.register_fix_errors, Toast.LENGTH_SHORT).show();
             }
             else {

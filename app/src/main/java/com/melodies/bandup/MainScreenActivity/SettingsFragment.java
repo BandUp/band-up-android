@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,21 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +46,7 @@ public class SettingsFragment extends Fragment {
     private String mParam2;
     private OnFragmentInteractionListener mListener;
 
+    private static int   searchRadius = 0;
     private AdView       mAdView;
     private TextView     txtRadius;
     private SeekBar      seekBarRadius;
@@ -124,32 +136,79 @@ public class SettingsFragment extends Fragment {
         seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
         seekBarRadius.setProgress(25);      // Default progress value
 
+
         seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO: At this point ask user to turn on GPS, if it's off, and get user location
+                // TODO: Turn on GPS, if it's off, and get user newest location
 
                 // if unit switch is mi, put km in text view else km
                 if (switchUnit.isChecked()) {
                     seekBarRadius.setMax(186);      // Maximum value of search range in Mi
                     String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Mi");
                     txtRadius.setText(radius);
+                    searchRadius = milesToKilometers(progress);
                 }
                 else {
                     seekBarRadius.setMax(300);      // Maximum value of search range in Km
                     String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Km");
                     txtRadius.setText(radius);
+                    searchRadius = progress;
                 }
-                // display only users that are in 'progress' range
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // store searchRadius into server in one consistent unit / (let's say km)
+                try {
+                    updateUser(getUserId(), searchRadius);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         });
+    }
 
+    // Get the userid of logged in user
+    public String getUserId() throws JSONException {
+        SharedPreferences srdPref = getActivity().getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String id = srdPref.getString("userID", DEFAULT);
+        return (!id.equals(DEFAULT)) ? id : "User ID Not Found";
+    }
+
+    // Send updated user data to server
+    public void updateUser(String id, final int data) {
+        JSONObject userUpdated = new JSONObject();
+        try {
+            userUpdated.put("_id", id);
+            userUpdated.put("searchradius", data);
+
+            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
+                @Override
+                public void onBandUpResponse(Object response) {
+                    // succesful response
+                    Toast.makeText(getActivity(), "Range updated! REMOVE THIS TOAST", Toast.LENGTH_SHORT).show();
+                }
+            }, new BandUpErrorListener() {
+                @Override
+                public void onBandUpErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(getActivity(), "Error" + error, Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Converts miles into whole kilometers for consistent search range storage
+    private int milesToKilometers(int miles) {
+        double kilometers = miles * 1.609344;
+        int range = (int) Math.ceil(kilometers);
+        return range;
     }
 
     @Override

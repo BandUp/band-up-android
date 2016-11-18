@@ -12,3 +12,20 @@ This value should **always** be changed before committing to the following addre
 The IP address is the local IP address of the machine running the server. You can then communicate with the server using the Emulator or an Android device, if they are connected to the same Wi-Fi network.
 
 **NOTE**: Do not add the forward slash at the end of the URI and make sure you are using HTTP, not HTTPS.
+
+
+## Running UI tests with Espresso
+To run the UI tests, you will need to create a new Run/Debug Configuration.
+
+Open the Run/Debug Configurations window, and click the plus button in the top left corner. Select ```Android Tests```. Select the module ```app``` and set the instrumentation runner to ```android.support.test.runner.AndroidJUnitRunner```
+
+Make sure you are building the ```debug``` variant of the app.
+
+It is best to disable all animations on the device you are testing on, because the animations can interfere with Espresso and make tests fail.
+
+To do that:
+- Go into ```Settings -> About (emulated) device```
+- Tap the ```Build number``` seven times.
+- Go back one step and tap on ```Developer options```.
+- Scroll down until you see ```Window animation scale```, ```Transition animation scale``` and ```Animator duration scale```.
+- Change them all to ```Animation off```.

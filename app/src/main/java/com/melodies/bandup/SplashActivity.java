@@ -3,7 +3,6 @@ package com.melodies.bandup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
@@ -77,7 +76,6 @@ public class SplashActivity extends AppCompatActivity {
                 }, new BandUpErrorListener() {
                     @Override
                     public void onBandUpErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "server error", Toast.LENGTH_LONG).show();
                         openLoginActivity();
                     }
                 }

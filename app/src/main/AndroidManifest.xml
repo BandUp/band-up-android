@@ -103,21 +103,24 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainScreenActivity.UpdateAboutMe" />
+        <activity android:name=".MainScreenActivity.UpdateAboutMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SoundCloud"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_sound_cloud" />
         <activity
             android:name=".Filter"
-            android:label="@string/filter_title"></activity>
+            android:label="@string/filter_title"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

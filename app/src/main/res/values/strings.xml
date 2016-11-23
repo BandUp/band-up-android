@@ -71,7 +71,7 @@
     <string name="register_enter_username">Please enter your Username.</string>
     <string name="register_enter_password">Please enter your Password.</string>
     <string name="register_enter_dateofbirth">Please enter your Date Of Birth.</string>
-    <string name="register_min_age">You have to be 14 years or older to register!</string>
+    <string name="register_min_age">You have to be 13 years or older to register!</string>
     <string name="register_max_age">You have to be 99 years or younger to register!</string>
     <string name="register_progress_description">Please wait...</string>
     <string name="register_progress_title">Registering</string>

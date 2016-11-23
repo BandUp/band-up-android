@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-import static android.R.attr.minDate;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {

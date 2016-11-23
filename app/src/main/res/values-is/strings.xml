@@ -111,6 +111,6 @@
     <string name="no_distance_available">Vegalengd ekki tiltæk</string>
     <string name="km_distance">km frá þér</string>
     <string name="register_max_age">Þú þarft að vera 99 ára eða yngri til að skrá þig!</string>
-    <string name="register_min_age">Þú þarft að vera 14 ára eða eldri til að skrá þig!</string>
+    <string name="register_min_age">Þú þarft að vera 13 ára eða eldri til að skrá þig!</string>
     <string name="profile_select_song">Velja lag</string>
 </resources>

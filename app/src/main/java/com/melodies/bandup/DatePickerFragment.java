@@ -35,17 +35,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // Set the boundaries for the DatePicker
         final Calendar maxDate = Calendar.getInstance();
-        maxDate.set(Calendar.YEAR, c.get(Calendar.YEAR)-14);
+        maxDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - 13);
 
         // Max age is 99. Then we need to subtract 100 and then add one day.
         final Calendar minDate = Calendar.getInstance();
-        minDate.set(Calendar.YEAR, c.get(Calendar.YEAR)-100);
+        minDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - 101);
 
         // We add one day (not subtract) because adding to a min value brings us forward in time.
         minDate.add(Calendar.MILLISECOND, 86400000);
 
         datePicker.setMaxDate(maxDate.getTimeInMillis());
-        datePicker.setMinDate(minDate.getTimeInMillis()-1000);
+        datePicker.setMinDate(minDate.getTimeInMillis() - 1000);
 
         return datePickerDialog;
     }
@@ -78,7 +78,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             Toast.makeText(getApplicationContext(), R.string.register_max_age, Toast.LENGTH_SHORT).show();
         }
 
-        String age = userAge.toString();
-        return age;
+        return userAge.toString();
     }
 }

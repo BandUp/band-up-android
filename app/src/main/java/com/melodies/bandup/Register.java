@@ -275,8 +275,6 @@ public class Register extends AppCompatActivity implements DatePickable {
         });
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

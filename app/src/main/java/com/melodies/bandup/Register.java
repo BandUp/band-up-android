@@ -108,7 +108,6 @@ public class Register extends AppCompatActivity implements DatePickable {
                                         e.printStackTrace();
                                     }
                                 }
-
                             }
                         }, new BandUpErrorListener() {
                             @Override
@@ -132,7 +131,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                 String textValue = etUsername.getText().toString();
                 if (!hasFocus) {
                     if (textValue.isEmpty()) {
-                        tilUsername.setError(getString(R.string.register_til_error_full_name));
+                        tilUsername.setError(getString(R.string.register_til_error_username));
                     }
                 }
             }
@@ -348,7 +347,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                 etEmail.requestFocus();
             }
             else if (username.isEmpty()) {
-                tilUsername.setError(getString(R.string.register_til_error_full_name));
+                tilUsername.setError(getString(R.string.register_til_error_username));
                 etUsername.requestFocus();
             }
             else if (password.isEmpty()) {

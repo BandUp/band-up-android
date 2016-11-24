@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.melodies.bandup.R;
+import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,13 +26,13 @@ public class UserSearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     // View objects
-    private EditText mUsername;
-    private SeekBar  mSeekBarAges;
-    private Button   mInstruments;
-    private TextView mSelectedInstruments;
-    private Button   mGenres;
-    private TextView mSelectedGenres;
-    private Button   mSearch;
+    private EditText     mUsername;
+    private RangeSeekBar mSeekBarAges;
+    private Button       mInstruments;
+    private TextView     mSelectedInstruments;
+    private Button       mGenres;
+    private TextView     mSelectedGenres;
+    private Button       mSearch;
 
     public UserSearchFragment() {
         // Required empty public constructor
@@ -70,13 +70,13 @@ public class UserSearchFragment extends Fragment {
     }
 
     private void findViews(View rootView) {
-        mUsername = (EditText) rootView.findViewById(R.id.et_search_username);
-        mSeekBarAges = (SeekBar) rootView.findViewById(R.id.search_seekBarAges);
-        mInstruments = (Button) rootView.findViewById(R.id.btn_select_instruments);
+        mUsername            = (EditText) rootView.findViewById(R.id.et_search_username);
+        mSeekBarAges         = (RangeSeekBar) rootView.findViewById(R.id.search_seekBarAges);
+        mInstruments         = (Button) rootView.findViewById(R.id.btn_select_instruments);
         mSelectedInstruments = (TextView) rootView.findViewById(R.id.txt_select_instruments);
-        mGenres = (Button) rootView.findViewById(R.id.btn_select_genres);
-        mSelectedGenres = (TextView) rootView.findViewById(R.id.txt_select_genres);
-        mSearch = (Button) rootView.findViewById(R.id.btn_search);
+        mGenres              = (Button) rootView.findViewById(R.id.btn_select_genres);
+        mSelectedGenres      = (TextView) rootView.findViewById(R.id.txt_select_genres);
+        mSearch              = (Button) rootView.findViewById(R.id.btn_search);
     }
 
 

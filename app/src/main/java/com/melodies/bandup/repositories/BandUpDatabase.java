@@ -79,5 +79,9 @@ public interface BandUpDatabase {
     void register(JSONObject requestObject,
                   BandUpResponseListener responseListener,
                   BandUpErrorListener errorListener);
+
+    void getSearchQuery(JSONObject searchObject,
+                        BandUpResponseListener responseListener,
+                        BandUpErrorListener errorListener);
 }
 

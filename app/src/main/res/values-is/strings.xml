@@ -37,7 +37,7 @@
     <string name="filter_instruments_hint">Hvaða hljóðfæri viltu sía út?</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Notandanafn</string>
+    <string name="login_username">Leita af notendanafni</string>
     <string name="login_password">Lykilorð</string>
     <string name="login_sign_in">Innskrá</string>
     <string name="login_sign_up">Ekki með reikning? Skráðu þig hér!</string>

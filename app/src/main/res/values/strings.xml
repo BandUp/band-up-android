@@ -39,7 +39,7 @@
     <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Username</string>
+    <string name="login_username">Search for a Username</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign In</string>
     <string name="login_sign_up">Do not have an account? Sign up here!</string>

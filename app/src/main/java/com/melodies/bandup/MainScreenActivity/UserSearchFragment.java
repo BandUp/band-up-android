@@ -42,21 +42,31 @@ public class UserSearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     // View objects
-    private EditText     mUsername;
+    private EditText             mUsername;
     private RangeSeekBar<Number> mSeekBarAges;
-    private Button       mInstruments;
-    private TextView     mSelectedInstruments;
-    private Button       mGenres;
-    private TextView     mSelectedGenres;
-    private Button       mSearch;
+    private TextView             mSelectedInstruments;
+    private TextView             mSelectedGenres;
+    private Button               mInstruments;
+    private Button               mGenres;
+    private Button               mSearch;
 
-    // the id's of all selected genres (data that will be sent to search query)
+    // The id's of all selected genres (data that will be sent to search query).
     private ArrayList<CharSequence> mSelectedGenreIdList = new ArrayList<>();
-    // keeps track of names that are selected  (purely for UI purposes)
+
+    // Keeps track of genre names that are selected (purely for UI purposes).
     private ArrayList<CharSequence> mSelectedGenreNames = new ArrayList<>();
-    // specifies if an index in the genres list obtained from backend
+
+    // Specifies if an index in the genres list obtained from backend.
     private boolean[] mIsSelectedGenreIndex = new boolean[20];
 
+    // The id's of all selected instruments (data that will be sent to search query).
+    private ArrayList<CharSequence> mSelectedInstrumentIdList = new ArrayList<>();
+
+    // Keeps track of instrument names that are selected (purely for UI purposes).
+    private ArrayList<CharSequence> mSelectedInstrumentNames = new ArrayList<>();
+
+    // Specifies if an index in the instrument list obtained from backend.
+    private boolean[] mIsSelectedInstrumentIndex = new boolean[20];
 
     public UserSearchFragment() {
         // Required empty public constructor
@@ -65,7 +75,6 @@ public class UserSearchFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @return A new instance of fragment UserSearchFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -87,15 +96,13 @@ public class UserSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_user_search, container, false);
         findViews(rootView);
         return rootView;
     }
 
     /**
-     * find all views to be manipulated and set them to private variables
-     *
+     * Find all views to be manipulated and set them to private variables.
      * @param rootView
      */
     private void findViews(View rootView) {
@@ -109,13 +116,11 @@ public class UserSearchFragment extends Fragment {
     }
 
     /**
-     * display a dialog to show genres and allow user to select multiple
-     *
+     * Display a dialog to show genres and allow user to select multiple.
      * @param v View which is calling this function
      */
-
     public void onShowGenres(View v){
-        Log.d(TAG, "Show genres pushed");
+        Log.d(TAG, "Show genres pushed!");
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getGenres(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -126,15 +131,60 @@ public class UserSearchFragment extends Fragment {
             public void onBandUpErrorResponse(VolleyError error) {
                 Log.d(TAG, error.getMessage());
                 Toast.makeText(getContext(),
-                        "oops, hit an unexpected error while fetching instruments",
+                        "Oops, hit an unexpected error while fetching genres!",
                         Toast.LENGTH_LONG).show();
             }
         });
     }
 
     /**
-     * create and display selection dialog made from the genres listed in the response object
-     * @param response an array of all genres
+     * Display a dialog to show instruments and allow user to select multiple.
+     * @param v
+     */
+    public void onShowInstruments(View v) {
+        Log.d(TAG, "Show instruments pushed!");
+        DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getInstruments(new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                createInstrumentsDialog((JSONArray) response);
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                Log.d(TAG, error.getMessage());
+                Toast.makeText(getContext(),
+                        "Oops, hit an unexpected error while fetching instruments!",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * Create and display selection dialog made from the instruments listed in the response object.
+     * @param response
+     */
+    private void createInstrumentsDialog(JSONArray response) {
+        try {
+            CharSequence[] itemNames = new CharSequence[response.length()];
+            ArrayList<CharSequence> itemIds = new ArrayList<>();
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject curr = response.getJSONObject(i);
+                itemNames[i] = curr.getString("name");
+                itemIds.add(curr.getString("_id"));
+            }
+            Log.d(TAG, "All instruments have been added to list!");
+
+            Dialog instrumentDialog = createInstrumentsSelectionDialog(itemNames, itemIds);
+            instrumentDialog.show();
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create and display selection dialog made from the genres listed in the response object.
+     * @param response an array of all genres.
      */
     private void createGenresDialog(JSONArray response) {
         try {
@@ -145,18 +195,68 @@ public class UserSearchFragment extends Fragment {
                 itemNames[i] = curr.getString("name");
                 itemIds.add(curr.getString("_id"));
             }
-            Log.d(TAG, "All items added to list");
+            Log.d(TAG, "All genres have been added to list!");
 
-            Dialog myDialog = createGenresSelectionDialog(itemNames, itemIds);
-            myDialog.show();
+            Dialog genresDialog = createGenresSelectionDialog(itemNames, itemIds);
+            genresDialog.show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * use dialog builder to create checkbox dialog from itemNames and select itemIds
-     *
+     * Use dialog builder to create checkbox dialog from itemNames and select itemIds.
+     * @param itemNames list of all instrument names to display.
+     * @param itemIds list of all instrument id's to display (id index corresponds to name index).
+     * @return
+     */
+    private Dialog createInstrumentsSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final ArrayList<CharSequence> backup = (ArrayList<CharSequence>) mSelectedInstrumentIdList.clone();
+        builder.setTitle("Select instruments")
+                .setMultiChoiceItems(itemNames, mIsSelectedInstrumentIndex, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        // When instrument is selected or de-selected.
+                        if (isChecked) {
+                            // Add instrument id to selected.
+                            mSelectedInstrumentIdList.add(itemIds.get(which));
+                            mSelectedInstrumentNames.add(itemNames[which]);
+                            mIsSelectedInstrumentIndex[which] = true;
+                        } else if (mSelectedInstrumentIdList.contains(itemIds.get(which))) {
+                            // Remove instrument from list.
+                            mSelectedInstrumentIdList.remove(itemIds.get(which));
+                            mSelectedInstrumentNames.remove(itemNames[which]);
+                            mIsSelectedInstrumentIndex[which] = false;
+                        }
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Set text on instruments list element.
+                        mSelectedInstruments.setText("");
+                        for (int i = 0; i < mSelectedInstrumentNames.size(); i++) {
+                            mSelectedInstruments.append(mSelectedInstrumentNames.get(i));
+                            if (!(i == mSelectedInstrumentNames.size() - 1)) {
+                                mSelectedInstruments.append(", ");
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Restore selected instruments to previous state.
+                        mSelectedInstrumentIdList = backup;
+                    }
+                });
+
+        return builder.create();
+    }
+
+    /**
+     * Use dialog builder to create checkbox dialog from itemNames and select itemIds.
      * @param itemNames list of all genre names to display
      * @param itemIds list of all genre id's to display (id index corresponds to name index)
      * @return dialog
@@ -164,19 +264,18 @@ public class UserSearchFragment extends Fragment {
     private Dialog createGenresSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final ArrayList<CharSequence> backup = (ArrayList<CharSequence>) mSelectedGenreIdList.clone();
-        //mSelectedGenreIdList.clear();
         builder.setTitle("Select genres")
                 .setMultiChoiceItems(itemNames, mIsSelectedGenreIndex, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        // when item is selected or de-selected
-                        if (isChecked){
-                            // add item id to selected
+                        // When genre is selected or de-selected.
+                        if (isChecked) {
+                            // Add genre id to selected
                             mSelectedGenreIdList.add(itemIds.get(which));
                             mSelectedGenreNames.add(itemNames[which]);
                             mIsSelectedGenreIndex[which] = true;
-                        }else if (mSelectedGenreIdList.contains(itemIds.get(which))){
-                            // remove item from list
+                        } else if (mSelectedGenreIdList.contains(itemIds.get(which))) {
+                            // Remove genre from list
                             mSelectedGenreIdList.remove(itemIds.get(which));
                             mSelectedGenreNames.remove(itemNames[which]);
                             mIsSelectedGenreIndex[which] = false;
@@ -186,11 +285,11 @@ public class UserSearchFragment extends Fragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // set text on genre list element
+                        // Set text on genre list element.
                         mSelectedGenres.setText("");
-                        for (int i = 0; i < mSelectedGenreNames.size(); i++){
+                        for (int i = 0; i < mSelectedGenreNames.size(); i++) {
                             mSelectedGenres.append(mSelectedGenreNames.get(i));
-                            if (!(i == mSelectedGenreNames.size() - 1)){
+                            if (!(i == mSelectedGenreNames.size() - 1)) {
                                 mSelectedGenres.append(", ");
                             }
                         }
@@ -208,7 +307,7 @@ public class UserSearchFragment extends Fragment {
     }
 
     /**
-     * take all parameters from form and send search request
+     * Take all parameters from form and send search request.
      * @param view
      */
     public void onClickSearch(View view){
@@ -218,16 +317,14 @@ public class UserSearchFragment extends Fragment {
     }
 
     /**
-     * make and send request to server and respond to results
-     *
+     * Make and send request to server and respond to results.
      * @param queryObject JSON query for server
      */
     private void makeQuery(JSONObject queryObject) {
     }
 
     /**
-     * take all information from form and if not in default value state insert into query
-     *
+     * Take all information from form and if not in default value state insert into query.
      * @return JSONObject that represents our query
      */
     private JSONObject makeQueryJson() {

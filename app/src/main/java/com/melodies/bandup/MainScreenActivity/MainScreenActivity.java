@@ -61,7 +61,7 @@ public class MainScreenActivity extends AppCompatActivity
         SoundCloudLoginFragment.OnFragmentInteractionListener,
         SoundCloudPlayerFragment.OnFragmentInteractionListener,
         UserSearchFragment.OnFragmentInteractionListener,
-        LocationListener{
+        LocationListener {
 
     UserListFragment userListFragment;
     UserDetailsFragment userDetailsFragment;
@@ -284,11 +284,16 @@ public class MainScreenActivity extends AppCompatActivity
         }
     }
 
-    public void onClickSearch(View view){
+    public void onClickSearch(View view) {
         mUserSearchFragment.onClickSearch(view);
     }
-    public void onShowGenres(View v){
+
+    public void onShowGenres(View v) {
         mUserSearchFragment.onShowGenres(v);
+    }
+
+    public void onShowInstruments(View v) {
+        mUserSearchFragment.onShowInstruments(v);
     }
 
     // ======= Location setup ========

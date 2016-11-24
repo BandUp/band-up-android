@@ -10,7 +10,8 @@
         android:text="@string/please_enter_search_parameters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:layout_margin="10dp"
+        android:textSize="15sp"/>
 
     <View
         android:layout_width="match_parent"
@@ -60,7 +61,8 @@
         android:text="@string/select_instruments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:onClick="onShowInstruments"/>
 
     <TextView
         android:id="@+id/txt_select_instruments"
@@ -71,7 +73,7 @@
         android:textAlignment="center"/>
 
     <View
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
@@ -93,7 +95,7 @@
         android:layout_gravity="center"/>
 
     <View
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
@@ -101,9 +103,13 @@
     <Button
         android:id="@+id/btn_search"
         android:text="@string/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:textColor="#000000"
+        android:background="@drawable/user_list_like_button"
         android:onClick="onClickSearch"/>
 
 </LinearLayout>

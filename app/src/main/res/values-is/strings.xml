@@ -116,4 +116,8 @@
     <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
     <string name="select_instruments">Velja hljóðfæri</string>
+    <string name="please_enter_search_parameters">Vinsamlega skilgreindu leitar skilyrði</string>
+    <string name="ages">Aldur</string>
+    <string name="all_genres">Allir tónlistarsmekkir</string>
+    <string name="all_instuments">Öll hljóðfæri</string>
 </resources>

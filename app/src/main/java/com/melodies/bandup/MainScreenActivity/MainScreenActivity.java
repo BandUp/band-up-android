@@ -284,6 +284,13 @@ public class MainScreenActivity extends AppCompatActivity
         }
     }
 
+    public void onClickSearch(View view){
+        mUserSearchFragment.onClickSearch(view);
+    }
+    public void onShowGenres(View v){
+        mUserSearchFragment.onShowGenres(v);
+    }
+
     // ======= Location setup ========
     private final int LOCATION_REQUEST_CODE = 333;
 

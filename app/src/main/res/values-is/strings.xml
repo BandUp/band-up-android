@@ -120,4 +120,5 @@
     <string name="ages">Aldur</string>
     <string name="all_genres">Allir tónlistarsmekkir</string>
     <string name="all_instuments">Öll hljóðfæri</string>
+    <string name="main_nav_search">Leita</string>
 </resources>

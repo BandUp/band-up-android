@@ -60,6 +60,7 @@ public class MainScreenActivity extends AppCompatActivity
         SoundCloudSelectorFragment.OnFragmentInteractionListener,
         SoundCloudLoginFragment.OnFragmentInteractionListener,
         SoundCloudPlayerFragment.OnFragmentInteractionListener,
+        UserSearchFragment.OnFragmentInteractionListener,
         LocationListener{
 
     UserListFragment userListFragment;
@@ -67,6 +68,7 @@ public class MainScreenActivity extends AppCompatActivity
     MatchesFragment matchesFragment;
     SettingsFragment settingsFragment;
     ProfileFragment profileFragment;
+    UserSearchFragment mUserSearchFragment;
 
     ProgressDialog logoutDialog;
     LocationManager locationManager;
@@ -92,11 +94,12 @@ public class MainScreenActivity extends AppCompatActivity
             editor.apply();
         }
         // Create all fragments
-        userListFragment    = new UserListFragment();
-        userDetailsFragment = new UserDetailsFragment();
+        userListFragment    = UserListFragment.newInstance(null);
+        userDetailsFragment = UserDetailsFragment.newInstance();
         matchesFragment     = new MatchesFragment();
-        settingsFragment    = new SettingsFragment();
-        profileFragment     = new ProfileFragment();
+        settingsFragment    = SettingsFragment.newInstance();
+        profileFragment     = ProfileFragment.newInstance();
+        mUserSearchFragment = UserSearchFragment.newInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -174,30 +177,41 @@ public class MainScreenActivity extends AppCompatActivity
         int id = item.getItemId();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (id == R.id.nav_near_me) {
-            ft.replace(R.id.mainFrame, userListFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_user_list));
-        } else if (id == R.id.nav_matches) {
-            ft.replace(R.id.mainFrame, matchesFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_matches));
-        } else if (id == R.id.nav_edit_profile) {
-            ft.replace(R.id.mainFrame, profileFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_edit_profile));
-        } else if (id == R.id.nav_settings) {
-            ft.replace(R.id.mainFrame, settingsFragment);
-            ft.commit();
-            setTitle(getString(R.string.main_title_settings));
-        } else if (id == R.id.nav_logout) {
-            logout();
-            logoutDialog = new ProgressDialog(MainScreenActivity.this);
-            logoutDialog.setMessage("Logging out");
-            logoutDialog.setTitle("Please wait...");
-            logoutDialog.show();
-            // Not working NullPointerException.
-            //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+        switch (id){
+            case R.id.nav_near_me:
+                ft.replace(R.id.mainFrame, userListFragment);
+                ft.commit();
+                setTitle(getString(R.string.main_title_user_list));
+                break;
+            case R.id.nav_matches:
+                ft.replace(R.id.mainFrame, matchesFragment);
+                ft.commit();
+                setTitle(getString(R.string.main_title_matches));
+                break;
+            case R.id.nav_edit_profile:
+                ft.replace(R.id.mainFrame, profileFragment);
+                ft.commit();
+                setTitle(getString(R.string.main_title_edit_profile));
+                break;
+            case R.id.nav_settings:
+                ft.replace(R.id.mainFrame, settingsFragment);
+                ft.commit();
+                setTitle(getString(R.string.main_title_settings));
+                break;
+            case R.id.nav_search:
+                ft.replace(R.id.mainFrame, mUserSearchFragment);
+                ft.commit();
+                setTitle(getString(R.string.search));
+                break;
+            case R.id.nav_logout:
+                logout();
+                logoutDialog = new ProgressDialog(MainScreenActivity.this);
+                logoutDialog.setMessage("Logging out");
+                logoutDialog.setTitle("Please wait...");
+                logoutDialog.show();
+                break;
+            default:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

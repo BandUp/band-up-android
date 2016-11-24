@@ -64,7 +64,6 @@ public class UserListFragment extends Fragment {
      * @param userlist a list of users to display
      * @return A new instance of fragment UserListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static UserListFragment newInstance(User[] userlist) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();

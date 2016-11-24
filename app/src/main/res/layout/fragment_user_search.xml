@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_seekBarAges"
-        rsb:absoluteMinValue="14"
+        rsb:absoluteMinValue="13"
         rsb:absoluteMaxValue="99"
         android:layout_marginTop="-20dp"
         android:layout_marginBottom="10dp" />

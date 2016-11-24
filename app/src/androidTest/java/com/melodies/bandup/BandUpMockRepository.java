@@ -94,7 +94,6 @@ public class BandUpMockRepository implements BandUpDatabase {
 
     @Override
     public void register(JSONObject requestObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
-        responseListener.onBandUpResponse("");
     }
 
     @Override

@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 
@@ -43,16 +45,11 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class UserListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private AdView mAdView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    // prevents reloading of data from server if used as search results
+    private boolean mIsSearch = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,16 +61,16 @@ public class UserListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param userlist a list of users to display
      * @return A new instance of fragment UserListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserListFragment newInstance(String param1, String param2) {
+    public static UserListFragment newInstance(User[] userlist) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        if (userlist != null){
+            args.putSerializable("userlist", userlist);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,14 +87,30 @@ public class UserListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            if(getArguments().getSerializable("userlist") != null){
+                ArrayList<User> userArrayList = new ArrayList<>();
+                Collections.addAll(userArrayList, (User[]) getArguments().getSerializable("userlist"));
+                mAdapter = new UserListAdapter(getChildFragmentManager());
+                for (User u : userArrayList){
+                    mAdapter.addUser(u);
+                }
+                mIsSearch = true;
+                return;
+            }
         }
         mAdapter = new UserListAdapter(getChildFragmentManager());
 
     }
 
+    /**
+     * get users from backend and insert them into the user list adapter
+     */
     private void getUserList() {
+        if (mIsSearch){
+            progressBar.setVisibility(View.INVISIBLE);
+            mSwipeRefreshLayout.setRefreshing(false);
+            return;
+        }
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -221,13 +234,6 @@ public class UserListFragment extends Fragment {
         getUserList();
 
         return rootView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

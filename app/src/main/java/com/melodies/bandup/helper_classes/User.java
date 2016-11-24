@@ -21,12 +21,12 @@ public class User implements Serializable {
     public List<String> genres;
     public String status;
     public Integer distance;
-    public int percentage;
+    public Integer percentage;
     public String imgURL;
     public Date dateOfBirth;
     public Boolean userHasLiked;
     public String aboutme;
-    public int soundCloudId;
+    public Integer soundCloudId;
     public String soundCloudURL;
 
     public Integer ageCalc() {

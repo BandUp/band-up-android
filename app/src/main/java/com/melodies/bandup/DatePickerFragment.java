@@ -14,6 +14,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     Integer mYear = null, mMonth = null, mDay = null;
+    // values used to determine if age is within our guideline max and min values
+    private static final int MIN_AGE = 13;
+    private static final int MAX_AGE = 100;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -36,11 +39,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // Set the boundaries for the DatePicker
         final Calendar maxDate = Calendar.getInstance();
-        maxDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - 13);
+        maxDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - MIN_AGE);
 
         // Max age is 99. Then we need to subtract 100 and then add one day.
         final Calendar minDate = Calendar.getInstance();
-        minDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - 100);
+        minDate.set(Calendar.YEAR, c.get(Calendar.YEAR) - MAX_AGE);
 
         // We add one day (not subtract) because adding to a min value brings us forward in time.
         minDate.add(Calendar.MILLISECOND, 86400000);
@@ -72,10 +75,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             userAge--;
         }
 
-        if (userAge < 13) {
+        if (userAge < MIN_AGE) {
             Toast.makeText(getApplicationContext(), R.string.register_min_age, Toast.LENGTH_SHORT).show();
         }
-        else if (userAge > 99) {
+        else if (userAge > MAX_AGE) {
             Toast.makeText(getApplicationContext(), R.string.register_max_age, Toast.LENGTH_SHORT).show();
         }
 

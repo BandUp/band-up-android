@@ -6,10 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Bergthor on 15.10.2016.
- */
-
 public class User implements Serializable {
     public User(){
         instruments = new ArrayList<>();

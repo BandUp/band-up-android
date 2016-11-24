@@ -10,10 +10,6 @@ import com.melodies.bandup.helper_classes.User;
 
 import java.util.ArrayList;
 
-/**
- * Created by Bergthor on 1.11.2016.
- */
-
 public class UserListAdapter extends FragmentStatePagerAdapter {
     /**
      * The list that is used to display the users.

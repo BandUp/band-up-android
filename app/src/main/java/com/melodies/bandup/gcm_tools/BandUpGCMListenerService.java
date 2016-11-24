@@ -16,10 +16,6 @@ import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
 
-/**
- * Created by Notandi on 20.10.2016.
- */
-
 public class BandUpGCMListenerService extends GcmListenerService {
     // name for service thread
     private static String TAG = "BandUpGCMListenerService";
@@ -29,7 +25,6 @@ public class BandUpGCMListenerService extends GcmListenerService {
     private static final int MATCH_NOTIFICATION_ID = 1;
     private static final String MSG_NOTIFICATION = "msgNotification";
     private static final int MSG_NOTIFICATION_ID = 2;
-
 
     /**
      * gets called for every notification that arrives

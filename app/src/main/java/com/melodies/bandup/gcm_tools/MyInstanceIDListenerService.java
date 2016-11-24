@@ -1,9 +1,5 @@
 package com.melodies.bandup.gcm_tools;
 
-/**
- * Created by dagur on 03-Nov-16.
- */
-
 import android.content.Intent;
 
 import com.google.android.gms.iid.InstanceIDListenerService;

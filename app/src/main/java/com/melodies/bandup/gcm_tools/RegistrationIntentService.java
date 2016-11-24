@@ -18,10 +18,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-/**
- * Created by Notandi on 20.10.2016.
- */
-
 public class RegistrationIntentService extends IntentService {
 
     private static final String[] TOPICS = {"global"};

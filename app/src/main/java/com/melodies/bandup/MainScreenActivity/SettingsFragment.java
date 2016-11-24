@@ -92,7 +92,6 @@ public class SettingsFragment extends Fragment {
         return rootView;
     }
 
-
     // initializing all Views
     private void initializeViews(View rootView) {
         adInit(rootView);

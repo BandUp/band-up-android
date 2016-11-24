@@ -26,10 +26,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Bergthor on 1.11.2016.
- */
-
 public class UserItemFragment extends Fragment {
     int mNum;
 

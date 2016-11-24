@@ -27,9 +27,6 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Created by Dagur on 3.9.2016.
- */
 public class VolleySingleton {
     private static VolleySingleton mInstance;
     private RequestQueue mRequestQueue;

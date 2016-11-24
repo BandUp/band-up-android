@@ -12,10 +12,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by Bergthor on 22.9.2016.
- */
-
 public class JsonArrayToObjectRequest extends JsonRequest<JSONObject> {
 
     Response.Listener<JSONObject> mListener;

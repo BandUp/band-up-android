@@ -4,10 +4,6 @@ import android.content.Context;
 
 import com.melodies.bandup.repositories.BandUpDatabase;
 
-/**
- * Created by Bergthor on 16.10.2016.
- */
-
 public class DatabaseSingleton {
 
     static DatabaseSingleton mInstance;

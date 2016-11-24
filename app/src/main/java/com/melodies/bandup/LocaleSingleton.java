@@ -4,10 +4,6 @@ import android.content.Context;
 
 import com.melodies.bandup.locale.LocaleRules;
 
-/**
- * Created by Bergthor on 16.10.2016.
- */
-
 public class LocaleSingleton {
 
     static LocaleSingleton mInstance;

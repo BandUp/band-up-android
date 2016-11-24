@@ -5,7 +5,7 @@
 
     <!-- Register Screen -->
     <string name="register_email">Tölvupóstur</string>
-    <string name="register_username">Fullt nafn</string>
+    <string name="register_username">Notendanafn</string>
     <string name="register_password">Lykilorð</string>
     <string name="register_confirm_password">Staðfesta lykilorð</string>
     <string name="register_btn_register">Nýskrá</string>
@@ -13,7 +13,7 @@
     <string name="register_til_error_email_format">Þetta tölvupóstfang er ekki á réttu formi</string>
     <string name="register_til_error_email_linked">Þetta tölvupóstfang er nú þegar skráð</string>
     <string name="register_til_error_fill_email">Þú verður að setja inn tölvupóstfang</string>
-    <string name="register_til_error_full_name">Þú verður að setja inn fullt nafn</string>
+    <string name="register_til_error_username">Þú verður að setja inn notendanafn</string>
     <string name="register_til_error_fill_password">Þú verður að setja inn lykilorð</string>
     <string name="register_til_error_password_mismatch">Lykilorð passa ekki</string>
     <string name="register_til_error_password_length">Lykilorðið þitt verður að vera a.m.k. 6 stafir</string>

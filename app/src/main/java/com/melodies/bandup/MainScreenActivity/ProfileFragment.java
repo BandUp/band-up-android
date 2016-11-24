@@ -218,8 +218,11 @@ public class ProfileFragment extends Fragment{
                 }
             }
         }
-        //txtFavorite.setText("Drums");
         txtAboutMe.setText(u.aboutme);
+
+        // Bug fix for double list when user cancels photo upload.
+        txtGenresList.setText("");
+        txtInstrumentsList.setText("");
 
         for (int i = 0; i < u.genres.size(); i++) {
             txtGenresList.append(u.genres.get(i) + "\n");
@@ -380,7 +383,6 @@ public class ProfileFragment extends Fragment{
             if (requestCode == GALLERY_REQUEST) {
                 // Get the URI from the intent result.
                 sendMessage(data);
-
             }
         }
     }
@@ -466,7 +468,6 @@ public class ProfileFragment extends Fragment{
                 perms.add(permissions[i]);
                 hasAllPermissions = false;
             }
-
         }
 
         if (!hasAllPermissions) {

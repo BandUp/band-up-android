@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.melodies.bandup.R;
 
@@ -20,6 +24,15 @@ import com.melodies.bandup.R;
  */
 public class UserSearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+
+    // View objects
+    private EditText mUsername;
+    private SeekBar  mSeekBarAges;
+    private Button   mInstruments;
+    private TextView mSelectedInstruments;
+    private Button   mGenres;
+    private TextView mSelectedGenres;
+    private Button   mSearch;
 
     public UserSearchFragment() {
         // Required empty public constructor
@@ -43,6 +56,7 @@ public class UserSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
         }
     }
 
@@ -50,15 +64,21 @@ public class UserSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_user_search, container, false);
+        findViews(rootView);
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private void findViews(View rootView) {
+        mUsername = (EditText) rootView.findViewById(R.id.et_search_username);
+        mSeekBarAges = (SeekBar) rootView.findViewById(R.id.search_seekBarAges);
+        mInstruments = (Button) rootView.findViewById(R.id.btn_select_instruments);
+        mSelectedInstruments = (TextView) rootView.findViewById(R.id.txt_select_instruments);
+        mGenres = (Button) rootView.findViewById(R.id.btn_select_genres);
+        mSelectedGenres = (TextView) rootView.findViewById(R.id.txt_select_genres);
+        mSearch = (Button) rootView.findViewById(R.id.btn_search);
     }
+
 
     @Override
     public void onAttach(Context context) {

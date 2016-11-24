@@ -11,18 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
     <EditText
-        android:id="@+id/search_user_id"
+        android:id="@+id/et_search_username"
         android:hint="@string/login_username"
         android:inputType="text"
         android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <View
         android:layout_margin="5dp"
         android:layout_width="match_parent"
@@ -54,30 +56,12 @@
         android:background="@android:color/darker_gray"/>
 
     <Button
-        android:id="@+id/btn_select_genres"
-        android:text="@string/select_genres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-    <TextView
-        android:id="@+id/txt_select_genres"
-        android:text="@string/all_genres"
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-    <View
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-    <Button
         android:id="@+id/btn_select_instruments"
         android:text="@string/select_instruments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
+
     <TextView
         android:id="@+id/txt_select_instruments"
         android:text="@string/all_instuments"
@@ -85,6 +69,28 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAlignment="center"/>
+
+    <View
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Button
+        android:id="@+id/btn_select_genres"
+        android:text="@string/select_genres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/txt_select_genres"
+        android:text="@string/all_genres"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <View
         android:layout_margin="5dp"
         android:layout_width="match_parent"

@@ -418,9 +418,6 @@ public class UserSearchFragment extends Fragment {
         }catch (JSONException ex){
             ex.printStackTrace();
         }
-
-
-
         return query;
     }
 

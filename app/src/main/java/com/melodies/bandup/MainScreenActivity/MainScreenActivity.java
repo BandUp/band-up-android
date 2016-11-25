@@ -313,7 +313,6 @@ public class MainScreenActivity extends AppCompatActivity
                 editor.apply();
                 createLocationRequest();
             } else {
-                //Toast.makeText(this, R.string.user_allow_location, Toast.LENGTH_LONG).show();
                 // Permission denied, boo!
                 // Since the user has denied, we will not display it again.
                 SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -378,7 +377,7 @@ public class MainScreenActivity extends AppCompatActivity
                         @Override
                         public void onBandUpErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "something went wrong sending location", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Something went wrong sending location", Toast.LENGTH_LONG).show();
                         }
                     });
         } catch (JSONException e) {

@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -98,7 +97,6 @@ public class UserListFragment extends Fragment {
             }
         }
         mAdapter = new UserListAdapter(getChildFragmentManager());
-
     }
 
     /**
@@ -133,38 +131,41 @@ public class UserListFragment extends Fragment {
 
                 for (int i = 0; i < responseArr.length(); i++) {
                     try {
-                        JSONObject item = responseArr.getJSONObject(i);
-                        User user = new User();
-                        if (!item.isNull("_id"))      user.id = item.getString("_id");
-                        if (!item.isNull("username")) user.name = item.getString("username");
-                        if (!item.isNull("status"))   user.status = item.getString("status");
-                        if (!item.isNull("distance")) user.distance = item.getInt("distance");
+                        if (responseArr.get(i) != null) {
+                            JSONObject item = responseArr.getJSONObject(i);
+                            User user = new User();
+                            if (!item.isNull("_id")) user.id = item.getString("_id");
+                            if (!item.isNull("username")) user.name = item.getString("username");
+                            if (!item.isNull("status")) user.status = item.getString("status");
+                            if (!item.isNull("distance")) user.distance = item.getInt("distance");
 
-                        user.percentage = item.getInt("percentage");
-                        if(!item.isNull("image")) {
-                            JSONObject userImg = item.getJSONObject("image");
-                            if (!userImg.isNull("url")) {
-                                user.imgURL = userImg.getString("url");
+                            user.percentage = item.getInt("percentage");
+                            if (!item.isNull("image")) {
+                                JSONObject userImg = item.getJSONObject("image");
+                                if (!userImg.isNull("url")) {
+                                    user.imgURL = userImg.getString("url");
+                                }
                             }
+
+                            if (!item.isNull("dateOfBirth")) {
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
+                            }
+
+                            JSONArray instrumentArray = item.getJSONArray("instruments");
+
+                            for (int j = 0; j < instrumentArray.length(); j++) {
+                                user.instruments.add(instrumentArray.getString(j));
+                            }
+
+                            JSONArray genreArray = item.getJSONArray("genres");
+
+                            for (int j = 0; j < genreArray.length(); j++) {
+                                user.genres.add(genreArray.getString(j));
+                            }
+
+                            mAdapter.addUser(user);
                         }
-
-                        if (!item.isNull("dateOfBirth")) {
-                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
-                        }
-
-                        JSONArray instrumentArray = item.getJSONArray("instruments");
-
-                        for (int j = 0; j < instrumentArray.length(); j++) {
-                            user.instruments.add(instrumentArray.getString(j));
-                        }
-
-                        JSONArray genreArray = item.getJSONArray("genres");
-
-                        for (int j = 0; j < genreArray.length(); j++) {
-                            user.genres.add(genreArray.getString(j));
-                        }
-                        mAdapter.addUser(user);
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
                         e.printStackTrace();

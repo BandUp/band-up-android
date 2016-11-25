@@ -406,19 +406,19 @@ public class UserSearchFragment extends Fragment {
             }
             // set genre and instrument selection
             if (mSelectedGenreIdList.size() > 0){
-                JSONObject genreQuery = new JSONObject();
                 JSONObject elemMatch = new JSONObject();
-                elemMatch.put("$in", mSelectedGenreIdList);
-                genreQuery.put("$elemMatch", elemMatch);
-                query.put("genres", genreQuery);
+                JSONArray genres = new JSONArray();
+                for (int i = 0; i < mSelectedGenreIdList.size(); i++){
+                    genres.put(mSelectedGenreIdList.get(i));
+                }
+                elemMatch.put("$in", genres);
+                query.put("genres", elemMatch);
             }
 
             if(mSelectedInstrumentIdList.size() > 0){
-                JSONObject instruQuery = new JSONObject();
                 JSONObject elemMatch = new JSONObject();
                 elemMatch.put("$in", mSelectedInstrumentIdList);
-                instruQuery.put("$elemMatch", elemMatch);
-                query.put("instruments", instruQuery);
+                query.put("instruments", elemMatch);
             }
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");

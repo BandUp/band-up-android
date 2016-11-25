@@ -85,6 +85,31 @@ public class UserSearchFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Used to show the selected instruments and genres that the user has previously chosen.
+     * @param arrayNameList array of instrument or genre names.
+     * @param selectedText text that will be displayed.
+     */
+    public void writeToSelectionText(ArrayList<CharSequence> arrayNameList, TextView selectedText) {
+        // If user selected something before then add it to the selectedText.
+        if (arrayNameList.size() > 0) {
+            selectedText.setText("");
+            for (int i = 0; i < arrayNameList.size(); i++) {
+                selectedText.append(arrayNameList.get(i));
+                if (!(i == arrayNameList.size() - 1)) {
+                    selectedText.append(", ");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        writeToSelectionText(mSelectedInstrumentNames, mSelectedInstruments);
+        writeToSelectionText(mSelectedGenreNames, mSelectedGenres);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

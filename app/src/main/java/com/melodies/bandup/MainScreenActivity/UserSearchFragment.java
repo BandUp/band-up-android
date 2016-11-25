@@ -417,7 +417,11 @@ public class UserSearchFragment extends Fragment {
 
             if(mSelectedInstrumentIdList.size() > 0){
                 JSONObject elemMatch = new JSONObject();
-                elemMatch.put("$in", mSelectedInstrumentIdList);
+                JSONArray instruments = new JSONArray();
+                for (int i = 0; i < mSelectedInstrumentIdList.size(); i++){
+                    instruments.put(mSelectedInstrumentIdList.get(i));
+                }
+                elemMatch.put("$in", instruments);
                 query.put("instruments", elemMatch);
             }
 

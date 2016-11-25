@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ import java.util.Locale;
  */
 public class UserListFragment extends Fragment {
     private AdView mAdView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // prevents reloading of data from server if used as search results
     private boolean mIsSearch = false;
@@ -106,7 +104,6 @@ public class UserListFragment extends Fragment {
     private void getUserList() {
         if (mIsSearch){
             progressBar.setVisibility(View.INVISIBLE);
-            mSwipeRefreshLayout.setRefreshing(false);
             return;
         }
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
@@ -187,7 +184,6 @@ public class UserListFragment extends Fragment {
                     System.err.println("User List progressBar is null");
                 }
 
-                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         }, new BandUpErrorListener() {
@@ -195,7 +191,6 @@ public class UserListFragment extends Fragment {
             public void onBandUpErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.INVISIBLE);
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -218,18 +213,6 @@ public class UserListFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // TODO: Do not clear, but replace the items that are different.
-                getUserList();
-            }
-        });
-
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
 
         partialView.setVisibility(View.VISIBLE);
         getUserList();

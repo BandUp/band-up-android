@@ -5,7 +5,7 @@
 
     <!-- Register Screen -->
     <string name="register_email">Tölvupóstur</string>
-    <string name="register_username">Notendanafn</string>
+    <string name="register_username">Notandanafn</string>
     <string name="register_password">Lykilorð</string>
     <string name="register_confirm_password">Staðfesta lykilorð</string>
     <string name="register_btn_register">Nýskrá</string>
@@ -13,7 +13,7 @@
     <string name="register_til_error_email_format">Þetta tölvupóstfang er ekki á réttu formi</string>
     <string name="register_til_error_email_linked">Þetta tölvupóstfang er nú þegar skráð</string>
     <string name="register_til_error_fill_email">Þú verður að setja inn tölvupóstfang</string>
-    <string name="register_til_error_username">Þú verður að setja inn notendanafn</string>
+    <string name="register_til_error_username">Þú verður að setja inn notandanafn</string>
     <string name="register_til_error_fill_password">Þú verður að setja inn lykilorð</string>
     <string name="register_til_error_password_mismatch">Lykilorð passa ekki</string>
     <string name="register_til_error_password_length">Lykilorðið þitt verður að vera a.m.k. 6 stafir</string>
@@ -37,7 +37,7 @@
     <string name="filter_instruments_hint">Hvaða hljóðfæri viltu sía út?</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Leita af notendanafni</string>
+    <string name="login_username">Notandanafn</string>
     <string name="login_password">Lykilorð</string>
     <string name="login_sign_in">Innskrá</string>
     <string name="login_sign_up">Ekki með reikning? Skráðu þig hér!</string>
@@ -115,8 +115,9 @@
     <string name="profile_select_song">Velja lag</string>
     <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
+    <string name="search_find_username">Leita að notandanafni</string>
     <string name="select_instruments">Velja hljóðfæri</string>
-    <string name="please_enter_search_parameters">Vinsamlega skilgreindu leitar skilyrði</string>
+    <string name="please_enter_search_parameters">Vinsamlega skilgreindu leitarskilyrði</string>
     <string name="ages">Aldur</string>
     <string name="all_genres">Allir tónlistarsmekkir</string>
     <string name="all_instuments">Öll hljóðfæri</string>

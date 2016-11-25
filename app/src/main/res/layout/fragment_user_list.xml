@@ -25,11 +25,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity"
             tools:showIn="@layout/app_bar_user_list">
-            <android.support.v4.widget.SwipeRefreshLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/swiperefresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
@@ -37,7 +32,6 @@
                 android:layout_weight="1"
                 android:background="@color/bandUpGray">
             </android.support.v4.view.ViewPager>
-            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
     </FrameLayout>
     <include layout="@layout/ads"/>

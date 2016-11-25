@@ -129,6 +129,7 @@
     <string name="please_enter_search_parameters">Please enter search parameters</string>
     <string name="ages">Ages</string>
     <string name="all_genres">All genres</string>
-    <string name="all_instuments">All instuments</string>
+    <string name="all_instuments">All instruments</string>
+    <string name="search_find_username">Search for a username</string>
     <string name="main_nav_search">Search</string>
 </resources>

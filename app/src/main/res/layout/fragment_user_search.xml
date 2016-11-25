@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/et_search_username"
-        android:hint="@string/login_username"
+        android:hint="@string/search_find_username"
         android:inputType="text"
         android:maxLines="1"
         android:layout_width="match_parent"

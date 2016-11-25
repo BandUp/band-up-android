@@ -148,13 +148,13 @@ public class UserDetailsFragment extends Fragment {
             fetchCurrentUser(getArguments().getString("user_id"));
         } else {
             System.out.println(currentUser.id);
-            displayUser(currentUser);
+            populateUser(currentUser);
         }
 
         return rootView;
     }
 
-    private void displayUser(User u) {
+    private void populateUser(User u) {
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -286,7 +286,7 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("soundcloudurl")){
                             currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
                         }
-                        displayUser(currentUser);
+                        populateUser(currentUser);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (ParseException e) {

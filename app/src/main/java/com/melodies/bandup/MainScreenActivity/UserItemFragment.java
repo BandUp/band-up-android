@@ -117,8 +117,10 @@ public class UserItemFragment extends Fragment {
         initializeTextViews(rootView);
         initializeButtons(rootView);
         setFonts();
+        populateUser(mUser);
 
-        SettingsFilterDisplay();
+        // This should be done in the UserListFragment
+        //SettingsFilterDisplay();
 
         return rootView;
     }
@@ -135,7 +137,7 @@ public class UserItemFragment extends Fragment {
         int minAge = loadUserCredentials("minAge");
         int maxAge = loadUserCredentials("maxAge");
         if (age >= minAge && age <= maxAge) {
-            displayUser(mUser);
+            populateUser(mUser);
         }
     }
 
@@ -143,7 +145,7 @@ public class UserItemFragment extends Fragment {
      * Displays the user 'u' in the fragment
      * @param u
      */
-    private void displayUser(User u) {
+    private void populateUser(User u) {
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
         txtName.setText(u.name);

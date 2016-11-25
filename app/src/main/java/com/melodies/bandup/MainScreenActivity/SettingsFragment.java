@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,14 +38,15 @@ import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
  * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment {
+    private static final int MINAGE = 13;
+    private static final int MAXAGE = 99;
+    private static final int DEFAULTAGE = 20;   // first default value for age and range
 
     private OnFragmentInteractionListener mListener;
 
     private static int   searchRadius = 0;
-    private AdView       mAdView;
     private TextView     txtRadius;
     private SeekBar      seekBarRadius;
-    private RangeSeekBar seekBarAges;
     private Switch       switchMatches;
     private Switch       switchMessages;
     private Switch       switchAlert;
@@ -77,8 +80,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -95,6 +96,7 @@ public class SettingsFragment extends Fragment {
     // initializing all Views
     private void initializeViews(View rootView) {
         adInit(rootView);
+        unitInit(rootView);
         radiusInit(rootView);
         ageInit(rootView);
         notificationMatchesInit(rootView);
@@ -109,90 +111,162 @@ public class SettingsFragment extends Fragment {
         txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
     }
 
-    // if switch Inactive Alert is checked send notifications to user, else do not
-    private void notificationAlertInit(View rootView) {
-        switchAlert = (Switch)rootView.findViewById(R.id.switchAlert);
-        if (switchAlert.isChecked()) {
-            //TODO: send notification
-        }
-        else {
-            //TODO: don't send any notifications
-        }
-    }
-
-    // if switch messages is checked send notifications to user about new message, else do not
-    private void notificationMessagesInit(View rootView) {
-        switchMessages = (Switch)rootView.findViewById(R.id.switchMessages);
-        if (switchMessages.isChecked()) {
-            //TODO: send notification to user about new message
-        }
-        else {
-            //TODO: don't send any new message notification to user
-        }
-    }
-
-    // if switch matches is checked send notifications to user about new matches, else do not
-    private void notificationMatchesInit(View rootView) {
-        switchMatches = (Switch)rootView.findViewById(R.id.switchMatches);
-        if (switchMatches.isChecked()) {
-            //TODO: send notification to user about new matches
-        }
-        else {
-            //TODO: don't send any new matces notification to user
-        }
-    }
-
     // Adding ad Banner
     private void adInit(View rootView) {
-        mAdView = (AdView)rootView.findViewById(R.id.adView);
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
 
+    // saving and updating unit state
+    private void unitInit(View rootView) {
+        switchUnit = (Switch)rootView.findViewById(R.id.switchUnit);
+        // loading user switch criteria
+        switchUnit.setChecked(loadUserSwitch("switchUnit"));
+
+        switchUnit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // saving new states
+                if (switchUnit.isChecked()) {
+                    saveSwitchState("switchUnit", true);
+                }
+                else {
+                    saveSwitchState("switchUnit", false);
+                }
+            }
+        });
+    }
+
+    // if switch Inactive Alert is checked send notifications to user, else do not
+    public void notificationAlertInit(View rootView) {
+        switchAlert = (Switch)rootView.findViewById(R.id.switchAlert);
+        // loading user switch criteria it's always on(true) by default
+        switchAlert.setChecked(loadUserSwitch("switchAlert"));
+
+        switchAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // saving new states
+                if (switchAlert.isChecked()) {
+                    saveSwitchState("switchAlert", true);
+                }
+                else {
+                    saveSwitchState("switchAlert", false);
+                }
+            }
+        });
+    }
+
+    // if switch messages is checked send notifications to user about new message, else do not
+    public void notificationMessagesInit(View rootView) {
+        switchMessages = (Switch)rootView.findViewById(R.id.switchMessages);
+        // loading user switch criteria by default it's always on
+        switchMessages.setChecked(loadUserSwitch("switchMessages"));
+
+        switchMessages.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // saving new states
+                if (switchMessages.isChecked()) {
+                    saveSwitchState("switchMessages", true);
+                }
+                else {
+                    saveSwitchState("switchMessages", false);
+                }
+            }
+        });
+
+    }
+
+    // if switch matches is checked send notifications to user about new matches, else do not
+    public void notificationMatchesInit(View rootView) {
+        switchMatches = (Switch)rootView.findViewById(R.id.switchMatches);
+        // loading user switch criteria
+        switchMatches.setChecked(loadUserSwitch("switchMatches"));
+
+        switchMatches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // saving new states
+                if (switchMatches.isChecked()) {
+                    saveSwitchState("switchMatches", true);
+                }
+                else {
+                    saveSwitchState("switchMatches", false);
+                }
+            }
+        });
+    }
+
     // initializing min and max age, and listen for user criteria
     private void ageInit(View rootView) {
-        seekBarAges = (RangeSeekBar) rootView.findViewById(R.id.seekBarAges);
-        RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(getActivity());
-        seekBarAges.setRangeValues(13, 99);     // min and max age
+        RangeSeekBar seekBarAges = (RangeSeekBar) rootView.findViewById(R.id.seekBarAges);
+
+        seekBarAges.setRangeValues(MINAGE, MAXAGE);     // search range
+        seekBarAges.setSelectedMinValue(loadUserCredentials("minAge"));
+        seekBarAges.setSelectedMaxValue(loadUserCredentials("maxAge"));
 
         seekBarAges.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minAge, Integer maxAge) {
                 // TODO: store searchrangeAge in DB||SharedPreferences which is better?
-                saveUserCredentials("minAge", minAge);
-                saveUserCredentials("maxAge", maxAge);
+                saveUserSearchRange("minAge", minAge);
+                saveUserSearchRange("maxAge", maxAge);
             }
         });
     }
-
-    // Saving user credentials on User Phone
-    public void saveUserCredentials(String valueName, Integer value) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFile", Context.MODE_PRIVATE);
+    // ============================== START Shared Preferences SAVING AND LOADING ===================================================
+    // Saving user credentials: age and searchrangeon on User Phone
+    public void saveUserSearchRange(String valueName, Integer value) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(valueName, value);
         editor.apply();
         Toast.makeText(getActivity(), "Saved: "+value , Toast.LENGTH_SHORT).show();
     }
 
+    // saving switch state
+    public void saveSwitchState(String valueName, boolean value) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(valueName, value);
+        editor.apply();
+        Toast.makeText(getActivity(), "Saved: "+value , Toast.LENGTH_SHORT).show();
+    }
+
     // Loading user credentials
     public Integer loadUserCredentials(String valueName) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFile", Context.MODE_PRIVATE);
-        return Integer.valueOf(sharedPreferences.getString(valueName, DEFAULT));
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt (valueName, DEFAULTAGE);    // This is default value for age, and range
     }
+
+    // loading switch state
+    public boolean loadUserSwitch(String valueName) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(valueName, true);   // this true is the default value
+    }
+
+    // ============================== END Shared Preferences SAVING AND LOADING ===================================================
+
 
     // all behaviour of radiusBarUnit is placed in this function
     private void radiusInit(View rootView) {
-        switchUnit = (Switch)rootView.findViewById(R.id.switchUnit);
         txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
         seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
-        seekBarRadius.setProgress(25);      // Default progress value
+        // Default values
+        seekBarRadius.setProgress(25);
+        if (loadUserSwitch("switchUnit")) {
+            String textmi = String.format("%s %s %s", "Radius ", loadUserCredentials("searchradius"), " Mi");
+            txtRadius.setText(textmi);
+        }
+        else {
+            String textkm = String.format("%s %s %s", "Radius ", loadUserCredentials("searchradius"), " Km");
+            txtRadius.setText(textkm);
+        }
 
         seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 // if unit switch is on, put mi in text view else km
-                if (switchUnit.isChecked()) {
+                if (loadUserSwitch("switchUnit")) {
                     seekBarRadius.setMax(186);      // Maximum value of search range in Mi
                     String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Mi");
                     txtRadius.setText(radius);
@@ -211,7 +285,8 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // store searchRadius into server in one consistent unit / (let's say km)
+                // store searchRadius into server and shared Prefs for display
+                saveUserSearchRange("searchradius", searchRadius);
                 try {
                     updateUser(getUserId(), "searchradius", searchRadius);
                 } catch (JSONException e) {
@@ -257,6 +332,16 @@ public class SettingsFragment extends Fragment {
     private int milesToKilometers(int miles) {
         double kilometers = miles * 1.609344;
         return (int) Math.ceil(kilometers);
+    }
+
+    public void onClickContact (View view) {
+        Intent contact = new Intent(getActivity(), Contact.class);
+        startActivity(contact);
+    }
+
+    public void onClickPrivacyPolicy (View view) {
+        Intent privacy = new Intent(getActivity(), PrivacyPolicy.class);
+        startActivity(privacy);
     }
 
     // is called whenever we attach fragment to activity

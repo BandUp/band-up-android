@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.google.android.gms.gcm.GcmListenerService;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
+
+import java.util.Objects;
 
 public class BandUpGCMListenerService extends GcmListenerService {
     // name for service thread
@@ -45,18 +48,25 @@ public class BandUpGCMListenerService extends GcmListenerService {
             // message recieved from a topic (currently not in use)
         }else{
             // normal downstream message
-            switch (type){
-                case MATCH_NOTIFICATION:
+            if (type != null) {
+                if (Objects.equals(type, MATCH_NOTIFICATION) && loadUserSwitch("switchMatches")) {
                     senMatchNotification(data);
-                    break;
-                case MSG_NOTIFICATION:
+                }
+                if (Objects.equals(type, MSG_NOTIFICATION) && loadUserSwitch("switchMessages")) {
                     sendMessageNotification(data);
-                    break;
-                default:
+                }
+                if (loadUserSwitch("switchAlert")) {
                     sendNotification(data);
-                    break;
+                }
             }
+
         }
+    }
+
+    // loading switch state
+    public boolean loadUserSwitch(String valueName) {
+        SharedPreferences sharedPreferences = getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(valueName, true);
     }
 
     /**

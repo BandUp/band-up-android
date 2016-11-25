@@ -26,12 +26,6 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:text="Remove at the end "
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView4" />
-
-                <TextView
                     android:text="Radius 20 km"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/switchAlert"
                     android:textSize="18sp"
-                    android:checked="false"
+                    android:checked="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp" />
@@ -149,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtContact"
+                    android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -160,6 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtHelp"
+                    android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -171,6 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtSupport"
+                    android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -187,6 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtLegal"
+                    android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -198,6 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtLicenses"
+                    android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -209,6 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtPPolicy"
+                    android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
@@ -220,6 +220,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/txtTermsOfService"
+                    android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"

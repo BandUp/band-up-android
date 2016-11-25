@@ -182,7 +182,6 @@ public class MainScreenActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        mIsSearch = false;
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (id){
@@ -267,6 +266,10 @@ public class MainScreenActivity extends AppCompatActivity
     public void onClickAboutMe(View view) {
         profileFragment.onClickAboutMe(view);
     }
+
+    public void onClickContact(View view) { settingsFragment.onClickContact(view); }
+
+    public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }
 
     public UserListFragment startSearchResults(User[] users){
         mIsSearch = true;

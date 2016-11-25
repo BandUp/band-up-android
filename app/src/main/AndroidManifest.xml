@@ -105,6 +105,10 @@
         </activity>
         <activity android:name=".MainScreenActivity.UpdateAboutMe"
             android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreenActivity.Contact"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreenActivity.PrivacyPolicy"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"

@@ -1,5 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -116,8 +118,25 @@ public class UserItemFragment extends Fragment {
         initializeButtons(rootView);
         setFonts();
 
-        displayUser(mUser);
+        SettingsFilterDisplay();
+
         return rootView;
+    }
+
+    // Loading user credentials
+    public Integer loadUserCredentials(String valueName) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt (valueName, 13);
+    }
+
+    // displaying only chosen one
+    private void SettingsFilterDisplay() {
+        int age = mUser.ageCalc();
+        int minAge = loadUserCredentials("minAge");
+        int maxAge = loadUserCredentials("maxAge");
+        if (age >= minAge && age <= maxAge) {
+            displayUser(mUser);
+        }
     }
 
     /**

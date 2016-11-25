@@ -29,4 +29,6 @@
             <p>This user has no SoundCloud example, yet.</p>
             </body>
             </html>]]></string>
+    <integer name="min_age">13</integer>
+    <integer name="max_age">100</integer>
 </resources>

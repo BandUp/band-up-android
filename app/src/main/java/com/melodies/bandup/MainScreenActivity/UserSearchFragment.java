@@ -28,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -346,6 +348,18 @@ public class UserSearchFragment extends Fragment {
      * @param queryObject JSON query for server
      */
     private void makeQuery(JSONObject queryObject) {
+        DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getSearchQuery(queryObject,
+                new BandUpResponseListener() {
+                    @Override
+                    public void onBandUpResponse(Object response) {
+                        // create userlist and instantiate fragment with new list
+                    }
+                }, new BandUpErrorListener() {
+                    @Override
+                    public void onBandUpErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
     }
 
     /**
@@ -360,6 +374,52 @@ public class UserSearchFragment extends Fragment {
 
         // construct JSON
         JSONObject query = new JSONObject();
+        try{
+            if (!username.equals("")){
+                JSONObject regex = new JSONObject();
+                // get all users with username as substring
+                regex.put("$regex", username);
+                // make search case insensitive
+                regex.put("$options", "i");
+                query.put("username", regex);
+            }
+            // set genre and instrument selection
+            if (mSelectedGenreIdList.size() > 0){
+                JSONObject genreQuery = new JSONObject();
+                JSONObject elemMatch = new JSONObject();
+                elemMatch.put("$in", mSelectedGenreIdList);
+                genreQuery.put("$elemMatch", elemMatch);
+                query.put("genres", genreQuery);
+            }
+
+            if(mSelectedInstrumentIdList.size() > 0){
+                JSONObject genreQuery = new JSONObject();
+                JSONObject elemMatch = new JSONObject();
+                elemMatch.put("$in", mSelectedInstrumentIdList);
+                genreQuery.put("$elemMatch", elemMatch);
+                query.put("instruments", genreQuery);
+            }
+
+            // set age ranges
+            Calendar minDate = Calendar.getInstance();
+            minDate.setTime(new Date());
+            minDate.add(Calendar.YEAR, -minAge);
+
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.setTime(new Date());
+            maxDate.add(Calendar.YEAR, -maxAge);
+
+            JSONObject dateSelect = new JSONObject();
+            dateSelect.put("$lte", minDate.getTime());
+            dateSelect.put("$gte", maxDate.getTime());
+
+            query.put("dateOfBirth", dateSelect);
+            System.out.println("wooo");
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+
+
 
         return query;
     }

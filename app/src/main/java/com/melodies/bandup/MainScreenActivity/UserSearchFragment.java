@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
@@ -27,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -353,6 +357,23 @@ public class UserSearchFragment extends Fragment {
                     @Override
                     public void onBandUpResponse(Object response) {
                         // create userlist and instantiate fragment with new list
+                        try{
+                            JSONObject rsp = (JSONObject)response;
+                            JSONArray userArr = rsp.getJSONArray("result");
+                            FragmentManager fragmentManager = getFragmentManager();
+                            User[] users = new User[userArr.length()];
+                            for (int i = 0; i < userArr.length(); i++){
+                                users[i] = new User(userArr.getJSONObject(i));
+                            }
+                            UserListFragment us = ((MainScreenActivity)getActivity()).startSearchResults(users);
+
+                            fragmentManager.beginTransaction()
+                                            .replace(R.id.mainFrame, us)
+                                            .commit();
+                        } catch (JSONException ex){
+                            ex.printStackTrace();
+                        }
+
                     }
                 }, new BandUpErrorListener() {
                     @Override
@@ -393,12 +414,15 @@ public class UserSearchFragment extends Fragment {
             }
 
             if(mSelectedInstrumentIdList.size() > 0){
-                JSONObject genreQuery = new JSONObject();
+                JSONObject instruQuery = new JSONObject();
                 JSONObject elemMatch = new JSONObject();
                 elemMatch.put("$in", mSelectedInstrumentIdList);
-                genreQuery.put("$elemMatch", elemMatch);
-                query.put("instruments", genreQuery);
+                instruQuery.put("$elemMatch", elemMatch);
+                query.put("instruments", instruQuery);
             }
+
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+
 
             // set age ranges
             Calendar minDate = Calendar.getInstance();
@@ -410,11 +434,10 @@ public class UserSearchFragment extends Fragment {
             maxDate.add(Calendar.YEAR, -maxAge);
 
             JSONObject dateSelect = new JSONObject();
-            dateSelect.put("$lte", minDate.getTime());
-            dateSelect.put("$gte", maxDate.getTime());
+            dateSelect.put("$lte", df.format(minDate.getTime()));
+            dateSelect.put("$gte", df.format(maxDate.getTime()));
 
             query.put("dateOfBirth", dateSelect);
-            System.out.println("wooo");
         }catch (JSONException ex){
             ex.printStackTrace();
         }

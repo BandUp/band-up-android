@@ -301,7 +301,7 @@ public class BandUpRepository implements BandUpDatabase {
         String url = mContext.getResources().getString(R.string.api_address).concat("/search");
 
         JsonObjectRequest request = createObjectRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 url,
                 searchObject,
                 responseListener,

@@ -89,6 +89,7 @@ public class UserListFragment extends Fragment {
                 ArrayList<User> userArrayList = new ArrayList<>();
                 Collections.addAll(userArrayList, (User[]) getArguments().getSerializable("userlist"));
                 mAdapter = new UserListAdapter(getChildFragmentManager());
+                mAdapter.clear();
                 for (User u : userArrayList){
                     mAdapter.addUser(u);
                 }

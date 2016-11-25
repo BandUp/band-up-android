@@ -64,6 +64,7 @@ public class MainScreenActivity extends AppCompatActivity
         LocationListener {
 
     UserListFragment userListFragment;
+    UserListFragment mUserSearchResultsFragment;
     UserDetailsFragment userDetailsFragment;
     MatchesFragment matchesFragment;
     SettingsFragment settingsFragment;
@@ -76,6 +77,12 @@ public class MainScreenActivity extends AppCompatActivity
     String bestProvider;
     SharedPreferences sharedPrefs;
     GoogleApiClient mGoogleApiClient;
+
+    private boolean mIsSearch = false;
+
+    public void setIsSearch(boolean isSearch){
+        mIsSearch = isSearch;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -175,6 +182,7 @@ public class MainScreenActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        mIsSearch = false;
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (id){
@@ -260,16 +268,30 @@ public class MainScreenActivity extends AppCompatActivity
         profileFragment.onClickAboutMe(view);
     }
 
+    public UserListFragment startSearchResults(User[] users){
+        mIsSearch = true;
+        mUserSearchResultsFragment = UserListFragment.newInstance(users);
+
+        setTitle("Search results");
+        return mUserSearchResultsFragment;
+    }
+
     public void onClickDetails(View view, int position) {
         System.out.println(position);
         switch (view.getId()) {
             case R.id.btnDetails:
                 Bundle bundle = new Bundle();
-                if (userListFragment.mAdapter.getUser(position) == null) {
-                    return;
+                if (mIsSearch){
+                    if (mUserSearchResultsFragment.mAdapter.getUser(position) == null) {
+                        return;
+                    }
+                    bundle.putString("user_id", mUserSearchResultsFragment.mAdapter.getUser(position).id);
+                }else {
+                    if (userListFragment.mAdapter.getUser(position) == null) {
+                        return;
+                    }
+                    bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
                 }
-                bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
-                System.out.println(userDetailsFragment.getArguments());
 
                 if (userDetailsFragment.getArguments() != null) {
                     userDetailsFragment.getArguments().clear();

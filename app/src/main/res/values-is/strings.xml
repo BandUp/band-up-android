@@ -123,4 +123,6 @@
     <string name="all_instuments">Öll hljóðfæri</string>
     <string name="main_nav_search">Leita</string>
     <string name="coming_soon">Kemur fljótlega</string>
+    <string name="forgot_your_password">Gleymdirðulykilorðinu þínu?</string>
+    <string name="please_enter_your_e_mail">Vinsamlegast skrifaðu netfangið þitt</string>
 </resources>

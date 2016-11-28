@@ -39,7 +39,7 @@
     <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Search for a Username</string>
+    <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign In</string>
     <string name="login_sign_up">Do not have an account? Sign up here!</string>
@@ -133,4 +133,8 @@
     <string name="search_find_username">Search for a username</string>
     <string name="main_nav_search">Search</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="forgot_your_password">Forgot yor password?</string>
+    <string name="title_activity_password_reset">PasswordReset</string>
+    <string name="send_password_reset_e_mail">Send password reset e-mail</string>
+    <string name="please_enter_your_e_mail">Please enter your e-mail</string>
 </resources>

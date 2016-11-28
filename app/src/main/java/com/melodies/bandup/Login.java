@@ -462,6 +462,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         );
     }
 
+    public void onResetPassword(View v){
+        Intent paswordResetIntent = new Intent(Login.this, PasswordReset.class);
+        Login.this.startActivity(paswordResetIntent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
+    }
+
     // Handling errors that can occur while SignIn request
     private void errorHandlerLogin(VolleyError error) {
         if (error instanceof AuthFailureError) {

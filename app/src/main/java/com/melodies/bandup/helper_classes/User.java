@@ -67,7 +67,7 @@ public class User implements Serializable {
 
     public Integer ageCalc() {
         if (dateOfBirth == null) {
-            return null;
+            return 0;
         }
         Calendar dayOfBirth = Calendar.getInstance();
         Calendar today = Calendar.getInstance();

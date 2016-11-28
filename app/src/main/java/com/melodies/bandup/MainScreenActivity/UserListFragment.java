@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -126,6 +127,8 @@ public class UserListFragment extends Fragment {
 
                 // TODO: Check if not 304.
                 mAdapter.clear();
+                int minAge = loadUserCredentials("minAge");
+                int maxAge = loadUserCredentials("maxAge");
 
                 for (int i = 0; i < responseArr.length(); i++) {
                     try {
@@ -161,8 +164,10 @@ public class UserListFragment extends Fragment {
                             for (int j = 0; j < genreArray.length(); j++) {
                                 user.genres.add(genreArray.getString(j));
                             }
-
-                            mAdapter.addUser(user);
+                            int age = user.ageCalc();
+                            if (settingsAgeFilter(age, minAge, maxAge)) {
+                                mAdapter.addUser(user);
+                            }
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
@@ -193,6 +198,18 @@ public class UserListFragment extends Fragment {
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
             }
         });
+    }
+
+    // Loading user credentials
+    public Integer loadUserCredentials(String valueName) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt (valueName, 13);
+    }
+
+    // displaying only chosen one
+    private boolean settingsAgeFilter(int age, int minAge, int maxAge) {
+
+        return (age >= minAge && age <= maxAge);
     }
 
     @Override

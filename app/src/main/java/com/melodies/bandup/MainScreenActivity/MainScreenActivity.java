@@ -61,6 +61,7 @@ public class MainScreenActivity extends AppCompatActivity
         SoundCloudLoginFragment.OnFragmentInteractionListener,
         SoundCloudPlayerFragment.OnFragmentInteractionListener,
         UserSearchFragment.OnFragmentInteractionListener,
+        UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
 
     UserListFragment userListFragment;
@@ -70,6 +71,7 @@ public class MainScreenActivity extends AppCompatActivity
     SettingsFragment settingsFragment;
     ProfileFragment profileFragment;
     UserSearchFragment mUserSearchFragment;
+    UpcomingFeaturesFragment mUpcomingFeaturesFragment;
 
     ProgressDialog logoutDialog;
     LocationManager locationManager;
@@ -101,12 +103,13 @@ public class MainScreenActivity extends AppCompatActivity
             editor.apply();
         }
         // Create all fragments
-        userListFragment    = UserListFragment.newInstance(null);
-        userDetailsFragment = UserDetailsFragment.newInstance();
-        matchesFragment     = new MatchesFragment();
-        settingsFragment    = SettingsFragment.newInstance();
-        profileFragment     = ProfileFragment.newInstance();
-        mUserSearchFragment = UserSearchFragment.newInstance();
+        userListFragment            = UserListFragment.newInstance(null);
+        userDetailsFragment         = UserDetailsFragment.newInstance();
+        matchesFragment             = new MatchesFragment();
+        settingsFragment            = SettingsFragment.newInstance();
+        profileFragment             = ProfileFragment.newInstance();
+        mUserSearchFragment         = UserSearchFragment.newInstance();
+        mUpcomingFeaturesFragment = UpcomingFeaturesFragment.newInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -186,6 +189,7 @@ public class MainScreenActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (id){
             case R.id.nav_near_me:
+                mIsSearch = false;
                 ft.replace(R.id.mainFrame, userListFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_user_list));
@@ -216,6 +220,11 @@ public class MainScreenActivity extends AppCompatActivity
                 logoutDialog.setMessage("Logging out");
                 logoutDialog.setTitle("Please wait...");
                 logoutDialog.show();
+                break;
+            case R.id.nav_upcomming:
+                ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
+                ft.commit();
+                setTitle("Upcoming features");
                 break;
             default:
                 break;

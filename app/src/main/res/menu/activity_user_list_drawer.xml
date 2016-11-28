@@ -27,6 +27,12 @@
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
             android:title="@string/main_nav_search" />
+
+        <item
+            android:id="@+id/nav_upcomming"
+            android:icon="@drawable/ic_comming_soon"
+            android:title="@string/coming_soon"
+            />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"

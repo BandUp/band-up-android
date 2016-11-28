@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -150,6 +151,12 @@ public class ChatActivity extends AppCompatActivity {
             Toast.makeText(ChatActivity.this, "URL parsing failed", Toast.LENGTH_SHORT).show();
         }
 
+        // back to activity before
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         setContentView(R.layout.activity_chat);
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
@@ -195,6 +202,12 @@ public class ChatActivity extends AppCompatActivity {
         );
 
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    // Return to previous Activity
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
+        return true;
     }
 
     // Listener to listen to the "recv_privatemsg" emission.

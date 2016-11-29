@@ -276,6 +276,10 @@ public class MainScreenActivity extends AppCompatActivity
         profileFragment.onClickAboutMe(view);
     }
 
+    public void onClickAge(View view) { profileFragment.onClickAge(view); }
+
+    public void onCLickFavorite(View view) { profileFragment.onClickFavorite(view); }
+
     public void onClickContact(View view) { settingsFragment.onClickContact(view); }
 
     public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }

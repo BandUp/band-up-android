@@ -29,6 +29,7 @@ public class User implements Serializable {
             imgURL = json.getJSONObject("image").getString("url");
             dateOfBirth = df.parse(json.getString("dateOfBirth"));
             aboutme = json.getString("aboutme");
+            favoriteinstrument = json.getString("favoriteinstrument");
             soundCloudId = json.getInt("soundCloudId");
             soundCloudURL = json.getString("soundcloudurl");
 
@@ -56,6 +57,7 @@ public class User implements Serializable {
     public List<String> instruments;
     public List<String> genres;
     public String status;
+    public String favoriteinstrument;
     public Integer distance;
     public Integer percentage;
     public String imgURL;

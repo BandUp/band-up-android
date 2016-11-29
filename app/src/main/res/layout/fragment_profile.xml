@@ -79,7 +79,7 @@
                         android:layout_below="@+id/txtName"
                         android:layout_toEndOf="@+id/imgProfile"
                         android:textSize="18sp"
-                        android:onClick="showDatePickerDialog" />
+                        android:onClick="onClickAge"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <TextView
@@ -87,7 +87,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtFavorite"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:onClick="onCLickFavorite" />
 
                 </LinearLayout>
             </LinearLayout>

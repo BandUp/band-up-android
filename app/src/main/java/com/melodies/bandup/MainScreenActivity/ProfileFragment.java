@@ -25,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -218,6 +219,7 @@ public class ProfileFragment extends Fragment{
                 }
             }
         }
+        txtFavorite.setText(u.favoriteinstrument);
         txtAboutMe.setText(u.aboutme);
 
         // Bug fix for double list when user cancels photo upload.
@@ -553,10 +555,9 @@ public class ProfileFragment extends Fragment{
                         currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
                     }
 
-                    if (!responseObj.isNull("distance")) {
-                        currentUser.distance = responseObj.getInt("distance");
-                    } else {
-                        currentUser.distance = null;
+                    if (!responseObj.isNull("favoriteinstrument")) {
+                        currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
+                        Toast.makeText(getActivity(), "fav is: " + responseObj.getString("favoriteinstrument"), Toast.LENGTH_SHORT).show();
                     }
 
                     if (!responseObj.isNull("percentage")) {
@@ -609,9 +610,77 @@ public class ProfileFragment extends Fragment{
     }
 
     // when About Me is clicked go to edit view
-    public void onClickAboutMe (View view) {
+    public void onClickAboutMe(View view) {
         Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
         startActivityForResult(aboutMeIntent, 2);
+    }
+
+    public void onClickAge(View view) {
+        Toast.makeText(getActivity(), "Show Age dialog, and update ussr Age", Toast.LENGTH_SHORT).show();
+    }
+
+    // Allow user to choose favorite instrument from instruments list, and save it into database
+    public void onClickFavorite(View view) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+        builderSingle.setTitle("What is your favorite instrument?");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                android.R.layout.select_dialog_singlechoice);
+
+        // displaying user list
+        for (int i = 0; i < currentUser.instruments.size(); i++) {
+            arrayAdapter.add(currentUser.instruments.get(i));
+        }
+        builderSingle.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int inst) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(
+                arrayAdapter,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int inst) {
+                            String instrument = arrayAdapter.getItem(inst);
+                            updateUser(currentUser.id, "favoriteinstrument", instrument);
+                            txtFavorite.setText(instrument);
+                        }
+                });
+        builderSingle.show();
+    }
+
+    /**
+     * Updates user information
+     * @param id is user we want to be updated id
+     * @param valueName is the mlab Schema attribute name
+     * @param value is the actual data we want to change
+     */
+    public void updateUser(String id, String valueName, final String value) {
+        JSONObject userUpdated = new JSONObject();
+        try {
+            userUpdated.put("_id", id);
+            userUpdated.put(valueName, value);
+
+            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
+                @Override
+                public void onBandUpResponse(Object response) {
+                // success response
+                }
+            }, new BandUpErrorListener() {
+                @Override
+                public void onBandUpErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(getActivity(), "Error Update User" + error, Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

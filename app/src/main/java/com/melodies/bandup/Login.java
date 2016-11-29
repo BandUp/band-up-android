@@ -3,6 +3,7 @@ package com.melodies.bandup;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -14,9 +15,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -52,7 +55,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, DatePickable {
+public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, DatePickable {
     // server url location for login
     private String url;
 
@@ -70,6 +73,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private SetupShared sShared;
     private Date dateOfBirth = null;
     private DatePickerFragment datePickerFragment = null;
+    private Button btnSignIn;
+    private Button btnSignUp;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -112,6 +117,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
+
+    protected void setGooglePlusButtonText(SignInButton signInButton,
+                                           String buttonText) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setTextSize(15);
+                tv.setTypeface(null, Typeface.NORMAL);
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +151,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         loginDialog = new ProgressDialog(Login.this);
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        btnSignIn = (Button) findViewById(R.id.btnSignIn);
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
+
+        tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
+        tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
+        TextView otherServs = (TextView) findViewById(R.id.login_other_services_hint);
+
+
+        btnSignIn.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        tilUsername.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        tilPassword.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        etUsername.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        etPassword.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        btnSignUp.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        otherServs.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+
 
         etPassword.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -148,8 +185,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-        tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
-        tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
+
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -174,7 +210,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         // -----------------------------Facebook START ------------------------------------------------------------
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
+        final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button_facebook);
 
         loginButton.setReadPermissions("email");
 
@@ -197,9 +233,16 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
+        LinearLayout llFacebookLoginDesign = (LinearLayout) findViewById(R.id.login_button_facebook_design);
+        llFacebookLoginDesign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginButton.performClick();
+            }
+        });
+
         // -----------------------------Google+ START -------------------------------------------------------------
         // Button listener
-        findViewById(R.id.login_button_google).setOnClickListener(this);
 
         // configuring simple Google+ sign in requesting userId and email and basic profile (included in DEFAULT_SIGN_IN)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -215,12 +258,28 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
 
         // Google+ Sign In button design
-        SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
+        LinearLayout llGoogleLoginDesign = (LinearLayout) findViewById(R.id.login_button_google_design);
+        llGoogleLoginDesign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
 
         // -----------------------------SoundCloud START -------------------------------------------------------------
-        btnSoundCloud = (ImageView) findViewById(R.id.login_button_soundcloud);
+        btnSoundCloud = (LinearLayout) findViewById(R.id.login_button_soundcloud);
+        btnSoundCloud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.login_button_soundcloud:
+                        Intent intent = new Intent(Login.this, SoundCloud.class);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
     // creates advertisment
@@ -360,15 +419,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
-    // Google buttons
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.login_button_google:
-                signIn();
-                break;
-        }
-    }
-
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
@@ -384,16 +434,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // ------------------------------Google+ END---------------------------------------------------------------
 
     // ------------------------------ SoundCloud---------------------------------------------------------------
-    ImageView btnSoundCloud;
-
-    public void onClickSoundCloud(View v) {
-        switch (v.getId()) {
-            case R.id.login_button_soundcloud:
-                Intent intent = new Intent(this,SoundCloud.class);
-                startActivity(intent);
-                break;
-        }
-    }
+    LinearLayout btnSoundCloud;
     // ------------------------------SoundCloud END ---------------------------------------------------------------
 
     // when Sign In is Clicked grab data and ...

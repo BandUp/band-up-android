@@ -39,10 +39,10 @@
     <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Search for a Username</string>
+    <string name="login_username">Username</string>
     <string name="login_password">Password</string>
-    <string name="login_sign_in">Sign In</string>
-    <string name="login_sign_up">Do not have an account? Sign up here!</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_sign_up">Do not have an account? Sign up here.</string>
     <string name="login_go_to_chat_temporary">Go To Chat</string>
 
     <!-- User List Screen -->
@@ -133,4 +133,8 @@
     <string name="search_find_username">Search for a username</string>
     <string name="main_nav_search">Search</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="login_btn_facebook_hint">Log in with Facebook</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="login_btn_soundcloud_hint">Log in with SoundCloud</string>
+    <string name="login_sign_up_with_services">Or sign up with these services</string>
 </resources>

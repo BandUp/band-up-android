@@ -41,11 +41,11 @@
 
             <ImageView
                 android:id="@+id/band_up_login_logo"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="50px"
+                android:layout_marginTop="25dp"
                 app:srcCompat="@drawable/ic_band_up_logo" />
 
             <LinearLayout
@@ -98,6 +98,10 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:onClick="onClickSignIn"
+                    android:background="@drawable/button_login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="25sp"
                     android:text="@string/login_sign_in" />
 
                 <Button
@@ -113,34 +117,69 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_width="285dp"
+                    android:gravity="center">
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#80FFFFFF"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1">
+                    </View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/login_sign_up_with_services"
+                        android:id="@+id/login_other_services_hint"/>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#80FFFFFF"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp">
+                    </View>
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="285dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="50px"
-                    android:orientation="vertical"
-                    android:layout_weight="2.60">
+                    android:gravity="center"
+                    android:layout_marginBottom="25dp"
+                    android:orientation="vertical">
 
-                    <com.facebook.login.widget.LoginButton
-                        android:id="@+id/login_button_facebook"
+                    <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        android:layout_height="15dp" />
 
-                    <ImageView
+                    <include layout="@layout/login_button_facebook"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content" />
+                    
+                    <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        app:srcCompat="@drawable/soundcloud_big"
-                        android:id="@+id/login_button_soundcloud"
-                        android:onClick="onClickSoundCloud"/>
+                        android:layout_height="10dp" />
 
-                    <com.google.android.gms.common.SignInButton
-                        android:id="@+id/login_button_google"
+                    <include layout="@layout/login_button_soundcloud"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content" />
+
+                    <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_height="10dp" />
+
+                    <include layout="@layout/login_button_google"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

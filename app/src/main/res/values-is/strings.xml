@@ -39,8 +39,8 @@
     <!-- Login Screen -->
     <string name="login_username">Notandanafn</string>
     <string name="login_password">Lykilorð</string>
-    <string name="login_sign_in">Innskrá</string>
-    <string name="login_sign_up">Ekki með reikning? Skráðu þig hér!</string>
+    <string name="login_sign_in">Skrá inn</string>
+    <string name="login_sign_up">Ekki með reikning? Skráðu þig hér.</string>
     <string name="login_go_to_chat_temporary">Fara í spjall</string>
 
     <!-- User List Screen -->
@@ -123,4 +123,8 @@
     <string name="all_instuments">Öll hljóðfæri</string>
     <string name="main_nav_search">Leita</string>
     <string name="coming_soon">Kemur fljótlega</string>
+    <string name="log_in_with_google">Skrá inn með Google</string>
+    <string name="login_btn_facebook_hint">Skrá inn með Facebook</string>
+    <string name="login_btn_soundcloud_hint">Skrá inn með SoundCloud</string>
+    <string name="login_sign_up_with_services">Eða skráðu þig með þessum þjónustum</string>
 </resources>

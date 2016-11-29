@@ -129,4 +129,6 @@
     <string name="login_sign_up_with_services">Eða skráðu þig með þessum þjónustum</string>
     <string name="forgot_your_password">Gleymdirðu lykilorðinu þínu?</string>
     <string name="please_enter_your_e_mail">Vinsamlegast skrifaðu netfangið þitt</string>
+    <string name="title_activity_password_reset">Endursetja lykilorð</string>
+    <string name="send_password_reset_e_mail">Senda endursetningartölvupóst</string>
 </resources>

@@ -79,5 +79,9 @@ public interface BandUpDatabase {
     void getSearchQuery(JSONObject searchObject,
                         BandUpResponseListener responseListener,
                         BandUpErrorListener errorListener);
+
+    void sendPasswordResetRequest(JSONObject requestObject,
+                                  BandUpResponseListener responseListener,
+                                  BandUpErrorListener errorListener);
 }
 

@@ -127,4 +127,6 @@
     <string name="login_btn_facebook_hint">Skrá inn með Facebook</string>
     <string name="login_btn_soundcloud_hint">Skrá inn með SoundCloud</string>
     <string name="login_sign_up_with_services">Eða skráðu þig með þessum þjónustum</string>
+    <string name="forgot_your_password">Gleymdirðu lykilorðinu þínu?</string>
+    <string name="please_enter_your_e_mail">Vinsamlegast skrifaðu netfangið þitt</string>
 </resources>

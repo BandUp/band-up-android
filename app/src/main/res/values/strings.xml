@@ -137,7 +137,7 @@
     <string name="log_in_with_google">Log in with Google</string>
     <string name="login_btn_soundcloud_hint">Log in with SoundCloud</string>
     <string name="login_sign_up_with_services">Or sign up with these services</string>
-    <string name="forgot_your_password">Forgot yor password?</string>
+    <string name="forgot_your_password">Forgot your password?</string>
     <string name="title_activity_password_reset">Password Reset</string>
     <string name="send_password_reset_e_mail">Send password reset email</string>
     <string name="please_enter_your_e_mail">Please enter your email</string>

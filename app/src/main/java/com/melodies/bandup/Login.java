@@ -157,6 +157,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         tilUsername = (TextInputLayout) findViewById(R.id.tilUsername);
         tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
         TextView otherServs = (TextView) findViewById(R.id.login_other_services_hint);
+        Button btnForgPass = (Button) findViewById(R.id.btn_forgot_password);
 
 
         btnSignIn.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
@@ -166,6 +167,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         etPassword.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
         btnSignUp.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
         otherServs.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
+        btnForgPass.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
 
 
         etPassword.setOnKeyListener(new View.OnKeyListener() {

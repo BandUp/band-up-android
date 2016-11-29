@@ -109,7 +109,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="0dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:onClick="onClickSignUp"
                     android:text="@string/login_sign_up"
@@ -119,7 +118,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/btn_forgot_password"
                     android:onClick="onResetPassword"
                     android:background="?android:attr/selectableItemBackground"
                     android:textAllCaps="false"/>

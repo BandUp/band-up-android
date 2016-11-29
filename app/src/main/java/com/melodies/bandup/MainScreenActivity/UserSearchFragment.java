@@ -106,6 +106,8 @@ public class UserSearchFragment extends Fragment {
                     selectedText.append(", ");
                 }
             }
+        }else {
+            selectedText.setText("None selected");
         }
     }
 
@@ -119,9 +121,6 @@ public class UserSearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -170,7 +169,7 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Display a dialog to show instruments and allow user to select multiple.
-     * @param v
+     * @param v view containing all instruments
      */
     public void onShowInstruments(View v) {
         Log.d(TAG, "Show instruments pushed!");

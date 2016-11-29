@@ -557,7 +557,6 @@ public class ProfileFragment extends Fragment{
 
                     if (!responseObj.isNull("favoriteinstrument")) {
                         currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-                        Toast.makeText(getActivity(), "fav is: " + responseObj.getString("favoriteinstrument"), Toast.LENGTH_SHORT).show();
                     }
 
                     if (!responseObj.isNull("percentage")) {

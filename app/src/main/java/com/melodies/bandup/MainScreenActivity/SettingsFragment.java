@@ -219,7 +219,6 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(valueName, value);
         editor.apply();
-        Toast.makeText(getActivity(), "Saved: "+value , Toast.LENGTH_SHORT).show();
     }
 
     // saving switch state
@@ -228,7 +227,6 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(valueName, value);
         editor.apply();
-        Toast.makeText(getActivity(), "Saved: "+value , Toast.LENGTH_SHORT).show();
     }
 
     // Loading user credentials
@@ -314,7 +312,6 @@ public class SettingsFragment extends Fragment {
                 @Override
                 public void onBandUpResponse(Object response) {
                     // succesful response
-                    Toast.makeText(getActivity(), "Data updated! REMOVE THIS TOAST", Toast.LENGTH_SHORT).show();
                 }
             }, new BandUpErrorListener() {
                 @Override

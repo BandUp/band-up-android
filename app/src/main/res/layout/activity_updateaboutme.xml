@@ -48,7 +48,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:onClick="onClickSave"
-                android:background="@drawable/button_fancy"
+                android:background="@drawable/button_save_aboutme"
                 android:textColor="@color/colorBlack"
                 />
 

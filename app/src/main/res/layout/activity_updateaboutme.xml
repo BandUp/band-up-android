@@ -17,7 +17,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:text="Tell us more about your music experience: "
+                android:text="What are your influences? "
                 android:textSize="19sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

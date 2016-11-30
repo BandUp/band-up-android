@@ -5,7 +5,7 @@
 
     <!-- Register Screen -->
     <string name="register_email">Email</string>
-    <string name="register_username">Username</string>
+    <string name="register_username">Name</string>
     <string name="register_password">Password</string>
     <string name="register_confirm_password">Confirm Password</string>
     <string name="register_btn_register">Register</string>
@@ -13,7 +13,7 @@
     <string name="register_dob_hint">What is your date of birth?</string>
     <string name="register_til_error_fill_password">You must fill in a password</string>
     <string name="register_til_error_password_mismatch">Passwords do not match</string>
-    <string name="register_til_error_username">You must fill in your username</string>
+    <string name="register_til_error_username">You must fill in your name</string>
     <string name="register_til_error_email_linked">This email is already associated with an account</string>
     <string name="register_til_error_email_format">This email address is not in the correct format</string>
     <string name="register_til_error_fill_email">You must fill in your email address</string>
@@ -39,7 +39,7 @@
     <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Username</string>
+    <string name="login_username">Email</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Sign in</string>
     <string name="login_sign_up">Do not have an account? Sign up here.</string>
@@ -53,7 +53,7 @@
     <!-- Chat Screen -->
     <string name="chat_send">Send</string>
     <string name="chat_message_hint">Type a message…</string>
-    <string name="login_username_validation">Please enter your username</string>
+    <string name="login_username_validation">Please enter your email</string>
     <string name="login_password_validation">Please enter your password</string>
     <string name="user_select_picture">Select Picture</string>
     <string name="user_take_picture">Take Picture</string>
@@ -68,8 +68,8 @@
     <string name="register_success">Registration successful!\nYou can sign in now.</string>
     <string name="register_password_mismatch">Passwords don\'t match!</string>
     <string name="register_enter_email">Please enter your Email.</string>
-    <string name="register_enter_username">Please enter your Username.</string>
-    <string name="register_enter_password">Please enter your Password.</string>
+    <string name="register_enter_username">Please enter your name.</string>
+    <string name="register_enter_password">Please enter your password.</string>
     <string name="register_enter_dateofbirth">Please enter your Date Of Birth.</string>
     <string name="register_min_age">You have to be 13 years or older to register!</string>
     <string name="register_max_age">You have to be 99 years or younger to register!</string>
@@ -119,7 +119,7 @@
     <string name="user_list_no_users">No Musicians Nearby</string>
     <string name="age_year_singular">"year old"</string>
     <string name="age_year_plural">"years old"</string>
-    <string name="login_credentials_incorrect">Username or password incorrect</string>
+    <string name="login_credentials_incorrect">Email or password incorrect</string>
     <string name="no_distance_available">Distance not available</string>
     <string name="km_distance">km away from you</string>
     <string name="profile_select_song">Select Song</string>
@@ -130,11 +130,11 @@
     <string name="ages">Ages</string>
     <string name="all_genres">All genres</string>
     <string name="all_instuments">All instruments</string>
-    <string name="search_find_username">Search for a username</string>
+    <string name="search_find_username">Search by name</string>
     <string name="main_nav_search">Search</string>
     <string name="coming_soon">Coming soon</string>
     <string name="login_btn_facebook_hint">Log in with Facebook</string>
-    <string name="log_in_with_google">Log in with Google</string>
+    <string name="login_btn_google_hint">Log in with Google</string>
     <string name="login_btn_soundcloud_hint">Log in with SoundCloud</string>
     <string name="login_sign_up_with_services">Or sign up with these services</string>
     <string name="forgot_your_password">Forgot your password?</string>

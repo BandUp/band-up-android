@@ -5,7 +5,7 @@
 
     <!-- Register Screen -->
     <string name="register_email">Tölvupóstur</string>
-    <string name="register_username">Notandanafn</string>
+    <string name="register_username">Nafn</string>
     <string name="register_password">Lykilorð</string>
     <string name="register_confirm_password">Staðfesta lykilorð</string>
     <string name="register_btn_register">Nýskrá</string>
@@ -13,7 +13,7 @@
     <string name="register_til_error_email_format">Þetta tölvupóstfang er ekki á réttu formi</string>
     <string name="register_til_error_email_linked">Þetta tölvupóstfang er nú þegar skráð</string>
     <string name="register_til_error_fill_email">Þú verður að setja inn tölvupóstfang</string>
-    <string name="register_til_error_username">Þú verður að setja inn notandanafn</string>
+    <string name="register_til_error_username">Þú verður að setja inn nafn</string>
     <string name="register_til_error_fill_password">Þú verður að setja inn lykilorð</string>
     <string name="register_til_error_password_mismatch">Lykilorð passa ekki</string>
     <string name="register_til_error_password_length">Lykilorðið þitt verður að vera a.m.k. 6 stafir</string>
@@ -37,7 +37,7 @@
     <string name="filter_instruments_hint">Hvaða hljóðfæri viltu sía út?</string>
 
     <!-- Login Screen -->
-    <string name="login_username">Notandanafn</string>
+    <string name="login_username">Tölvupóstur</string>
     <string name="login_password">Lykilorð</string>
     <string name="login_sign_in">Skrá inn</string>
     <string name="login_sign_up">Ekki með reikning? Skráðu þig hér.</string>
@@ -52,7 +52,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="register_title">Nýskráning</string>
-    <string name="login_username_validation">Vinsamlegast skrifaðu inn notandanafnið þitt</string>
+    <string name="login_username_validation">Vinsamlegast skrifaðu inn tölvupóstfangið þitt</string>
     <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
     <string name="go_to_chat_temp">Fara í spjall</string>
     <string name="user_list_details">Nánar</string>
@@ -67,7 +67,7 @@
     <string name="register_enter_dateofbirth">Vinsamlega skráðu fæðingardag</string>
     <string name="register_enter_email">Vinsamlega skráðu tölvupóstfangið þitt</string>
     <string name="register_enter_password">Vinsamlega skráðu inn lykilorð</string>
-    <string name="register_enter_username">Vinsamlegast skráðu inn notandanafn</string>
+    <string name="register_enter_username">Vinsamlegast skráðu inn nafn</string>
     <string name="register_progress_description">Vinsamlega bíðið...</string>
     <string name="register_password_mismatch">Lykilorð passa ekki!</string>
     <string name="register_progress_title">Nýskrái þig</string>
@@ -115,7 +115,7 @@
     <string name="profile_select_song">Velja lag</string>
     <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
-    <string name="search_find_username">Leita að notandanafni</string>
+    <string name="search_find_username">Leita eftir nafni</string>
     <string name="select_instruments">Velja hljóðfæri</string>
     <string name="please_enter_search_parameters">Vinsamlega skilgreindu leitarskilyrði</string>
     <string name="ages">Aldur</string>
@@ -123,7 +123,7 @@
     <string name="all_instuments">Öll hljóðfæri</string>
     <string name="main_nav_search">Leita</string>
     <string name="coming_soon">Kemur fljótlega</string>
-    <string name="log_in_with_google">Skrá inn með Google</string>
+    <string name="login_btn_google_hint">Skrá inn með Google</string>
     <string name="login_btn_facebook_hint">Skrá inn með Facebook</string>
     <string name="login_btn_soundcloud_hint">Skrá inn með SoundCloud</string>
     <string name="login_sign_up_with_services">Eða skráðu þig með þessum þjónustum</string>

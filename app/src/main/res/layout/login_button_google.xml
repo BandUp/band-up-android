@@ -31,7 +31,7 @@
             android:padding="7dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/log_in_with_google"
+            android:text="@string/login_btn_google_hint"
             android:textStyle="bold"
             android:textColor="#80000000"/>
         <Space

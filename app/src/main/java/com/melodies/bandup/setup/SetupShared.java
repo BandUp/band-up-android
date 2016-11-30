@@ -24,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A shared class that both Genres and Instruments
  * use to GET and POST data to and from the server.
@@ -38,10 +41,10 @@ public class SetupShared {
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
      */
-    public void getInstruments(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoInstruments) {
+    public void getInstruments(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoInstruments, List<String> preselected) {
         progressBar.setVisibility(progressBar.VISIBLE);
         DatabaseSingleton.getInstance(context).getBandUpDatabase().getInstruments(
-                getSetupItemsListener(context, gridView, progressBar, txtNoInstruments),
+                getSetupItemsListener(context, gridView, progressBar, txtNoInstruments, preselected),
                 getSetupItemsErrorListener(context, progressBar));
     }
 
@@ -51,10 +54,10 @@ public class SetupShared {
      * @param gridView    The GridView we are going to put the data into.
      * @param progressBar The ProgressBar that displays when we are getting the data.
      */
-    public void getGenres(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoGenres) {
+    public void getGenres(Context context, GridView gridView, ProgressBar progressBar, TextView txtNoGenres, List<String> preselected) {
         progressBar.setVisibility(progressBar.VISIBLE);
         DatabaseSingleton.getInstance(context).getBandUpDatabase().getGenres(
-                getSetupItemsListener(context, gridView, progressBar, txtNoGenres),
+                getSetupItemsListener(context, gridView, progressBar, txtNoGenres, preselected),
                 getSetupItemsErrorListener(context, progressBar)
         );
     }
@@ -96,7 +99,7 @@ public class SetupShared {
      * @return             the listener
      * @see DoubleListAdapter
      */
-    private BandUpResponseListener getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar, final TextView txtNoItems) {
+    private BandUpResponseListener getSetupItemsListener(final Context context, final GridView gridView, final ProgressBar progressBar, final TextView txtNoItems, final List<String> preselected) {
         return new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -129,6 +132,11 @@ public class SetupShared {
                             String name  = item.getString("name");
 
                             DoubleListItem dlItem = new DoubleListItem(id, i, name);
+                            if (preselected != null) {
+                                if (preselected.contains(name)) {
+                                    dlItem.isSelected = true;
+                                }
+                            }
                             dlAdapter.addItem(dlItem);
 
                         } catch (JSONException e) {
@@ -176,6 +184,19 @@ public class SetupShared {
         for (DoubleListItem dli:dla.getDoubleList()) {
             if (dli.isSelected) {
                 selectedItems.put(dli.id);
+            }
+        }
+
+        return selectedItems;
+    }
+
+    public ArrayList<String> prepareSelectedListNames(Context c, DoubleListAdapter dla) {
+        ArrayList selectedItems = new ArrayList();
+
+        // Go through all items in the GridView and put its IDs into an array.
+        for (DoubleListItem dli:dla.getDoubleList()) {
+            if (dli.isSelected) {
+                selectedItems.add(dli.name);
             }
         }
 

@@ -167,5 +167,4 @@ public final class DoubleListAdapter extends BaseAdapter {
         name.setText(item.name);
         return v;
     }
-
 }

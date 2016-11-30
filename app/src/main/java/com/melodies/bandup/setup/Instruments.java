@@ -1,11 +1,13 @@
 package com.melodies.bandup.setup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.R;
 
 import org.json.JSONArray;
+
+import java.util.List;
 
 
 /**
@@ -42,9 +46,13 @@ public class Instruments extends AppCompatActivity {
         txtNoInstruments  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
     }
 
+    Boolean isSetup = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        isSetup = extras.getBoolean("IS_SETUP_PROCESS");
+        List<String> a = extras.getStringArrayList("PRESELECTED_ITEMS");
         setContentView(R.layout.activity_instruments);
 
         // The shared class between Instruments and Genres.
@@ -60,8 +68,19 @@ public class Instruments extends AppCompatActivity {
         initializeTextViews();
         setFonts();
 
-        // Gets the list of instruments.
-        sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments);
+        Button btnNext = (Button) findViewById(R.id.btnNext);
+
+        if (!isSetup) {
+            txtTitleGetStarted.setText("");
+            txtTitleProgress.setText("");
+            btnNext.setText(R.string.edit_instrument_genres_save);
+
+            sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments, a);
+        } else {
+            // Gets the list of instruments.
+            sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments, null);
+        }
+
 
         // What to do when an item on the GridView is clicked.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,9 +110,16 @@ public class Instruments extends AppCompatActivity {
             JSONArray selectedInstruments = sShared.prepareSelectedList(Instruments.this, dla);
             if (selectedInstruments.length() > 0) {
                 sShared.postInstruments(Instruments.this, selectedInstruments);
-                Intent toUserListIntent = new Intent(Instruments.this, Genres.class);
-                Instruments.this.startActivity(toUserListIntent);
-                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+                if (isSetup) {
+                    Intent toUserListIntent = new Intent(Instruments.this, Genres.class);
+                    Instruments.this.startActivity(toUserListIntent);
+                    overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+                } else {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putStringArrayListExtra("SELECTED_INSTRUMENTS", sShared.prepareSelectedListNames(Instruments.this, dla));
+                    setResult(Activity.RESULT_OK, resultIntent);
+                }
+
                 finish();
             } else {
                 Toast.makeText(Instruments.this, R.string.setup_no_instrument_selection, Toast.LENGTH_LONG).show();

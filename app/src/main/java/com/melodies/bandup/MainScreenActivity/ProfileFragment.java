@@ -48,6 +48,8 @@ import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
+import com.melodies.bandup.setup.Genres;
+import com.melodies.bandup.setup.Instruments;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -80,6 +82,9 @@ public class ProfileFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     public static final String DEFAULT = "N/A";
+    int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
+    int EDIT_GENRES_REQUEST_CODE = 4989;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -179,7 +184,7 @@ public class ProfileFragment extends Fragment{
         }
 
         ft.add(soundCloudArea.getId(), soundCloudFragment, "soundCloudFragment");
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     @Override
@@ -187,6 +192,9 @@ public class ProfileFragment extends Fragment{
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         initializeViews(rootView);
         setFonts();
+        // Adding ad Banner
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }
@@ -196,10 +204,6 @@ public class ProfileFragment extends Fragment{
      * @param u the user that should be displayed.
      */
     private void displayUser(User u) {
-        // Adding ad Banner
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
         if (u.imgURL != null) {
@@ -233,6 +237,7 @@ public class ProfileFragment extends Fragment{
         for (int i = 0; i < u.instruments.size(); i++) {
             txtInstrumentsList.append(u.instruments.get(i) + "\n");
         }
+
         createSoundCloudArea();
     }
 
@@ -298,6 +303,20 @@ public class ProfileFragment extends Fragment{
                 }
             }
         });
+    }
+
+    public void onClickEditInstruments() {
+        Intent instrumentsIntent = new Intent(getActivity(), Instruments.class);
+        instrumentsIntent.putExtra("IS_SETUP_PROCESS", false);
+        instrumentsIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) currentUser.instruments);
+        getActivity().startActivityForResult(instrumentsIntent, EDIT_INSTRUMENTS_REQUEST_CODE);
+    }
+
+    public void onClickEditGenres() {
+        Intent genresIntent = new Intent(getActivity(), Genres.class);
+        genresIntent.putExtra("IS_SETUP_PROCESS", false);
+        genresIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) currentUser.genres);
+        getActivity().startActivityForResult(genresIntent, EDIT_GENRES_REQUEST_CODE);
     }
 
     class MyThread extends Thread {
@@ -377,12 +396,14 @@ public class ProfileFragment extends Fragment{
 
         String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         if (resultCode == RESULT_OK) {
-            displayDownloadMessage("Uploading Photo", "Please wait...");
+
             if (requestCode == CAMERA_REQUEST) {
+                displayDownloadMessage("Uploading Photo", "Please wait...");
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
             if (requestCode == GALLERY_REQUEST) {
+                displayDownloadMessage("Uploading Photo", "Please wait...");
                 // Get the URI from the intent result.
                 sendMessage(data);
             }
@@ -692,7 +713,28 @@ public class ProfileFragment extends Fragment{
                 String message = data.getStringExtra("MESSAGE");
                 txtAboutMe.setText(message);
             }
-        }else{
+
+        }
+
+        if (requestCode == EDIT_INSTRUMENTS_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                ArrayList<String> list = extras.getStringArrayList("SELECTED_INSTRUMENTS");
+                if (list != null ) {
+                    currentUser.instruments = list;
+                    displayUser(currentUser);
+                }
+            }
+        } else if (requestCode == EDIT_GENRES_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                ArrayList<String> list = extras.getStringArrayList("SELECTED_GENRES");
+                if (list != null ) {
+                    currentUser.genres = list;
+                    displayUser(currentUser);
+                }
+            }
+        } else {
             // force redraw
             userRequest();
         }

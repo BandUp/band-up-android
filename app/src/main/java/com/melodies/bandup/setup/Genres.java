@@ -1,11 +1,13 @@
 package com.melodies.bandup.setup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,10 +15,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
 
 import org.json.JSONArray;
+
+import java.util.List;
 
 /**
  * An activity class that controls the Genres view.
@@ -43,9 +46,13 @@ public class Genres extends AppCompatActivity {
         txtNoGenres       .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
     }
 
+    Boolean isSetup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        isSetup = extras.getBoolean("IS_SETUP_PROCESS");
+        List<String> a = extras.getStringArrayList("PRESELECTED_ITEMS");
         setContentView(R.layout.activity_genres);
 
         // The shared class between Instruments and Genres.
@@ -62,8 +69,20 @@ public class Genres extends AppCompatActivity {
         initializeTextViews();
         setFonts();
 
-        // Gets the list of genres.
-        sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres);
+        Button btnFinish = (Button) findViewById(R.id.btnFinish);
+
+        if (!isSetup) {
+            txtTitleGetStarted.setText("");
+            txtTitleProgress.setText("");
+            btnFinish.setText(R.string.edit_instrument_genres_save);
+
+            sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres, a);
+
+        } else {
+            // Gets the list of genres.
+            sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres, null);
+        }
+
 
         // What to do when an item on the GridView is clicked.
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,9 +112,15 @@ public class Genres extends AppCompatActivity {
             JSONArray selectedGenres = sShared.prepareSelectedList(Genres.this, dla);
             if (selectedGenres.length() > 0) {
                 sShared.postGenres(Genres.this, selectedGenres);
-                Intent toUserListIntent = new Intent(Genres.this, MainScreenActivity.class);
-                Genres.this.startActivity(toUserListIntent);
-                overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+                if (isSetup) {
+                    Intent toUserListIntent = new Intent(Genres.this, Genres.class);
+                    Genres.this.startActivity(toUserListIntent);
+                    overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
+                } else {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putStringArrayListExtra("SELECTED_GENRES", sShared.prepareSelectedListNames(Genres.this, dla));
+                    setResult(Activity.RESULT_OK, resultIntent);
+                }
                 finish();
             } else {
                 Toast.makeText(Genres.this, R.string.setup_no_genre_selection, Toast.LENGTH_LONG).show();

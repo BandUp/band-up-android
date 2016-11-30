@@ -40,8 +40,6 @@ import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.setup.Genres;
-import com.melodies.bandup.setup.Instruments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +61,10 @@ public class MainScreenActivity extends AppCompatActivity
         UserSearchFragment.OnFragmentInteractionListener,
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
+
+    int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
+    int EDIT_GENRES_REQUEST_CODE = 4989;
+
 
     UserListFragment userListFragment;
     UserListFragment mUserSearchResultsFragment;
@@ -444,12 +446,13 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void onClickEditInstruments(View view) {
-        startActivity(new Intent(MainScreenActivity.this, Instruments.class));
+        profileFragment.onClickEditInstruments();
     }
 
     public void onClickEditGenres(View view) {
-        startActivity(new Intent(MainScreenActivity.this, Genres.class));
+        profileFragment.onClickEditGenres();
     }
+
 
     public void onClickLike(String userID) {
         JSONObject user = new JSONObject();

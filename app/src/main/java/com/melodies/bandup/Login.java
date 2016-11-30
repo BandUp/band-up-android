@@ -359,6 +359,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             sendGoogleUserToServer(idToken);
         }
     }
+    private void openInstrumentsIntent() {
+        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
+        instrumentsIntent.putExtra("IS_SETUP_PROCESS", true);
+        Login.this.startActivity(instrumentsIntent);
+    }
     private void openCorrectIntent(JSONObject response) {
         Boolean hasFinishedSetup = null;
         try {
@@ -370,14 +375,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 finish();
             } else {
                 //showDatePickerDialog();
-                Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-                Login.this.startActivity(instrumentsIntent);
+                openInstrumentsIntent();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
                 finish();
             }
         } catch (JSONException e) {
-            Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-            Login.this.startActivity(instrumentsIntent);
+            openInstrumentsIntent();
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
             finish();
         }
@@ -541,8 +544,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         datePickerFragment.ageCalculator(year, month, day);
 
-        Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
-        Login.this.startActivity(instrumentsIntent);
+        openInstrumentsIntent();
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
         finish();
     }

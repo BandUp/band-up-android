@@ -219,7 +219,9 @@ public class ProfileFragment extends Fragment{
                 }
             }
         }
-        txtFavorite.setText(u.favoriteinstrument);
+        if (u.favoriteinstrument != null) {
+            txtFavorite.setText(u.favoriteinstrument);
+        }
         txtAboutMe.setText(u.aboutme);
 
         // Bug fix for double list when user cancels photo upload.
@@ -620,18 +622,17 @@ public class ProfileFragment extends Fragment{
 
     // Allow user to choose favorite instrument from instruments list, and save it into database
     public void onClickFavorite(View view) {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-        builderSingle.setTitle("What is your favorite instrument?");
+        AlertDialog.Builder fs = new AlertDialog.Builder(getActivity());
+        fs.setTitle("What is your favorite instrument?");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.select_dialog_singlechoice);
 
-        // displaying user list
         for (int i = 0; i < currentUser.instruments.size(); i++) {
             arrayAdapter.add(currentUser.instruments.get(i));
         }
-        builderSingle.setNegativeButton(
+        fs.setNegativeButton(
                 "Cancel",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -640,7 +641,7 @@ public class ProfileFragment extends Fragment{
                     }
                 });
 
-        builderSingle.setAdapter(
+        fs.setAdapter(
                 arrayAdapter,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -650,7 +651,7 @@ public class ProfileFragment extends Fragment{
                             txtFavorite.setText(instrument);
                         }
                 });
-        builderSingle.show();
+        fs.show();
     }
 
     /**

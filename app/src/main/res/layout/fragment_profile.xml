@@ -83,12 +83,14 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <TextView
-                        android:text="Favorite"
+                        android:text="Favorite Instrument"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtFavorite"
                         android:textSize="18sp"
-                        android:onClick="onCLickFavorite" />
+                        android:onClick="onCLickFavorite"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"/>
 
                 </LinearLayout>
             </LinearLayout>

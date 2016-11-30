@@ -129,7 +129,10 @@ public class UserItemFragment extends Fragment {
 
         txtName.setText(u.name);
 
-        if (u.instruments.size() > 0) {
+        if (u.favoriteinstrument != null) {
+            txtInstruments.setText(u.favoriteinstrument);
+        }
+        else {
             txtInstruments.setText(u.instruments.get(0));
         }
 

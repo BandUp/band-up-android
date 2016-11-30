@@ -17,7 +17,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:text="Tell us more about your music experience: "
+                android:text="What are your influences? "
                 android:textSize="19sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:onClick="onClickSave"
-                android:background="@drawable/button_fancy"
+                android:background="@drawable/button_save_aboutme"
                 android:textColor="@color/colorBlack"
                 />
 

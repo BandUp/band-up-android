@@ -177,7 +177,9 @@ public class UserDetailsFragment extends Fragment {
                 }
             }
         }
-        //txtFavorite.setText("Drums");
+        if (u.favoriteinstrument != null) {
+            txtFavorite.setText(u.favoriteinstrument);
+        }
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
 
@@ -245,6 +247,9 @@ public class UserDetailsFragment extends Fragment {
                         if (!responseObj.isNull("dateOfBirth")) {
                             DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
+                        }
+                        if (!responseObj.isNull("favoriteinstrument")) {
+                            currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
                         }
 
                         if (!responseObj.isNull("distance")) {

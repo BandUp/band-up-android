@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
 
 import org.json.JSONArray;
@@ -46,13 +47,16 @@ public class Genres extends AppCompatActivity {
         txtNoGenres       .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
     }
 
-    Boolean isSetup;
+    Boolean isSetup = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-        isSetup = extras.getBoolean("IS_SETUP_PROCESS");
-        List<String> a = extras.getStringArrayList("PRESELECTED_ITEMS");
+        List<String> preselectedItems = null;
+        if (extras != null) {
+            isSetup = extras.getBoolean("IS_SETUP_PROCESS");
+            preselectedItems = extras.getStringArrayList("PRESELECTED_ITEMS");
+        }
         setContentView(R.layout.activity_genres);
 
         // The shared class between Instruments and Genres.
@@ -76,7 +80,7 @@ public class Genres extends AppCompatActivity {
             txtTitleProgress.setText("");
             btnFinish.setText(R.string.edit_instrument_genres_save);
 
-            sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres, a);
+            sShared.getGenres(Genres.this, gridView, progressBar, txtNoGenres, preselectedItems);
 
         } else {
             // Gets the list of genres.
@@ -113,7 +117,7 @@ public class Genres extends AppCompatActivity {
             if (selectedGenres.length() > 0) {
                 sShared.postGenres(Genres.this, selectedGenres);
                 if (isSetup) {
-                    Intent toUserListIntent = new Intent(Genres.this, Genres.class);
+                    Intent toUserListIntent = new Intent(Genres.this, MainScreenActivity.class);
                     Genres.this.startActivity(toUserListIntent);
                     overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
                 } else {

@@ -51,8 +51,11 @@ public class Instruments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-        isSetup = extras.getBoolean("IS_SETUP_PROCESS");
-        List<String> a = extras.getStringArrayList("PRESELECTED_ITEMS");
+        List<String> preselectedItems = null;
+        if (extras != null) {
+            isSetup = extras.getBoolean("IS_SETUP_PROCESS");
+            preselectedItems = extras.getStringArrayList("PRESELECTED_ITEMS");
+        }
         setContentView(R.layout.activity_instruments);
 
         // The shared class between Instruments and Genres.
@@ -75,7 +78,7 @@ public class Instruments extends AppCompatActivity {
             txtTitleProgress.setText("");
             btnNext.setText(R.string.edit_instrument_genres_save);
 
-            sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments, a);
+            sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments, preselectedItems);
         } else {
             // Gets the list of instruments.
             sShared.getInstruments(Instruments.this, gridView, progressBar, txtNoInstruments, null);

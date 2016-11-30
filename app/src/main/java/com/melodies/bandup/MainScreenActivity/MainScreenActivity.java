@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.DatePickable;
+import com.melodies.bandup.DatePickerFragment;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
@@ -45,6 +47,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -60,7 +64,7 @@ public class MainScreenActivity extends AppCompatActivity
         SoundCloudPlayerFragment.OnFragmentInteractionListener,
         UserSearchFragment.OnFragmentInteractionListener,
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
-        LocationListener {
+        LocationListener, DatePickable {
 
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
@@ -498,5 +502,31 @@ public class MainScreenActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    @Override
+    public void onDateSet(int year, int month, int day) {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+
+        // Calendar to Date object.
+        Date dateOfBirth = cal.getTime();
+
+        // Get the locale date format.
+        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
+
+        // Formatted date.
+        String date = dateFormat.format(dateOfBirth);
+
+        String age = datePickerFragment.ageCalculator(year, month, day);
+
+        String dateString = String.format("%s (%s)", date, age);
+
+        // send date and age to updateAge in profileFragment and do whatever you want with it
+        profileFragment.updateAge(dateOfBirth, age);
     }
 }

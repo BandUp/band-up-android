@@ -39,6 +39,7 @@ import com.google.android.gms.ads.AdView;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.DatePickerFragment;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
@@ -64,6 +65,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,7 +79,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -85,6 +87,8 @@ public class ProfileFragment extends Fragment{
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
 
+    private DatePickerFragment datePickerFragment = new DatePickerFragment();
+    LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
     private OnFragmentInteractionListener mListener;
 
@@ -204,7 +208,6 @@ public class ProfileFragment extends Fragment{
      * @param u the user that should be displayed.
      */
     private void displayUser(User u) {
-        LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
@@ -637,8 +640,26 @@ public class ProfileFragment extends Fragment{
         startActivityForResult(aboutMeIntent, 2);
     }
 
+    // Open datepicker
     public void onClickAge(View view) {
-        Toast.makeText(getActivity(), "Show Age dialog, and update ussr Age", Toast.LENGTH_SHORT).show();
+
+        datePickerFragment.show(getActivity().getFragmentManager(), "DatePicker");
+    }
+
+    /**
+     * saves user new age into database and updates current activity
+     * @param date is users current date of birth
+     * @param age is user calculated age to be displayed
+     */
+    public void updateAge(Date date, String age) {
+        updateUser(currentUser.id, "dateOfBirth", date.toString());
+        if (localeRules.ageIsPlural(Integer.parseInt(age))) {
+            String ageString = String.format("%s %s", age, getString((R.string.age_year_plural)));
+            txtAge.setText(ageString);
+        } else {
+            String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
+            txtAge.setText(ageString);
+        }
     }
 
     // Allow user to choose favorite instrument from instruments list, and save it into database

@@ -135,7 +135,7 @@ public class Instruments extends AppCompatActivity {
         super.onBackPressed();
         // If there is something on the TaskRoot
         // then activities are in the background.
-        if(!isTaskRoot()) {
+        if (!isTaskRoot()) {
             overridePendingTransition(R.anim.no_change, R.anim.slide_out_left);
         }
     }

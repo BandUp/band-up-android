@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -167,6 +168,7 @@ public class MainScreenActivity extends AppCompatActivity
             createLocationRequest();
         }
     }
+    boolean isExiting = false;
 
     @Override
     public void onBackPressed() {
@@ -177,6 +179,22 @@ public class MainScreenActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if (count != 0){
             getSupportFragmentManager().popBackStack();
+        } else if (isTaskRoot()) {
+            if (isExiting) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.isExiting = true;
+            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    isExiting=false;
+                }
+            }, 5000);
         } else {
             super.onBackPressed();
         }

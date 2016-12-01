@@ -132,4 +132,5 @@
     <string name="title_activity_password_reset">Endursetja lykilorð</string>
     <string name="send_password_reset_e_mail">Senda endursetningartölvupóst</string>
     <string name="edit_instrument_genres_save">Vista</string>
+    <string name="exit_bandup_toast">Til að fara út úr BandUp ýttu á BACK aftur.</string>
 </resources>

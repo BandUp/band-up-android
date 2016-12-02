@@ -97,6 +97,7 @@ public class UserListFragment extends Fragment {
             }
         }
         mAdapter = new UserListAdapter(getChildFragmentManager());
+
     }
 
     /**
@@ -107,6 +108,7 @@ public class UserListFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -177,6 +179,8 @@ public class UserListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                mAdapter.notifyDataSetChanged();
+
                 if (partialView != null) {
                     partialView.setVisibility(View.VISIBLE);
                 } else {
@@ -187,6 +191,10 @@ public class UserListFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                 } else {
                     System.err.println("User List progressBar is null");
+                }
+                if (mAdapter.getCount() == 0) {
+                    txtNoUsers.setVisibility(View.VISIBLE);
+                    return;
                 }
 
 
@@ -227,12 +235,15 @@ public class UserListFragment extends Fragment {
         txtNoUsers  = (TextView) rootView.findViewById(R.id.txtNoUsers);
 
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
-        progressBar.setVisibility(View.VISIBLE);
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
 
         partialView.setVisibility(View.VISIBLE);
-        getUserList();
+        if (mAdapter.getCount() == 0) {
+            getUserList();
+        } else {
+            partialView.setVisibility(View.VISIBLE);
+        }
 
         return rootView;
     }

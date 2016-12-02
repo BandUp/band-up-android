@@ -15,6 +15,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
      * The list that is used to display the users.
      */
     ArrayList<User> userList;
+    FragmentManager mFragmentManager;
 
 
     /**
@@ -24,6 +25,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
     public UserListAdapter(FragmentManager fm) {
         super(fm);
         userList = new ArrayList();
+        mFragmentManager = fm;
     }
 
     /**
@@ -51,7 +53,6 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
 
     public void clear() {
         userList.clear();
-        this.notifyDataSetChanged();
     }
 
 
@@ -64,7 +65,6 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
     public Boolean addUser(User u) {
         if (u != null) {
             userList.add(u);
-            this.notifyDataSetChanged();
             return true;
         } else {
             return false;

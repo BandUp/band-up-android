@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -63,6 +65,9 @@ public class MatchesFragment extends Fragment {
         return fragment;
     }
 
+    private TextView txtNoUsers;
+    private ProgressBar progressBar;
+
     MyMatchesRecyclerViewAdapter mmrva;
     List<User> matchItems;
 
@@ -74,8 +79,40 @@ public class MatchesFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_matches_list, container, false);
 
+        // Adding ad Banner
+        mAdView = (AdView)view.findViewById(R.id.adView);
+        RecyclerView myRecycler = (RecyclerView) view.findViewById(R.id.recyclerList);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        txtNoUsers = (TextView) view.findViewById(R.id.txtNoUsers);
+        progressBar = (ProgressBar) view.findViewById(R.id.userListProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Set the adapter
+        if (myRecycler instanceof RecyclerView) {
+            Context context = view.getContext();
+
+            if (mColumnCount <= 1) {
+                myRecycler.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                myRecycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
+            myRecycler.setAdapter(mmrva);
+        }
+        getMatchesList();
+        return view;
+    }
+
+    private void getMatchesList() {
         String url = getActivity().getResources().getString(R.string.api_address).concat("/matches");
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -84,6 +121,12 @@ public class MatchesFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                        if (response.length() == 0) {
+                            txtNoUsers.setVisibility(View.VISIBLE);
+                        }
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject item = response.getJSONObject(i);
@@ -109,38 +152,14 @@ public class MatchesFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.INVISIBLE);
+
                         VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
 
                     }
                 }
         );
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_matches_list, container, false);
-
-        // Adding ad Banner
-        mAdView = (AdView)view.findViewById(R.id.adView);
-        RecyclerView myRecycler = (RecyclerView) view.findViewById(R.id.recyclerList);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        // Set the adapter
-        if (myRecycler instanceof RecyclerView) {
-            Context context = view.getContext();
-
-            if (mColumnCount <= 1) {
-                myRecycler.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                myRecycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            myRecycler.setAdapter(mmrva);
-        }
-        return view;
     }
 
     @Override

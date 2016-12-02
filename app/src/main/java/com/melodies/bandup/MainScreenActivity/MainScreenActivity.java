@@ -102,7 +102,7 @@ public class MainScreenActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_list);
+        setContentView(R.layout.activity_main_screen);
         sharedPrefs = getSharedPreferences("permissions", Context.MODE_PRIVATE);
         if (!sharedPrefs.contains("display_rationale")) {
             SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -128,6 +128,8 @@ public class MainScreenActivity extends AppCompatActivity
 
         // Set the first item in the drawer to selected.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
+
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 

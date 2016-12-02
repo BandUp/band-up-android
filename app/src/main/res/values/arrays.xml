@@ -5,8 +5,8 @@
         <item>Choose a photo</item>
     </array>
     <array name="upcoming_features">
-        <item>&#8226; Event calendar</item>
-        <item>&#8226; Share users you found to social media</item>
-        <item>&#8226; Rent practise areas</item>
+        <item>Event calendar</item>
+        <item>Share users you found to social media</item>
+        <item>Rent practise areas</item>
     </array>
 </resources>

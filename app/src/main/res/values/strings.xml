@@ -143,4 +143,5 @@
     <string name="please_enter_your_e_mail">Please enter your email</string>
     <string name="edit_instrument_genres_save">Save</string>
     <string name="exit_bandup_toast">To exit BandUp, click BACK again.</string>
+    <string name="matches_no_users">You haven\'t matched with anyone, yet.</string>
 </resources>

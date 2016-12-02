@@ -25,7 +25,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:src="@color/bandUpGray"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginEnd="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Arngrímur Bragi"
                 android:theme="@style/DoubleListItemText"
+                android:textSize="18sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
@@ -43,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/DoubleListItemText"
+                android:textSize="15sp"
                 android:text="Rock, Guitar" />
         </LinearLayout>
     </LinearLayout>

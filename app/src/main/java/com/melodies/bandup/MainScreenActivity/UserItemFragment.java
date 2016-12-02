@@ -3,6 +3,7 @@ package com.melodies.bandup.MainScreenActivity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,6 +207,8 @@ public class UserItemFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
+                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
             }
         }, new BandUpErrorListener() {
             @Override

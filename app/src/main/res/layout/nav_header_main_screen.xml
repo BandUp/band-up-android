@@ -21,10 +21,11 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
         <ImageView
+            android:id="@+id/imgProfileNav"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:src="@color/bandUpGray"
+            android:src="@drawable/ic_profile_picture_placeholder"
             android:layout_marginEnd="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,18 +35,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Arngrímur Bragi"
+                android:id="@+id/txtUsernameNav"
                 android:theme="@style/DoubleListItemText"
                 android:textSize="18sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="Jón Jónsson" />
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtFavoriteNav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/DoubleListItemText"
                 android:textSize="15sp"
-                android:text="Rock, Guitar" />
+                android:text="Guitar"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

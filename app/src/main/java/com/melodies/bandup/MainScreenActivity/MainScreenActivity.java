@@ -26,6 +26,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -43,6 +45,7 @@ import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,9 +55,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.os.Build.VERSION_CODES.M;
+import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
-public class MainScreenActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
+public class MainScreenActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
         UserListFragment.OnFragmentInteractionListener,
         MatchesFragment.OnListFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener,
@@ -69,7 +74,7 @@ public class MainScreenActivity extends AppCompatActivity
 
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
-
+    int EDIT_EMAIL_REQUEST_CODE = 4979;
 
     UserListFragment userListFragment;
     UserListFragment mUserSearchResultsFragment;
@@ -86,6 +91,11 @@ public class MainScreenActivity extends AppCompatActivity
     String bestProvider;
     SharedPreferences sharedPrefs;
     GoogleApiClient mGoogleApiClient;
+    User currentUser;
+
+    ImageView imgProfileNav;
+    TextView txtUsernameNav;
+    TextView txtFavoriteNav;
 
     private boolean mIsSearch = false;
 
@@ -116,7 +126,7 @@ public class MainScreenActivity extends AppCompatActivity
         settingsFragment            = SettingsFragment.newInstance();
         profileFragment             = ProfileFragment.newInstance();
         mUserSearchFragment         = UserSearchFragment.newInstance();
-        mUpcomingFeaturesFragment = UpcomingFeaturesFragment.newInstance();
+        mUpcomingFeaturesFragment   = UpcomingFeaturesFragment.newInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -144,7 +154,7 @@ public class MainScreenActivity extends AppCompatActivity
         Boolean shouldDisplayRationale = sharedPrefs.getBoolean("display_rationale", false);
 
         int apiVersion = android.os.Build.VERSION.SDK_INT;
-        if (apiVersion >= android.os.Build.VERSION_CODES.M){
+        if (apiVersion >= M){
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -173,6 +183,10 @@ public class MainScreenActivity extends AppCompatActivity
         } else {
             createLocationRequest();
         }
+        imgProfileNav  = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgProfileNav);
+        txtUsernameNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtUsernameNav);
+        txtFavoriteNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtFavoriteNav);
+        getUserProfile();
     }
     boolean isExiting = false;
 
@@ -304,7 +318,7 @@ public class MainScreenActivity extends AppCompatActivity
 
     public void onClickAge(View view) { profileFragment.onClickAge(view); }
 
-    public void onCLickFavorite(View view) { profileFragment.onClickFavorite(view); }
+    public void onClickFavorite(View view) { profileFragment.onClickFavorite(view); }
 
     public void onClickContact(View view) { settingsFragment.onClickContact(view); }
 
@@ -514,6 +528,64 @@ public class MainScreenActivity extends AppCompatActivity
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
                 VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+
+            }
+        });
+    }
+
+    // Get the User ID of the logged in user
+    public String getUserId() throws JSONException {
+        SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
+        String id = srdPref.getString("userID", DEFAULT);
+        return (!id.equals(DEFAULT)) ? id : "No data Found";
+    }
+
+    public void getUserProfile() {
+        JSONObject user = new JSONObject();
+        try {
+            user.put("userId", getUserId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext())
+                .getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                JSONObject responseObj = null;
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
+                }
+
+                currentUser = new User();
+                try {
+                    if (!responseObj.isNull("username")) {
+                        currentUser.name = responseObj.getString("username");
+                        txtUsernameNav.setText(currentUser.name);
+                    }
+                    if (!responseObj.isNull("favoriteinstrument")) {
+                        currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
+                        txtFavoriteNav.setText(currentUser.favoriteinstrument);
+                    }
+                    if (!responseObj.isNull("image")) {
+                        JSONObject imageObj = responseObj.getJSONObject("image");
+
+                        if (!imageObj.isNull("url")) {
+                            currentUser.imgURL = imageObj.getString("url");
+                            if (currentUser.imgURL != null) {
+                                Picasso.with(MainScreenActivity.this).load(currentUser.imgURL).into(imgProfileNav);
+                            }
+                        }
+                    }
+                    else {
+                        Picasso.with(MainScreenActivity.this).load(R.drawable.ic_profile_picture_placeholder).into(imgProfileNav);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
 
             }
         });

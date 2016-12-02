@@ -64,7 +64,6 @@
 
                         <TextView
                             android:text="Username"
-
                             android:layout_marginBottom="5dp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -94,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtFavorite"
                             android:textSize="18sp"
-                            android:onClick="onCLickFavorite"
+                            android:onClick="onClickFavorite"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"/>
 

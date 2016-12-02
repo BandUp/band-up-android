@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -288,6 +289,21 @@ public class Register extends AppCompatActivity implements DatePickable {
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));
         getAd();
+        goBackTitle();
+    }
+
+    private void goBackTitle() {
+        // back to activity before
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    // Return to previous Activity
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
+        return true;
     }
 
     // Adding ad Banner

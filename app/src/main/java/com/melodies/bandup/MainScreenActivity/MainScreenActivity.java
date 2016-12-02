@@ -319,33 +319,28 @@ public class MainScreenActivity extends AppCompatActivity
     }
 
     public void onClickDetails(View view, int position) {
-        System.out.println(position);
-        switch (view.getId()) {
-            case R.id.btnDetails:
-                Bundle bundle = new Bundle();
-                if (mIsSearch){
-                    if (mUserSearchResultsFragment.mAdapter.getUser(position) == null) {
-                        return;
-                    }
-                    bundle.putString("user_id", mUserSearchResultsFragment.mAdapter.getUser(position).id);
-                }else {
-                    if (userListFragment.mAdapter.getUser(position) == null) {
-                        return;
-                    }
-                    bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
-                }
-
-                if (userDetailsFragment.getArguments() != null) {
-                    userDetailsFragment.getArguments().clear();
-                    userDetailsFragment.getArguments().putAll(bundle);
-                } else {
-                    userDetailsFragment.setArguments(bundle);
-                }
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null);
-                ft.commit();
-                break;
+        Bundle bundle = new Bundle();
+        if (mIsSearch){
+            if (mUserSearchResultsFragment.mAdapter.getUser(position) == null) {
+                return;
+            }
+            bundle.putString("user_id", mUserSearchResultsFragment.mAdapter.getUser(position).id);
+        }else {
+            if (userListFragment.mAdapter.getUser(position) == null) {
+                return;
+            }
+            bundle.putString("user_id", userListFragment.mAdapter.getUser(position).id);
         }
+
+        if (userDetailsFragment.getArguments() != null) {
+            userDetailsFragment.getArguments().clear();
+            userDetailsFragment.getArguments().putAll(bundle);
+        } else {
+            userDetailsFragment.setArguments(bundle);
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null);
+        ft.commit();
     }
 
     public void onClickSearch(View view) {

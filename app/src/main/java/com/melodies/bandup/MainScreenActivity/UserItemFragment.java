@@ -80,8 +80,16 @@ public class UserItemFragment extends Fragment {
                 onClickLike(v);
             }
         });
+
         btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
         btnDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainScreenActivity) getActivity()).onClickDetails(v, mNum);
+            }
+        });
+
+        ivUserProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainScreenActivity) getActivity()).onClickDetails(v, mNum);

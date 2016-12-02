@@ -16,12 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.melodies.bandup.BandUpApplication;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpRepository;
 import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Request;
 
@@ -148,6 +146,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                     BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                     JsonReader reader = new JsonReader(rd);
                     reader.beginArray();
+                    mTracksArray = new JSONArray();
                     while (reader.hasNext()){
                         mTracksArray.put(parseTracksObject(reader));
                     }
@@ -176,12 +175,11 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     private Dialog makeSelector(JSONArray arr) {
         List<String> titles = new ArrayList<>();
         try {
-
             for (int i = 0; i < arr.length(); i++) {
                 titles.add(arr.getJSONObject(i).getString("title"));
             }
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-            dialogBuilder.setTitle("Please select a sound")
+            dialogBuilder.setTitle("Please select a song")
                     .setItems(titles.toArray(new CharSequence[titles.size()]), this);
             return dialogBuilder.create();
         }catch (JSONException ex){

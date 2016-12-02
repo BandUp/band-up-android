@@ -143,6 +143,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+
         // Open the UserListFragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);

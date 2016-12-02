@@ -2,7 +2,8 @@ package com.melodies.bandup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,12 +15,18 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PasswordReset extends Activity {
+public class PasswordReset extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_reset);
+
+        // back to activity before
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /**
@@ -41,6 +48,7 @@ public class PasswordReset extends Activity {
                             Toast.makeText(PasswordReset.this, "An e-mail has been sent", Toast.LENGTH_LONG).show();
                             Intent loginIntent = new Intent(PasswordReset.this, Login.class);
                             startActivity(loginIntent);
+                            finish();
                         }
                     },
                     new BandUpErrorListener() {
@@ -54,5 +62,9 @@ public class PasswordReset extends Activity {
             e.printStackTrace();
         }
     }
-
+    // Return to previous Activity
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
+        return true;
+    }
 }

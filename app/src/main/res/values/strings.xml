@@ -144,4 +144,5 @@
     <string name="edit_instrument_genres_save">Save</string>
     <string name="exit_bandup_toast">To exit BandUp, click BACK again.</string>
     <string name="matches_no_users">You haven\'t matched with anyone, yet.</string>
+    <string name="profile_fetch_error">Could not get your profile</string>
 </resources>

@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -161,7 +162,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userRequest();
+
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
         myThread = new MyThread();
@@ -191,6 +192,10 @@ public class ProfileFragment extends Fragment {
         ft.commitAllowingStateLoss();
     }
 
+    private TextView txtFetchError;
+    private ProgressBar progressBar;
+    private LinearLayout llProfile;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -199,7 +204,11 @@ public class ProfileFragment extends Fragment {
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
+        llProfile = (LinearLayout) rootView.findViewById(R.id.ll_profile);
 
+        userRequest();
         return rootView;
     }
 
@@ -207,7 +216,7 @@ public class ProfileFragment extends Fragment {
      * Displays the user on the profile fragment
      * @param u the user that should be displayed.
      */
-    private void displayUser(User u) {
+    private void populateUser(User u) {
 
         if (u.imgURL != null) {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
@@ -560,14 +569,19 @@ public class ProfileFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        llProfile.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
                 if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
+                } else {
+                    txtFetchError.setVisibility(View.VISIBLE);
                 }
+
                 currentUser = new User();
                 try {
                     if (!responseObj.isNull("_id")) {
@@ -618,7 +632,8 @@ public class ProfileFragment extends Fragment {
                     if (!responseObj.isNull("soundCloudId")){
                         currentUser.soundCloudId = responseObj.getInt("soundCloudId");
                     }
-                    displayUser(currentUser);
+                    llProfile.setVisibility(View.VISIBLE);
+                    populateUser(currentUser);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
@@ -629,6 +644,9 @@ public class ProfileFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.INVISIBLE);
+                llProfile.setVisibility(View.INVISIBLE);
+                txtFetchError.setVisibility(View.VISIBLE);
                 System.out.println("ERROR");
             }
         });
@@ -744,7 +762,7 @@ public class ProfileFragment extends Fragment {
                 ArrayList<String> list = extras.getStringArrayList("SELECTED_INSTRUMENTS");
                 if (list != null ) {
                     currentUser.instruments = list;
-                    displayUser(currentUser);
+                    populateUser(currentUser);
                 }
             }
         } else if (requestCode == EDIT_GENRES_REQUEST_CODE) {
@@ -753,7 +771,7 @@ public class ProfileFragment extends Fragment {
                 ArrayList<String> list = extras.getStringArrayList("SELECTED_GENRES");
                 if (list != null ) {
                     currentUser.genres = list;
-                    displayUser(currentUser);
+                    populateUser(currentUser);
                 }
             }
         } else {

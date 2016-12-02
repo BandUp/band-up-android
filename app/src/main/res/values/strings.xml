@@ -41,7 +41,7 @@
     <!-- Login Screen -->
     <string name="login_username">Email</string>
     <string name="login_password">Password</string>
-    <string name="login_sign_in">Sign in</string>
+    <string name="login_sign_in">Log in</string>
     <string name="login_sign_up">Do not have an account? Sign up here.</string>
     <string name="login_go_to_chat_temporary">Go To Chat</string>
 
@@ -65,7 +65,7 @@
     <string name="login_progress_title">Logging in</string>
     <string name="login_progress_description">Please wait...</string>
     <string name="login_success">Login Successful!</string>
-    <string name="register_success">Registration successful!\nYou can sign in now.</string>
+    <string name="register_success">Registration successful!\nYou can log in now.</string>
     <string name="register_password_mismatch">Passwords don\'t match!</string>
     <string name="register_enter_email">Please enter your Email.</string>
     <string name="register_enter_username">Please enter your name.</string>

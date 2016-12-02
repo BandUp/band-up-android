@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -133,6 +134,10 @@ public class UserDetailsFragment extends Fragment {
 
     }
 
+    private TextView txtFetchError;
+    private ProgressBar progressBar;
+    private LinearLayout llProfile;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -141,6 +146,9 @@ public class UserDetailsFragment extends Fragment {
         initializeViews(rootView);
         setFonts();
 
+        txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
+        llProfile = (LinearLayout) rootView.findViewById(R.id.ll_profile);
 
         String argumentUserID = getArguments().getString("user_id");
 
@@ -199,6 +207,7 @@ public class UserDetailsFragment extends Fragment {
         }
 
         createSoundCloudPlayer(u);
+        llProfile.setVisibility(View.VISIBLE);
     }
 
     private void createSoundCloudPlayer(User user) {
@@ -226,13 +235,18 @@ public class UserDetailsFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        llProfile.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
+
             @Override
             public void onBandUpResponse(Object response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
                 if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
+                } else {
+                    txtFetchError.setVisibility(View.VISIBLE);
                 }
                 if (responseObj != null) {
                     // Binding View to real data
@@ -302,6 +316,7 @@ public class UserDetailsFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.INVISIBLE);
                 System.out.println("ERROR");
             }
         });

@@ -207,6 +207,7 @@ public class ProfileFragment extends Fragment {
         txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         llProfile = (LinearLayout) rootView.findViewById(R.id.ll_profile);
+        //getActivity().getActionBar().setIcon(R.drawable.pencil);
 
         userRequest();
         return rootView;

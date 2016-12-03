@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:id="@+id/itemBackground"
-        android:src="@drawable/disco" />
+        android:src="@color/bandUpGray"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         android:id="@+id/itemName"
         android:theme="@style/DoubleListItemText"/>
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="7dp"
@@ -29,5 +29,5 @@
         android:id="@+id/itemSelected"
         android:src="@drawable/ic_check_circle_black_24dp"
         android:visibility="invisible"
-        android:tint="@color/bandUpYellow" />
+        android:tint="@color/bandUpYellow" />-->
 </FrameLayout>

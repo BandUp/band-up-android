@@ -69,7 +69,7 @@
             android:layout_marginBottom="5dp"
             android:fadeScrollbars="false"/>
 
-        <include layout="@layout/ads"/>
+
 
         <Button
             android:layout_width="wrap_content"
@@ -80,6 +80,8 @@
             android:onClick="onClickNext"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"/>
+
+        <include layout="@layout/ads"/>
     </LinearLayout>
 
     <ProgressBar

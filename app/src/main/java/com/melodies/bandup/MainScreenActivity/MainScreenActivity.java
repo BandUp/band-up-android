@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -27,6 +28,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,6 +66,8 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
+
+
 public class MainScreenActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         UserListFragment.OnFragmentInteractionListener,
@@ -78,9 +82,14 @@ public class MainScreenActivity extends AppCompatActivity implements
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener, DatePickable {
 
-    int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
-    int EDIT_GENRES_REQUEST_CODE = 4989;
-    int EDIT_EMAIL_REQUEST_CODE = 4979;
+    final int NEAR_ME_FRAGMENT     = 0;
+    final int MY_PROFILE_FRAGMENT  = 1;
+    final int MATCHES_FRAGMENT     = 2;
+    final int SETTINGS_FRAGMENT    = 3;
+    final int COMING_SOON_FRAGMENT = 4;
+    final int SEARCH_FRAGMENT      = 5;
+
+    int currentFragment = NEAR_ME_FRAGMENT;
 
     UserListFragment userListFragment;
     UserListFragment mUserSearchResultsFragment;
@@ -115,6 +124,56 @@ public class MainScreenActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         profileFragment.onImageSelectResult(requestCode, resultCode, data);
         profileFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (currentFragment == MY_PROFILE_FRAGMENT) {
+            getMenuInflater().inflate(R.menu.menu_profile, menu);
+            MenuItem item = menu.findItem(R.id.action_edit_profile);
+            item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+
+            if (currentFragment != MY_PROFILE_FRAGMENT) {
+                item.setVisible(false);
+            }
+
+        } else {
+            getMenuInflater().inflate(R.menu.menu_search, menu);
+            MenuItem item = menu.findItem(R.id.action_search);
+            item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+            if (currentFragment != NEAR_ME_FRAGMENT && currentFragment != SEARCH_FRAGMENT) {
+                item.setVisible(false);
+            }
+        }
+
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                if (currentFragment == SEARCH_FRAGMENT) {
+                    ft.replace(R.id.mainFrame, userListFragment);
+                    ft.commit();
+                    setTitle(getString(R.string.main_title_user_list));
+                    currentFragment = NEAR_ME_FRAGMENT;
+                    invalidateOptionsMenu();
+                } else if (currentFragment == NEAR_ME_FRAGMENT) {
+                    ft.replace(R.id.mainFrame, mUserSearchFragment);
+                    ft.commit();
+                    setTitle(getString(R.string.search));
+                    currentFragment = SEARCH_FRAGMENT;
+                    invalidateOptionsMenu();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -213,6 +272,22 @@ public class MainScreenActivity extends AppCompatActivity implements
         imgProfileNav  = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgProfileNav);
         txtUsernameNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtUsernameNav);
         txtFavoriteNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtFavoriteNav);
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.mainFrame, profileFragment);
+                ft.commit();
+                setTitle(getString(R.string.main_title_edit_profile));
+                currentFragment = MY_PROFILE_FRAGMENT;
+                invalidateOptionsMenu();
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+            }
+        });
         getUserProfile();
     }
     boolean isExiting = false;
@@ -260,26 +335,29 @@ public class MainScreenActivity extends AppCompatActivity implements
                 ft.replace(R.id.mainFrame, userListFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_user_list));
+                currentFragment = NEAR_ME_FRAGMENT;
+                invalidateOptionsMenu();
                 break;
             case R.id.nav_matches:
                 ft.replace(R.id.mainFrame, matchesFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_matches));
+                currentFragment = MATCHES_FRAGMENT;
+                invalidateOptionsMenu();
                 break;
             case R.id.nav_edit_profile:
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_edit_profile));
+                currentFragment = MY_PROFILE_FRAGMENT;
+                invalidateOptionsMenu();
                 break;
             case R.id.nav_settings:
                 ft.replace(R.id.mainFrame, settingsFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_settings));
-                break;
-            case R.id.nav_search:
-                ft.replace(R.id.mainFrame, mUserSearchFragment);
-                ft.commit();
-                setTitle(getString(R.string.search));
+                currentFragment = SETTINGS_FRAGMENT;
+                invalidateOptionsMenu();
                 break;
             case R.id.nav_logout:
                 logout();
@@ -292,6 +370,8 @@ public class MainScreenActivity extends AppCompatActivity implements
                 ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
                 ft.commit();
                 setTitle("Upcoming features");
+                currentFragment = COMING_SOON_FRAGMENT;
+                invalidateOptionsMenu();
                 break;
             default:
                 break;

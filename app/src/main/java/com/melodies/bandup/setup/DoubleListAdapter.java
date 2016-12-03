@@ -102,7 +102,7 @@ public final class DoubleListAdapter extends BaseAdapter {
             v = mInflater.inflate(R.layout.item_grid_view_cell, viewGroup, false);
             v.setTag(R.id.text, v.findViewById(R.id.itemName));
             v.setTag(R.string.setup_tag_image, v.findViewById(R.id.itemBackground));
-            v.setTag(R.string.setup_check_view, v.findViewById(R.id.itemSelected));
+            //v.setTag(R.string.setup_check_view, v.findViewById(R.id.itemSelected));
         }
 
         // The border size around the DoubleListItem when it has been selected.
@@ -162,7 +162,7 @@ public final class DoubleListAdapter extends BaseAdapter {
             name.setTextSize(TypedValue.COMPLEX_UNIT_PX, sShared.pixelsToDisplayPixels(mContext, textSize));
         }
         // Put an image in the background.
-        backView.setImageResource(R.drawable.disco);
+        //backView.setImageResource(R.drawable.disco);
 
         name.setText(item.name);
         return v;

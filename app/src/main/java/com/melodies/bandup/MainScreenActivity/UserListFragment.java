@@ -9,10 +9,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -75,6 +78,7 @@ public class UserListFragment extends Fragment {
     private TextView txtNoUsers;
     private ProgressBar progressBar;
     private View     partialView;
+    private LinearLayout networkErrorBar;
 
     UserListAdapter mAdapter;
 
@@ -109,6 +113,7 @@ public class UserListFragment extends Fragment {
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
+        networkErrorBar.setVisibility(View.INVISIBLE);
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -203,6 +208,18 @@ public class UserListFragment extends Fragment {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.INVISIBLE);
+
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    networkErrorBar.setVisibility(View.VISIBLE);
+                    networkErrorBar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            networkErrorBar.setVisibility(View.INVISIBLE);
+                            getUserList();
+                        }
+                    });
+                    return;
+                }
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
             }
         });
@@ -210,8 +227,11 @@ public class UserListFragment extends Fragment {
 
     // Loading user credentials
     public Integer loadUserCredentials(String valueName) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
-        return sharedPreferences.getInt (valueName, 13);
+        if (getActivity() != null) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
+            return sharedPreferences.getInt (valueName, 13);
+        }
+        return -1;
     }
 
     // displaying only chosen one
@@ -238,9 +258,15 @@ public class UserListFragment extends Fragment {
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
 
+        networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
+
         partialView.setVisibility(View.VISIBLE);
         if (mAdapter.getCount() == 0) {
-            getUserList();
+            if (networkErrorBar.getVisibility() == View.INVISIBLE) {
+                partialView.setVisibility(View.INVISIBLE);
+                getUserList();
+            }
+
         } else {
             partialView.setVisibility(View.VISIBLE);
         }

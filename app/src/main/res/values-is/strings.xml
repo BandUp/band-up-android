@@ -135,4 +135,6 @@
     <string name="exit_bandup_toast">Til að fara út úr BandUp ýttu á BACK aftur.</string>
     <string name="matches_no_users">Þú hefur enn sem komið er ekki tengst neinum</string>
     <string name="profile_fetch_error">Gat ekki náð í prófílinn þinn</string>
+    <string name="connection_banner_title">Gat ekki tengst Internetinu.</string>
+    <string name="connection_banner_message">Vinsamlegast skoðaðu nettenginguna þína.</string>
 </resources>

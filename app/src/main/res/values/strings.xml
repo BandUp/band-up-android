@@ -145,4 +145,6 @@
     <string name="exit_bandup_toast">To exit BandUp, click BACK again.</string>
     <string name="matches_no_users">You haven\'t matched with anyone, yet.</string>
     <string name="profile_fetch_error">Could not get your profile</string>
+    <string name="connection_banner_title">Could not connect to the Internet.</string>
+    <string name="connection_banner_message">Please check your network connection.</string>
 </resources>

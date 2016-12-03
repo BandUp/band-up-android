@@ -10,22 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
-import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
-import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
-import com.melodies.bandup.listeners.BandUpErrorListener;
-import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UserItemFragment extends Fragment {
     int mNum;
@@ -77,7 +68,11 @@ public class UserItemFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickLike(v);
+                ((MainScreenActivity)getActivity()).onClickLike(mUser.id);
+                ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
+                if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
+                    pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                }
             }
         });
 
@@ -177,53 +172,5 @@ public class UserItemFragment extends Fragment {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
 
         }
-    }
-
-    public void onClickLike(View view) {
-        JSONObject user = new JSONObject();
-
-        try {
-            user.put("userID", mUser.id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
-            @Override
-            public void onBandUpResponse(Object response) {
-                JSONObject responseObj = null;
-
-                if (response instanceof JSONObject) {
-                    responseObj = (JSONObject) response;
-                } else {
-                    return;
-                }
-
-                try {
-                    Boolean isMatch;
-                    if (!responseObj.isNull("isMatch")) {
-                        isMatch = responseObj.getBoolean("isMatch");
-                    } else {
-                        Toast.makeText(getActivity(), "Error loading match.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (isMatch) {
-                        Toast.makeText(getActivity(), "You Matched!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "You liked this person", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
-                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-            }
-        }, new BandUpErrorListener() {
-            @Override
-            public void onBandUpErrorResponse(VolleyError error) {
-                VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-
-            }
-        });
     }
 }

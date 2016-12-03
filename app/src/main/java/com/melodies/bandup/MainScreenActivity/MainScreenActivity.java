@@ -2,15 +2,18 @@ package com.melodies.bandup.MainScreenActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,9 +30,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.DatabaseSingleton;
@@ -97,6 +103,8 @@ public class MainScreenActivity extends AppCompatActivity implements
     TextView txtUsernameNav;
     TextView txtFavoriteNav;
 
+    private LinearLayout networkErrorBar;
+
     private boolean mIsSearch = false;
 
     public void setIsSearch(boolean isSearch){
@@ -119,6 +127,22 @@ public class MainScreenActivity extends AppCompatActivity implements
             editor.putBoolean("display_rationale", true);
             editor.apply();
         }
+
+        BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {
+                    networkErrorBar.setVisibility(View.VISIBLE);
+                } else {
+                    networkErrorBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, filter);
+
         // Create all fragments
         userListFragment            = UserListFragment.newInstance(null);
         userDetailsFragment         = UserDetailsFragment.newInstance();
@@ -127,6 +151,8 @@ public class MainScreenActivity extends AppCompatActivity implements
         profileFragment             = ProfileFragment.newInstance();
         mUserSearchFragment         = UserSearchFragment.newInstance();
         mUpcomingFeaturesFragment   = UpcomingFeaturesFragment.newInstance();
+
+        networkErrorBar = (LinearLayout) findViewById(R.id.network_connection_error_bar);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -500,6 +526,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                networkErrorBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
 
                 if (response instanceof JSONObject) {
@@ -528,6 +555,13 @@ public class MainScreenActivity extends AppCompatActivity implements
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    networkErrorBar.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                // TODO: Add OnClickListener.
+
                 VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
 
             }

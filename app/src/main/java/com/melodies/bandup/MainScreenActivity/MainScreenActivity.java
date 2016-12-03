@@ -112,6 +112,8 @@ public class MainScreenActivity extends AppCompatActivity implements
     TextView txtUsernameNav;
     TextView txtFavoriteNav;
 
+    NavigationView navigationView;
+
     private LinearLayout networkErrorBar;
 
     private boolean mIsSearch = false;
@@ -222,7 +224,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         toggle.syncState();
 
         // Set the first item in the drawer to selected.
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -291,6 +293,18 @@ public class MainScreenActivity extends AppCompatActivity implements
         getUserProfile();
     }
     boolean isExiting = false;
+
+    public void updateNavUserImage(String url) {
+        Picasso.with(MainScreenActivity.this).load(url).into(imgProfileNav);
+    }
+
+    public void updateNavUserName(String name) {
+        txtUsernameNav.setText(name);
+    }
+
+    public void updateFavouriteInstrument(String instrumentName) {
+        txtFavoriteNav.setText(instrumentName);
+    }
 
     @Override
     public void onBackPressed() {

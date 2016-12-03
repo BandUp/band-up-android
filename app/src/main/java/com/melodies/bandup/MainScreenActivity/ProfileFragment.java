@@ -434,7 +434,7 @@ public class ProfileFragment extends Fragment {
      */
     public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
         final File image = new File(path);
-        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        final String url = getResources().getString(R.string.api_address).concat("/profile-picture");
         final MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
                 new Response.Listener<String>() {
                     @Override
@@ -447,6 +447,7 @@ public class ProfileFragment extends Fragment {
                         String a = validateJSON(urlResponse);
                         if (a != null) {
                             Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
+                            ((MainScreenActivity) getActivity()).updateNavUserImage(a);
                         } else {
                             Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
                         }
@@ -710,6 +711,7 @@ public class ProfileFragment extends Fragment {
                             String instrument = arrayAdapter.getItem(inst);
                             updateUser(currentUser.id, "favoriteinstrument", instrument);
                             txtFavorite.setText(instrument);
+                        ((MainScreenActivity)getActivity()).updateFavouriteInstrument(instrument);
                         }
                 });
         fs.show();

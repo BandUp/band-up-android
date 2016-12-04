@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
@@ -26,6 +27,7 @@ public class UserItemFragment extends Fragment {
     private ImageView ivUserProfileImage;
     private AdView mAdView;
     private User mUser;
+    private LinearLayout networkErrorBar;
 
     /**
      * Create a new instance of the UserItemFragment
@@ -65,14 +67,21 @@ public class UserItemFragment extends Fragment {
 
     private void initializeButtons(View rootView) {
         btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
+        networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
+
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity)getActivity()).onClickLike(mUser.id);
-                ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
-                if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
-                    pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-                }
+                    if (networkErrorBar.getVisibility() == View.INVISIBLE) {
+                        ((MainScreenActivity)getActivity()).onClickLike(mUser.id);
+                        ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
+                        if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
+                            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                        }
+                    }
+
+
+
             }
         });
 

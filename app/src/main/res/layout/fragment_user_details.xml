@@ -177,8 +177,16 @@
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/soundcloud_player_area"></LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:id="@+id/soundcloud_player_area">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:id="@+id/no_soundcloud_example"
+                                android:text="This user has no SoundCloud example, yet."/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
@@ -210,7 +218,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtFetchError"
-        android:text="@string/profile_fetch_error"
+        android:text="@string/profile_fetch_error_other"
         android:visibility="invisible"
         android:textSize="20sp"
         android:textColor="@color/bandUpYellow"

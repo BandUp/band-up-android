@@ -79,6 +79,7 @@ public class UserDetailsFragment extends Fragment {
     private TextView    txtGenresTitle;
     private TextView    txtInstrumentsList;
     private TextView    txtGenresList;
+    private TextView    txtNoSoundCloudExample;
     private ImageView   ivUserProfileImage;
     private Button      btnLike;
     private AdView      mAdView;
@@ -99,6 +100,9 @@ public class UserDetailsFragment extends Fragment {
         btnLike             = (Button)       rootView.findViewById(R.id.btnLike);
         mAdView             = (AdView)       rootView.findViewById(R.id.adView);
         mSoundcloudArea     = (LinearLayout) rootView.findViewById(R.id.soundcloud_player_area);
+        txtFetchError       = (TextView)     rootView.findViewById(R.id.txtFetchError);
+        txtNoSoundCloudExample = (TextView) rootView.findViewById(R.id.no_soundcloud_example);
+
 
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +127,8 @@ public class UserDetailsFragment extends Fragment {
         txtInstrumentsTitle.setTypeface(caviarDreamsBold);
         txtGenresTitle     .setTypeface(caviarDreamsBold);
         btnLike            .setTypeface(caviarDreamsBold);
+        txtNoSoundCloudExample.setTypeface(caviarDreamsBold);
+
     }
 
     @Override
@@ -146,7 +152,6 @@ public class UserDetailsFragment extends Fragment {
         initializeViews(rootView);
         setFonts();
 
-        txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         llProfile = (LinearLayout) rootView.findViewById(R.id.ll_profile);
 
@@ -211,19 +216,23 @@ public class UserDetailsFragment extends Fragment {
     }
 
     private void createSoundCloudPlayer(User user) {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        mSoundcloudArea.setId(new Integer(1234));
-        Fragment soundCloudFragment;
-        if (user.soundCloudURL == null){
-            soundCloudFragment = SoundCloudPlayerFragment.newInstance(null);
-        }else {
+        if (user.soundCloudURL == null || user.soundCloudURL.equals("")){
+            txtNoSoundCloudExample.setVisibility(View.VISIBLE);
+        } else {
+            txtNoSoundCloudExample.setVisibility(View.GONE);
+            FragmentManager fragmentManager = getChildFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+
+            //mSoundcloudArea.setId(Integer.valueOf(1234));
+            Fragment soundCloudFragment;
+
             soundCloudFragment = SoundCloudPlayerFragment.newInstance(user.soundCloudURL);
+            ft.replace(R.id.soundcloud_player_area, soundCloudFragment, "soundCloudFragment");
+            ft.commit();
         }
 
-        ft.add(mSoundcloudArea.getId(), soundCloudFragment, "soundCloudFragment");
-        ft.commit();
+
 
     }
 
@@ -316,8 +325,9 @@ public class UserDetailsFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                txtFetchError.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
-                System.out.println("ERROR");
+
             }
         });
     }

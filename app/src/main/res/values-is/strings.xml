@@ -88,7 +88,7 @@
     <string name="title_activity_sound_cloud">Nýskráning</string>
     <string name="permission_rationale">\"Contacts permissions are needed for providing email         completions.\"</string>
     <string name="main_nav_about">Um okkur</string>
-    <string name="main_nav_edit_profile">Minn prófíll</string>
+    <string name="main_nav_edit_profile">Prófíllinn minn</string>
     <string name="main_nav_matches">Tengingar/Spjall</string>
     <string name="main_nav_near_me">Nálægt mér</string>
     <string name="main_nav_privacy">Persónuvernd</string>
@@ -98,7 +98,7 @@
     <string name="main_title_privacy">Persónuvend</string>
     <string name="main_title_settings">Stillingar</string>
     <string name="profile_uploading">Hleð upp mynd</string>
-    <string name="main_title_edit_profile">Minn prófíll</string>
+    <string name="main_title_edit_profile">Prófíllinn minn</string>
     <string name="main_nav_log_out">Útskrá</string>
     <string name="user_allow_location">Vinsamlegast leyfðu aðgang að GPS virkni</string>
     <string name="details_instruments">Hljóðfæri</string>

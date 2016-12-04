@@ -137,4 +137,5 @@
     <string name="connection_banner_title">Gat ekki tengst Internetinu.</string>
     <string name="connection_banner_message">Vinsamlegast skoðaðu nettenginguna þína.</string>
     <string name="please_enter_your_e_mail">Vinsamlegast sláðu inn tölvupóstfangið þitt.\nFylgdu síðan leiðbeiningunum í tölvupóstinum, sem við sendum þér, til þess að endursetja lykilorðið þitt.</string>
+    <string name="profile_fetch_error_other">Gat ekki náð í prófílinn</string>
 </resources>

@@ -3,8 +3,6 @@
     xmlns:rsb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.melodies.bandup.MainScreenActivity.SettingsFragment">
 
     <LinearLayout
@@ -22,7 +20,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Filter"
+                    android:paddingStart="20dp"
+                    android:textSize="20sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@color/colorGray"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
                 <TextView
                     android:text="Radius 20 km"
                     android:layout_width="match_parent"
@@ -31,7 +46,8 @@
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -39,191 +55,260 @@
                     android:id="@+id/seekBarRadius"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
                     />
-
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Ages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAges"
                     android:textSize="18sp"
+                    android:paddingTop="5dp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
 
                 <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekBarAges"
-                    android:layout_marginTop="-16dp"
-                    android:layout_marginBottom="10dp" />
-
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="-5dp"
+                    android:scrollbarAlwaysDrawHorizontalTrack="true"/>
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
-
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
                 <TextView
-                    android:text="Notifications (Push)"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textNotification"
+                    android:text="Push Notifications"
+                    android:paddingStart="20dp"
                     android:textSize="20sp"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
-
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@color/colorGray"/>
                 <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#50FFFFFF" />
 
                 <Switch
                     android:text="New matches"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:id="@+id/switchMatches"
                     android:checked="true"
                     android:textSize="18sp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
 
-                <Switch
-                    android:text="Messages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/switchMessages"
-                    android:checked="true"
-                    android:textSize="18sp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
 
                 <Switch
                     android:text="Inactive alert"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:id="@+id/switchAlert"
                     android:textSize="18sp"
                     android:checked="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
+
+                <Switch
+                    android:text="Messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:id="@+id/switchMessages"
+                    android:checked="true"
+                    android:textSize="18sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Localization"
+                    android:paddingStart="20dp"
+                    android:textSize="20sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@color/colorGray"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
 
                 <Switch
                     android:text="Unit (km/mi)"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:id="@+id/switchUnit"
                     android:textSize="18sp"
-                    android:checked="false"
+                    android:checked="true"
                     android:textOff="km"
-                    android:textOn="m"
+                    android:textOn="mi"
                     android:showText="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
+                    android:textAllCaps="false"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp" />
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
-
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="About Us"
+                    android:paddingStart="20dp"
+                    android:textSize="20sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@color/colorGray"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
                 <TextView
                     android:text="Contact"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
                     android:id="@+id/txtContact"
                     android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"/>
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Help"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
                     android:id="@+id/txtHelp"
                     android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Support"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
                     android:id="@+id/txtSupport"
                     android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp" />
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"/>
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Legal"
+                    android:paddingStart="20dp"
+                    android:textSize="20sp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@color/colorGray"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
 
                 <TextView
                     android:text="Legal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
                     android:id="@+id/txtLegal"
                     android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp" />
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Licenses"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
                     android:id="@+id/txtLicenses"
                     android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"/>
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Privacy policy"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
                     android:id="@+id/txtPPolicy"
                     android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"/>
-
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="Terms of service"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="60dp"
                     android:id="@+id/txtTermsOfService"
                     android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground"/>
 
             </LinearLayout>
         </ScrollView>

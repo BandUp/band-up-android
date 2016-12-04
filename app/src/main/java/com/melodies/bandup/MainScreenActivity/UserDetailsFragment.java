@@ -224,11 +224,11 @@ public class UserDetailsFragment extends Fragment {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
 
-            //mSoundcloudArea.setId(Integer.valueOf(1234));
+            mSoundcloudArea.setId(Integer.valueOf(1234));
             Fragment soundCloudFragment;
 
             soundCloudFragment = SoundCloudPlayerFragment.newInstance(user.soundCloudURL);
-            ft.replace(R.id.soundcloud_player_area, soundCloudFragment, "soundCloudFragment");
+            ft.replace(mSoundcloudArea.getId(), soundCloudFragment, "soundCloudFragment");
             ft.commit();
         }
 

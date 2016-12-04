@@ -1,6 +1,5 @@
 package com.melodies.bandup.SoundCloudFragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,10 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
@@ -22,7 +19,6 @@ import com.melodies.bandup.MainScreenActivity.ProfileFragment;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.melodies.bandup.repositories.BandUpRepository;
 import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Http;
 import com.soundcloud.api.Request;
@@ -43,7 +39,7 @@ import java.io.IOException;
  * create an instance of this fragment.
  */
 public class SoundCloudLoginFragment extends Fragment implements View.OnClickListener {
-    private ImageButton mLoginButton;
+    private LinearLayout mLoginButton;
 
     private int mSoundCloudID;
 
@@ -83,7 +79,7 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
     }
 
     private void getViews(View rootView){
-        mLoginButton = (ImageButton) rootView.findViewById(R.id.soundcloud_login_btn);
+        mLoginButton = (LinearLayout) rootView.findViewById(R.id.login_button_soundcloud);
         mLoginButton.setOnClickListener(this);
     }
 
@@ -123,7 +119,7 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
         final View mDialog = inflater.inflate(R.layout.dialog_soundcloud_signin,  null);
 
         builder.setView(mDialog)
-                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Log in", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // sign in user

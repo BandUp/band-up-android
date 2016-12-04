@@ -225,7 +225,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void onCancel() {
                 System.out.println("Login Cancelled");
-                Toast.makeText(Login.this, "Login Cancelled", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -349,8 +348,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            Toast.makeText(getApplicationContext(), "Signed In", Toast.LENGTH_SHORT).show();
-
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
 
@@ -427,7 +424,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(getApplicationContext(), "Google+ SignIn Error!", Toast.LENGTH_SHORT).show();
     }
 
     // Google+ Sign In
@@ -492,7 +488,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         }
 
                         sShared.saveUserId(Login.this, responseObj);
-                        Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                         openCorrectIntent(responseObj);
                         loginDialog.dismiss();
 

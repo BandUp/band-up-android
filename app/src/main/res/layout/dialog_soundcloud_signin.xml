@@ -2,23 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <include layout="@layout/login_button_soundcloud"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/soundcloud_big"/>
-    <EditText
-        android:id="@+id/dialog_email"
+        android:layout_height="wrap_content" />
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inputType="textEmailAddress"
-        android:hint="@string/prompt_email"/>
-    <EditText
-        android:id="@+id/dialog_password"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp">
+        <EditText
+            android:id="@+id/dialog_email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:hint="@string/prompt_email"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inputType="textPassword"
-        android:hint="@string/login_password"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        app:passwordToggleEnabled="false">
+        <EditText
+            android:id="@+id/dialog_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:hint="@string/login_password"/>
+    </android.support.design.widget.TextInputLayout>
+
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.melodies.bandup.R.id.etPassword;
+import static com.melodies.bandup.R.id.tilDateOfBirth;
 
 public class Register extends AppCompatActivity implements DatePickable {
     private ProgressDialog registerDialog;
@@ -239,12 +241,30 @@ public class Register extends AppCompatActivity implements DatePickable {
         tilUsername  = (TextInputLayout) findViewById(R.id.tilUsername);
         tilPassword1 = (TextInputLayout) findViewById(R.id.tilPassword1);
         tilPassword2 = (TextInputLayout) findViewById(R.id.tilPassword2);
-        tilDob       = (TextInputLayout) findViewById(R.id.tilDateOfBirth);
+        tilDob       = (TextInputLayout) findViewById(tilDateOfBirth);
 
         ivError   = (ImageView) findViewById(R.id.emailValidationError);
         ivSuccess = (ImageView)  findViewById(R.id.emailValidationSuccess);
 
         progEmailLoading = (ProgressBar) findViewById(R.id.emailValidationLoading);
+    }
+
+    private void setFonts() {
+        Typeface caviarDreams = Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf");
+
+        etEmail      .setTypeface(caviarDreams);
+        etUsername   .setTypeface(caviarDreams);
+        etPassword1  .setTypeface(caviarDreams);
+        etPassword2  .setTypeface(caviarDreams);
+        etDateOfBirth.setTypeface(caviarDreams);
+
+        tilEmail    .setTypeface(caviarDreamsBold);
+        tilUsername .setTypeface(caviarDreamsBold);
+        tilPassword1.setTypeface(caviarDreamsBold);
+        tilPassword2.setTypeface(caviarDreamsBold);
+        tilDob      .setTypeface(caviarDreamsBold);
+
     }
 
     private void initializeOnKeyListeners() {
@@ -285,6 +305,7 @@ public class Register extends AppCompatActivity implements DatePickable {
         initializeOnTextChangedListeners();
         initializeOnFocusChangeListeners();
         initializeOnKeyListeners();
+        setFonts();
 
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));

@@ -128,7 +128,6 @@
     <string name="login_btn_soundcloud_hint">Skrá inn með SoundCloud</string>
     <string name="login_sign_up_with_services">Eða skráðu þig með þessum þjónustum</string>
     <string name="forgot_your_password">Gleymdirðu lykilorðinu þínu?</string>
-    <string name="please_enter_your_e_mail">Vinsamlegast skrifaðu netfangið þitt</string>
     <string name="title_activity_password_reset">Endursetja lykilorð</string>
     <string name="send_password_reset_e_mail">Senda endursetningartölvupóst</string>
     <string name="edit_instrument_genres_save">Vista</string>
@@ -137,4 +136,5 @@
     <string name="profile_fetch_error">Gat ekki náð í prófílinn þinn</string>
     <string name="connection_banner_title">Gat ekki tengst Internetinu.</string>
     <string name="connection_banner_message">Vinsamlegast skoðaðu nettenginguna þína.</string>
+    <string name="please_enter_your_e_mail">Vinsamlegast sláðu inn tölvupóstfangið þitt.\nFylgdu síðan leiðbeiningunum í tölvupóstinum, sem við sendum þér, til þess að endursetja lykilorðið þitt.</string>
 </resources>

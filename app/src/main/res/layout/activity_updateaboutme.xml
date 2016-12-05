@@ -30,6 +30,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/register_username"
                     android:id="@+id/etName"
+                    android:maxLines="1"
+                    android:inputType="textCapWords"
                     android:nextFocusLeft="@id/etName"
                     android:nextFocusUp="@id/etName"/>
             </android.support.design.widget.TextInputLayout>
@@ -45,7 +47,7 @@
                     android:hint="@string/dateOfBirth"
                     android:textIsSelectable="false"
                     android:focusable="false"
-                    android:editable="false"
+                    android:inputType="none"
                     android:id="@id/etDateOfBirth"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -59,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:textIsSelectable="false"
                     android:focusable="false"
-                    android:editable="false"
-                    android:hint="Instruments"
+                    android:inputType="none"
+                    android:hint="@string/setup_instruments_hint"
                     android:id="@+id/etInstruments"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -74,8 +76,8 @@
                     android:layout_height="wrap_content"
                     android:textIsSelectable="false"
                     android:focusable="false"
-                    android:editable="false"
-                    android:hint="Genres"
+                    android:inputType="none"
+                    android:hint="@string/setup_genres_hint"
                     android:id="@+id/etGenres"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -87,36 +89,36 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Favourite Instrument"
+                    android:hint="@string/edit_profile_favourite_instument_hint"
                     android:textIsSelectable="false"
                     android:focusable="false"
-                    android:editable="false"
+                    android:inputType="none"
                     android:id="@+id/etFavouriteInstrument"/>
             </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:text="What are your influences? "
+                android:text="@string/edit_profile_influences"
                 android:textSize="19sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtAboutMeDescription"
                 android:layout_weight="0.05"
                 android:layout_marginTop="20dp" />
-            
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:id="@+id/etAboutMe"
-                android:hint="About Me"
+                android:hint="@string/edit_profile_about_me"
                 android:background="@android:color/transparent"
                 android:layout_marginTop="20dp"
                 android:maxLength="150" />
 
 
             <Button
-                android:text="Save"
+                android:text="@string/edit_profile_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnSaveChanges"

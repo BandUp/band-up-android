@@ -148,4 +148,8 @@
     <string name="connection_banner_title">Could not connect to the Internet.</string>
     <string name="connection_banner_message">Please check your network connection.</string>
     <string name="profile_fetch_error_other">Could not get the profile</string>
+    <string name="edit_profile_favourite_instument_hint">Your Favourite Instrument</string>
+    <string name="edit_profile_influences">What are your influences?</string>
+    <string name="edit_profile_about_me">About Me</string>
+    <string name="edit_profile_save">Save</string>
 </resources>

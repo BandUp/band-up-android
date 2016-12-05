@@ -138,4 +138,8 @@
     <string name="connection_banner_message">Vinsamlegast skoðaðu nettenginguna þína.</string>
     <string name="please_enter_your_e_mail">Vinsamlegast sláðu inn tölvupóstfangið þitt.\nFylgdu síðan leiðbeiningunum í tölvupóstinum, sem við sendum þér, til þess að endursetja lykilorðið þitt.</string>
     <string name="profile_fetch_error_other">Gat ekki náð í prófílinn</string>
+    <string name="edit_profile_about_me">Um mig</string>
+    <string name="edit_profile_favourite_instument_hint">Uppáhalds hljóðfærið þitt</string>
+    <string name="edit_profile_save">Vista</string>
+    <string name="edit_profile_influences">What are your influences?</string>
 </resources>

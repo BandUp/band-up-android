@@ -84,12 +84,13 @@ public class MainScreenActivity extends AppCompatActivity implements
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
 
-    final int NEAR_ME_FRAGMENT     = 0;
-    final int MY_PROFILE_FRAGMENT  = 1;
-    final int MATCHES_FRAGMENT     = 2;
-    final int SETTINGS_FRAGMENT    = 3;
-    final int COMING_SOON_FRAGMENT = 4;
-    final int SEARCH_FRAGMENT      = 5;
+    final int NEAR_ME_FRAGMENT      = 0;
+    final int MY_PROFILE_FRAGMENT   = 1;
+    final int MATCHES_FRAGMENT      = 2;
+    final int SETTINGS_FRAGMENT     = 3;
+    final int COMING_SOON_FRAGMENT  = 4;
+    final int SEARCH_FRAGMENT       = 5;
+    final int USER_DETAILS_FRAGMENT = 6;
 
     int currentFragment = NEAR_ME_FRAGMENT;
 
@@ -147,7 +148,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             getMenuInflater().inflate(R.menu.menu_search, menu);
             MenuItem item = menu.findItem(R.id.action_search);
             item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
-            if (currentFragment != NEAR_ME_FRAGMENT && currentFragment != SEARCH_FRAGMENT) {
+            if (currentFragment != NEAR_ME_FRAGMENT) {
                 item.setVisible(false);
             }
         }
@@ -221,14 +222,9 @@ public class MainScreenActivity extends AppCompatActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.action_search:
-                if (currentFragment == SEARCH_FRAGMENT) {
-                    ft.replace(R.id.mainFrame, userListFragment);
-                    ft.commit();
-                    setTitle(getString(R.string.main_title_user_list));
-                    currentFragment = NEAR_ME_FRAGMENT;
-                    invalidateOptionsMenu();
-                } else if (currentFragment == NEAR_ME_FRAGMENT) {
-                    ft.replace(R.id.mainFrame, mUserSearchFragment);
+                if (currentFragment == NEAR_ME_FRAGMENT) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    ft = fm.beginTransaction().replace(R.id.mainFrame, mUserSearchFragment, "userSearchFragment").addToBackStack(null);
                     ft.commit();
                     setTitle(getString(R.string.search));
                     currentFragment = SEARCH_FRAGMENT;
@@ -390,8 +386,10 @@ public class MainScreenActivity extends AppCompatActivity implements
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (count != 0){
+        } else if (count != 0 && (currentFragment == USER_DETAILS_FRAGMENT || currentFragment == SEARCH_FRAGMENT)){
             getSupportFragmentManager().popBackStack();
+            currentFragment = NEAR_ME_FRAGMENT;
+            invalidateOptionsMenu();
         } else if (isTaskRoot()) {
             if (isExiting) {
                 super.onBackPressed();
@@ -399,7 +397,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             }
 
             this.isExiting = true;
-            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_LONG).show();
 
             new Handler().postDelayed(new Runnable() {
 
@@ -407,7 +405,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 public void run() {
                     isExiting=false;
                 }
-            }, 5000);
+            }, 2000);
         } else {
             super.onBackPressed();
         }
@@ -449,6 +447,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 setTitle(getString(R.string.main_title_settings));
                 currentFragment = SETTINGS_FRAGMENT;
                 invalidateOptionsMenu();
+
                 break;
             case R.id.nav_logout:
                 logout();
@@ -463,6 +462,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 setTitle("Upcoming features");
                 currentFragment = COMING_SOON_FRAGMENT;
                 invalidateOptionsMenu();
+
                 break;
             default:
                 break;
@@ -543,8 +543,10 @@ public class MainScreenActivity extends AppCompatActivity implements
             userDetailsFragment.setArguments(bundle);
         }
         FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction().replace(R.id.mainFrame, userDetailsFragment).addToBackStack(null);
+        FragmentTransaction ft = fm.beginTransaction().replace(R.id.mainFrame, userDetailsFragment, "userDetailsFragment").addToBackStack(null);
         ft.commit();
+        currentFragment = USER_DETAILS_FRAGMENT;
+        invalidateOptionsMenu();
     }
 
     public void onClickSearch(View view) {
@@ -700,8 +702,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                     }
                     if (isMatch) {
                         Toast.makeText(MainScreenActivity.this, "You Matched!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(MainScreenActivity.this, "You liked this person", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

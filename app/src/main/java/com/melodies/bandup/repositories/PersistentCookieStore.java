@@ -79,6 +79,10 @@ public class PersistentCookieStore implements CookieStore {
 
     @Override
     public synchronized void add(URI uri, HttpCookie cookie) {
+        if (cookie == null) {
+            return;
+        }
+
         uri = cookieUri(uri, cookie);
 
         Set<HttpCookie> targetCookies = allCookies.get(uri);

@@ -110,7 +110,7 @@ public class VolleySingleton {
             Toast.makeText(mCtx, "Server parse error!", Toast.LENGTH_LONG).show();
 
         } else {
-            Toast.makeText(mCtx, "Unknown error! Contact Administrator", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, "Unknown error! Contact Administrator " + error, Toast.LENGTH_LONG).show();
         }
     }
 

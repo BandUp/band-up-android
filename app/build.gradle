@@ -38,12 +38,12 @@ android {
     buildTypes {
         release {
             debuggable false
-            jniDebuggable true
+            jniDebuggable false
             signingConfig signingConfigs.config
             renderscriptDebuggable false
-            minifyEnabled true
-            zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //minifyEnabled true
+            //zipAlignEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "soundCloudClient", keystoreProperties.getProperty("soundCloudClient")
             resValue "string", "soundCloudSecret", keystoreProperties.getProperty("soundCloudClientSecret")
         }

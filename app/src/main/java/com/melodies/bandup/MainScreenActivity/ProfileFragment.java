@@ -25,7 +25,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -50,11 +49,8 @@ import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
-import com.melodies.bandup.setup.Genres;
-import com.melodies.bandup.setup.Instruments;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,13 +58,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -87,6 +79,7 @@ public class ProfileFragment extends Fragment {
     public static final String DEFAULT = "N/A";
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
+    private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
     private DatePickerFragment datePickerFragment = new DatePickerFragment();
     LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
@@ -130,7 +123,7 @@ public class ProfileFragment extends Fragment {
     final int REQUEST_READ_GALLERY = 300;
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
-    User currentUser;
+    //User currentUser;
 
     private LinearLayout soundCloudArea;
 
@@ -170,7 +163,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateCurrentUserSoundCloud(int soundCloudId){
-        currentUser.soundCloudId = soundCloudId;
+        User currUser = ((MainScreenActivity) getActivity()).currentUser;
+        currUser.soundCloudId = soundCloudId;
         createSoundCloudArea();
     }
 
@@ -178,14 +172,15 @@ public class ProfileFragment extends Fragment {
     private void createSoundCloudArea() {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
+        User currUser = ((MainScreenActivity) getActivity()).currentUser;
 
         soundCloudArea.setId(new Integer(1234));
         Fragment soundCloudFragment;
-        if (currentUser.soundCloudId == 0){
+        if (currUser.soundCloudId == 0){
             soundCloudFragment = SoundCloudLoginFragment.newInstance();
         }else {
-            soundCloudFragment = SoundCloudSelectorFragment.newInstance(currentUser.soundCloudId,
-                                                                        currentUser.soundCloudURL);
+            soundCloudFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
+                                                                        currUser.soundCloudURL);
         }
 
         ft.add(soundCloudArea.getId(), soundCloudFragment, "soundCloudFragment");
@@ -224,6 +219,7 @@ public class ProfileFragment extends Fragment {
         }
 
         txtName.setText(u.name);
+        ((MainScreenActivity)getActivity()).updateNavUserName(u.name);
         if (localeRules != null) {
             Integer age = u.ageCalc();
             if (age != null) {
@@ -238,7 +234,9 @@ public class ProfileFragment extends Fragment {
         }
         if (u.favoriteinstrument != null) {
             txtFavorite.setText(u.favoriteinstrument);
+            ((MainScreenActivity)getActivity()).updateFavouriteInstrument(u.favoriteinstrument);
         }
+
         txtAboutMe.setText(u.aboutme);
 
         // Bug fix for double list when user cancels photo upload.
@@ -318,20 +316,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-    }
-
-    public void onClickEditInstruments() {
-        Intent instrumentsIntent = new Intent(getActivity(), Instruments.class);
-        instrumentsIntent.putExtra("IS_SETUP_PROCESS", false);
-        instrumentsIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) currentUser.instruments);
-        getActivity().startActivityForResult(instrumentsIntent, EDIT_INSTRUMENTS_REQUEST_CODE);
-    }
-
-    public void onClickEditGenres() {
-        Intent genresIntent = new Intent(getActivity(), Genres.class);
-        genresIntent.putExtra("IS_SETUP_PROCESS", false);
-        genresIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) currentUser.genres);
-        getActivity().startActivityForResult(genresIntent, EDIT_GENRES_REQUEST_CODE);
     }
 
     class MyThread extends Thread {
@@ -573,6 +557,7 @@ public class ProfileFragment extends Fragment {
         }
         llProfile.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -584,63 +569,9 @@ public class ProfileFragment extends Fragment {
                     txtFetchError.setVisibility(View.VISIBLE);
                 }
 
-                currentUser = new User();
-                try {
-                    if (!responseObj.isNull("_id")) {
-                        currentUser.id = responseObj.getString("_id");
-                    }
-                    if (!responseObj.isNull("username")) {
-                        currentUser.name = responseObj.getString("username");
-                    }
-                    if (!responseObj.isNull("dateOfBirth")) {
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
-                    }
-
-                    if (!responseObj.isNull("favoriteinstrument")) {
-                        currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-                    }
-
-                    if (!responseObj.isNull("percentage")) {
-                        currentUser.percentage = responseObj.getInt("percentage");
-                    }
-
-                    if (!responseObj.isNull("genres")) {
-                        JSONArray genreArray = responseObj.getJSONArray("genres");
-                        for (int i = 0; i < genreArray.length(); i++) {
-                            currentUser.genres.add(genreArray.getString(i));
-                        }
-                    }
-
-                    if (!responseObj.isNull("instruments")) {
-                        JSONArray instrumentArray = responseObj.getJSONArray("instruments");
-                        for (int i = 0; i < instrumentArray.length(); i++) {
-                            currentUser.instruments.add(instrumentArray.getString(i));
-                        }
-                    }
-
-                    if (!responseObj.isNull("aboutme")) {
-                        currentUser.aboutme = responseObj.getString("aboutme");
-                    }
-
-                    if (!responseObj.isNull("image")) {
-                        JSONObject imageObj = responseObj.getJSONObject("image");
-
-                        if (!imageObj.isNull("url")) {
-                            currentUser.imgURL = imageObj.getString("url");
-                        }
-                    }
-
-                    if (!responseObj.isNull("soundCloudId")){
-                        currentUser.soundCloudId = responseObj.getInt("soundCloudId");
-                    }
-                    llProfile.setVisibility(View.VISIBLE);
-                    populateUser(currentUser);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                User currUser = ((MainScreenActivity) getActivity()).parseUser(responseObj);
+                llProfile.setVisibility(View.VISIBLE);
+                populateUser(currUser);
 
             }
         }, new BandUpErrorListener() {
@@ -654,25 +585,15 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    // when About Me is clicked go to edit view
-    public void onClickAboutMe(View view) {
-        Intent aboutMeIntent = new Intent(getActivity(), UpdateAboutMe.class);
-        startActivityForResult(aboutMeIntent, 2);
-    }
-
-    // Open datepicker
-    public void onClickAge(View view) {
-
-        datePickerFragment.show(getActivity().getFragmentManager(), "DatePicker");
-    }
-
     /**
      * saves user new age into database and updates current activity
      * @param date is users current date of birth
      * @param age is user calculated age to be displayed
      */
     public void updateAge(Date date, String age) {
-        updateUser(currentUser.id, "dateOfBirth", date.toString());
+        User currUser = ((MainScreenActivity) getActivity()).currentUser;
+
+        updateUser(currUser.id, "dateOfBirth", date.toString());
         if (localeRules.ageIsPlural(Integer.parseInt(age))) {
             String ageString = String.format("%s %s", age, getString((R.string.age_year_plural)));
             txtAge.setText(ageString);
@@ -680,41 +601,6 @@ public class ProfileFragment extends Fragment {
             String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
             txtAge.setText(ageString);
         }
-    }
-
-    // Allow user to choose favorite instrument from instruments list, and save it into database
-    public void onClickFavorite(View view) {
-        AlertDialog.Builder fs = new AlertDialog.Builder(getActivity());
-        fs.setTitle("What is your favorite instrument?");
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.select_dialog_singlechoice);
-
-        for (int i = 0; i < currentUser.instruments.size(); i++) {
-            arrayAdapter.add(currentUser.instruments.get(i));
-        }
-        fs.setNegativeButton(
-                "Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int inst) {
-                        dialog.dismiss();
-                    }
-                });
-
-        fs.setAdapter(
-                arrayAdapter,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int inst) {
-                            String instrument = arrayAdapter.getItem(inst);
-                            updateUser(currentUser.id, "favoriteinstrument", instrument);
-                            txtFavorite.setText(instrument);
-                        ((MainScreenActivity)getActivity()).updateFavouriteInstrument(instrument);
-                        }
-                });
-        fs.show();
     }
 
     /**
@@ -751,35 +637,23 @@ public class ProfileFragment extends Fragment {
     // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 2) {
+
+        if (requestCode == EDIT_PROFILE_REQUEST_CODE) {
             if (data != null) {
-                String message = data.getStringExtra("MESSAGE");
-                txtAboutMe.setText(message);
-            }
-
-        }
-
-        if (requestCode == EDIT_INSTRUMENTS_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+                User currUser = ((MainScreenActivity) getActivity()).currentUser;
                 Bundle extras = data.getExtras();
-                ArrayList<String> list = extras.getStringArrayList("SELECTED_INSTRUMENTS");
-                if (list != null ) {
-                    currentUser.instruments = list;
-                    populateUser(currentUser);
+                if (extras != null) {
+                    currUser.id                 = extras.getString         ("USER_ID");
+                    currUser.name               = extras.getString         ("USER_NAME");
+                    currUser.favoriteinstrument = extras.getString         ("USER_FAVOURITE_INSTRUMENT");
+                    currUser.instruments        = extras.getStringArrayList("USER_INSTRUMENTS");
+                    currUser.genres             = extras.getStringArrayList("USER_GENRES");
+                    currUser.aboutme            = extras.getString         ("USER_ABOUT_ME");
+                    currUser.dateOfBirth        = (Date) extras.getSerializable   ("USER_DATE_OF_BIRTH");
+                    populateUser(currUser);
                 }
             }
-        } else if (requestCode == EDIT_GENRES_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                ArrayList<String> list = extras.getStringArrayList("SELECTED_GENRES");
-                if (list != null ) {
-                    currentUser.genres = list;
-                    populateUser(currentUser);
-                }
-            }
-        } else {
-            // force redraw
-            userRequest();
+
         }
     }
 

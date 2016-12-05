@@ -41,8 +41,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.DatabaseSingleton;
-import com.melodies.bandup.DatePickable;
-import com.melodies.bandup.DatePickerFragment;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
@@ -55,12 +53,16 @@ import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Locale;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.os.Build.VERSION_CODES.M;
@@ -80,7 +82,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         SoundCloudPlayerFragment.OnFragmentInteractionListener,
         UserSearchFragment.OnFragmentInteractionListener,
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
-        LocationListener, DatePickable {
+        LocationListener {
 
     final int NEAR_ME_FRAGMENT     = 0;
     final int MY_PROFILE_FRAGMENT  = 1;
@@ -90,6 +92,8 @@ public class MainScreenActivity extends AppCompatActivity implements
     final int SEARCH_FRAGMENT      = 5;
 
     int currentFragment = NEAR_ME_FRAGMENT;
+
+    private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
     UserListFragment userListFragment;
     UserListFragment mUserSearchResultsFragment;
@@ -153,6 +157,65 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     }
 
+    public User parseUser(JSONObject responseObj) {
+        currentUser = new User();
+        try {
+            if (!responseObj.isNull("_id")) {
+                currentUser.id = responseObj.getString("_id");
+            }
+            if (!responseObj.isNull("username")) {
+                currentUser.name = responseObj.getString("username");
+            }
+            if (!responseObj.isNull("dateOfBirth")) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
+            }
+
+            if (!responseObj.isNull("favoriteinstrument")) {
+                currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
+            }
+
+            if (!responseObj.isNull("percentage")) {
+                currentUser.percentage = responseObj.getInt("percentage");
+            }
+
+            if (!responseObj.isNull("genres")) {
+                JSONArray genreArray = responseObj.getJSONArray("genres");
+                for (int i = 0; i < genreArray.length(); i++) {
+                    currentUser.genres.add(genreArray.getString(i));
+                }
+            }
+
+            if (!responseObj.isNull("instruments")) {
+                JSONArray instrumentArray = responseObj.getJSONArray("instruments");
+                for (int i = 0; i < instrumentArray.length(); i++) {
+                    currentUser.instruments.add(instrumentArray.getString(i));
+                }
+            }
+
+            if (!responseObj.isNull("aboutme")) {
+                currentUser.aboutme = responseObj.getString("aboutme");
+            }
+
+            if (!responseObj.isNull("image")) {
+                JSONObject imageObj = responseObj.getJSONObject("image");
+
+                if (!imageObj.isNull("url")) {
+                    currentUser.imgURL = imageObj.getString("url");
+                }
+            }
+
+            if (!responseObj.isNull("soundCloudId")){
+                currentUser.soundCloudId = responseObj.getInt("soundCloudId");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return currentUser;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -172,6 +235,20 @@ public class MainScreenActivity extends AppCompatActivity implements
                     invalidateOptionsMenu();
                 }
                 break;
+            case R.id.action_edit_profile:
+                Intent aboutMeIntent = new Intent(MainScreenActivity.this, UpdateAboutMe.class);
+                Bundle asdf = new Bundle();
+                asdf.putString("USER_ID", currentUser.id);
+                asdf.putString("USER_NAME", currentUser.name);
+                asdf.putSerializable("USER_DATE_OF_BIRTH", currentUser.dateOfBirth);
+                asdf.putString("USER_FAVOURITE_INSTRUMENT", currentUser.favoriteinstrument);
+                asdf.putStringArrayList("USER_INSTRUMENTS", (ArrayList<String>) currentUser.instruments);
+                asdf.putStringArrayList("USER_GENRES", (ArrayList<String>) currentUser.genres);
+                asdf.putString("USER_ABOUT_ME", currentUser.aboutme);
+
+                aboutMeIntent.putExtras(asdf);
+
+                startActivityForResult(aboutMeIntent, EDIT_PROFILE_REQUEST_CODE);
             default:
                 break;
         }
@@ -433,14 +510,6 @@ public class MainScreenActivity extends AppCompatActivity implements
         profileFragment.onClickDisplayModal(view);
     }
 
-    public void onClickAboutMe(View view) {
-        profileFragment.onClickAboutMe(view);
-    }
-
-    public void onClickAge(View view) { profileFragment.onClickAge(view); }
-
-    public void onClickFavorite(View view) { profileFragment.onClickFavorite(view); }
-
     public void onClickContact(View view) { settingsFragment.onClickContact(view); }
 
     public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }
@@ -599,14 +668,6 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     }
 
-    public void onClickEditInstruments(View view) {
-        profileFragment.onClickEditInstruments();
-    }
-
-    public void onClickEditGenres(View view) {
-        profileFragment.onClickEditGenres();
-    }
-
 
     public void onClickLike(String userID) {
         JSONObject user = new JSONObject();
@@ -718,31 +779,5 @@ public class MainScreenActivity extends AppCompatActivity implements
 
             }
         });
-    }
-
-    @Override
-    public void onDateSet(int year, int month, int day) {
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-
-        // Calendar to Date object.
-        Date dateOfBirth = cal.getTime();
-
-        // Get the locale date format.
-        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(this);
-
-        // Formatted date.
-        String date = dateFormat.format(dateOfBirth);
-
-        String age = datePickerFragment.ageCalculator(year, month, day);
-
-        String dateString = String.format("%s (%s)", date, age);
-
-        // send date and age to updateAge in profileFragment and do whatever you want with it
-        profileFragment.updateAge(dateOfBirth, age);
     }
 }

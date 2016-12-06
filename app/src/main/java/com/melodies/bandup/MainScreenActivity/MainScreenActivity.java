@@ -389,6 +389,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         } else if (count != 0 && (currentFragment == USER_DETAILS_FRAGMENT || currentFragment == SEARCH_FRAGMENT)){
             getSupportFragmentManager().popBackStack();
             currentFragment = NEAR_ME_FRAGMENT;
+            setTitle(getString(R.string.main_title_user_list));
             invalidateOptionsMenu();
         } else if (isTaskRoot()) {
             if (isExiting) {

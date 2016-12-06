@@ -207,15 +207,15 @@
                         android:textSize="18sp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/profile_soundCloudArea"
+                <FrameLayout
+                    android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:orientation="horizontal">
                     <!-- element will be added here programmatically -->
-                </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>

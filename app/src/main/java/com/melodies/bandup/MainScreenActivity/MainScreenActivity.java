@@ -400,6 +400,15 @@ public class MainScreenActivity extends AppCompatActivity implements
             currentFragment = NEAR_ME_FRAGMENT;
             setTitle(getString(R.string.main_title_user_list));
             invalidateOptionsMenu();
+        } else if (currentFragment != NEAR_ME_FRAGMENT) {
+            FragmentTransaction ft;
+            FragmentManager fm = getSupportFragmentManager();
+            ft = fm.beginTransaction().replace(R.id.mainFrame, userListFragment, "userListFragment").addToBackStack(null);
+            ft.commit();
+            setTitle(getString(R.string.main_title_user_list));
+            currentFragment = NEAR_ME_FRAGMENT;
+            navigationView.getMenu().getItem(0).setChecked(true);
+            invalidateOptionsMenu();
         } else if (isTaskRoot()) {
             if (isExiting) {
                 super.onBackPressed();

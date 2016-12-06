@@ -25,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -124,9 +125,10 @@ public class ProfileFragment extends Fragment {
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
     //User currentUser;
-    Fragment mSoundFragment;
+    Fragment mSoundLoginFragment;
+    Fragment mSoundSelectFragment;
 
-    private LinearLayout soundCloudArea;
+    private FrameLayout soundCloudArea;
 
     private void initializeViews(View rootView) {
         txtName             = (TextView)    rootView.findViewById(R.id.txtName);
@@ -139,7 +141,7 @@ public class ProfileFragment extends Fragment {
         txtGenresList       = (TextView)    rootView.findViewById(R.id.txtGenresList);
         ivUserProfileImage  = (ImageView)   rootView.findViewById(R.id.imgProfile);
         mAdView             = (AdView)      rootView.findViewById(R.id.adView);
-        soundCloudArea      = (LinearLayout)rootView.findViewById(R.id.profile_soundCloudArea);
+        soundCloudArea      = (FrameLayout) rootView.findViewById(R.id.content);
     }
 
     private void setFonts() {
@@ -166,8 +168,9 @@ public class ProfileFragment extends Fragment {
     public void updateCurrentUserSoundCloud(int soundCloudId){
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
         currUser.soundCloudId = soundCloudId;
-        if (mSoundFragment != null){
-            getFragmentManager().beginTransaction().remove(mSoundFragment).commit();
+        if (mSoundLoginFragment != null){
+            Fragment loginFragment = getChildFragmentManager().findFragmentByTag("soundCloudLoginFragment");
+            getChildFragmentManager().beginTransaction().remove(loginFragment).detach(loginFragment).commitAllowingStateLoss();
         }
         createSoundCloudArea();
     }
@@ -178,18 +181,18 @@ public class ProfileFragment extends Fragment {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
 
-        soundCloudArea.setId(Integer.valueOf(1234));
+        //soundCloudArea.setId(Integer.valueOf(1234));
         if (currUser.soundCloudId == 0){
-            mSoundFragment = SoundCloudLoginFragment.newInstance();
-            ft.replace(soundCloudArea.getId(), mSoundFragment, "soundCloudLoginFragment");
+            mSoundLoginFragment = SoundCloudLoginFragment.newInstance();
+            ft.replace(R.id.content, mSoundLoginFragment, "soundCloudLoginFragment");
         } else {
-            mSoundFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
+            mSoundSelectFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
                                                                     currUser.soundCloudURL,
                                                                     currUser.soundCloudSongName);
-            ft.replace(soundCloudArea.getId(), mSoundFragment, "soundCloudSelectorFragment");
+            ft.replace(R.id.content, mSoundSelectFragment, "soundCloudSelectorFragment");
         }
 
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     private TextView txtFetchError;

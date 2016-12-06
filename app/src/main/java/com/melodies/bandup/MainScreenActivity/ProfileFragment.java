@@ -61,6 +61,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -185,7 +186,6 @@ public class ProfileFragment extends Fragment {
             mSoundFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
                                                                         currUser.soundCloudURL);
         }
-
         ft.add(soundCloudArea.getId(), mSoundFragment, "soundCloudFragment");
         ft.commitAllowingStateLoss();
     }

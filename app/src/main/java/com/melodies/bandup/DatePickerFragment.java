@@ -7,12 +7,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.Date;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     Integer mYear = null, mMonth = null, mDay = null;
@@ -21,10 +17,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private static final int MAX_AGE = 100;
 
     Context mContext;
-    public DatePickerFragment(){}
-    public DatePickerFragment(Context c) {
-        mContext = c;
-    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
@@ -86,13 +79,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         if (today.get(Calendar.DAY_OF_YEAR) <= dayOfBirth.get(Calendar.DAY_OF_YEAR)) {
             userAge--;
-        }
-
-        if (userAge < MIN_AGE) {
-            Toast.makeText(mContext, R.string.register_min_age, Toast.LENGTH_SHORT).show();
-        }
-        else if (userAge > MAX_AGE) {
-            Toast.makeText(mContext, R.string.register_max_age, Toast.LENGTH_SHORT).show();
         }
 
         return userAge.toString();

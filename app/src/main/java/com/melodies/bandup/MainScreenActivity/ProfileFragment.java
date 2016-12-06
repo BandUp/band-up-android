@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
     int EDIT_GENRES_REQUEST_CODE = 4989;
     private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
-    private DatePickerFragment datePickerFragment = new DatePickerFragment(getActivity());
+    private DatePickerFragment datePickerFragment = new DatePickerFragment();
     LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
 
     private OnFragmentInteractionListener mListener;

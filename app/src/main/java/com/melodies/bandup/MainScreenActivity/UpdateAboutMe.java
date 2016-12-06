@@ -76,7 +76,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         }
 
         if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment(UpdateAboutMe.this);
+            datePickerFragment = new DatePickerFragment();
         }
 
         etName = (EditText) findViewById(R.id.etName);

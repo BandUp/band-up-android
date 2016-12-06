@@ -215,6 +215,9 @@ public class UserDetailsFragment extends Fragment {
 
         createSoundCloudPlayer(u);
         llProfile.setVisibility(View.VISIBLE);
+
+
+        txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
     }
 
     private void createSoundCloudPlayer(User user) {

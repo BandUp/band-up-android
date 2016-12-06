@@ -209,6 +209,15 @@ public class MainScreenActivity extends AppCompatActivity implements
             if (!responseObj.isNull("soundCloudId")){
                 currentUser.soundCloudId = responseObj.getInt("soundCloudId");
             }
+
+            if (!responseObj.isNull("soundcloudurl")){
+                currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
+            }
+
+            if (!responseObj.isNull("soundCloudSongName")){
+                currentUser.soundCloudSongName = responseObj.getString("soundCloudSongName");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -350,17 +359,17 @@ public class MainScreenActivity extends AppCompatActivity implements
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                navigationView.getMenu().getItem(1).setChecked(true);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
                 setTitle(getString(R.string.main_title_edit_profile));
                 currentFragment = MY_PROFILE_FRAGMENT;
                 invalidateOptionsMenu();
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-                if (drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                }
             }
         });
         getUserProfile();

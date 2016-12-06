@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment">
     <FrameLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.melodies.bandup.MainScreenActivity.UserDetailsFragment">
+        tools:context="com.melodies.bandup.MainScreenActivity.UserDetailst">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -15,7 +18,7 @@
                 android:orientation="vertical" android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/ll_profile"
-                android:visibility="invisible">
+                android:visibility="visible">
 
                 <include layout="@layout/ads"/>
 
@@ -87,7 +90,7 @@
                         </android.support.design.widget.TextInputLayout>
 
                         <TextView
-                            android:text="Favorite Instrument"
+                            android:text=""
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtFavorite"
@@ -162,7 +165,6 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -178,14 +180,41 @@
                         android:textSize="18sp"
                         android:hint="About Me"
                         android:maxLength="100" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#60FFFFFF" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/ic_soundcloud_white"
+                        android:id="@+id/soundcloud_logo" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Audio sample from SoundCloud"
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/profile_soundCloudArea"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
                     android:orientation="horizontal">
-                    <!-- element will be added here programatically -->
+                    <!-- element will be added here programmatically -->
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

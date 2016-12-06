@@ -61,7 +61,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -179,15 +178,18 @@ public class ProfileFragment extends Fragment {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
 
-        soundCloudArea.setId(new Integer(1234));
+        soundCloudArea.setId(Integer.valueOf(1234));
         if (currUser.soundCloudId == 0){
             mSoundFragment = SoundCloudLoginFragment.newInstance();
-        }else {
+            ft.replace(soundCloudArea.getId(), mSoundFragment, "soundCloudLoginFragment");
+        } else {
             mSoundFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
-                                                                        currUser.soundCloudURL);
+                                                                    currUser.soundCloudURL,
+                                                                    currUser.soundCloudSongName);
+            ft.replace(soundCloudArea.getId(), mSoundFragment, "soundCloudSelectorFragment");
         }
-        ft.add(soundCloudArea.getId(), mSoundFragment, "soundCloudFragment");
-        ft.commitAllowingStateLoss();
+
+        ft.commit();
     }
 
     private TextView txtFetchError;

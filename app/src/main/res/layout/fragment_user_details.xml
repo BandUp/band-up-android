@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -169,11 +170,34 @@
                             android:id="@+id/txtAboutMe"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="15dp"
-                            android:layout_marginBottom="10dp"
                             android:textSize="18sp"
                             android:hint="About Me"
                             android:maxLength="100" />
-
+                        </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#60FFFFFF" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                app:srcCompat="@drawable/ic_soundcloud_white"
+                                android:id="@+id/soundcloud_logo" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Audio sample from SoundCloud"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
@@ -184,10 +208,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:visibility="gone"
+                                android:gravity="center"
                                 android:id="@+id/no_soundcloud_example"
-                                android:text="This user has no SoundCloud example, yet."/>
+                                android:text="oskarpall has not selected an audio sample, yet."/>
                         </LinearLayout>
-                    </LinearLayout>
                 </LinearLayout>
             </ScrollView>
             <Button

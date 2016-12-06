@@ -152,4 +152,5 @@
     <string name="edit_profile_influences">What are your influences?</string>
     <string name="edit_profile_about_me">About Me</string>
     <string name="edit_profile_save">Save</string>
+    <string name="no_soundcloud_example">has not selected an audio sample, yet.</string>
 </resources>

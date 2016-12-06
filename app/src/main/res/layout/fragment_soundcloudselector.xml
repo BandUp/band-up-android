@@ -5,39 +5,43 @@
     android:layout_height="match_parent"
     tools:context="com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            app:srcCompat="@drawable/ic_soundcloud_white"
-            android:id="@+id/soundcloud_logo"
-            android:layout_alignParentStart="true" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_song_hint"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:text="Selected song:"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_song_text"
+                android:text="Currently selected song"
 
-        <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:id="@+id/current_song_text"
-            tools:text="Currently selected song"
-            android:layout_gravity="right"
-            android:gravity="center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/soundcloud_logo" />
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
 
         <Button
             android:text="@string/profile_select_song"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:id="@+id/select_song_btn"
-            android:layout_below="@+id/soundcloud_logo"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </FrameLayout>

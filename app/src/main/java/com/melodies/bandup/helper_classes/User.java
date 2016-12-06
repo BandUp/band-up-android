@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable {
+
     public User(JSONObject json){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();
@@ -66,6 +67,7 @@ public class User implements Serializable {
     public String aboutme;
     public Integer soundCloudId;
     public String soundCloudURL;
+    public String soundCloudSongName;
 
     public Integer ageCalc() {
         if (dateOfBirth == null) {

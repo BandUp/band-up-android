@@ -50,6 +50,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     
     private int mSoundCloudID;
     private String mSoundCloudUrl;
+    private String mSoundCloudSongName;
 
     public SoundCloudSelectorFragment() {
         // Required empty public constructor
@@ -62,11 +63,12 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
      * @return A new instance of fragment SoundCloudSelectorFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SoundCloudSelectorFragment newInstance(int soundCloudId, String soundCloudUrl) {
+    public static SoundCloudSelectorFragment newInstance(int soundCloudId, String soundCloudUrl, String soundCloudSongName) {
         SoundCloudSelectorFragment fragment = new SoundCloudSelectorFragment();
         Bundle args = new Bundle();
         args.putInt("soundcloudID", soundCloudId);
         args.putString("soundcloudURL", soundCloudUrl);
+        args.putString("soundcloudSongName", soundCloudSongName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,6 +79,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         if (getArguments() != null) {
             mSoundCloudID = getArguments().getInt("soundcloudID");
             mSoundCloudUrl = getArguments().getString("soundcloudURL");
+            mSoundCloudSongName = getArguments().getString("soundcloudSongName");
         }
     }
 
@@ -99,10 +102,15 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     private void setupViews(View rootView) {
         mSelectionButton = (Button)   rootView.findViewById(R.id.select_song_btn);
         mSongName        = (TextView) rootView.findViewById(R.id.current_song_text);
-        if (mSoundCloudUrl == null){
+        if (mSoundCloudUrl == null) {
             mSongName.setText("No song selected");
-        }else {
-            mSongName.setText(mSoundCloudUrl);
+        } else {
+            if (mSoundCloudSongName != null && mSoundCloudSongName.equals("")) {
+                mSongName.setText("The selected song has no name");
+            } else {
+                mSongName.setText(mSoundCloudSongName);
+            }
+
         }
 
         mSelectionButton.setOnClickListener(this);
@@ -248,6 +256,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
             JSONObject selected = mTracksArray.getJSONObject(which);
             JSONObject requestJson = new JSONObject();
             requestJson.put("soundcloudurl", selected.getString("permalink_url"));
+            requestJson.put("soundcloudsongname", selected.getString("title"));
 
             DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().sendSoundCloudUrl(requestJson,
                     new BandUpResponseListener() {

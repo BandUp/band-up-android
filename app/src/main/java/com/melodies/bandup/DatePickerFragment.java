@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -20,6 +21,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private static final int MAX_AGE = 100;
 
     Context mContext;
+    public DatePickerFragment(){}
     public DatePickerFragment(Context c) {
         mContext = c;
     }

@@ -52,7 +52,7 @@ public class Register extends AppCompatActivity implements DatePickable {
     }
     private void showDatePicker() {
         if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment();
+            datePickerFragment = new DatePickerFragment(Register.this);
         }
         datePickerFragment.show(getFragmentManager(), "datePicker");
         tilPassword2.clearFocus();

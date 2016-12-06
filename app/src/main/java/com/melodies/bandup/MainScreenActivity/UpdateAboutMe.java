@@ -51,12 +51,6 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
 
-    private void showDatePicker() {
-        if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment();
-        }
-        datePickerFragment.show(getFragmentManager(), "datePicker");
-    }
     private EditText etName, etDateOfBirth, etFavouriteInstrument, etInstruments, etGenres, etAboutMe;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +69,14 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
             Date dob;
             dob = (Date) getIntent().getSerializableExtra("USER_DATE_OF_BIRTH");
-            mDateOfBirth = Calendar.getInstance();
-            mDateOfBirth.setTime(dob);
+            if (dob != null) {
+                mDateOfBirth = Calendar.getInstance();
+                mDateOfBirth.setTime(dob);
+            }
         }
 
         if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment();
+            datePickerFragment = new DatePickerFragment(UpdateAboutMe.this);
         }
 
         etName = (EditText) findViewById(R.id.etName);
@@ -151,6 +147,9 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         etDateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDateOfBirth == null) {
+                    mDateOfBirth = Calendar.getInstance();
+                }
                 int year  = mDateOfBirth.get(Calendar.YEAR);
                 int month = mDateOfBirth.get(Calendar.MONTH);
                 int day   = mDateOfBirth.get(Calendar.DAY_OF_MONTH);
@@ -193,15 +192,18 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
     private void updateAgeText() {
         // Get the locale date format.
-        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(UpdateAboutMe.this);
-        // Formatted date.
+        if (mDateOfBirth != null)
+        {
+            java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(UpdateAboutMe.this);
+            // Formatted date.
+            String date = dateFormat.format(mDateOfBirth.getTime());
 
-        String date = dateFormat.format(mDateOfBirth.getTime());
+            String age = datePickerFragment.ageCalculator(mDateOfBirth.get(Calendar.YEAR), mDateOfBirth.get(Calendar.MONTH), mDateOfBirth.get(Calendar.DAY_OF_MONTH));
 
-        String age = datePickerFragment.ageCalculator(mDateOfBirth.get(Calendar.YEAR), mDateOfBirth.get(Calendar.MONTH), mDateOfBirth.get(Calendar.DAY_OF_MONTH));
+            String dateString = String.format("%s (%s)", date, age);
+            etDateOfBirth.setText(dateString);
+        }
 
-        String dateString = String.format("%s (%s)", date, age);
-        etDateOfBirth.setText(dateString);
 
     }
 

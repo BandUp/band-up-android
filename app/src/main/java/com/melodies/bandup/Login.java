@@ -385,7 +385,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     public void showDatePickerDialog() {
         if (datePickerFragment == null) {
-            datePickerFragment = new DatePickerFragment();
+            datePickerFragment = new DatePickerFragment(Login.this);
         }
         datePickerFragment.show(getFragmentManager(), "datePicker");
     }

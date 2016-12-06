@@ -188,6 +188,8 @@ public class UserDetailsFragment extends Fragment {
                     String ageString = String.format("%s %s", age, getString((R.string.age_year_singular)));
                     txtAge.setText(ageString);
                 }
+            } else {
+                txtAge.setText("Age not available");
             }
         }
         if (u.favoriteinstrument != null) {

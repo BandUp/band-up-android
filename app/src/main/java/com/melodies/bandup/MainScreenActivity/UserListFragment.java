@@ -171,7 +171,7 @@ public class UserListFragment extends Fragment {
                             for (int j = 0; j < genreArray.length(); j++) {
                                 user.genres.add(genreArray.getString(j));
                             }
-                            int age = user.ageCalc();
+                            Integer age = user.ageCalc();
                             if (settingsAgeFilter(age, minAge, maxAge)) {
                                 mAdapter.addUser(user);
                             }
@@ -235,8 +235,10 @@ public class UserListFragment extends Fragment {
     }
 
     // displaying only chosen one
-    private boolean settingsAgeFilter(int age, int minAge, int maxAge) {
-
+    private boolean settingsAgeFilter(Integer age, int minAge, int maxAge) {
+        if (age == null) {
+            return true;
+        }
         return (age >= minAge && age <= maxAge);
     }
 

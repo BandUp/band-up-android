@@ -98,7 +98,7 @@
         android:id="@+id/txtNoInstruments"
         android:text="@string/setup_no_instruments"
         android:visibility="invisible"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textColor="@color/bandUpYellow"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>

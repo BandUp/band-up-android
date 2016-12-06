@@ -333,7 +333,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 if (shouldDisplayRationale) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainScreenActivity.this);
                     builder.setTitle("Location Access")
-                            .setMessage("To find musicians near you we need access to your location.\nWe will only use it to measure distance between you and other musicians.")
+                            .setMessage(R.string.location_rationale)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     ActivityCompat.requestPermissions(MainScreenActivity.this, new String[]{
@@ -392,7 +392,6 @@ public class MainScreenActivity extends AppCompatActivity implements
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int count = getSupportFragmentManager().getBackStackEntryCount();
-
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (count != 0 && (currentFragment == USER_DETAILS_FRAGMENT || currentFragment == SEARCH_FRAGMENT)){
@@ -471,14 +470,14 @@ public class MainScreenActivity extends AppCompatActivity implements
             case R.id.nav_logout:
                 logout();
                 logoutDialog = new ProgressDialog(MainScreenActivity.this);
-                logoutDialog.setMessage("Logging out");
-                logoutDialog.setTitle("Please wait...");
+                logoutDialog.setMessage(getString(R.string.main_log_out_title));
+                logoutDialog.setTitle(getString(R.string.main_log_out_message));
                 logoutDialog.show();
                 break;
             case R.id.nav_upcomming:
                 ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
                 ft.commit();
-                setTitle("Upcoming features");
+                setTitle(getString(R.string.main_title_upcoming_features));
                 currentFragment = COMING_SOON_FRAGMENT;
                 invalidateOptionsMenu();
 
@@ -537,7 +536,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         mIsSearch = true;
         mUserSearchResultsFragment = UserListFragment.newInstance(users);
 
-        setTitle("Search results");
+        setTitle(getString(R.string.main_title_search_results));
         return mUserSearchResultsFragment;
     }
 
@@ -716,11 +715,11 @@ public class MainScreenActivity extends AppCompatActivity implements
                     if (!responseObj.isNull("isMatch")) {
                         isMatch = responseObj.getBoolean("isMatch");
                     } else {
-                        Toast.makeText(MainScreenActivity.this, "Error loading match.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainScreenActivity.this, R.string.main_error_match, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (isMatch) {
-                        Toast.makeText(MainScreenActivity.this, "You Matched!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainScreenActivity.this, R.string.main_matched, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

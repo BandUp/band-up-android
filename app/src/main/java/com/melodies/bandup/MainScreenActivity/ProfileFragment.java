@@ -240,7 +240,7 @@ public class ProfileFragment extends Fragment {
                     txtAge.setText(ageString);
                 }
             } else {
-                txtAge.setText("Age not available");
+                txtAge.setText(R.string.age_not_available);
             }
         }
         if (u.favoriteinstrument != null) {
@@ -408,12 +408,12 @@ public class ProfileFragment extends Fragment {
         if (resultCode == RESULT_OK) {
 
             if (requestCode == CAMERA_REQUEST) {
-                displayDownloadMessage("Uploading Photo", "Please wait...");
+                displayDownloadMessage(getString(R.string.profile_upload_title), getString(R.string.profile_upload_message));
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
             }
 
             if (requestCode == GALLERY_REQUEST) {
-                displayDownloadMessage("Uploading Photo", "Please wait...");
+                displayDownloadMessage(getString(R.string.profile_upload_title), getString(R.string.profile_upload_message));
                 // Get the URI from the intent result.
                 sendMessage(data);
             }
@@ -521,7 +521,7 @@ public class ProfileFragment extends Fragment {
     public void onClickDisplayModal(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("New Profile Photo").setItems(R.array.image_res_ids, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.profile_new_photo_dialog).setItems(R.array.image_res_ids, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -635,7 +635,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
                     error.printStackTrace();
-                    Toast.makeText(getActivity(), "Error Update User" + error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.profile_error_updating_user) + error, Toast.LENGTH_LONG).show();
                 }
             });
         } catch (JSONException e) {
@@ -689,7 +689,7 @@ public class ProfileFragment extends Fragment {
             if (!urlObject.isNull("url")) {
                 imageURL = urlObject.getString("url");
             } else {
-                Toast.makeText(getActivity(), "Could not parse JSON", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_SHORT).show();
                 return null;
             }
         } catch (JSONException e) {

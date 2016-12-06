@@ -114,6 +114,8 @@ public class UserListFragment extends Fragment {
         }
         progressBar.setVisibility(View.VISIBLE);
         networkErrorBar.setVisibility(View.INVISIBLE);
+        txtNoUsers.setVisibility(View.INVISIBLE);
+
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
@@ -123,11 +125,13 @@ public class UserListFragment extends Fragment {
                 if (response instanceof JSONArray) {
                     responseArr = (JSONArray) response;
                 } else {
+                    txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (responseArr.length() == 0) {
+                    txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -177,10 +181,10 @@ public class UserListFragment extends Fragment {
                             }
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     } catch (ParseException e) {
-                        Toast.makeText(getActivity(), "Could not parse the Date object.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.matches_error_date, Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
@@ -198,6 +202,7 @@ public class UserListFragment extends Fragment {
                     System.err.println("User List progressBar is null");
                 }
                 if (mAdapter.getCount() == 0) {
+                    txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -208,6 +213,8 @@ public class UserListFragment extends Fragment {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.INVISIBLE);
+                txtNoUsers.setText(R.string.user_list_error_fetch_list);
+                txtNoUsers.setVisibility(View.VISIBLE);
 
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     networkErrorBar.setVisibility(View.VISIBLE);
@@ -267,6 +274,14 @@ public class UserListFragment extends Fragment {
             if (networkErrorBar.getVisibility() == View.INVISIBLE) {
                 partialView.setVisibility(View.INVISIBLE);
                 getUserList();
+            } else {
+                txtNoUsers.setText(getString(R.string.user_list_error_fetch_list));
+                txtNoUsers.setVisibility(View.VISIBLE);
+            }
+
+            if (mIsSearch) {
+                txtNoUsers.setText(R.string.search_no_results);
+                txtNoUsers.setVisibility(View.VISIBLE);
             }
 
         } else {

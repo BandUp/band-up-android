@@ -110,7 +110,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder fs = new AlertDialog.Builder(UpdateAboutMe.this);
-                fs.setTitle("What is your favorite instrument?");
+                fs.setTitle(R.string.update_about_me_favorite_instrument);
 
                 //final User currUser = ((MainScreenActivity) getActivity()).currentUser;
                 final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -121,7 +121,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
                     arrayAdapter.add(mInstruments.get(i));
                 }
                 fs.setNegativeButton(
-                        "Cancel",
+                        R.string.update_about_me_cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int inst) {

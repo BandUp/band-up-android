@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtNoGenres"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="@string/setup_no_genres"
         android:visibility="invisible"
         android:textColor="@color/bandUpYellow"

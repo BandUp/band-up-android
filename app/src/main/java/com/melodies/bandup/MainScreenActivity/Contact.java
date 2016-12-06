@@ -11,7 +11,7 @@ public class Contact extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-        setTitle("Contact");
+        setTitle(getString(R.string.contact_title));
 
         // back to activity before
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();

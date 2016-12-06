@@ -45,7 +45,7 @@ public class PasswordReset extends AppCompatActivity {
                     new BandUpResponseListener() {
                         @Override
                         public void onBandUpResponse(Object response) {
-                            Toast.makeText(PasswordReset.this, "An e-mail has been sent", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PasswordReset.this, R.string.password_reset_email_sent, Toast.LENGTH_LONG).show();
                             Intent loginIntent = new Intent(PasswordReset.this, Login.class);
                             startActivity(loginIntent);
                             finish();

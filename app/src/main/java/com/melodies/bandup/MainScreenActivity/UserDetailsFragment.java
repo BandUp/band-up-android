@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -203,8 +204,16 @@ public class UserDetailsFragment extends Fragment {
         txtAboutMe.setText(u.aboutme);
 
         if (u.distance != null) {
-            String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
-            txtDistance.setText(distanceString);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+            Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
+            if (usesImperial) {
+                String distanceString = String.format("%s %s", kilometersToMiles(u.distance), getString(R.string.mi_distance));
+                txtDistance.setText(distanceString);
+            } else {
+                String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
+                txtDistance.setText(distanceString);
+            }
+
         } else {
             txtDistance.setText(R.string.no_distance_available);
         }
@@ -339,6 +348,11 @@ public class UserDetailsFragment extends Fragment {
 
             }
         });
+    }
+
+    private int kilometersToMiles(int miles) {
+        double kilometers = miles / 1.609344;
+        return (int) Math.ceil(kilometers);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

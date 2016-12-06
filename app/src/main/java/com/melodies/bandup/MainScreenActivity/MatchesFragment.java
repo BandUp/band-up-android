@@ -14,8 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.ads.AdRequest;
@@ -114,6 +116,7 @@ public class MatchesFragment extends Fragment {
 
     private void getMatchesList() {
         String url = getActivity().getResources().getString(R.string.api_address).concat("/matches");
+        txtNoUsers.setVisibility(View.INVISIBLE);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -124,6 +127,7 @@ public class MatchesFragment extends Fragment {
                         progressBar.setVisibility(View.INVISIBLE);
 
                         if (response.length() == 0) {
+                            txtNoUsers.setText(getString(R.string.matches_no_users));
                             txtNoUsers.setVisibility(View.VISIBLE);
                         }
 
@@ -142,7 +146,7 @@ public class MatchesFragment extends Fragment {
 
 
                             } catch (JSONException e) {
-                                Toast.makeText(getActivity(), "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }
@@ -152,7 +156,12 @@ public class MatchesFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        txtNoUsers.setText(R.string.matches_failed_to_fetch);
+                        txtNoUsers.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            return;
+                        }
 
                         VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
 

@@ -85,7 +85,7 @@ public class VolleySingleton {
      */
     public void checkCauseOfError(VolleyError error) {
         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-            Toast.makeText(mCtx, "Connection error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, R.string.volley_connection_error, Toast.LENGTH_LONG).show();
         }
         else if (error instanceof AuthFailureError) {
             mCtx.startActivity(new Intent(mCtx, Login.class));
@@ -99,18 +99,18 @@ public class VolleySingleton {
                 String message = myObject.getString("msg");
                 Toast.makeText(mCtx, message, Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
-                Toast.makeText(mCtx, "Server error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(mCtx, R.string.volley_server_error, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
         else if (error instanceof NetworkError) {
-            Toast.makeText(mCtx, "Network error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, R.string.volley_network_error, Toast.LENGTH_LONG).show();
         }
         else if (error instanceof ParseError) {
-            Toast.makeText(mCtx, "Server parse error!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, R.string.volley_server_parse_error, Toast.LENGTH_LONG).show();
 
         } else {
-            Toast.makeText(mCtx, "Unknown error! Contact Administrator " + error, Toast.LENGTH_LONG).show();
+            Toast.makeText(mCtx, mCtx.getString(R.string.volley_unknown_error) + error, Toast.LENGTH_LONG).show();
         }
     }
 

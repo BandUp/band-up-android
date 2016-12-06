@@ -105,10 +105,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         int activityHeight = mainLinearLayout.getHeight();
         int statusBarHeight = screenHeight - parentHeight;
         int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
-        System.out.println("HEIGHTS");
-        System.out.println(parentHeight);
-        System.out.println(statusBarHeight);
-        System.out.println(activityHeight);
         System.out.println(parentHeight - activityHeight);
         if (hasSoftNavigation(Login.this)) {
             return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop + (parentHeight-activityHeight);
@@ -159,15 +155,17 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         TextView otherServs = (TextView) findViewById(R.id.login_other_services_hint);
         Button btnForgPass = (Button) findViewById(R.id.btn_forgot_password);
 
+        Typeface caviarDreams = Typeface.createFromAsset(Login.this.getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(Login.this.getAssets(), "fonts/caviar_dreams_bold.ttf");
 
-        btnSignIn.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        tilUsername.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        tilPassword.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        etUsername.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        etPassword.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        btnSignUp.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        otherServs.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        btnForgPass.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        btnSignIn.setTypeface(caviarDreamsBold);
+        tilUsername.setTypeface(caviarDreamsBold);
+        tilPassword.setTypeface(caviarDreamsBold);
+        etUsername.setTypeface(caviarDreams);
+        etPassword.setTypeface(caviarDreams);
+        btnSignUp.setTypeface(caviarDreamsBold);
+        otherServs.setTypeface(caviarDreams);
+        btnForgPass.setTypeface(caviarDreamsBold);
 
 
         etPassword.setOnKeyListener(new View.OnKeyListener() {
@@ -224,7 +222,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onCancel() {
-                System.out.println("Login Cancelled");
+                //System.out.println("Login Cancelled");
             }
 
             @Override

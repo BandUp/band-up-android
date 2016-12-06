@@ -12,11 +12,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:background="#FFFFFF" />
-
 
             <TextView
                 android:text="Licence is HERE"
@@ -27,11 +22,6 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:background="#FFFFFF" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

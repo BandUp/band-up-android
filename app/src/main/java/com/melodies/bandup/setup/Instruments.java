@@ -40,10 +40,13 @@ public class Instruments extends AppCompatActivity {
     }
 
     private void setFonts() {
-        txtTitleGetStarted.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleProgress  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf"));
-        txtTitleHint      .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtNoInstruments  .setTypeface(Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf"));
+        Typeface caviarDreams = Typeface.createFromAsset(Instruments.this.getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(Instruments.this.getAssets(), "fonts/caviar_dreams_bold.ttf");
+
+        txtTitleGetStarted.setTypeface(caviarDreams);
+        txtTitleProgress  .setTypeface(caviarDreams);
+        txtTitleHint      .setTypeface(caviarDreamsBold);
+        txtNoInstruments  .setTypeface(caviarDreamsBold);
     }
 
     Boolean isSetup = true;
@@ -105,7 +108,7 @@ public class Instruments extends AppCompatActivity {
             // The adapter for the GridView hasn't been set.
             // This means we didn't get data from the server.
             if (dla == null) {
-                Toast.makeText(Instruments.this, "I cannot contact the server.\nPlease contact support.", Toast.LENGTH_LONG).show();
+                Toast.makeText(Instruments.this, R.string.genres_connection_error, Toast.LENGTH_LONG).show();
                 return;
             }
 

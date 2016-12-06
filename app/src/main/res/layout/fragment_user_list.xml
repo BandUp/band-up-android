@@ -51,8 +51,9 @@
         android:id="@+id/txtNoUsers"
         android:text="@string/user_list_no_users"
         android:visibility="invisible"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textColor="@color/bandUpYellow"
         android:layout_centerVertical="true"
+        android:gravity="center"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

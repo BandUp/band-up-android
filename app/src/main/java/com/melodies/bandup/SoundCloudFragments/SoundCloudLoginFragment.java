@@ -119,7 +119,7 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
         final View mDialog = inflater.inflate(R.layout.dialog_soundcloud_signin,  null);
 
         builder.setView(mDialog)
-                .setPositiveButton("Log in", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.sc_frag_log_in, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // sign in user
@@ -128,7 +128,7 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
                         logIn(email.getText().toString(), pass.getText().toString());
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.sc_frag_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SoundCloudLoginFragment.this.cancel();

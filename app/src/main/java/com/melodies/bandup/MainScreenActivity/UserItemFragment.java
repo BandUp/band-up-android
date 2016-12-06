@@ -1,5 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -170,13 +172,20 @@ public class UserItemFragment extends Fragment {
                     txtAge.setText(ageString);
                 }
             } else {
-                txtAge.setText("Age not available");
+                txtAge.setText(getString(R.string.age_not_available));
             }
         }
 
         if (u.distance != null) {
-            String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
-            txtDistance.setText(distanceString);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+            Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
+            if (usesImperial) {
+                String distanceString = String.format("%s %s", kilometersToMiles(u.distance), getString(R.string.mi_distance));
+                txtDistance.setText(distanceString);
+            } else {
+                String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
+                txtDistance.setText(distanceString);
+            }
         } else {
             txtDistance.setText(R.string.no_distance_available);
         }
@@ -187,5 +196,10 @@ public class UserItemFragment extends Fragment {
             Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
 
         }
+    }
+    // Converts miles into whole kilometers for consistent search range storage
+    private int kilometersToMiles(int miles) {
+        double kilometers = miles / 1.609344;
+        return (int) Math.ceil(kilometers);
     }
 }

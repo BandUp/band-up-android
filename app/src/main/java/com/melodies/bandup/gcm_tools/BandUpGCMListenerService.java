@@ -37,7 +37,6 @@ public class BandUpGCMListenerService extends GcmListenerService {
     @SuppressLint("LongLogTag")
     @Override
     public void onMessageReceived(String from, Bundle data){
-        System.out.println("Got a message");
         String message = data.getBundle("notification").getString("body");
         String type = data.getBundle("data").getString("type");
         Log.d(TAG, "From: " + from);

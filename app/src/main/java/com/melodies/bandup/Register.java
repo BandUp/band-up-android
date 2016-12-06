@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -249,23 +248,6 @@ public class Register extends AppCompatActivity implements DatePickable {
         progEmailLoading = (ProgressBar) findViewById(R.id.emailValidationLoading);
     }
 
-    private void setFonts() {
-        Typeface caviarDreams = Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams.ttf");
-        Typeface caviarDreamsBold = Typeface.createFromAsset(getAssets(), "fonts/caviar_dreams_bold.ttf");
-
-        etEmail      .setTypeface(caviarDreams);
-        etUsername   .setTypeface(caviarDreams);
-        etPassword1  .setTypeface(caviarDreams);
-        etPassword2  .setTypeface(caviarDreams);
-        etDateOfBirth.setTypeface(caviarDreams);
-
-        tilEmail    .setTypeface(caviarDreamsBold);
-        tilUsername .setTypeface(caviarDreamsBold);
-        tilPassword1.setTypeface(caviarDreamsBold);
-        tilPassword2.setTypeface(caviarDreamsBold);
-        tilDob      .setTypeface(caviarDreamsBold);
-
-    }
 
     private void initializeOnKeyListeners() {
         etPassword2.setOnKeyListener(new View.OnKeyListener() {
@@ -305,7 +287,6 @@ public class Register extends AppCompatActivity implements DatePickable {
         initializeOnTextChangedListeners();
         initializeOnFocusChangeListeners();
         initializeOnKeyListeners();
-        setFonts();
 
         registerDialog = new ProgressDialog(Register.this);
         setTitle(getString(R.string.register_title));

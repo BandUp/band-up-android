@@ -140,7 +140,7 @@ public class SetupShared {
                             dlAdapter.addItem(dlItem);
 
                         } catch (JSONException e) {
-                            Toast.makeText(context, "Could not parse the JSON object.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, R.string.matches_error_json, Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }

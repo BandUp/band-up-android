@@ -207,7 +207,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                 titles.add(arr.getJSONObject(i).getString("title"));
             }
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-            dialogBuilder.setTitle("Please select a song")
+            dialogBuilder.setTitle(R.string.sc_frag_select_song)
                     .setItems(titles.toArray(new CharSequence[titles.size()]), this);
             return dialogBuilder.create();
         }catch (JSONException ex){

@@ -107,7 +107,7 @@ public class UserSearchFragment extends Fragment {
                 }
             }
         }else {
-            selectedText.setText("None selected");
+            selectedText.setText(R.string.search_none_selected);
         }
     }
 
@@ -243,7 +243,7 @@ public class UserSearchFragment extends Fragment {
     private Dialog createInstrumentsSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final ArrayList<CharSequence> backup = (ArrayList<CharSequence>) mSelectedInstrumentIdList.clone();
-        builder.setTitle("Select instruments")
+        builder.setTitle(R.string.search_select_instruments)
                 .setMultiChoiceItems(itemNames, mIsSelectedInstrumentIndex, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -261,7 +261,7 @@ public class UserSearchFragment extends Fragment {
                         }
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.search_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Set text on instruments list element.
@@ -274,7 +274,7 @@ public class UserSearchFragment extends Fragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.search_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Restore selected instruments to previous state.
@@ -312,7 +312,7 @@ public class UserSearchFragment extends Fragment {
                         }
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.search_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Set text on genre list element.
@@ -325,7 +325,7 @@ public class UserSearchFragment extends Fragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.search_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // restore selected genres to previous state

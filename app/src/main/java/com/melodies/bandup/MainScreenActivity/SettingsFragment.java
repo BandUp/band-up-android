@@ -3,6 +3,8 @@ package com.melodies.bandup.MainScreenActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,6 +60,7 @@ public class SettingsFragment extends Fragment {
     private TextView     txtLicenses;
     private TextView     txtPPolicy;
     private TextView     txtTermsOfService;
+    private TextView     txtVersion;
 
 
     // Required empty public constructor
@@ -109,6 +112,17 @@ public class SettingsFragment extends Fragment {
         txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
         txtPPolicy        = (TextView)rootView.findViewById(R.id.txtPPolicy);
         txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
+        txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
+
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            String version = pInfo.versionName;
+            txtVersion.setText(String.format("BandUp %s", version));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     // Adding ad Banner

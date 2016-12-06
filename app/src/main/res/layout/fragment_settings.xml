@@ -306,7 +306,18 @@
                     android:paddingEnd="20dp"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground"/>
-
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#40FFFFFF" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/band_up_version_number"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="20dp"/>
             </LinearLayout>
         </ScrollView>
 

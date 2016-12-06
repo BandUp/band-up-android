@@ -124,6 +124,7 @@ public class ProfileFragment extends Fragment {
     ProgressDialog imageDownloadDialog;
     MyThread myThread;
     //User currentUser;
+    Fragment mSoundFragment;
 
     private LinearLayout soundCloudArea;
 
@@ -165,6 +166,9 @@ public class ProfileFragment extends Fragment {
     public void updateCurrentUserSoundCloud(int soundCloudId){
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
         currUser.soundCloudId = soundCloudId;
+        if (mSoundFragment != null){
+            getFragmentManager().beginTransaction().remove(mSoundFragment).commit();
+        }
         createSoundCloudArea();
     }
 
@@ -175,15 +179,14 @@ public class ProfileFragment extends Fragment {
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
 
         soundCloudArea.setId(new Integer(1234));
-        Fragment soundCloudFragment;
         if (currUser.soundCloudId == 0){
-            soundCloudFragment = SoundCloudLoginFragment.newInstance();
+            mSoundFragment = SoundCloudLoginFragment.newInstance();
         }else {
-            soundCloudFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
+            mSoundFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
                                                                         currUser.soundCloudURL);
         }
 
-        ft.add(soundCloudArea.getId(), soundCloudFragment, "soundCloudFragment");
+        ft.add(soundCloudArea.getId(), mSoundFragment, "soundCloudFragment");
         ft.commitAllowingStateLoss();
     }
 

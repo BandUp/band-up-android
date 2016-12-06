@@ -195,7 +195,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Audio sample from SoundCloud"
+                                android:text="@string/audio_sample_from_soundcloud"
+                                android:id="@+id/txt_audio_example"
                                 android:textSize="18sp"/>
                         </LinearLayout>
                         <LinearLayout
@@ -209,8 +210,7 @@
                                 android:layout_height="wrap_content"
                                 android:visibility="gone"
                                 android:gravity="center"
-                                android:id="@+id/no_soundcloud_example"
-                                android:text="oskarpall has not selected an audio sample, yet."/>
+                                android:id="@+id/no_soundcloud_example" />
                         </LinearLayout>
                 </LinearLayout>
             </ScrollView>

@@ -25,7 +25,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -112,6 +111,7 @@ public class ProfileFragment extends Fragment {
     private TextView txtAboutMe;
     private TextView txtInstrumentsList;
     private TextView txtGenresList;
+    private TextView txtSoundCloudExample;
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
@@ -128,8 +128,6 @@ public class ProfileFragment extends Fragment {
     Fragment mSoundLoginFragment;
     Fragment mSoundSelectFragment;
 
-    private FrameLayout soundCloudArea;
-
     private void initializeViews(View rootView) {
         txtName             = (TextView)    rootView.findViewById(R.id.txtName);
         txtAge              = (TextView)    rootView.findViewById(R.id.txtAge);
@@ -139,20 +137,23 @@ public class ProfileFragment extends Fragment {
         txtGenresTitle      = (TextView)    rootView.findViewById(R.id.txtGenresTitle);
         txtInstrumentsList  = (TextView)    rootView.findViewById(R.id.txtInstrumentsList);
         txtGenresList       = (TextView)    rootView.findViewById(R.id.txtGenresList);
+        txtSoundCloudExample= (TextView)    rootView.findViewById(R.id.txt_audio_example);
         ivUserProfileImage  = (ImageView)   rootView.findViewById(R.id.imgProfile);
         mAdView             = (AdView)      rootView.findViewById(R.id.adView);
-        soundCloudArea      = (FrameLayout) rootView.findViewById(R.id.content);
     }
 
     private void setFonts() {
-        txtName            .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAge             .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtFavorite        .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtAboutMe         .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtInstrumentsTitle.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtGenresTitle     .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf"));
-        txtInstrumentsList .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
-        txtGenresList      .setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf"));
+        Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
+        txtName             .setTypeface(caviarDreams);
+        txtAge              .setTypeface(caviarDreams);
+        txtFavorite         .setTypeface(caviarDreams);
+        txtAboutMe          .setTypeface(caviarDreams);
+        txtInstrumentsList  .setTypeface(caviarDreams);
+        txtGenresList       .setTypeface(caviarDreams);
+        txtInstrumentsTitle .setTypeface(caviarDreamsBold);
+        txtGenresTitle      .setTypeface(caviarDreamsBold);
+        txtSoundCloudExample.setTypeface(caviarDreamsBold);
     }
 
     @Override

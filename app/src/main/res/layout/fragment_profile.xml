@@ -203,7 +203,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Audio sample from SoundCloud"
+                        android:id="@+id/txt_audio_example"
+                        android:text="@string/audio_sample_from_soundcloud"
                         android:textSize="18sp"/>
                 </LinearLayout>
 

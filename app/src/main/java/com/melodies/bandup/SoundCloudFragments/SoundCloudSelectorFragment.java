@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
 
     private Button mSelectionButton;
     private TextView mSongName;
+    private TextView mSongHint;
 
     JSONArray mTracksArray = new JSONArray();
     
@@ -102,6 +104,14 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     private void setupViews(View rootView) {
         mSelectionButton = (Button)   rootView.findViewById(R.id.select_song_btn);
         mSongName        = (TextView) rootView.findViewById(R.id.current_song_text);
+        mSongHint        = (TextView) rootView.findViewById(R.id.current_song_hint);
+
+        Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
+
+        mSongHint.setTypeface(caviarDreamsBold);
+        mSongName.setTypeface(caviarDreams);
+
         if (mSoundCloudUrl == null) {
             mSongName.setText("No song selected");
         } else {

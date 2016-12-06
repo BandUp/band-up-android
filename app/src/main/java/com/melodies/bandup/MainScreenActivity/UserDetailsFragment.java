@@ -51,6 +51,7 @@ public class UserDetailsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+
     public UserDetailsFragment() {
         // Required empty public constructor
     }
@@ -79,6 +80,7 @@ public class UserDetailsFragment extends Fragment {
     private TextView    txtGenresTitle;
     private TextView    txtInstrumentsList;
     private TextView    txtGenresList;
+    private TextView    txtSoundCloudExample;
     private TextView    txtNoSoundCloudExample;
     private ImageView   ivUserProfileImage;
     private Button      btnLike;
@@ -96,6 +98,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresTitle      = (TextView)     rootView.findViewById(R.id.txtGenresTitle);
         txtInstrumentsList  = (TextView)     rootView.findViewById(R.id.txtInstrumentsList);
         txtGenresList       = (TextView)     rootView.findViewById(R.id.txtGenresList);
+        txtSoundCloudExample= (TextView)    rootView.findViewById(R.id.txt_audio_example);
         ivUserProfileImage  = (ImageView)    rootView.findViewById(R.id.imgProfile);
         btnLike             = (Button)       rootView.findViewById(R.id.btnLike);
         mAdView             = (AdView)       rootView.findViewById(R.id.adView);
@@ -128,6 +131,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresTitle     .setTypeface(caviarDreamsBold);
         btnLike            .setTypeface(caviarDreamsBold);
         txtNoSoundCloudExample.setTypeface(caviarDreamsBold);
+        txtSoundCloudExample.setTypeface(caviarDreamsBold);
 
     }
 

@@ -142,4 +142,6 @@
     <string name="edit_profile_favourite_instument_hint">Uppáhalds hljóðfærið þitt</string>
     <string name="edit_profile_save">Vista</string>
     <string name="edit_profile_influences">What are your influences?</string>
+    <string name="audio_sample_from_soundcloud">Hljóðbrot frá SoundCloud</string>
+    <string name="no_soundcloud_example">hefur ekki valið hljóðbrot.</string>
 </resources>

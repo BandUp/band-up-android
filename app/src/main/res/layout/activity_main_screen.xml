@@ -22,6 +22,7 @@
         android:fitsSystemWindows="true"
         android:background="@color/bandUpYellow"
         app:headerLayout="@layout/nav_header_main_screen"
+        app:itemBackground="@drawable/drawer_item"
         app:menu="@menu/activity_user_list_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

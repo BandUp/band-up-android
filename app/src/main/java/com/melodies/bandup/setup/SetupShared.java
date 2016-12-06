@@ -45,7 +45,7 @@ public class SetupShared {
         progressBar.setVisibility(progressBar.VISIBLE);
         DatabaseSingleton.getInstance(context).getBandUpDatabase().getInstruments(
                 getSetupItemsListener(context, gridView, progressBar, txtNoInstruments, preselected),
-                getSetupItemsErrorListener(context, progressBar));
+                getSetupItemsErrorListener(context, txtNoInstruments, progressBar));
     }
 
     /**
@@ -58,25 +58,7 @@ public class SetupShared {
         progressBar.setVisibility(progressBar.VISIBLE);
         DatabaseSingleton.getInstance(context).getBandUpDatabase().getGenres(
                 getSetupItemsListener(context, gridView, progressBar, txtNoGenres, preselected),
-                getSetupItemsErrorListener(context, progressBar)
-        );
-    }
-
-    public void getFilter(Context c, JSONArray filteredInstruments){
-        DatabaseSingleton.getInstance(c).getBandUpDatabase().postInstruments(
-                filteredInstruments,
-                new BandUpResponseListener() {
-                    @Override
-                    public void onBandUpResponse(Object response) {
-
-                    }
-                },
-                new BandUpErrorListener() {
-                    @Override
-                    public void onBandUpErrorResponse(VolleyError error) {
-
-                    }
-                }
+                getSetupItemsErrorListener(context, txtNoGenres, progressBar)
         );
     }
 
@@ -113,11 +95,13 @@ public class SetupShared {
                 if (response instanceof JSONArray) {
                     responseArr = (JSONArray) response;
                 } else {
+                    txtNoItems.setText(context.getString(R.string.setup_no_instruments));
                     txtNoItems.setVisibility(TextView.VISIBLE);
                     return;
                 }
 
                 if (responseArr.length() == 0) {
+                    txtNoItems.setText(context.getString(R.string.setup_no_instruments));
                     txtNoItems.setVisibility(TextView.VISIBLE);
                 } else {
                     // Create a new adapter for the GridView.
@@ -160,10 +144,12 @@ public class SetupShared {
      * @param progressBar The ProgressBar in the view.
      * @return the listener.
      */
-    private BandUpErrorListener getSetupItemsErrorListener(final Context context, final ProgressBar progressBar) {
+    private BandUpErrorListener getSetupItemsErrorListener(final Context context, final TextView txtNoItems, final ProgressBar progressBar) {
         return new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                txtNoItems.setText(context.getString(R.string.setup_error_fetch));
+                txtNoItems.setVisibility(TextView.VISIBLE);
                 VolleySingleton.getInstance(context).checkCauseOfError(error);
                 progressBar.setVisibility(progressBar.GONE);
             }

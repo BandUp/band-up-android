@@ -190,4 +190,5 @@
     <string name="volley_network_error">Network error!</string>
     <string name="volley_server_parse_error">Server parse error!</string>
     <string name="volley_unknown_error">"Unknown error! Contact Administrator "</string>
+    <string name="setup_error_fetch">Could not fetch information</string>
 </resources>

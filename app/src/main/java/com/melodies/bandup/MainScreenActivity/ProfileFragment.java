@@ -654,13 +654,33 @@ public class ProfileFragment extends Fragment {
                 User currUser = ((MainScreenActivity) getActivity()).currentUser;
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    currUser.id                 = extras.getString         ("USER_ID");
-                    currUser.name               = extras.getString         ("USER_NAME");
-                    currUser.favoriteinstrument = extras.getString         ("USER_FAVOURITE_INSTRUMENT");
+                    String id = extras.getString("USER_ID");
+                    if (id != null) {
+                        currUser.id = id;
+                    }
+
+                    String name = extras.getString("USER_NAME");
+                    if (name != null) {
+                        currUser.name = name;
+                    }
+
+
+                    String favoriteinstrument = extras.getString("USER_FAVOURITE_INSTRUMENT");
+                    if (favoriteinstrument != null) {
+                        currUser.favoriteinstrument = favoriteinstrument;
+                    }
+
+                    String aboutme = extras.getString("USER_ABOUT_ME");
+                    if (aboutme != null) {
+                        currUser.aboutme = aboutme;
+                    }
+                    Date dateOfBirth = (Date) extras.getSerializable("USER_DATE_OF_BIRTH");
+                    if (dateOfBirth != null) {
+                        currUser.dateOfBirth = dateOfBirth;
+                    }
+
                     currUser.instruments        = extras.getStringArrayList("USER_INSTRUMENTS");
                     currUser.genres             = extras.getStringArrayList("USER_GENRES");
-                    currUser.aboutme            = extras.getString         ("USER_ABOUT_ME");
-                    currUser.dateOfBirth        = (Date) extras.getSerializable   ("USER_DATE_OF_BIRTH");
                     populateUser(currUser);
                 }
             }

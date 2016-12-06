@@ -180,4 +180,5 @@
     <string name="volley_server_error">Vefþjónsvilla</string>
     <string name="volley_server_parse_error">Þáttunarvilla</string>
     <string name="volley_unknown_error">Ókunn villa! Látið okkur vita.</string>
+    <string name="setup_error_fetch">Gat ekki náð í upplýsingar</string>
 </resources>

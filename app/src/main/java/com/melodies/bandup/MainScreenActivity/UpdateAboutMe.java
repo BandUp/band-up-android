@@ -254,7 +254,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
     // Return to previous Activity
     public boolean onOptionsItemSelected(MenuItem item){
-        finish();
+        this.onBackPressed();
         return true;
     }
 
@@ -311,6 +311,13 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
     @Override
     public void onBackPressed() {
+        Intent i = new Intent();
+
+
+        i.putStringArrayListExtra("USER_INSTRUMENTS", mInstruments);
+        i.putStringArrayListExtra("USER_GENRES", mGenres);
+
+        setResult(EDIT_PROFILE_REQUEST_CODE, i);
         finish();
     }
 }

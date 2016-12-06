@@ -232,7 +232,13 @@ public class SettingsFragment extends Fragment {
     // Loading user credentials
     public Integer loadUserCredentials(String valueName) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
-        return sharedPreferences.getInt (valueName, DEFAULTAGE);    // This is default value for age, and range
+        if (valueName == "minAge") {
+            return sharedPreferences.getInt (valueName, MINAGE);    // This is default value for age, and range
+        } else if (valueName == "maxAge"){
+            return sharedPreferences.getInt (valueName, MAXAGE);    // This is default value for age, and range
+        } else {
+            return sharedPreferences.getInt(valueName, DEFAULTAGE);
+        }
     }
 
     // loading switch state
@@ -251,11 +257,11 @@ public class SettingsFragment extends Fragment {
         // Default values
         seekBarRadius.setProgress(25);
         if (loadUserSwitch("switchUnit")) {
-            String textmi = String.format("%s %s %s", "Radius ", loadUserCredentials("searchradius"), " Mi");
+            String textmi = String.format("Radius: %s %s", loadUserCredentials("searchradius"), "mi");
             txtRadius.setText(textmi);
         }
         else {
-            String textkm = String.format("%s %s %s", "Radius ", loadUserCredentials("searchradius"), " Km");
+            String textkm = String.format("Radius: %s %s", loadUserCredentials("searchradius"), "km");
             txtRadius.setText(textkm);
         }
 
@@ -266,13 +272,13 @@ public class SettingsFragment extends Fragment {
                 // if unit switch is on, put mi in text view else km
                 if (loadUserSwitch("switchUnit")) {
                     seekBarRadius.setMax(186);      // Maximum value of search range in Mi
-                    String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Mi");
+                    String radius = String.format("Radius: %s %s", Integer.toString(progress), "mi");
                     txtRadius.setText(radius);
                     searchRadius = milesToKilometers(progress);
                 }
                 else {
                     seekBarRadius.setMax(300);      // Maximum value of search range in Km
-                    String radius = String.format("%s %s %s", "Radius ", Integer.toString(progress), " Km");
+                    String radius = String.format("Radius: %s %s", Integer.toString(progress), "km");
                     txtRadius.setText(radius);
                     searchRadius = progress;
                 }

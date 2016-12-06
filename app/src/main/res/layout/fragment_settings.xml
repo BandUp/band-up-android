@@ -146,7 +146,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Localization"
+                    android:text="Measurement"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -158,15 +158,12 @@
                     android:background="#50FFFFFF" />
 
                 <Switch
-                    android:text="Unit (km/mi)"
+                    android:text="Use Imperial System"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/switchUnit"
                     android:textSize="18sp"
-                    android:checked="true"
-                    android:textOff="km"
-                    android:textOn="mi"
-                    android:showText="true"
+                    android:checked="false"
                     android:textAllCaps="false"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />

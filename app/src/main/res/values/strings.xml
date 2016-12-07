@@ -185,9 +185,9 @@
     <string name="search_cancel">Cancel</string>
     <string name="search_none_selected">None selected</string>
     <string name="search_select_instruments">Select instruments</string>
-    <string name="volley_connection_error">Connection error!</string>
-    <string name="volley_server_error">Server error!</string>
-    <string name="volley_network_error">Network error!</string>
+    <string name="volley_connection_error">Could not connect to the server\nCheck your settings or try again.</string>
+    <string name="volley_network_error">Could not connect to the server\nCheck your settings or try again.</string>
+    <string name="volley_server_error">Við gátum ekki náð í gögnin.\nVinsamlegast prófaðu aftur.</string>
     <string name="volley_server_parse_error">Server parse error!</string>
     <string name="volley_unknown_error">"Unknown error! Contact Administrator "</string>
     <string name="setup_error_fetch">Could not fetch information</string>

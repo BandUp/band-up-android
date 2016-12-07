@@ -140,7 +140,7 @@ public class GenresTest {
 
         mActivityRule.launchActivity(new Intent());
 
-        onView(withText(mActivityRule.getActivity().getResources().getString(R.string.setup_no_genres))).check(matches(isDisplayed()));
+        onView(withText(mActivityRule.getActivity().getResources().getString(R.string.setup_no_items))).check(matches(isDisplayed()));
     }
 
     @Test

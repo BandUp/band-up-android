@@ -92,6 +92,9 @@ public class Register extends AppCompatActivity implements DatePickable {
                                 if (response instanceof JSONObject) {
                                     responseObj = (JSONObject) response;
                                 }
+                                if (responseObj == null) {
+                                    return;
+                                }
                                 if (isValidEmail(etEmail.getText().toString())) {
                                     try {
                                         Boolean emailInUse;

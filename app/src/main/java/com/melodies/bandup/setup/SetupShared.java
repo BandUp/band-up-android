@@ -95,13 +95,13 @@ public class SetupShared {
                 if (response instanceof JSONArray) {
                     responseArr = (JSONArray) response;
                 } else {
-                    txtNoItems.setText(context.getString(R.string.setup_no_instruments));
+                    txtNoItems.setText(context.getString(R.string.setup_no_items));
                     txtNoItems.setVisibility(TextView.VISIBLE);
                     return;
                 }
 
                 if (responseArr.length() == 0) {
-                    txtNoItems.setText(context.getString(R.string.setup_no_instruments));
+                    txtNoItems.setText(context.getString(R.string.setup_no_items));
                     txtNoItems.setVisibility(TextView.VISIBLE);
                 } else {
                     // Create a new adapter for the GridView.

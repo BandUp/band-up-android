@@ -126,7 +126,6 @@ public class UserListTest {
 
         onView(withId(R.id.txtName))          .check(matches(withText("TestUser0")));
         onView(withId(R.id.txtPercentage))    .check(matches(withText("11%")));
-        onView(withId(R.id.txtDistance))      .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
         onView(withId(R.id.txtGenres))        .check(matches(withText("QWERTY0")));
         onView(withId(R.id.txtMainInstrument)).check(matches(withText("ASDF0")));
     }
@@ -145,7 +144,6 @@ public class UserListTest {
         System.out.println();
         onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
         onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
-        onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
         onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
         onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
 
@@ -155,18 +153,16 @@ public class UserListTest {
 
         onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
         onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
-        onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
         onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
         onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
 
-        //onView(withId(R.id.pager)).perform(swipeLeft());
 
 
 
     }
 
     @Test
-    public void checkMultipleUserDetails() {
+    public void checkMultipleUserDetailsAndOrder() {
         BandUpApplication app = (BandUpApplication) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
         app.setRepository(getMockWithItems(2));
         app.setLocale(new LocaleRulesDefault(app));
@@ -175,26 +171,26 @@ public class UserListTest {
 
         onView(withText(mActivityRule.getActivity().getResources().getString(R.string.user_list_no_users))).check(matches(not(isDisplayed())));
 
-        // Tap on the button that is inside the view that contains the username TestUser0
-        onView(allOf(withId(R.id.btnDetails), withParent(hasSibling(allOf(withId(R.id.user_top_row), withChild(withText("TestUser0"))))))).perform(click());
-
-        onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
-        onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
-        onView(withId(R.id.txtDistance))       .check(matches(withText("5 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
-        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
-        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
-
-        pressBack();
-
-        onView(withId(R.id.pager)).perform(swipeLeft());
-
         // Tap on the button that is inside the view that contains the username TestUser1
         onView(allOf(withId(R.id.btnDetails), withParent(hasSibling(allOf(withId(R.id.user_top_row), withChild(withText("TestUser1"))))))).perform(click());
 
         onView(withId(R.id.txtName))           .check(matches(withText("TestUser1")));
         onView(withId(R.id.txtPercentage))     .check(matches(withText("12%")));
-        onView(withId(R.id.txtDistance))       .check(matches(withText("10 " + mActivityRule.getActivity().getResources().getString(R.string.km_distance))));
         onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY1\nYTREWQ1\n")));
         onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF1\nFDSA1\n")));
+
+        pressBack();
+
+        onView(withId(R.id.pager)).perform(swipeLeft());
+
+        // Tap on the button that is inside the view that contains the username TestUser0
+        onView(allOf(withId(R.id.btnDetails), withParent(hasSibling(allOf(withId(R.id.user_top_row), withChild(withText("TestUser0"))))))).perform(click());
+
+        onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
+        onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
+        onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));
+        onView(withId(R.id.txtInstrumentsList)).check(matches(withText("ASDF0\nFDSA0\n")));
+
+
     }
 }

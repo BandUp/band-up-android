@@ -197,4 +197,5 @@
     <string name="about_me">About Me</string>
     <string name="profile_take_photo">Take a photo</string>
     <string name="profile_choose_photo">Choose a photo</string>
+    <string name="setup_no_items">No items available</string>
 </resources>

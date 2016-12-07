@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
@@ -124,8 +123,9 @@ public class RegistrationTest {
 
     @Test
     public void datePickerTest() {
-        onView(withId(R.id.etDateOfBirth)).perform(swipeDown());
-        onView(withText("OK")).perform(click());
+        closeSoftKeyboard();
+        onView(withId(R.id.etDateOfBirth)).perform(click());
+        onView(withText(registerRule.getActivity().getString(android.R.string.ok))).perform(click());
 
         onView(withId(R.id.btnRegister)).perform(click());
 

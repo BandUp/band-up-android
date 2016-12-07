@@ -70,7 +70,6 @@ import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
 
-
 public class MainScreenActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         UserListFragment.OnFragmentInteractionListener,
@@ -779,6 +778,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext())
                 .getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
@@ -787,32 +787,18 @@ public class MainScreenActivity extends AppCompatActivity implements
                 if (response instanceof JSONObject) {
                     responseObj = (JSONObject) response;
                 }
+                if (responseObj != null) {
+                    // Binding View to real data
+                    currentUser = parseUser(responseObj);
+                    txtUsernameNav.setText(currentUser.name);
+                    txtFavoriteNav.setText(currentUser.favoriteinstrument);
 
-                currentUser = new User();
-                try {
-                    if (!responseObj.isNull("username")) {
-                        currentUser.name = responseObj.getString("username");
-                        txtUsernameNav.setText(currentUser.name);
-                    }
-                    if (!responseObj.isNull("favoriteinstrument")) {
-                        currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-                        txtFavoriteNav.setText(currentUser.favoriteinstrument);
-                    }
-                    if (!responseObj.isNull("image")) {
-                        JSONObject imageObj = responseObj.getJSONObject("image");
-
-                        if (!imageObj.isNull("url")) {
-                            currentUser.imgURL = imageObj.getString("url");
-                            if (currentUser.imgURL != null) {
-                                Picasso.with(MainScreenActivity.this).load(currentUser.imgURL).into(imgProfileNav);
-                            }
-                        }
-                    }
-                    else {
+                    if (currentUser.imgURL != null) {
+                        Picasso.with(MainScreenActivity.this).load(currentUser.imgURL).into(imgProfileNav);
+                    } else {
                         Picasso.with(MainScreenActivity.this).load(R.drawable.ic_profile_picture_placeholder).into(imgProfileNav);
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new BandUpErrorListener() {

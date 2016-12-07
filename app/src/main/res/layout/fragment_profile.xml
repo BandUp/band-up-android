@@ -49,11 +49,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignTop="@id/imgProfile"
-                            android:layout_alignBottom="@id/imgProfile"
-                            android:layout_alignStart="@id/imgProfile"
                             android:layout_alignEnd="@id/imgProfile"
-                            android:src="@drawable/add_image_plus"
-                            android:padding="15dp"
+                            android:paddingTop="5dp"
+                            android:paddingEnd="5dp"
+                            android:tint="@color/colorWhite"
+                            android:src="@drawable/ic_menu_camera"
+                            android:theme="@style/DoubleListItemText"
+
                             android:scaleType="fitXY" />
 
 

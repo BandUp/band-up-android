@@ -581,6 +581,8 @@ public class ProfileFragment extends Fragment {
                 }
 
                 User currUser = ((MainScreenActivity) getActivity()).parseUser(responseObj);
+                ((MainScreenActivity) getActivity()).currentUser = currUser;
+
                 llProfile.setVisibility(View.VISIBLE);
                 populateUser(currUser);
 

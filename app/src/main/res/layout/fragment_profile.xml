@@ -178,7 +178,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="10dp"
                         android:textSize="18sp"
-                        android:hint="About Me"
+                        android:hint="@string/about_me"
                         android:maxLength="100" />
 
                 </LinearLayout>

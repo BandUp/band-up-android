@@ -89,7 +89,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_soundcloudselector, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_soundcloud_selector, container, false);
 
         setupViews(rootView);
 
@@ -112,11 +112,11 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
         mSongHint.setTypeface(caviarDreamsBold);
         mSongName.setTypeface(caviarDreams);
 
-        if (mSoundCloudUrl == null) {
-            mSongName.setText("No song selected");
+        if (mSoundCloudUrl == null || mSoundCloudUrl.equals("")) {
+            mSongName.setText(R.string.sc_frag_no_song_selected);
         } else {
             if (mSoundCloudSongName != null && mSoundCloudSongName.equals("")) {
-                mSongName.setText("The selected song has no name");
+                mSongName.setText(R.string.sc_frag_no_name);
             } else {
                 mSongName.setText(mSoundCloudSongName);
             }

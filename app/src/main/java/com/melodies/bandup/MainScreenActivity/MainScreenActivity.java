@@ -127,6 +127,11 @@ public class MainScreenActivity extends AppCompatActivity implements
         mIsSearch = isSearch;
     }
 
+    public Boolean hasLocationPermission() {
+        return !(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         profileFragment.onImageSelectResult(requestCode, resultCode, data);
@@ -159,7 +164,7 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
     public User parseUser(JSONObject responseObj) {
-        currentUser = new User();
+        User currentUser = new User();
         try {
             if (!responseObj.isNull("_id")) {
                 currentUser.id = responseObj.getString("_id");
@@ -216,6 +221,28 @@ public class MainScreenActivity extends AppCompatActivity implements
 
             if (!responseObj.isNull("soundCloudSongName")){
                 currentUser.soundCloudSongName = responseObj.getString("soundCloudSongName");
+            }
+
+            if (!responseObj.isNull("location")) {
+                Location userLocation = new Location(bestProvider);
+                JSONObject location = responseObj.getJSONObject("location");
+                if (!location.isNull("lat")) {
+                    userLocation.setLatitude(location.getDouble("lat"));
+                }
+
+                if (!location.isNull("lon")) {
+                    userLocation.setLongitude(location.getDouble("lon"));
+                }
+
+                if (!location.isNull("valid")) {
+                    if (!location.getBoolean("valid")) {
+                        currentUser.location = null;
+                    } else {
+                        currentUser.location = userLocation;
+                    }
+                }
+            } else {
+                currentUser.location = null;
             }
 
         } catch (JSONException e) {
@@ -326,8 +353,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         int apiVersion = android.os.Build.VERSION.SDK_INT;
         if (apiVersion >= M){
 
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (!hasLocationPermission()) {
                 // If location permissions have NOT been granted.
                 // Tell the user what we are going to do with the location.
                 if (shouldDisplayRationale) {

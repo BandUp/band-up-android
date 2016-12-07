@@ -191,4 +191,10 @@
     <string name="volley_server_parse_error">Server parse error!</string>
     <string name="volley_unknown_error">"Unknown error! Contact Administrator "</string>
     <string name="setup_error_fetch">Could not fetch information</string>
+    <string name="sc_frag_no_song_selected">No song selected</string>
+    <string name="sc_frag_no_name">The selected song has no name</string>
+    <string name="sc_frag_selected_song">Selected song:</string>
+    <string name="about_me">About Me</string>
+    <string name="profile_take_photo">Take a photo</string>
+    <string name="profile_choose_photo">Choose a photo</string>
 </resources>

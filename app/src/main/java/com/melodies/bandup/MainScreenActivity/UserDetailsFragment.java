@@ -3,6 +3,8 @@ package com.melodies.bandup.MainScreenActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +40,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -165,7 +169,6 @@ public class UserDetailsFragment extends Fragment {
         if (currentUser == null || !currentUser.id.equals(argumentUserID)) {
             fetchCurrentUser(getArguments().getString("user_id"));
         } else {
-            System.out.println(currentUser.id);
             populateUser(currentUser);
         }
 
@@ -203,17 +206,28 @@ public class UserDetailsFragment extends Fragment {
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
 
-        if (u.distance != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
-            Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
-            if (usesImperial) {
-                String distanceString = String.format("%s %s", kilometersToMiles(u.distance), getString(R.string.mi_distance));
-                txtDistance.setText(distanceString);
-            } else {
-                String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
-                txtDistance.setText(distanceString);
-            }
+        if (u.location != null) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
+            Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
+            if (hasLocationPermission) {
+                Location location = locationManager.getLastKnownLocation(locationProvider);
+                if (location != null) {
+                    location.distanceTo(u.location);
 
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+                    Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
+                    if (usesImperial) {
+                        String distanceString = String.format("%s %s", kilometersToMiles(location.distanceTo(u.location)/1000), getString(R.string.mi_distance));
+                        txtDistance.setText(distanceString);
+                    } else {
+                        String distanceString = String.format("%s %s", (int) Math.ceil(location.distanceTo(u.location)/1000), getString(R.string.km_distance));
+                        txtDistance.setText(distanceString);
+                    }
+                }
+
+
+            }
         } else {
             txtDistance.setText(R.string.no_distance_available);
         }
@@ -277,67 +291,9 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (responseObj != null) {
                     // Binding View to real data
-                    currentUser = new User();
-                    try {
-                        if (!responseObj.isNull("_id")) {
-                            currentUser.id = responseObj.getString("_id");
-                        }
-                        if (!responseObj.isNull("username")) {
-                            currentUser.name = responseObj.getString("username");
-                        }
-                        if (!responseObj.isNull("dateOfBirth")) {
-                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
-                        }
-                        if (!responseObj.isNull("favoriteinstrument")) {
-                            currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-                        }
+                    currentUser = ((MainScreenActivity)getActivity()).parseUser(responseObj);
+                    populateUser(currentUser);
 
-                        if (!responseObj.isNull("distance")) {
-                            currentUser.distance = responseObj.getInt("distance");
-                        } else {
-                            currentUser.distance = null;
-                        }
-
-                        if (!responseObj.isNull("percentage")) {
-                            currentUser.percentage = responseObj.getInt("percentage");
-                        }
-
-                        if (!responseObj.isNull("genres")) {
-                            JSONArray genreArray = responseObj.getJSONArray("genres");
-                            for (int i = 0; i < genreArray.length(); i++) {
-                                currentUser.genres.add(genreArray.getString(i));
-                            }
-                        }
-
-                        if (!responseObj.isNull("instruments")) {
-                            JSONArray instrumentArray = responseObj.getJSONArray("instruments");
-                            for (int i = 0; i < instrumentArray.length(); i++) {
-                                currentUser.instruments.add(instrumentArray.getString(i));
-                            }
-                        }
-
-                        if (!responseObj.isNull("aboutme")) {
-                            currentUser.aboutme = responseObj.getString("aboutme");
-                        }
-
-                        if (!responseObj.isNull("image")) {
-                            JSONObject imageObj = responseObj.getJSONObject("image");
-
-                            if (!imageObj.isNull("url")) {
-                                currentUser.imgURL = imageObj.getString("url");
-                            }
-                        }
-
-                        if (!responseObj.isNull("soundcloudurl")){
-                            currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
-                        }
-                        populateUser(currentUser);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }, new BandUpErrorListener() {
@@ -350,9 +306,8 @@ public class UserDetailsFragment extends Fragment {
         });
     }
 
-    private int kilometersToMiles(int miles) {
-        double kilometers = miles / 1.609344;
-        return (int) Math.ceil(kilometers);
+    private int kilometersToMiles(double miles) {
+        return (int) Math.round(miles / 1.609344);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

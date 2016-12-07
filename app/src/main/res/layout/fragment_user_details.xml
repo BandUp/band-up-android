@@ -42,8 +42,7 @@
                             android:layout_height="150dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_profile_picture_placeholder"
-                            android:onClick="onClickDisplayModal"/>
+                            android:src="@drawable/ic_profile_picture_placeholder" />
 
                         <LinearLayout
                             android:orientation="vertical"

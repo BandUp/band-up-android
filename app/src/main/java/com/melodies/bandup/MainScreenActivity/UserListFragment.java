@@ -2,6 +2,7 @@ package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -176,6 +177,27 @@ public class UserListFragment extends Fragment {
                                 user.genres.add(genreArray.getString(j));
                             }
                             Integer age = user.ageCalc();
+                            if (!item.isNull("location")) {
+                                Location userLocation = new Location("");
+                                JSONObject location = item.getJSONObject("location");
+                                if (!location.isNull("lat")) {
+                                    userLocation.setLatitude(location.getDouble("lat"));
+                                }
+
+                                if (!location.isNull("lon")) {
+                                    userLocation.setLongitude(location.getDouble("lon"));
+                                }
+
+                                if (!location.isNull("valid")) {
+                                    if (!location.getBoolean("valid")) {
+                                        user.location = null;
+                                    } else {
+                                        user.location = userLocation;
+                                    }
+                                }
+                            } else {
+                                user.location = null;
+                            }
                             if (settingsAgeFilter(age, minAge, maxAge)) {
                                 mAdapter.addUser(user);
                             }

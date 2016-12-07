@@ -3,6 +3,8 @@ package com.melodies.bandup.MainScreenActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,8 @@ import com.melodies.bandup.R;
 import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 public class UserItemFragment extends Fragment {
     int mNum;
@@ -176,15 +180,27 @@ public class UserItemFragment extends Fragment {
             }
         }
 
-        if (u.distance != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
-            Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
-            if (usesImperial) {
-                String distanceString = String.format("%s %s", kilometersToMiles(u.distance), getString(R.string.mi_distance));
-                txtDistance.setText(distanceString);
-            } else {
-                String distanceString = String.format("%s %s", u.distance, getString(R.string.km_distance));
-                txtDistance.setText(distanceString);
+        if (u.location != null) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
+            Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
+            if (hasLocationPermission) {
+                Location location = locationManager.getLastKnownLocation(locationProvider);
+                if (location != null) {
+                    location.distanceTo(u.location);
+
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+                    Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
+                    if (usesImperial) {
+                        String distanceString = String.format("%s %s", kilometersToMiles(location.distanceTo(u.location)/1000), getString(R.string.mi_distance));
+                        txtDistance.setText(distanceString);
+                    } else {
+                        String distanceString = String.format("%s %s", (int) Math.ceil(location.distanceTo(u.location)/1000), getString(R.string.km_distance));
+                        txtDistance.setText(distanceString);
+                    }
+                }
+
+
             }
         } else {
             txtDistance.setText(R.string.no_distance_available);
@@ -198,8 +214,7 @@ public class UserItemFragment extends Fragment {
         }
     }
     // Converts miles into whole kilometers for consistent search range storage
-    private int kilometersToMiles(int miles) {
-        double kilometers = miles / 1.609344;
-        return (int) Math.ceil(kilometers);
+    private int kilometersToMiles(double miles) {
+        return (int) Math.round(miles / 1.609344);
     }
 }

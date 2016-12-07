@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="image_res_ids">
-        <item>Take a photo</item>
-        <item>Choose a photo</item>
+        <item>@string/profile_take_photo</item>
+        <item>@string/profile_choose_photo</item>
     </array>
     <array name="upcoming_features">
         <item>Event calendar</item>

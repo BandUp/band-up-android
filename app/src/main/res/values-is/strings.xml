@@ -181,4 +181,10 @@
     <string name="volley_server_parse_error">Þáttunarvilla</string>
     <string name="volley_unknown_error">Ókunn villa! Látið okkur vita.</string>
     <string name="setup_error_fetch">Gat ekki náð í upplýsingar</string>
+    <string name="sc_frag_no_name">Valda lagið hefur ekkert nafn</string>
+    <string name="sc_frag_no_song_selected">Ekkert lag valið</string>
+    <string name="sc_frag_selected_song">Valið lag:</string>
+    <string name="about_me">Um mig</string>
+    <string name="profile_choose_photo">Velja mynd</string>
+    <string name="profile_take_photo">Taka mynd</string>
 </resources>

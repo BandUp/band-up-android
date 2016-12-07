@@ -1,5 +1,7 @@
 package com.melodies.bandup.helper_classes;
 
+import android.location.Location;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,11 +65,11 @@ public class User implements Serializable {
     public Integer percentage;
     public String imgURL;
     public Date dateOfBirth;
-    public Boolean userHasLiked;
     public String aboutme;
     public Integer soundCloudId;
     public String soundCloudURL;
     public String soundCloudSongName;
+    public Location location;
 
     public Integer ageCalc() {
         if (dateOfBirth == null) {

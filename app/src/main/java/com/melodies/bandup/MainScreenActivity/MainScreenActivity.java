@@ -425,7 +425,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         } else if (currentFragment != NEAR_ME_FRAGMENT) {
             FragmentTransaction ft;
             FragmentManager fm = getSupportFragmentManager();
-            ft = fm.beginTransaction().replace(R.id.mainFrame, userListFragment, "userListFragment").addToBackStack(null);
+            ft = fm.beginTransaction().replace(R.id.mainFrame, userListFragment, "userListFragment");
             ft.commit();
             setTitle(getString(R.string.main_title_user_list));
             currentFragment = NEAR_ME_FRAGMENT;

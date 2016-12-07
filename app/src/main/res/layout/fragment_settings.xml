@@ -28,7 +28,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Filter"
+                    android:text="@string/settings_title_filter"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -63,7 +63,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Ages"
+                    android:text="@string/settings_filter_ages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAges"
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Push Notifications"
+                    android:text="@string/settings_title_push_notifications"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -101,7 +101,7 @@
                 android:background="#50FFFFFF" />
 
                 <Switch
-                    android:text="New matches"
+                    android:text="@string/settings_new_matches"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/switchMatches"
@@ -116,7 +116,7 @@
                     android:background="#40FFFFFF" />
 
                 <Switch
-                    android:text="Inactive alert"
+                    android:text="@string/settings_inactive_alert"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/switchAlert"
@@ -131,7 +131,7 @@
                     android:background="#40FFFFFF" />
 
                 <Switch
-                    android:text="Messages"
+                    android:text="@string/settings_messages"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/switchMessages"
@@ -146,7 +146,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Measurement"
+                    android:text="@string/settings_title_measurement"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -158,7 +158,7 @@
                     android:background="#50FFFFFF" />
 
                 <Switch
-                    android:text="Use Imperial System"
+                    android:text="@string/settings_use_imperial_system"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/switchUnit"
@@ -174,7 +174,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About Us"
+                    android:text="@string/settings_title_about_us"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -185,7 +185,7 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="Contact"
+                    android:text="@string/settings_contact"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
@@ -201,7 +201,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Help"
+                    android:text="@string/settings_help"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
@@ -217,7 +217,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Support"
+                    android:text="@string/settings_support"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
@@ -235,7 +235,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Legal"
+                    android:text="@string/settings_title_legal"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -247,7 +247,7 @@
                     android:background="#50FFFFFF" />
 
                 <TextView
-                    android:text="Legal"
+                    android:text="@string/settings_legal"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtLegal"
@@ -263,7 +263,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Licenses"
+                    android:text="@string/settings_licenses"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtLicenses"
@@ -279,7 +279,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Privacy policy"
+                    android:text="@string/settings_privacy_policy"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtPPolicy"
@@ -295,7 +295,7 @@
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
                 <TextView
-                    android:text="Terms of service"
+                    android:text="@string/settings_terms_of_service"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtTermsOfService"

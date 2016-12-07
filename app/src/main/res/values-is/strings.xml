@@ -141,7 +141,7 @@
     <string name="edit_profile_about_me">Um mig</string>
     <string name="edit_profile_favourite_instument_hint">Uppáhalds hljóðfærið þitt</string>
     <string name="edit_profile_save">Vista</string>
-    <string name="edit_profile_influences">What are your influences?</string>
+    <string name="edit_profile_influences">Hverjir eru þínir áhrifavaldar?</string>
     <string name="audio_sample_from_soundcloud">Hljóðbrot frá SoundCloud</string>
     <string name="no_soundcloud_example">hefur ekki valið hljóðbrot.</string>
     <string name="age_not_available">Aldur ekki skilgreindur</string>
@@ -188,4 +188,24 @@
     <string name="profile_choose_photo">Velja mynd</string>
     <string name="profile_take_photo">Taka mynd</string>
     <string name="setup_no_items">Engir hlutir tiltækir</string>
+    <string name="settings_contact">Hafa samband</string>
+    <string name="settings_filter_ages">Aldur</string>
+    <string name="settings_help">Hjálp</string>
+    <string name="settings_inactive_alert">Óvirknistilkynning</string>
+    <string name="settings_legal">Lagaleg ákvæði</string>
+    <string name="settings_licenses">Leyfi</string>
+    <string name="settings_messages">Skilaboð</string>
+    <string name="settings_new_matches">Nýjar tengingar</string>
+    <string name="settings_title_filter">Sía</string>
+    <string name="settings_title_push_notifications">Tilkynningar</string>
+    <string name="settings_title_measurement">Mælieiningar</string>
+    <string name="settings_title_legal">Lagaleg ákvæði</string>
+    <string name="settings_title_about_us">Um okkur</string>
+    <string name="settings_terms_of_service">Skilmálar þjónustu</string>
+    <string name="settings_support">Aðstoð</string>
+    <string name="settings_privacy_policy">Persónuverndarstefna</string>
+    <string name="settings_use_imperial_system">Nota breskar mælieiningar</string>
+    <string name="upcoming_event_calendar">Viðburðadagatal</string>
+    <string name="upcoming_rent_practice">Leigja æfingapláss</string>
+    <string name="upcoming_share_users">Deila notendum sem þú fannst á samfélagsmiðlum</string>
 </resources>

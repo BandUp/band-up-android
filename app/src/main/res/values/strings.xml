@@ -198,4 +198,24 @@
     <string name="profile_take_photo">Take a photo</string>
     <string name="profile_choose_photo">Choose a photo</string>
     <string name="setup_no_items">No items available</string>
+    <string name="settings_title_filter">Filter</string>
+    <string name="settings_title_push_notifications">Push Notifications</string>
+    <string name="settings_title_measurement">Measurement</string>
+    <string name="settings_title_about_us">About Us</string>
+    <string name="settings_title_legal">Legal</string>
+    <string name="settings_filter_ages">Ages</string>
+    <string name="settings_new_matches">New matches</string>
+    <string name="settings_inactive_alert">Inactive alert</string>
+    <string name="settings_messages">Messages</string>
+    <string name="settings_use_imperial_system">Use Imperial Units</string>
+    <string name="settings_contact">Contact</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_legal">Legal</string>
+    <string name="settings_licenses">Licenses</string>
+    <string name="settings_privacy_policy">Privacy policy</string>
+    <string name="settings_terms_of_service">Terms of service</string>
+    <string name="upcoming_event_calendar">Event calendar</string>
+    <string name="upcoming_share_users">Share users you found to social media</string>
+    <string name="upcoming_rent_practice">Rent practise areas</string>
 </resources>

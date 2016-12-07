@@ -5,8 +5,8 @@
         <item>@string/profile_choose_photo</item>
     </array>
     <array name="upcoming_features">
-        <item>Event calendar</item>
-        <item>Share users you found to social media</item>
-        <item>Rent practise areas</item>
+        <item>@string/upcoming_event_calendar</item>
+        <item>@string/upcoming_share_users</item>
+        <item>@string/upcoming_rent_practice</item>
     </array>
 </resources>

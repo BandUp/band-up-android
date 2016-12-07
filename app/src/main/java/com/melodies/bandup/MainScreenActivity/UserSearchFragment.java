@@ -151,14 +151,17 @@ public class UserSearchFragment extends Fragment {
      */
     public void onShowGenres(View v){
         Log.d(TAG, "Show genres pushed!");
+        mGenres.setEnabled(false);
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getGenres(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                mGenres.setEnabled(true);
                 createGenresDialog((JSONArray) response);
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                mGenres.setEnabled(true);
                 Log.d(TAG, error.getMessage());
                 Toast.makeText(getContext(),
                         "Oops, hit an unexpected error while fetching genres!",
@@ -173,14 +176,17 @@ public class UserSearchFragment extends Fragment {
      */
     public void onShowInstruments(View v) {
         Log.d(TAG, "Show instruments pushed!");
+        mInstruments.setEnabled(false);
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getInstruments(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                mInstruments.setEnabled(true);
                 createInstrumentsDialog((JSONArray) response);
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                mInstruments.setEnabled(true);
                 Log.d(TAG, error.getMessage());
                 Toast.makeText(getContext(),
                         "Oops, hit an unexpected error while fetching instruments!",
@@ -355,6 +361,7 @@ public class UserSearchFragment extends Fragment {
                 new BandUpResponseListener() {
                     @Override
                     public void onBandUpResponse(Object response) {
+
                         // create userlist and instantiate fragment with new list
                         try{
                             JSONObject rsp = (JSONObject)response;

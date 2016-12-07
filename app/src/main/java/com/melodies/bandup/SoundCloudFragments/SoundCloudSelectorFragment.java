@@ -161,6 +161,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View v) {
         // all http requests must be in own thread (so we start a new one)
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -190,8 +191,14 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        mSelectionButton.setEnabled(true);
+                    }
+                });
             }
         }).start();
+        mSelectionButton.setEnabled(false);
     }
 
     /**

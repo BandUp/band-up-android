@@ -1,7 +1,6 @@
 package com.melodies.bandup;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,14 +9,11 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +37,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -65,9 +60,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
-    private LinearLayout linearLayoutParent;
-    private LinearLayout mainLinearLayout;
-    private LinearLayout linearLayoutInput;
     private TextInputLayout tilUsername;
     private TextInputLayout tilPassword;
     private SetupShared sShared;
@@ -78,65 +70,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
-    private static boolean hasSoftNavigation(Context context) {
-        return !ViewConfiguration.get(context).hasPermanentMenuKey();
-    }
-
-    private int getSoftButtonsBarHeight() {
-        DisplayMetrics metrics = new DisplayMetrics();
-
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int usableHeight = metrics.heightPixels;
-
-        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-        int realHeight = metrics.heightPixels;
-
-        if (realHeight > usableHeight)
-            return realHeight - usableHeight;
-        else
-            return 0;
-    }
-
-    private int getIconCenter() {
-        final ImageView imageView = (ImageView) findViewById(R.id.band_up_login_logo);
-
-        int screenHeight = Login.this.getResources().getDisplayMetrics().heightPixels;
-        int parentHeight = linearLayoutParent.getHeight();
-        int activityHeight = mainLinearLayout.getHeight();
-        int statusBarHeight = screenHeight - parentHeight;
-        int paddingTop = getResources().getInteger(R.integer.login_image_padding_top);
-        System.out.println(parentHeight - activityHeight);
-        if (hasSoftNavigation(Login.this)) {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2 + getSoftButtonsBarHeight() / 2) - paddingTop + (parentHeight-activityHeight);
-        } else {
-            return ((activityHeight - imageView.getHeight()) / 2 - statusBarHeight / 2) - paddingTop + (parentHeight - activityHeight);
-        }
-    }
-
-
-    protected void setGooglePlusButtonText(SignInButton signInButton,
-                                           String buttonText) {
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
-
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setTextSize(15);
-                tv.setTypeface(null, Typeface.NORMAL);
-                tv.setText(buttonText);
-                return;
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext()); // need to initialize facebook before view
         setContentView(R.layout.activity_login);
-        mainLinearLayout = (LinearLayout) findViewById(R.id.login_ll);
-        linearLayoutParent = (LinearLayout) findViewById(R.id.login_parent_ll);
-        linearLayoutInput = (LinearLayout) findViewById(R.id.login_ll_input);
         sShared = new SetupShared();
 
         getAd();

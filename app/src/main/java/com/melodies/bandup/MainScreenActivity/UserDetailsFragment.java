@@ -123,6 +123,8 @@ public class UserDetailsFragment extends Fragment {
     private void setFonts() {
         Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
         Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
+        Typeface masterOfBreak = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
+
 
         txtName            .setTypeface(caviarDreams);
         txtDistance        .setTypeface(caviarDreams);
@@ -134,7 +136,7 @@ public class UserDetailsFragment extends Fragment {
         txtGenresList      .setTypeface(caviarDreams);
         txtInstrumentsTitle.setTypeface(caviarDreamsBold);
         txtGenresTitle     .setTypeface(caviarDreamsBold);
-        btnLike            .setTypeface(caviarDreamsBold);
+        btnLike            .setTypeface(masterOfBreak);
         txtNoSoundCloudExample.setTypeface(caviarDreamsBold);
         txtSoundCloudExample.setTypeface(caviarDreamsBold);
 

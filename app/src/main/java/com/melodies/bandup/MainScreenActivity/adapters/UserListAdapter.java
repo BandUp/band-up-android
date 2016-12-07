@@ -46,6 +46,9 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
      * @see User
      */
     public User getUser(int position) {
+        if (position >= userList.size()) {
+            return null;
+        }
         if (position < userList.size()) {
             return userList.get(position);
         } else {
@@ -71,6 +74,15 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
         } else {
             return false;
         }
+    }
+
+    public int getPositionById(String id) {
+        for (int i = 0; i < userList.size(); i++) {
+            if (id.equals(userList.get(i).id)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     /**

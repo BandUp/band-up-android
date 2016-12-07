@@ -175,9 +175,9 @@
     <string name="update_about_me_cancel">Hætta við</string>
     <string name="update_about_me_favorite_instrument">Hvað er uppáhalds hljóðfærið þitt?</string>
     <string name="user_list_error_fetch_list">Gat ekki náð í tónlistarfólk nálægt þér</string>
-    <string name="volley_connection_error">Tengivilla</string>
-    <string name="volley_network_error">Netvilla</string>
-    <string name="volley_server_error">Vefþjónsvilla</string>
+    <string name="volley_connection_error">Gat ekki tengst við vefþjón.\nSkoðaðu netstillingar eða reyndu aftur síðar.</string>
+    <string name="volley_network_error">Gat ekki tengst við vefþjón.\nSkoðaðu netstillingar eða reyndu aftur síðar.</string>
+    <string name="volley_server_error">Við gátum ekki náð í gögnin.\nVinsamlegast prófaðu aftur.</string>
     <string name="volley_server_parse_error">Þáttunarvilla</string>
     <string name="volley_unknown_error">Ókunn villa! Látið okkur vita.</string>
     <string name="setup_error_fetch">Gat ekki náð í upplýsingar</string>

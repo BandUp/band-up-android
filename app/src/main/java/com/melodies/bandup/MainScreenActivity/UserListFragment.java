@@ -55,6 +55,9 @@ public class UserListFragment extends Fragment {
     private boolean mIsSearch = false;
 
     private OnFragmentInteractionListener mListener;
+    private boolean isSwipeRefresh = false;
+    private int currentUserIndex;
+    private String userIdBeforeRefresh;
 
     public UserListFragment() {
         // Required empty public constructor
@@ -122,7 +125,7 @@ public class UserListFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                mSwipeRefreshLayout.setRefreshing(false);
+
                 mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
@@ -145,6 +148,11 @@ public class UserListFragment extends Fragment {
                 mAdapter.clear();
                 int minAge = loadUserCredentials("minAge");
                 int maxAge = loadUserCredentials("maxAge");
+
+                if (isSwipeRefresh) {
+                    mAdapter = new UserListAdapter(getChildFragmentManager());
+                    mPager.setAdapter(mAdapter);
+                }
 
                 for (int i = 0; i < responseArr.length(); i++) {
                     try {
@@ -204,6 +212,7 @@ public class UserListFragment extends Fragment {
                                 mAdapter.addUser(user);
                             }
                         }
+
                     } catch (JSONException e) {
                         Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -212,7 +221,11 @@ public class UserListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
                 mAdapter.notifyDataSetChanged();
+                if (isSwipeRefresh) {
+                    mPager.setCurrentItem(mAdapter.getPositionById(userIdBeforeRefresh));
+                }
 
                 if (partialView != null) {
                     partialView.setVisibility(View.VISIBLE);
@@ -230,13 +243,14 @@ public class UserListFragment extends Fragment {
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
-
+                mSwipeRefreshLayout.setRefreshing(false);
+                isSwipeRefresh = false;
 
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                mSwipeRefreshLayout.setRefreshing(false);
+
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
@@ -253,6 +267,8 @@ public class UserListFragment extends Fragment {
                     return;
                 }
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+                mSwipeRefreshLayout.setRefreshing(false);
+                isSwipeRefresh = false;
             }
         });
     }
@@ -298,6 +314,9 @@ public class UserListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // TODO: Do not clear, but replace the items that are different.
+                isSwipeRefresh = true;
+                // currentUserIndex is changed in the OnPageChangeListener
+                userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
                 getUserList();
             }
         });
@@ -309,6 +328,7 @@ public class UserListFragment extends Fragment {
 
             @Override
             public void onPageSelected( int position ) {
+                currentUserIndex = position;
             }
 
             @Override

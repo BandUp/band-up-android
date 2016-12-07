@@ -187,4 +187,5 @@
     <string name="about_me">Um mig</string>
     <string name="profile_choose_photo">Velja mynd</string>
     <string name="profile_take_photo">Taka mynd</string>
+    <string name="setup_no_items">Engir hlutir tiltækir</string>
 </resources>

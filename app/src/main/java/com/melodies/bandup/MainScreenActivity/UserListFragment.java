@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,7 @@ public class UserListFragment extends Fragment {
     private ProgressBar progressBar;
     private View     partialView;
     private LinearLayout networkErrorBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     UserListAdapter mAdapter;
 
@@ -120,6 +122,8 @@ public class UserListFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
 
@@ -232,6 +236,7 @@ public class UserListFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
@@ -286,6 +291,36 @@ public class UserListFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // TODO: Do not clear, but replace the items that are different.
+                getUserList();
+            }
+        });
+
+        mPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled( int position, float v, int i1 ) {
+            }
+
+            @Override
+            public void onPageSelected( int position ) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged( int state ) {
+                mSwipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+            }
+        });
+
+
+
+
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
 
         networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
 

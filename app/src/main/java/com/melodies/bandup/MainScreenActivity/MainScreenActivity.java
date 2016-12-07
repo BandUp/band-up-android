@@ -49,6 +49,7 @@ import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
@@ -223,8 +224,9 @@ public class MainScreenActivity extends AppCompatActivity implements
                 currentUser.soundCloudSongName = responseObj.getString("soundCloudSongName");
             }
 
+            UserLocation userLocation = new UserLocation();
             if (!responseObj.isNull("location")) {
-                Location userLocation = new Location(bestProvider);
+
                 JSONObject location = responseObj.getJSONObject("location");
                 if (!location.isNull("lat")) {
                     userLocation.setLatitude(location.getDouble("lat"));
@@ -235,16 +237,12 @@ public class MainScreenActivity extends AppCompatActivity implements
                 }
 
                 if (!location.isNull("valid")) {
-                    if (!location.getBoolean("valid")) {
-                        currentUser.location = null;
-                    } else {
-                        currentUser.location = userLocation;
-                    }
+                    userLocation.setValid(location.getBoolean("valid"));
                 }
             } else {
-                currentUser.location = null;
+                userLocation.setValid(false);
             }
-
+            currentUser.location = userLocation;
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {

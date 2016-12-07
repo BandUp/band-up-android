@@ -2,7 +2,6 @@ package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,7 @@ import com.melodies.bandup.MainScreenActivity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -177,8 +177,9 @@ public class UserListFragment extends Fragment {
                                 user.genres.add(genreArray.getString(j));
                             }
                             Integer age = user.ageCalc();
+                            UserLocation userLocation = new UserLocation();
                             if (!item.isNull("location")) {
-                                Location userLocation = new Location("");
+
                                 JSONObject location = item.getJSONObject("location");
                                 if (!location.isNull("lat")) {
                                     userLocation.setLatitude(location.getDouble("lat"));
@@ -189,15 +190,12 @@ public class UserListFragment extends Fragment {
                                 }
 
                                 if (!location.isNull("valid")) {
-                                    if (!location.getBoolean("valid")) {
-                                        user.location = null;
-                                    } else {
-                                        user.location = userLocation;
-                                    }
+                                    userLocation.setValid(location.getBoolean("valid"));
                                 }
                             } else {
-                                user.location = null;
+                                userLocation.setValid(false);
                             }
+                            user.location = userLocation;
                             if (settingsAgeFilter(age, minAge, maxAge)) {
                                 mAdapter.addUser(user);
                             }

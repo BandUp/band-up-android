@@ -207,26 +207,19 @@ public class UserDetailsFragment extends Fragment {
         txtAboutMe.setText(u.aboutme);
 
         if (u.location != null) {
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-            String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
-            Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
-            if (hasLocationPermission) {
-                Location location = locationManager.getLastKnownLocation(locationProvider);
-                if (location != null) {
-                    location.distanceTo(u.location);
-
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
-                    Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
-                    if (usesImperial) {
-                        String distanceString = String.format("%s %s", kilometersToMiles(location.distanceTo(u.location)/1000), getString(R.string.mi_distance));
-                        txtDistance.setText(distanceString);
-                    } else {
-                        String distanceString = String.format("%s %s", (int) Math.ceil(location.distanceTo(u.location)/1000), getString(R.string.km_distance));
-                        txtDistance.setText(distanceString);
-                    }
+            Float distanceBetweenUsers = getDistanceToUser(currentUser);
+            if (distanceBetweenUsers != null) {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+                Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
+                if (usesImperial) {
+                    String distanceString = String.format("%s %s", (int) Math.ceil(kilometersToMiles(distanceBetweenUsers/1000)), getString(R.string.mi_distance));
+                    txtDistance.setText(distanceString);
+                } else {
+                    String distanceString = String.format("%s %s", (int) Math.ceil(distanceBetweenUsers/1000), getString(R.string.km_distance));
+                    txtDistance.setText(distanceString);
                 }
-
-
+            } else {
+                txtDistance.setText(R.string.no_distance_available);
             }
         } else {
             txtDistance.setText(R.string.no_distance_available);
@@ -245,6 +238,30 @@ public class UserDetailsFragment extends Fragment {
 
 
         txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
+    }
+
+    private Float getDistanceToUser(User u) {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
+        Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
+        if (hasLocationPermission) {
+            Location myLocation = locationManager.getLastKnownLocation(locationProvider);
+            Location userLocation = new Location("");
+            if (u.location.getValid()) {
+                userLocation.setLatitude(u.location.getLatitude());
+                userLocation.setLongitude(u.location.getLongitude());
+            } else {
+                return null;
+            }
+
+            if (myLocation != null) {
+                return myLocation.distanceTo(userLocation);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     private void createSoundCloudPlayer(User user) {

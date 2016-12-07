@@ -39,6 +39,7 @@
         android:text="@string/matches_no_users"
         android:visibility="invisible"
         android:textSize="20sp"
+        android:gravity="center"
         android:textColor="@color/bandUpYellow"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>

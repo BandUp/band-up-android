@@ -78,9 +78,12 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
 
     public int getPositionById(String id) {
         for (int i = 0; i < userList.size(); i++) {
-            if (id.equals(userList.get(i).id)) {
-                return i;
+            if (userList.get(i) != null) {
+                if (id.equals(userList.get(i).id)) {
+                    return i;
+                }
             }
+
         }
         return 0;
     }

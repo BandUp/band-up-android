@@ -43,6 +43,7 @@ public class SettingsFragment extends Fragment {
     private static final int MINAGE = 13;
     private static final int MAXAGE = 99;
     private static final int DEFAULTAGE = 20;   // first default value for age and range
+    private static final int MAX_RANGE = 300;
 
     private OnFragmentInteractionListener mListener;
 
@@ -140,7 +141,7 @@ public class SettingsFragment extends Fragment {
 
         switchUnit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                seekBarRadius.setMax(300);
+                seekBarRadius.setMax(MAX_RANGE);
                 if (switchUnit.isChecked()) {
                     saveSwitchState("switchUnit", true);
                     String textmi = String.format("Radius: %s %s", kilometersToMiles(loadUserCredentials("searchradius")), "mi");
@@ -276,8 +277,8 @@ public class SettingsFragment extends Fragment {
         txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
         seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
         // Default values
+        seekBarRadius.setMax(MAX_RANGE);
         seekBarRadius.setProgress(loadUserCredentials("searchradius"));
-        seekBarRadius.setMax(300);
         if (loadUserSwitch("switchUnit")) {
             String textmi = String.format("Radius: %s %s", kilometersToMiles(loadUserCredentials("searchradius")), "mi");
             txtRadius.setText(textmi);
@@ -290,7 +291,7 @@ public class SettingsFragment extends Fragment {
         seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarRadius.setMax(300);      // Maximum value of search range in Km
+                seekBarRadius.setMax(MAX_RANGE);      // Maximum value of search range in Km
 
                 // if unit switch is on, put mi in text view else km
                 if (loadUserSwitch("switchUnit")) {

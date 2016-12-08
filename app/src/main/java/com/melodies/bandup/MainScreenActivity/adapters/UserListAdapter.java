@@ -115,4 +115,11 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
         });
         super.notifyDataSetChanged();
     }
+
+    public void addUsers(ArrayList<User> users) {
+        if (users == null) {
+            return;
+        }
+        userList = users;
+    }
 }

@@ -361,17 +361,14 @@ public class UserSearchFragment extends Fragment {
                 new BandUpResponseListener() {
                     @Override
                     public void onBandUpResponse(Object response) {
-
                         // create userlist and instantiate fragment with new list
                         try{
                             JSONObject rsp = (JSONObject)response;
                             JSONArray userArr = rsp.getJSONArray("result");
+
                             FragmentManager fragmentManager = getFragmentManager();
-                            User[] users = new User[userArr.length()];
-                            for (int i = 0; i < userArr.length(); i++){
-                                users[i] = new User(userArr.getJSONObject(i));
-                            }
-                            UserListFragment us = ((MainScreenActivity)getActivity()).startSearchResults(users);
+
+                            UserListFragment us = ((MainScreenActivity)getActivity()).startSearchResults(userArr);
 
                             fragmentManager.beginTransaction()
                                             .replace(R.id.mainFrame, us)

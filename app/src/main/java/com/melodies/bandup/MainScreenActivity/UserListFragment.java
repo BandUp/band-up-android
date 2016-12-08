@@ -37,7 +37,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
 
 /**
@@ -70,11 +69,11 @@ public class UserListFragment extends Fragment {
      * @param userlist a list of users to display
      * @return A new instance of fragment UserListFragment.
      */
-    public static UserListFragment newInstance(User[] userlist) {
+    public static UserListFragment newInstance(JSONArray userlist) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
         if (userlist != null){
-            args.putSerializable("userlist", userlist);
+            args.putString("userlist", userlist.toString());
         }
         fragment.setArguments(args);
         return fragment;
@@ -94,15 +93,20 @@ public class UserListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            if(getArguments().getSerializable("userlist") != null){
+            String userList = getArguments().getString("userlist");
+            if(userList != null){
                 ArrayList<User> userArrayList = new ArrayList<>();
-                Collections.addAll(userArrayList, (User[]) getArguments().getSerializable("userlist"));
-                mAdapter = new UserListAdapter(getChildFragmentManager());
-                mAdapter.clear();
-                for (User u : userArrayList){
-                    mAdapter.addUser(u);
+                try {
+                    JSONArray jsonArray = new JSONArray(userList);
+
+                    mAdapter = new UserListAdapter(getChildFragmentManager());
+                    mAdapter.clear();
+                    mAdapter.addUsers(parseUsers(jsonArray));
+                    mIsSearch = true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                mIsSearch = true;
+
                 return;
             }
         }
@@ -146,81 +150,13 @@ public class UserListFragment extends Fragment {
 
                 // TODO: Check if not 304.
                 mAdapter.clear();
-                int minAge = loadUserCredentials("minAge");
-                int maxAge = loadUserCredentials("maxAge");
 
                 if (isSwipeRefresh) {
                     mAdapter = new UserListAdapter(getChildFragmentManager());
                     mPager.setAdapter(mAdapter);
                 }
 
-                for (int i = 0; i < responseArr.length(); i++) {
-                    try {
-                        if (responseArr.get(i) != null) {
-                            JSONObject item = responseArr.getJSONObject(i);
-                            User user = new User();
-                            if (!item.isNull("_id")) user.id = item.getString("_id");
-                            if (!item.isNull("username")) user.name = item.getString("username");
-                            if (!item.isNull("status")) user.status = item.getString("status");
-                            if (!item.isNull("distance")) user.distance = item.getInt("distance");
-
-                            user.percentage = item.getInt("percentage");
-                            if (!item.isNull("image")) {
-                                JSONObject userImg = item.getJSONObject("image");
-                                if (!userImg.isNull("url")) {
-                                    user.imgURL = userImg.getString("url");
-                                }
-                            }
-
-                            if (!item.isNull("dateOfBirth")) {
-                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
-                            }
-
-                            JSONArray instrumentArray = item.getJSONArray("instruments");
-
-                            for (int j = 0; j < instrumentArray.length(); j++) {
-                                user.instruments.add(instrumentArray.getString(j));
-                            }
-
-                            JSONArray genreArray = item.getJSONArray("genres");
-
-                            for (int j = 0; j < genreArray.length(); j++) {
-                                user.genres.add(genreArray.getString(j));
-                            }
-                            Integer age = user.ageCalc();
-                            UserLocation userLocation = new UserLocation();
-                            if (!item.isNull("location")) {
-
-                                JSONObject location = item.getJSONObject("location");
-                                if (!location.isNull("lat")) {
-                                    userLocation.setLatitude(location.getDouble("lat"));
-                                }
-
-                                if (!location.isNull("lon")) {
-                                    userLocation.setLongitude(location.getDouble("lon"));
-                                }
-
-                                if (!location.isNull("valid")) {
-                                    userLocation.setValid(location.getBoolean("valid"));
-                                }
-                            } else {
-                                userLocation.setValid(false);
-                            }
-                            user.location = userLocation;
-                            if (settingsAgeFilter(age, minAge, maxAge)) {
-                                mAdapter.addUser(user);
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        Toast.makeText(getActivity(), R.string.matches_error_date, Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
+                mAdapter.addUsers(parseUsers(responseArr));
 
                 mAdapter.notifyDataSetChanged();
                 if (isSwipeRefresh) {
@@ -273,6 +209,80 @@ public class UserListFragment extends Fragment {
         });
     }
 
+    private ArrayList<User> parseUsers(JSONArray responseArr) {
+        ArrayList<User> userList = new ArrayList<>();
+        int minAge = loadUserCredentials("minAge");
+        int maxAge = loadUserCredentials("maxAge");
+        for (int i = 0; i < responseArr.length(); i++) {
+            try {
+                if (responseArr.get(i) != null) {
+                    JSONObject item = responseArr.getJSONObject(i);
+                    User user = new User();
+                    if (!item.isNull("_id")) user.id = item.getString("_id");
+                    if (!item.isNull("username")) user.name = item.getString("username");
+                    if (!item.isNull("status")) user.status = item.getString("status");
+                    if (!item.isNull("distance")) user.distance = item.getInt("distance");
+
+                    user.percentage = item.getInt("percentage");
+                    if (!item.isNull("image")) {
+                        JSONObject userImg = item.getJSONObject("image");
+                        if (!userImg.isNull("url")) {
+                            user.imgURL = userImg.getString("url");
+                        }
+                    }
+
+                    if (!item.isNull("dateOfBirth")) {
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
+                    }
+
+                    JSONArray instrumentArray = item.getJSONArray("instruments");
+
+                    for (int j = 0; j < instrumentArray.length(); j++) {
+                        user.instruments.add(instrumentArray.getString(j));
+                    }
+
+                    JSONArray genreArray = item.getJSONArray("genres");
+
+                    for (int j = 0; j < genreArray.length(); j++) {
+                        user.genres.add(genreArray.getString(j));
+                    }
+                    Integer age = user.ageCalc();
+                    UserLocation userLocation = new UserLocation();
+                    if (!item.isNull("location")) {
+
+                        JSONObject location = item.getJSONObject("location");
+                        if (!location.isNull("lat")) {
+                            userLocation.setLatitude(location.getDouble("lat"));
+                        }
+
+                        if (!location.isNull("lon")) {
+                            userLocation.setLongitude(location.getDouble("lon"));
+                        }
+
+                        if (!location.isNull("valid")) {
+                            userLocation.setValid(location.getBoolean("valid"));
+                        }
+                    } else {
+                        userLocation.setValid(false);
+                    }
+                    user.location = userLocation;
+                    if (settingsAgeFilter(age, minAge, maxAge)) {
+                        userList.add(user);
+                    }
+                }
+
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            } catch (ParseException e) {
+                Toast.makeText(getActivity(), R.string.matches_error_date, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
+        return userList;
+    }
+
     // Loading user credentials
     public Integer loadUserCredentials(String valueName) {
         if (getActivity() != null) {
@@ -310,14 +320,20 @@ public class UserListFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
 
+        if (mIsSearch) {
+            mSwipeRefreshLayout.setEnabled(false);
+        }
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // TODO: Do not clear, but replace the items that are different.
-                isSwipeRefresh = true;
-                // currentUserIndex is changed in the OnPageChangeListener
-                userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
-                getUserList();
+                if (mIsSearch) {
+                    isSwipeRefresh = true;
+                    // currentUserIndex is changed in the OnPageChangeListener
+                    userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
+                    getUserList();
+                }
             }
         });
 

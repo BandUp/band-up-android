@@ -555,7 +555,7 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }
 
-    public UserListFragment startSearchResults(User[] users){
+    public UserListFragment startSearchResults(JSONArray users){
         mIsSearch = true;
         mUserSearchResultsFragment = UserListFragment.newInstance(users);
 

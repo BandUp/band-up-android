@@ -1,12 +1,15 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -75,68 +78,68 @@ public class UserDetailsFragment extends Fragment {
         return fragment;
     }
 
-    private TextView    txtName;
-    private TextView    txtAge;
-    private TextView    txtFavorite;
-    private TextView    txtPercentage;
-    private TextView    txtDistance;
-    private TextView    txtAboutMe;
-    private TextView    txtInstrumentsTitle;
-    private TextView    txtGenresTitle;
-    private TextView    txtInstrumentsList;
-    private TextView    txtGenresList;
-    private TextView    txtSoundCloudExample;
-    private TextView    txtNoSoundCloudExample;
-    private ImageView   ivUserProfileImage;
-    private Button      btnLike;
-    private AdView      mAdView;
+    private TextView txtName;
+    private TextView txtAge;
+    private TextView txtFavorite;
+    private TextView txtPercentage;
+    private TextView txtDistance;
+    private TextView txtAboutMe;
+    private TextView txtInstrumentsTitle;
+    private TextView txtGenresTitle;
+    private TextView txtInstrumentsList;
+    private TextView txtGenresList;
+    private TextView txtSoundCloudExample;
+    private TextView txtNoSoundCloudExample;
+    private ImageView ivUserProfileImage;
+    private Button btnLike;
+    private AdView mAdView;
     private LinearLayout mSoundcloudArea;
 
     private void initializeViews(View rootView) {
-        txtName             = (TextView)     rootView.findViewById(R.id.txtName);
-        txtDistance         = (TextView)     rootView.findViewById(R.id.txtDistance);
-        txtPercentage       = (TextView)     rootView.findViewById(R.id.txtPercentage);
-        txtAge              = (TextView)     rootView.findViewById(R.id.txtAge);
-        txtFavorite         = (TextView)     rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe          = (TextView)     rootView.findViewById(R.id.txtAboutMe);
-        txtInstrumentsTitle = (TextView)     rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenresTitle      = (TextView)     rootView.findViewById(R.id.txtGenresTitle);
-        txtInstrumentsList  = (TextView)     rootView.findViewById(R.id.txtInstrumentsList);
-        txtGenresList       = (TextView)     rootView.findViewById(R.id.txtGenresList);
-        txtSoundCloudExample= (TextView)    rootView.findViewById(R.id.txt_audio_example);
-        ivUserProfileImage  = (ImageView)    rootView.findViewById(R.id.imgProfile);
-        btnLike             = (Button)       rootView.findViewById(R.id.btnLike);
-        mAdView             = (AdView)       rootView.findViewById(R.id.adView);
-        mSoundcloudArea     = (LinearLayout) rootView.findViewById(R.id.soundcloud_player_area);
-        txtFetchError       = (TextView)     rootView.findViewById(R.id.txtFetchError);
+        txtName = (TextView) rootView.findViewById(R.id.txtName);
+        txtDistance = (TextView) rootView.findViewById(R.id.txtDistance);
+        txtPercentage = (TextView) rootView.findViewById(R.id.txtPercentage);
+        txtAge = (TextView) rootView.findViewById(R.id.txtAge);
+        txtFavorite = (TextView) rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe = (TextView) rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView) rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle = (TextView) rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList = (TextView) rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList = (TextView) rootView.findViewById(R.id.txtGenresList);
+        txtSoundCloudExample = (TextView) rootView.findViewById(R.id.txt_audio_example);
+        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
+        btnLike = (Button) rootView.findViewById(R.id.btnLike);
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        mSoundcloudArea = (LinearLayout) rootView.findViewById(R.id.soundcloud_player_area);
+        txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
         txtNoSoundCloudExample = (TextView) rootView.findViewById(R.id.no_soundcloud_example);
 
 
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity)getActivity()).onClickLike(currentUser.id);
+                ((MainScreenActivity) getActivity()).onClickLike(currentUser.id);
             }
         });
     }
 
     private void setFonts() {
-        Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreams = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
         Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
         Typeface masterOfBreak = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
 
 
-        txtName            .setTypeface(caviarDreams);
-        txtDistance        .setTypeface(caviarDreams);
-        txtPercentage      .setTypeface(caviarDreams);
-        txtAge             .setTypeface(caviarDreams);
-        txtFavorite        .setTypeface(caviarDreams);
-        txtAboutMe         .setTypeface(caviarDreams);
-        txtInstrumentsList .setTypeface(caviarDreams);
-        txtGenresList      .setTypeface(caviarDreams);
+        txtName.setTypeface(caviarDreams);
+        txtDistance.setTypeface(caviarDreams);
+        txtPercentage.setTypeface(caviarDreams);
+        txtAge.setTypeface(caviarDreams);
+        txtFavorite.setTypeface(caviarDreams);
+        txtAboutMe.setTypeface(caviarDreams);
+        txtInstrumentsList.setTypeface(caviarDreams);
+        txtGenresList.setTypeface(caviarDreams);
         txtInstrumentsTitle.setTypeface(caviarDreamsBold);
-        txtGenresTitle     .setTypeface(caviarDreamsBold);
-        btnLike            .setTypeface(masterOfBreak);
+        txtGenresTitle.setTypeface(caviarDreamsBold);
+        btnLike.setTypeface(masterOfBreak);
         txtNoSoundCloudExample.setTypeface(caviarDreamsBold);
         txtSoundCloudExample.setTypeface(caviarDreamsBold);
 
@@ -214,10 +217,10 @@ public class UserDetailsFragment extends Fragment {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
                 Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
                 if (usesImperial) {
-                    String distanceString = String.format("%s %s", (int) Math.ceil(kilometersToMiles(distanceBetweenUsers/1000)), getString(R.string.mi_distance));
+                    String distanceString = String.format("%s %s", (int) Math.ceil(kilometersToMiles(distanceBetweenUsers / 1000)), getString(R.string.mi_distance));
                     txtDistance.setText(distanceString);
                 } else {
-                    String distanceString = String.format("%s %s", (int) Math.ceil(distanceBetweenUsers/1000), getString(R.string.km_distance));
+                    String distanceString = String.format("%s %s", (int) Math.ceil(distanceBetweenUsers / 1000), getString(R.string.km_distance));
                     txtDistance.setText(distanceString);
                 }
             } else {
@@ -245,8 +248,9 @@ public class UserDetailsFragment extends Fragment {
     private Float getDistanceToUser(User u) {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
-        Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
+        Boolean hasLocationPermission = ((MainScreenActivity) getActivity()).hasLocationPermission();
         if (hasLocationPermission) {
+
             Location myLocation = locationManager.getLastKnownLocation(locationProvider);
             Location userLocation = new Location("");
             if (u.location.getValid()) {

@@ -65,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
@@ -287,6 +286,11 @@ public class MainScreenActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        bestProvider = locationManager.getBestProvider(criteria, false);
         setContentView(R.layout.activity_main_screen);
         sharedPrefs = getSharedPreferences("permissions", Context.MODE_PRIVATE);
         if (!sharedPrefs.contains("display_rationale")) {
@@ -609,8 +613,7 @@ public class MainScreenActivity extends AppCompatActivity implements
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         if (requestCode == LOCATION_REQUEST_CODE){
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted, yay! Do the contacts-related task you need to do.
 
                 // We will display the rationale next time we are denied access to the location.
@@ -632,28 +635,24 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
     protected void createLocationRequest() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // request permissions
             ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
             }, LOCATION_REQUEST_CODE);
             return;
         }
-        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
         try {
-            Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            if (location == null) {
-                locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
-            }
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            // Get a new location every two minutes
+            locationManager.requestLocationUpdates(bestProvider, 120000, 0, this);
+
+
             sendLocation(location);
         }catch (IllegalArgumentException ex){
             ex.printStackTrace();
         }catch (SecurityException ex){
+            Toast.makeText(this, "Security Exception: " + ex, Toast.LENGTH_SHORT).show();
             ex.printStackTrace();
         }
     }
@@ -693,7 +692,7 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-
+        sendLocation(location);
     }
 
     @Override

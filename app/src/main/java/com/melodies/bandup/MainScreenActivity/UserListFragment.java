@@ -122,7 +122,9 @@ public class UserListFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
+        if (!isSwipeRefresh) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
         networkErrorBar.setVisibility(View.INVISIBLE);
         txtNoUsers.setVisibility(View.INVISIBLE);
 

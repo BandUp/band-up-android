@@ -438,11 +438,12 @@ public class ProfileFragment extends Fragment {
                             imageDownloadDialog.dismiss();
                         }
 
-                        Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         String a = validateJSON(urlResponse);
                         if (a != null) {
                             Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
                             ((MainScreenActivity) getActivity()).updateNavUserImage(a);
+                            ((MainScreenActivity) getActivity()).currentUser.imgURL = a;
                         } else {
                             Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_placeholder).into(ivUserProfileImage);
                         }

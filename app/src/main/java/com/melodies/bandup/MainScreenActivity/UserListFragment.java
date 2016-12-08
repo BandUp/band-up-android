@@ -328,7 +328,7 @@ public class UserListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // TODO: Do not clear, but replace the items that are different.
-                if (mIsSearch) {
+                if (!mIsSearch) {
                     isSwipeRefresh = true;
                     // currentUserIndex is changed in the OnPageChangeListener
                     userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;

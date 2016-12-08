@@ -273,7 +273,9 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             userUpdated.put("aboutme", etAboutMe.getText().toString());
             userUpdated.put("username", etName.getText().toString());
             userUpdated.put("favoriteinstrument", etFavouriteInstrument.getText().toString());
-            userUpdated.put("dateOfBirth", mDateOfBirth.getTime().toString());
+            if(mDateOfBirth != null){
+                userUpdated.put("dateOfBirth", mDateOfBirth.getTime().toString());
+            }
 
             DatabaseSingleton.getInstance(this).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
             @Override
@@ -287,7 +289,9 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
                 i.putStringArrayListExtra("USER_INSTRUMENTS", mInstruments);
                 i.putStringArrayListExtra("USER_GENRES", mGenres);
                 i.putExtra               ("USER_ABOUT_ME", etAboutMe.getText().toString());
-                i.putExtra               ("USER_DATE_OF_BIRTH", mDateOfBirth.getTime());
+                if (mDateOfBirth != null){
+                    i.putExtra               ("USER_DATE_OF_BIRTH", mDateOfBirth.getTime());
+                }
                 
                 setResult(EDIT_PROFILE_REQUEST_CODE, i);
                 finish();

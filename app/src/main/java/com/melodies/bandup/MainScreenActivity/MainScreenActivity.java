@@ -764,6 +764,10 @@ public class MainScreenActivity extends AppCompatActivity implements
         });
     }
 
+    public void onClickSave(View v){
+        System.out.println("FOOOO");
+    }
+
     // Get the User ID of the logged in user
     public String getUserId() throws JSONException {
         SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);

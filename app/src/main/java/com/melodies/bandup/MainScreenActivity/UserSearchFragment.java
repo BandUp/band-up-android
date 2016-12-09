@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
-import com.melodies.bandup.helper_classes.User;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
@@ -300,7 +299,7 @@ public class UserSearchFragment extends Fragment {
     private Dialog createGenresSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final ArrayList<CharSequence> backup = (ArrayList<CharSequence>) mSelectedGenreIdList.clone();
-        builder.setTitle("Select genres")
+        builder.setTitle(R.string.search_select_genres)
                 .setMultiChoiceItems(itemNames, mIsSelectedGenreIndex, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

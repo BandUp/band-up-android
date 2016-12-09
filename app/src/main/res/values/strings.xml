@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The name of the app as displayed on the homescreen -->
+    <!-- The name of the app as displayed on the home screen -->
     <string name="app_name">BandUp</string>
 
     <!-- Register Screen -->
@@ -35,15 +35,12 @@
 
     <!-- Filter Screen -->
     <string name="filter_title">Filter</string>
-    <string name="filter_instruments_hint">What instruments do you want to filter?</string>
-    <string name="filter_save">Save</string>
 
     <!-- Login Screen -->
     <string name="login_username">Email</string>
     <string name="login_password">Password</string>
     <string name="login_sign_in">Log in</string>
     <string name="login_sign_up">Do not have an account? Sign up here.</string>
-    <string name="login_go_to_chat_temporary">Go To Chat</string>
 
     <!-- User List Screen -->
     <string name="main_title_user_list">Musicians near you</string>
@@ -55,62 +52,35 @@
     <string name="chat_message_hint">Type a message…</string>
     <string name="login_username_validation">Please enter your email</string>
     <string name="login_password_validation">Please enter your password</string>
-    <string name="user_select_picture">Select Picture</string>
-    <string name="user_take_picture">Take Picture</string>
-    <string name="go_to_chat_temp">Go to Chat</string>
-    <string name="user_list_previous_temp">Previous</string>
-    <string name="user_list_next_temp">Next</string>
     <string name="user_list_like">Like</string>
     <string name="user_list_details">Details</string>
     <string name="login_progress_title">Logging in</string>
     <string name="login_progress_description">Please wait...</string>
-    <string name="login_success">Login Successful!</string>
     <string name="register_success">Registration successful!\nYou can log in now.</string>
     <string name="register_password_mismatch">Passwords don\'t match!</string>
-    <string name="register_enter_email">Please enter your Email.</string>
-    <string name="register_enter_username">Please enter your name.</string>
-    <string name="register_enter_password">Please enter your password.</string>
     <string name="register_enter_dateofbirth">Please enter your Date Of Birth.</string>
-    <string name="register_min_age">You have to be 13 years or older to register!</string>
-    <string name="register_max_age">You have to be 99 years or younger to register!</string>
     <string name="register_progress_description">Please wait...</string>
     <string name="register_progress_title">Registering</string>
-    <string name="user_image_success">Picture saved to the server</string>
     <string name="user_image_error">Could not save the image to the server. Please try again.</string>
     <string name="user_allow_camera">Please allow access to take a photo.</string>
     <string name="user_error">Something went wrong</string>
     <string name="user_allow_storage">Please allow access to select a photo.</string>
     <string name="title_activity_sound_cloud">Sign Up</string>
-    <string name="user_allow_location">Please allow GPS access for app functionality</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in to SoundCloud</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-2677510616264993/2222069667</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="main_title_matches">Matches</string>
     <string name="main_title_settings">Settings</string>
-    <string name="main_title_about">About</string>
-    <string name="main_title_privacy">Privacy</string>
-    <string name="main_nav_privacy">Privacy</string>
-    <string name="main_nav_about">About</string>
     <string name="main_nav_settings">Settings</string>
     <string name="main_nav_edit_profile">My Profile</string>
     <string name="main_nav_matches">Matches/Chat</string>
     <string name="main_nav_near_me">Near Me</string>
-    <string name="profile_uploading">Uploading Photo</string>
     <string name="main_title_edit_profile">My Profile</string>
     <string name="main_nav_log_out">Log Out</string>
     <string name="details_instruments">Instruments</string>
@@ -131,7 +101,6 @@
     <string name="all_genres">All genres</string>
     <string name="all_instuments">All instruments</string>
     <string name="search_find_username">Search by name</string>
-    <string name="main_nav_search">Search</string>
     <string name="coming_soon">Coming soon</string>
     <string name="login_btn_facebook_hint">Log in with Facebook</string>
     <string name="login_btn_google_hint">Log in with Google</string>
@@ -218,4 +187,5 @@
     <string name="upcoming_event_calendar">Event calendar</string>
     <string name="upcoming_share_users">Share users you found to social media</string>
     <string name="upcoming_rent_practice">Rent practise areas</string>
+    <string name="search_select_genres">Select Genres</string>
 </resources>

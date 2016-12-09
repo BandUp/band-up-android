@@ -47,7 +47,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/checkbox_marked_circle"
+                        android:src="@drawable/ic_checkbox_marked_circle"
                         android:tint="@color/bandUpGreen"
                         android:id="@+id/emailValidationSuccess"
                         android:visibility="invisible"/>
@@ -59,7 +59,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/ic_close_circle"
                         android:tint="@color/bandUpRed"
                         android:id="@+id/emailValidationError"
                         android:visibility="invisible"/>

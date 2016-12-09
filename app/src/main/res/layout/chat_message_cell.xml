@@ -10,7 +10,7 @@
     android:paddingBottom="5dp"
     android:id="@+id/chatMessageCell"
     android:gravity="center"
-    android:background="@drawable/chat_bubble">
+    android:background="@drawable/bubble_chat">
 
     <TextView
         android:layout_width="match_parent"

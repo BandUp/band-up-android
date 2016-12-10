@@ -83,15 +83,15 @@ public class MainScreenActivity extends AppCompatActivity implements
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
 
-    final int NEAR_ME_FRAGMENT      = 0;
-    final int MY_PROFILE_FRAGMENT   = 1;
-    final int MATCHES_FRAGMENT      = 2;
-    final int SETTINGS_FRAGMENT     = 3;
-    final int COMING_SOON_FRAGMENT  = 4;
-    final int SEARCH_FRAGMENT       = 5;
-    final int USER_DETAILS_FRAGMENT = 6;
+    final public int NEAR_ME_FRAGMENT      = 0;
+    final public int MY_PROFILE_FRAGMENT   = 1;
+    final public int MATCHES_FRAGMENT      = 2;
+    final public int SETTINGS_FRAGMENT     = 3;
+    final public int COMING_SOON_FRAGMENT  = 4;
+    final public int SEARCH_FRAGMENT       = 5;
+    final public int USER_DETAILS_FRAGMENT = 6;
 
-    int currentFragment = NEAR_ME_FRAGMENT;
+    public int currentFragment = NEAR_ME_FRAGMENT;
 
     private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
@@ -120,10 +120,15 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     private LinearLayout networkErrorBar;
 
+    // prevents reloading of data from server if used as search results
     private boolean mIsSearch = false;
 
     public void setIsSearch(boolean isSearch){
         mIsSearch = isSearch;
+    }
+
+    public Boolean getIsSearch(){
+        return mIsSearch;
     }
 
     public Boolean hasLocationPermission() {
@@ -152,7 +157,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             getMenuInflater().inflate(R.menu.menu_search, menu);
             MenuItem item = menu.findItem(R.id.action_search);
             item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
-            if (currentFragment != NEAR_ME_FRAGMENT) {
+            if (currentFragment != NEAR_ME_FRAGMENT || mIsSearch) {
                 item.setVisible(false);
             }
         }
@@ -284,6 +289,13 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onDestroy() {
+        unregisterReceiver(networkStateReceiver);
+        super.onDestroy();
+    }
+    BroadcastReceiver networkStateReceiver;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -299,7 +311,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             editor.apply();
         }
 
-        BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
+         networkStateReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -394,8 +406,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_edit_profile));
-                currentFragment = MY_PROFILE_FRAGMENT;
                 invalidateOptionsMenu();
             }
         });
@@ -418,41 +428,33 @@ public class MainScreenActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        int count = getSupportFragmentManager().getBackStackEntryCount();
+        FragmentManager fm = getSupportFragmentManager();
+        int fragCount = fm.getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (count != 0 && (currentFragment == USER_DETAILS_FRAGMENT || currentFragment == SEARCH_FRAGMENT)){
-            getSupportFragmentManager().popBackStack();
-            currentFragment = NEAR_ME_FRAGMENT;
-            setTitle(getString(R.string.main_title_user_list));
-            invalidateOptionsMenu();
+        } else if (fragCount != 0) {
+            fm.popBackStack();
         } else if (currentFragment != NEAR_ME_FRAGMENT) {
             FragmentTransaction ft;
-            FragmentManager fm = getSupportFragmentManager();
             ft = fm.beginTransaction().replace(R.id.mainFrame, userListFragment, "userListFragment");
             ft.commit();
-            setTitle(getString(R.string.main_title_user_list));
-            currentFragment = NEAR_ME_FRAGMENT;
             navigationView.getMenu().getItem(0).setChecked(true);
-            invalidateOptionsMenu();
-        } else if (isTaskRoot()) {
+        } else {
             if (isExiting) {
                 super.onBackPressed();
                 return;
             }
 
             this.isExiting = true;
-            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    isExiting=false;
+                    isExiting = false;
                 }
             }, 2000);
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -463,55 +465,56 @@ public class MainScreenActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentManager fm = getSupportFragmentManager();
         switch (id){
             case R.id.nav_near_me:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 mIsSearch = false;
                 ft.replace(R.id.mainFrame, userListFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_user_list));
-                currentFragment = NEAR_ME_FRAGMENT;
-                invalidateOptionsMenu();
                 break;
             case R.id.nav_matches:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, matchesFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_matches));
-                currentFragment = MATCHES_FRAGMENT;
-                invalidateOptionsMenu();
                 break;
             case R.id.nav_edit_profile:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_edit_profile));
-                currentFragment = MY_PROFILE_FRAGMENT;
-                invalidateOptionsMenu();
-                break;
-            case R.id.nav_settings:
-                ft.replace(R.id.mainFrame, settingsFragment);
-                ft.commit();
-                setTitle(getString(R.string.main_title_settings));
-                currentFragment = SETTINGS_FRAGMENT;
-                invalidateOptionsMenu();
 
                 break;
+            case R.id.nav_settings:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
+                ft.replace(R.id.mainFrame, settingsFragment);
+                ft.commit();
+                break;
+            case R.id.nav_upcomming:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
+                ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
+                ft.commit();
+                break;
             case R.id.nav_logout:
-                logout();
                 logoutDialog = new ProgressDialog(MainScreenActivity.this);
                 logoutDialog.setMessage(getString(R.string.main_log_out_title));
                 logoutDialog.setTitle(getString(R.string.main_log_out_message));
                 logoutDialog.show();
-                break;
-            case R.id.nav_upcomming:
-                ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
-                ft.commit();
-                setTitle(getString(R.string.main_title_upcoming_features));
-                currentFragment = COMING_SOON_FRAGMENT;
-                invalidateOptionsMenu();
-
-                break;
+                logout();
+            break;
             default:
                 break;
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -574,7 +577,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 return;
             }
             bundle.putString("user_id", mUserSearchResultsFragment.mAdapter.getUser(position).id);
-        }else {
+        } else {
             if (userListFragment.mAdapter.getUser(position) == null) {
                 return;
             }

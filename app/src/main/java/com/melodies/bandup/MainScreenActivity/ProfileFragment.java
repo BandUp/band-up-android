@@ -160,6 +160,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
         myThread = new MyThread();
@@ -202,6 +203,10 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.MY_PROFILE_FRAGMENT;
+        mainScreenActivity.setTitle(R.string.main_title_edit_profile);
+        mainScreenActivity.invalidateOptionsMenu();
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         initializeViews(rootView);
         setFonts();
@@ -434,6 +439,9 @@ public class ProfileFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {
+                        if (getActivity() == null) {
+                            return;
+                        }
                         if (imageDownloadDialog != null) {
                             imageDownloadDialog.dismiss();
                         }
@@ -462,6 +470,9 @@ public class ProfileFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (getActivity() == null) {
+                            return;
+                        }
                         if (imageDownloadDialog != null) {
                             imageDownloadDialog.dismiss();
                         }
@@ -573,6 +584,9 @@ public class ProfileFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null){
+                    return;
+                }
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
                 if (response instanceof JSONObject) {
@@ -591,6 +605,9 @@ public class ProfileFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null){
+                    return;
+                }
                 progressBar.setVisibility(View.INVISIBLE);
                 llProfile.setVisibility(View.INVISIBLE);
                 txtFetchError.setVisibility(View.VISIBLE);
@@ -632,11 +649,17 @@ public class ProfileFragment extends Fragment {
             DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
+                    if (getActivity() == null){
+                        return;
+                    }
                 // success response
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
+                    if (getActivity() == null){
+                        return;
+                    }
                     error.printStackTrace();
                     Toast.makeText(getActivity(), getString(R.string.profile_error_updating_user) + error, Toast.LENGTH_LONG).show();
                 }

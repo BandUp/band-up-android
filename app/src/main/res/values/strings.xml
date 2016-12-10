@@ -95,7 +95,8 @@
     <string name="profile_select_song">Select a Song</string>
     <string name="select_genres">Select genres</string>
     <string name="search">Search</string>
-    <string name="select_instruments">select Instruments</string>
+    <string name="main_title_search">Search</string>
+    <string name="select_instruments">Select Instruments</string>
     <string name="please_enter_search_parameters">Please enter search parameters</string>
     <string name="ages">Ages</string>
     <string name="all_genres">All genres</string>

@@ -269,12 +269,18 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                     new BandUpResponseListener() {
                         @Override
                         public void onBandUpResponse(Object response) {
+                            if (getActivity() == null){
+                                return;
+                            }
                             // everything was succesfull we do not need to respond
                             Log.d(TAG, "Succesfully saved");
                         }
                     }, new BandUpErrorListener() {
                         @Override
                         public void onBandUpErrorResponse(VolleyError error) {
+                            if (getActivity() == null){
+                                return;
+                            }
                             error.printStackTrace();
                         }
                     });

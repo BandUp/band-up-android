@@ -125,6 +125,10 @@ public class UserSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.SEARCH_FRAGMENT;
+        mainScreenActivity.setTitle(R.string.search);
+        mainScreenActivity.invalidateOptionsMenu();
         View rootView = inflater.inflate(R.layout.fragment_user_search, container, false);
         findViews(rootView);
         return rootView;
@@ -154,12 +158,18 @@ public class UserSearchFragment extends Fragment {
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getGenres(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null){
+                    return;
+                }
                 mGenres.setEnabled(true);
                 createGenresDialog((JSONArray) response);
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null){
+                    return;
+                }
                 mGenres.setEnabled(true);
                 Log.d(TAG, error.getMessage());
                 Toast.makeText(getContext(),
@@ -179,12 +189,18 @@ public class UserSearchFragment extends Fragment {
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getInstruments(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null){
+                    return;
+                }
                 mInstruments.setEnabled(true);
                 createInstrumentsDialog((JSONArray) response);
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null){
+                    return;
+                }
                 mInstruments.setEnabled(true);
                 Log.d(TAG, error.getMessage());
                 Toast.makeText(getContext(),
@@ -360,6 +376,9 @@ public class UserSearchFragment extends Fragment {
                 new BandUpResponseListener() {
                     @Override
                     public void onBandUpResponse(Object response) {
+                        if (getActivity() == null){
+                            return;
+                        }
                         // create userlist and instantiate fragment with new list
                         try{
                             JSONObject rsp = (JSONObject)response;
@@ -370,7 +389,7 @@ public class UserSearchFragment extends Fragment {
                             UserListFragment us = ((MainScreenActivity)getActivity()).startSearchResults(userArr);
 
                             fragmentManager.beginTransaction()
-                                            .replace(R.id.mainFrame, us)
+                                            .replace(R.id.mainFrame, us).addToBackStack(null)
                                             .commit();
                         } catch (JSONException ex){
                             ex.printStackTrace();
@@ -380,6 +399,9 @@ public class UserSearchFragment extends Fragment {
                 }, new BandUpErrorListener() {
                     @Override
                     public void onBandUpErrorResponse(VolleyError error) {
+                        if (getActivity() == null){
+                            return;
+                        }
                         error.printStackTrace();
                     }
                 });

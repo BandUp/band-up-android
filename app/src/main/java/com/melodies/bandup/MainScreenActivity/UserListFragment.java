@@ -50,13 +50,11 @@ import java.util.Locale;
 public class UserListFragment extends Fragment {
     private AdView mAdView;
 
-    // prevents reloading of data from server if used as search results
-    private boolean mIsSearch = false;
-
     private OnFragmentInteractionListener mListener;
     private boolean isSwipeRefresh = false;
     private int currentUserIndex;
     private String userIdBeforeRefresh;
+    private MainScreenActivity mainScreenActivity;
 
     public UserListFragment() {
         // Required empty public constructor
@@ -91,18 +89,19 @@ public class UserListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        mainScreenActivity = (MainScreenActivity)getActivity();
         if (getArguments() != null) {
             String userList = getArguments().getString("userlist");
             if(userList != null){
-                ArrayList<User> userArrayList = new ArrayList<>();
                 try {
                     JSONArray jsonArray = new JSONArray(userList);
 
                     mAdapter = new UserListAdapter(getChildFragmentManager());
                     mAdapter.clear();
                     mAdapter.addUsers(parseUsers(jsonArray));
-                    mIsSearch = true;
+                    mainScreenActivity.setIsSearch(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -118,7 +117,7 @@ public class UserListFragment extends Fragment {
      * get users from backend and insert them into the user list adapter
      */
     private void getUserList() {
-        if (mIsSearch){
+        if (mainScreenActivity.getIsSearch()){
             progressBar.setVisibility(View.INVISIBLE);
             return;
         }
@@ -131,7 +130,9 @@ public class UserListFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-
+                if (getActivity() == null){
+                    return;
+                }
                 mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
@@ -188,7 +189,9 @@ public class UserListFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-
+                if (getActivity() == null){
+                    return;
+                }
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
@@ -307,7 +310,15 @@ public class UserListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
+        final MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.NEAR_ME_FRAGMENT;
+        mainScreenActivity.invalidateOptionsMenu();
 
+        if (mainScreenActivity.getIsSearch()) {
+            getActivity().setTitle(getString(R.string.main_title_search_results));
+        } else {
+            getActivity().setTitle(getString(R.string.main_title_user_list));
+        }
         // Adding ad Banner
         mAdView = (AdView)rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -322,7 +333,7 @@ public class UserListFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
 
-        if (mIsSearch) {
+        if (mainScreenActivity.getIsSearch()) {
             mSwipeRefreshLayout.setEnabled(false);
         }
 
@@ -330,7 +341,7 @@ public class UserListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // TODO: Do not clear, but replace the items that are different.
-                if (!mIsSearch) {
+                if (!mainScreenActivity.getIsSearch()) {
                     isSwipeRefresh = true;
                     // currentUserIndex is changed in the OnPageChangeListener
                     userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
@@ -372,7 +383,7 @@ public class UserListFragment extends Fragment {
                 txtNoUsers.setVisibility(View.VISIBLE);
             }
 
-            if (mIsSearch) {
+            if (mainScreenActivity.getIsSearch()) {
                 txtNoUsers.setText(R.string.search_no_results);
                 txtNoUsers.setVisibility(View.VISIBLE);
             }
@@ -399,6 +410,7 @@ public class UserListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mainScreenActivity.setIsSearch(false);
     }
 
     /**

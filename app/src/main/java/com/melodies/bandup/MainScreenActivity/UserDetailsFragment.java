@@ -148,6 +148,7 @@ public class UserDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
         }
         // Gets the user_id from userListFragment
@@ -160,6 +161,10 @@ public class UserDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.USER_DETAILS_FRAGMENT;
+        mainScreenActivity.invalidateOptionsMenu();
+
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
 
@@ -305,6 +310,9 @@ public class UserDetailsFragment extends Fragment {
 
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null){
+                    return;
+                }
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
                 if (response instanceof JSONObject) {
@@ -322,6 +330,9 @@ public class UserDetailsFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null){
+                    return;
+                }
                 txtFetchError.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
 

@@ -47,6 +47,10 @@ public class UpcomingFeaturesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.COMING_SOON_FRAGMENT;
+        mainScreenActivity.setTitle(getString(R.string.main_title_upcoming_features));
+        mainScreenActivity.invalidateOptionsMenu();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_upcomming_features_fragment, container, false);
     }

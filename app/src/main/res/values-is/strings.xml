@@ -124,6 +124,7 @@
     <string name="main_log_out_title">Skrái þig út</string>
     <string name="main_matched">Þið tengdust!</string>
     <string name="main_title_search_results">Leitarniðurstöður</string>
+    <string name="main_title_search">Leit</string>
     <string name="main_title_upcoming_features">Á döfinni</string>
     <string name="matches_error_json">Gat ekki parsað JSON hlutinn.</string>
     <string name="matches_failed_to_fetch">Gat ekki náð í tenginga listann</string>

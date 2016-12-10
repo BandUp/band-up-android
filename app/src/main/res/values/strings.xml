@@ -135,7 +135,7 @@
     <string name="main_error_match">Error loading match.</string>
     <string name="main_matched">You Matched!</string>
     <string name="matches_error_json">Could not parse the JSON object.</string>
-    <string name="password_reset_email_sent">An e-mail has been sent</string>
+    <string name="password_reset_email_sent">If this is a registered email, then you will receive an email shortly.</string>
     <string name="privacy_title_licenses">Licenses</string>
     <string name="age_not_available">Age not specified</string>
     <string name="profile_upload_title">Uploading Photo</string>
@@ -157,9 +157,9 @@
     <string name="search_select_instruments">Select instruments</string>
     <string name="volley_connection_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_network_error">Could not connect to the server\nCheck your settings or try again.</string>
-    <string name="volley_server_error">Við gátum ekki náð í gögnin.\nVinsamlegast prófaðu aftur.</string>
+    <string name="volley_server_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_server_parse_error">Server parse error!</string>
-    <string name="volley_unknown_error">"Unknown error! Contact Administrator "</string>
+    <string name="volley_unknown_error">"Unknown error! Contact Administrator"</string>
     <string name="setup_error_fetch">Could not fetch information</string>
     <string name="sc_frag_no_song_selected">No song selected</string>
     <string name="sc_frag_no_name">The selected song has no name</string>

@@ -129,7 +129,7 @@
     <string name="matches_error_json">Gat ekki parsað JSON hlutinn.</string>
     <string name="matches_failed_to_fetch">Gat ekki náð í tenginga listann</string>
     <string name="mi_distance">mílur frá þér</string>
-    <string name="password_reset_email_sent">Tölvupóstur hefur verið sendur</string>
+    <string name="password_reset_email_sent">Ef þetta netfang er skráð hjá okkur, þá mun þér berast póstur innan skamms</string>
     <string name="privacy_title_licenses">Leyfi</string>
     <string name="profile_error_updating_user">Gat ekki uppfært notanda</string>
     <string name="profile_new_photo_dialog">Ný mynd</string>

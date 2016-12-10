@@ -2,7 +2,6 @@ package com.melodies.bandup;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -418,9 +417,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                 // if response is not error, then userId is stored and redirect to SignIn view.
                 saveUserId(responseObj);
                 Toast.makeText(Register.this, R.string.register_success, Toast.LENGTH_LONG).show();
-                Intent registerIntent = new Intent(Register.this, Login.class);
                 registerDialog.dismiss();
-                Register.this.startActivity(registerIntent);
                 finish();
             }
         }, new BandUpErrorListener() {

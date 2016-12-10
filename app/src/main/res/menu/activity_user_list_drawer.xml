@@ -5,34 +5,34 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_near_me"
-            android:icon="@drawable/map_marker_circle"
+            android:icon="@drawable/ic_map_marker_circle"
             android:title="@string/main_nav_near_me" />
 
         <item
             android:id="@+id/nav_edit_profile"
-            android:icon="@drawable/account"
+            android:icon="@drawable/ic_account"
             android:title="@string/main_nav_edit_profile" />
 
         <item
             android:id="@+id/nav_matches"
-            android:icon="@drawable/link"
+            android:icon="@drawable/ic_link"
             android:title="@string/main_nav_matches" />
 
 
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/settings"
+            android:icon="@drawable/ic_settings"
             android:title="@string/main_nav_settings" />
 
         <item
             android:id="@+id/nav_upcomming"
-            android:icon="@drawable/ic_comming_soon"
+            android:icon="@drawable/ic_arrow_right"
             android:title="@string/coming_soon"
             />
 
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/ic_logout"
             android:title="@string/main_nav_log_out"
             />
     </group>

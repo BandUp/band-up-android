@@ -170,7 +170,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="15dp"
                             android:textSize="18sp"
-                            android:hint="About Me"
+                            android:hint="@string/about_me"
                             android:maxLength="100" />
                         </LinearLayout>
                     <View
@@ -219,7 +219,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center|bottom"
                 android:id="@+id/btnLike"
-                android:background="@drawable/user_list_like_button"
+                android:background="@drawable/button_user_list_like"
                 android:textColor="#000000"
                 android:onClick="onClickLike"
                 android:textSize="35sp"

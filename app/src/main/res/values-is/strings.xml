@@ -33,15 +33,12 @@
 
     <!-- Filter Screen -->
     <string name="filter_title">Sía</string>
-    <string name="filter_save">Vista</string>
-    <string name="filter_instruments_hint">Hvaða hljóðfæri viltu sía út?</string>
 
     <!-- Login Screen -->
     <string name="login_username">Tölvupóstur</string>
     <string name="login_password">Lykilorð</string>
     <string name="login_sign_in">Skrá inn</string>
     <string name="login_sign_up">Ekki með reikning? Skráðu þig hér.</string>
-    <string name="login_go_to_chat_temporary">Fara í spjall</string>
 
     <!-- User List Screen -->
     <string name="main_title_user_list">Tónlistarfólk nálægt þér</string>
@@ -54,20 +51,11 @@
     <string name="register_title">Nýskráning</string>
     <string name="login_username_validation">Vinsamlegast skrifaðu inn tölvupóstfangið þitt</string>
     <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
-    <string name="go_to_chat_temp">Fara í spjall</string>
     <string name="user_list_details">Nánar</string>
     <string name="user_list_like">Líka</string>
-    <string name="user_list_previous_temp">Fyrri</string>
-    <string name="user_list_next_temp">Næsti</string>
-    <string name="user_select_picture">Velja mynd</string>
-    <string name="user_take_picture">Taka mynd</string>
     <string name="login_progress_description">Vinsamlegast bíðið...</string>
     <string name="login_progress_title">Skrái þig inn</string>
-    <string name="login_success">Innskráning tókst</string>
     <string name="register_enter_dateofbirth">Vinsamlega skráðu fæðingardag</string>
-    <string name="register_enter_email">Vinsamlega skráðu tölvupóstfangið þitt</string>
-    <string name="register_enter_password">Vinsamlega skráðu inn lykilorð</string>
-    <string name="register_enter_username">Vinsamlegast skráðu inn nafn</string>
     <string name="register_progress_description">Vinsamlega bíðið...</string>
     <string name="register_password_mismatch">Lykilorð passa ekki!</string>
     <string name="register_progress_title">Nýskrái þig</string>
@@ -75,32 +63,19 @@
     <string name="user_allow_camera">Vinsamlegast leyfðu aðgang til þess að taka mynd</string>
     <string name="user_error">Eitthvað fór úrskeiðis</string>
     <string name="user_image_error">Það tókst ekki að senda myndina á vefþjóninn. Vinsamlega reyndu aftur.</string>
-    <string name="user_image_success">Mynd vistuð á vefþjón</string>
     <string name="user_allow_storage">Vinsamlegast leyfðu aðgang til þess að velja mynd</string>
     <string name="action_sign_in">Skrá inn á SoundCloud</string>
     <string name="action_sign_in_short">Innskráning</string>
-    <string name="error_field_required">Það þarf að skrá þessar upplýsingar</string>
-    <string name="error_incorrect_password">Lykilorð er ekki rétt</string>
-    <string name="error_invalid_email">Tölvupóstfang ekki rétt</string>
-    <string name="error_invalid_password">Lykilorð er of stutt</string>
     <string name="prompt_email">Tölvupóstur</string>
-    <string name="prompt_password">Lykilorð (valkvæmt)</string>
     <string name="title_activity_sound_cloud">Nýskráning</string>
-    <string name="permission_rationale">\"Contacts permissions are needed for providing email         completions.\"</string>
-    <string name="main_nav_about">Um okkur</string>
     <string name="main_nav_edit_profile">Prófíllinn minn</string>
     <string name="main_nav_matches">Tengingar/Spjall</string>
     <string name="main_nav_near_me">Nálægt mér</string>
-    <string name="main_nav_privacy">Persónuvernd</string>
     <string name="main_nav_settings">Stillingar</string>
-    <string name="main_title_about">Um okkur</string>
     <string name="main_title_matches">Tengingar</string>
-    <string name="main_title_privacy">Persónuvend</string>
     <string name="main_title_settings">Stillingar</string>
-    <string name="profile_uploading">Hleð upp mynd</string>
     <string name="main_title_edit_profile">Prófíllinn minn</string>
     <string name="main_nav_log_out">Útskrá</string>
-    <string name="user_allow_location">Vinsamlegast leyfðu aðgang að GPS virkni</string>
     <string name="details_instruments">Hljóðfæri</string>
     <string name="details_genres">Tónlistarstefnur</string>
     <string name="dateOfBirth">Fæðingardagur</string>
@@ -110,8 +85,6 @@
     <string name="login_credentials_incorrect">Notandanafn eða lykilorð rangt</string>
     <string name="no_distance_available">Vegalengd ekki tiltæk</string>
     <string name="km_distance">km frá þér</string>
-    <string name="register_max_age">Þú þarft að vera 99 ára eða yngri til að skrá þig!</string>
-    <string name="register_min_age">Þú þarft að vera 13 ára eða eldri til að skrá þig!</string>
     <string name="profile_select_song">Velja lag</string>
     <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
@@ -121,7 +94,6 @@
     <string name="ages">Aldur</string>
     <string name="all_genres">Allir tónlistarsmekkir</string>
     <string name="all_instuments">Öll hljóðfæri</string>
-    <string name="main_nav_search">Leita</string>
     <string name="coming_soon">Kemur fljótlega</string>
     <string name="login_btn_google_hint">Skrá inn með Google</string>
     <string name="login_btn_facebook_hint">Skrá inn með Facebook</string>
@@ -208,4 +180,5 @@
     <string name="upcoming_event_calendar">Viðburðadagatal</string>
     <string name="upcoming_rent_practice">Leigja æfingapláss</string>
     <string name="upcoming_share_users">Deila notendum sem þú fannst á samfélagsmiðlum</string>
+    <string name="search_select_genres">Velja tónlistarstefnur</string>
 </resources>

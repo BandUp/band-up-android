@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class PasswordReset extends AppCompatActivity {
 
     TextInputLayout tilEmail;
     EditText etEmail;
+    Button btnSend;
 
     public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
@@ -41,6 +43,8 @@ public class PasswordReset extends AppCompatActivity {
 
         tilEmail = (TextInputLayout) findViewById(R.id.til_email_reset);
         etEmail = (EditText) findViewById(R.id.txt_email_reset);
+        btnSend = (Button) findViewById(R.id.btn_password_reset);
+
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,11 +74,14 @@ public class PasswordReset extends AppCompatActivity {
      */
     public void onSendPasswordReset(View v){
 
+
         if (isValidEmail(etEmail.getText().toString())) {
+            btnSend.setEnabled(true);
             tilEmail.setErrorEnabled(false);
             try {
                 JSONObject requestObj = new JSONObject();
                 requestObj.put("email", ((EditText)findViewById(R.id.txt_email_reset)).getText().toString());
+                btnSend.setEnabled(false);
                 DatabaseSingleton.getInstance(this).getBandUpDatabase().sendPasswordResetRequest(
                         requestObj,
                         new BandUpResponseListener() {
@@ -89,6 +96,7 @@ public class PasswordReset extends AppCompatActivity {
                         new BandUpErrorListener() {
                             @Override
                             public void onBandUpErrorResponse(VolleyError error) {
+                                btnSend.setEnabled(true);
                                 // show error
                             }
                         }
@@ -97,6 +105,7 @@ public class PasswordReset extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
+            
             tilEmail.setError(getString(R.string.register_til_error_email_format));
         }
     }

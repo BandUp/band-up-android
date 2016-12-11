@@ -207,7 +207,7 @@ public class UserDetailsFragment extends Fragment {
                     txtAge.setText(ageString);
                 }
             } else {
-                txtAge.setText("Age not available");
+                txtAge.setText(getString(R.string.age_not_available));
             }
         }
         if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {

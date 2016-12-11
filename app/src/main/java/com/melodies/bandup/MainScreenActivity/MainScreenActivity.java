@@ -49,7 +49,6 @@ import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
-import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
@@ -58,12 +57,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
@@ -165,93 +160,6 @@ public class MainScreenActivity extends AppCompatActivity implements
 
         return super.onCreateOptionsMenu(menu);
 
-    }
-
-    public User parseUser(JSONObject responseObj) {
-        User currentUser = new User();
-        try {
-            if (!responseObj.isNull("_id")) {
-                currentUser.id = responseObj.getString("_id");
-            }
-            if (!responseObj.isNull("username")) {
-                currentUser.name = responseObj.getString("username");
-            }
-            if (!responseObj.isNull("dateOfBirth")) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
-            }
-
-            if (!responseObj.isNull("favoriteinstrument")) {
-                currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-            }
-
-            if (!responseObj.isNull("percentage")) {
-                currentUser.percentage = responseObj.getInt("percentage");
-            }
-
-            if (!responseObj.isNull("genres")) {
-                JSONArray genreArray = responseObj.getJSONArray("genres");
-                for (int i = 0; i < genreArray.length(); i++) {
-                    currentUser.genres.add(genreArray.getString(i));
-                }
-            }
-
-            if (!responseObj.isNull("instruments")) {
-                JSONArray instrumentArray = responseObj.getJSONArray("instruments");
-                for (int i = 0; i < instrumentArray.length(); i++) {
-                    currentUser.instruments.add(instrumentArray.getString(i));
-                }
-            }
-
-            if (!responseObj.isNull("aboutme")) {
-                currentUser.aboutme = responseObj.getString("aboutme");
-            }
-
-            if (!responseObj.isNull("image")) {
-                JSONObject imageObj = responseObj.getJSONObject("image");
-
-                if (!imageObj.isNull("url")) {
-                    currentUser.imgURL = imageObj.getString("url");
-                }
-            }
-
-            if (!responseObj.isNull("soundCloudId")){
-                currentUser.soundCloudId = responseObj.getInt("soundCloudId");
-            }
-
-            if (!responseObj.isNull("soundcloudurl")){
-                currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
-            }
-
-            if (!responseObj.isNull("soundCloudSongName")){
-                currentUser.soundCloudSongName = responseObj.getString("soundCloudSongName");
-            }
-
-            UserLocation userLocation = new UserLocation();
-            if (!responseObj.isNull("location")) {
-
-                JSONObject location = responseObj.getJSONObject("location");
-                if (!location.isNull("lat")) {
-                    userLocation.setLatitude(location.getDouble("lat"));
-                }
-
-                if (!location.isNull("lon")) {
-                    userLocation.setLongitude(location.getDouble("lon"));
-                }
-
-                if (!location.isNull("valid")) {
-                    userLocation.setValid(location.getBoolean("valid"));
-                }
-            } else {
-                userLocation.setValid(false);
-            }
-            currentUser.location = userLocation;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return currentUser;
     }
 
     @Override
@@ -714,7 +622,7 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
 
-    public void onClickLike(String userID) {
+    public void onClickLike(final String userID) {
         JSONObject user = new JSONObject();
 
         try {
@@ -733,6 +641,10 @@ public class MainScreenActivity extends AppCompatActivity implements
                     responseObj = (JSONObject) response;
                 } else {
                     return;
+                }
+
+                if (currentUser.liked.indexOf(userID) != -1) {
+                    currentUser.liked.add(userID);
                 }
 
                 try {
@@ -795,7 +707,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 }
                 if (responseObj != null) {
                     // Binding View to real data
-                    currentUser = parseUser(responseObj);
+                    currentUser = new User(responseObj);
                     txtUsernameNav.setText(currentUser.name);
                     txtFavoriteNav.setText(currentUser.favoriteinstrument);
 

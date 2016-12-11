@@ -210,8 +210,12 @@ public class UserDetailsFragment extends Fragment {
                 txtAge.setText("Age not available");
             }
         }
-        if (u.favoriteinstrument != null) {
+        if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
             txtFavorite.setText(u.favoriteinstrument);
+        } else {
+            if (u.instruments.size() != 0) {
+                txtFavorite.setText(u.instruments.get(0));
+            }
         }
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
@@ -248,6 +252,9 @@ public class UserDetailsFragment extends Fragment {
 
 
         txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
+        if (u.id.equals(currentUser.id)) {
+
+        }
     }
 
     private Float getDistanceToUser(User u) {
@@ -322,7 +329,7 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (responseObj != null) {
                     // Binding View to real data
-                    currentUser = ((MainScreenActivity)getActivity()).parseUser(responseObj);
+                    currentUser = new User(responseObj);
                     populateUser(currentUser);
 
                 }

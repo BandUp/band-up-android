@@ -248,9 +248,16 @@ public class ProfileFragment extends Fragment {
                 txtAge.setText(R.string.age_not_available);
             }
         }
-        if (u.favoriteinstrument != null) {
+        
+        if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
             txtFavorite.setText(u.favoriteinstrument);
             ((MainScreenActivity)getActivity()).updateFavouriteInstrument(u.favoriteinstrument);
+
+        } else {
+            if (u.instruments.size() != 0) {
+                txtFavorite.setText(u.instruments.get(0));
+                ((MainScreenActivity)getActivity()).updateFavouriteInstrument(u.instruments.get(0));
+            }
         }
 
         txtAboutMe.setText(u.aboutme);
@@ -595,7 +602,7 @@ public class ProfileFragment extends Fragment {
                     txtFetchError.setVisibility(View.VISIBLE);
                 }
 
-                User currUser = ((MainScreenActivity) getActivity()).parseUser(responseObj);
+                User currUser = new User(responseObj);
                 ((MainScreenActivity) getActivity()).currentUser = currUser;
 
                 llProfile.setVisibility(View.VISIBLE);

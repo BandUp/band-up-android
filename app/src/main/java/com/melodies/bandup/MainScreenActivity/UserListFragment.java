@@ -89,7 +89,6 @@ public class UserListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         mainScreenActivity = (MainScreenActivity)getActivity();
         if (getArguments() != null) {
@@ -130,7 +129,7 @@ public class UserListFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
@@ -189,7 +188,7 @@ public class UserListFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 progressBar.setVisibility(View.INVISIBLE);

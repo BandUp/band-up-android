@@ -127,7 +127,7 @@ public class UserListFragment extends Fragment {
                 if (getActivity() == null) {
                     return;
                 }
-                mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
 
@@ -176,7 +176,6 @@ public class UserListFragment extends Fragment {
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
                 isSwipeRefresh = false;
 
             }
@@ -186,6 +185,7 @@ public class UserListFragment extends Fragment {
                 if (getActivity() == null) {
                     return;
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
@@ -202,7 +202,6 @@ public class UserListFragment extends Fragment {
                     return;
                 }
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                mSwipeRefreshLayout.setRefreshing(false);
                 isSwipeRefresh = false;
             }
         });
@@ -274,6 +273,11 @@ public class UserListFragment extends Fragment {
         mPager.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.bandUpYellow),
+                getResources().getColor(R.color.bandUpGreen)
+        );
+
 
         if (mainScreenActivity.getIsSearch()) {
             mSwipeRefreshLayout.setEnabled(false);
@@ -286,7 +290,11 @@ public class UserListFragment extends Fragment {
                 if (!mainScreenActivity.getIsSearch()) {
                     isSwipeRefresh = true;
                     // currentUserIndex is changed in the OnPageChangeListener
-                    userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
+                    if (mAdapter.getUser(currentUserIndex) != null) {
+                        userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
+                    } else {
+                        userIdBeforeRefresh = "";
+                    }
                     getUserList();
                 }
             }
@@ -307,11 +315,6 @@ public class UserListFragment extends Fragment {
                 mSwipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
             }
         });
-
-
-
-
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
 
         networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
 

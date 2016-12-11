@@ -416,8 +416,8 @@ public class MainScreenActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_logout:
                 logoutDialog = new ProgressDialog(MainScreenActivity.this);
-                logoutDialog.setMessage(getString(R.string.main_log_out_title));
-                logoutDialog.setTitle(getString(R.string.main_log_out_message));
+                logoutDialog.setMessage(getString(R.string.main_log_out_message));
+                logoutDialog.setTitle(getString(R.string.main_log_out_title));
                 logoutDialog.show();
                 logout();
             break;

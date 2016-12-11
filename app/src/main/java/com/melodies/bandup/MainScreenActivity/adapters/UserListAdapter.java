@@ -86,6 +86,18 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
         return 0;
     }
 
+    public void likeUserById(String id) {
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i) != null) {
+                if (id.equals(userList.get(i).id)) {
+                    userList.get(i).isLiked = true;
+                }
+            }
+
+        }
+
+    }
+
     /**
      * Creates a new fragment and returns it
      * @param position

@@ -53,6 +53,7 @@
     <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
     <string name="user_list_details">Nánar</string>
     <string name="user_list_like">Líka</string>
+    <string name="user_list_liked">Líkad</string>
     <string name="login_progress_description">Vinsamlegast bíðið...</string>
     <string name="login_progress_title">Skrái þig inn</string>
     <string name="register_enter_dateofbirth">Vinsamlega skráðu fæðingardag</string>

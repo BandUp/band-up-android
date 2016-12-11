@@ -31,6 +31,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -206,6 +207,8 @@ public class MainScreenActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentUser = new User();
+        getUserProfile();
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -317,7 +320,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                 invalidateOptionsMenu();
             }
         });
-        getUserProfile();
     }
     boolean isExiting = false;
 
@@ -622,16 +624,16 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
 
-    public void onClickLike(final String userID) {
-        JSONObject user = new JSONObject();
+    public void onClickLike(final User user, final View likeButton) {
+        JSONObject jsonUser = new JSONObject();
 
         try {
-            user.put("userID", userID);
+            jsonUser.put("userID", user.id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
+        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 networkErrorBar.setVisibility(View.INVISIBLE);
@@ -643,10 +645,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                     return;
                 }
 
-                if (currentUser.liked.indexOf(userID) != -1) {
-                    currentUser.liked.add(userID);
-                }
-
                 try {
                     Boolean isMatch;
                     if (!responseObj.isNull("isMatch")) {
@@ -655,6 +653,14 @@ public class MainScreenActivity extends AppCompatActivity implements
                         Toast.makeText(MainScreenActivity.this, R.string.main_error_match, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (likeButton instanceof Button) {
+                        Button likeBtn = (Button) likeButton;
+                        likeBtn.setText(getString(R.string.user_list_liked));
+                        likeBtn.setEnabled(false);
+                        likeBtn.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+                    }
+                    user.isLiked = true;
+                    userListFragment.mAdapter.likeUserById(user.id);
                     if (isMatch) {
                         Toast.makeText(MainScreenActivity.this, R.string.main_matched, Toast.LENGTH_SHORT).show();
                     }

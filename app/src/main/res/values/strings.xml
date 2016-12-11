@@ -53,6 +53,7 @@
     <string name="login_username_validation">Please enter your email</string>
     <string name="login_password_validation">Please enter your password</string>
     <string name="user_list_like">Like</string>
+    <string name="user_list_liked">Liked</string>
     <string name="user_list_details">Details</string>
     <string name="login_progress_title">Logging in</string>
     <string name="login_progress_description">Please wait...</string>

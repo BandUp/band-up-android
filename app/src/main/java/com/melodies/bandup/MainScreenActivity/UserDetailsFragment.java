@@ -118,7 +118,7 @@ public class UserDetailsFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity) getActivity()).onClickLike(currentUser.id);
+                ((MainScreenActivity) getActivity()).onClickLike(currentUser, v);
             }
         });
     }
@@ -217,6 +217,13 @@ public class UserDetailsFragment extends Fragment {
                 txtFavorite.setText(u.instruments.get(0));
             }
         }
+
+        if (u.isLiked) {
+            btnLike.setText(getString(R.string.user_list_liked));
+            btnLike.setEnabled(false);
+            btnLike.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+        }
+
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
 

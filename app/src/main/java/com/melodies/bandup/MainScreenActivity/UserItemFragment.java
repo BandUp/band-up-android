@@ -55,6 +55,9 @@ public class UserItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getActivity() == null) {
+            return;
+        }
         // Get the arguments from when the fragment was created.
         mUser = (User) (getArguments() != null ? getArguments().getSerializable("user") : 1);
         mNum = (getArguments() != null ? getArguments().getInt("num") : 1);
@@ -79,7 +82,7 @@ public class UserItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                     if (networkErrorBar.getVisibility() == View.INVISIBLE) {
-                        ((MainScreenActivity)getActivity()).onClickLike(mUser.id);
+                        ((MainScreenActivity)getActivity()).onClickLike(mUser, v);
                         ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
                         if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
                             pager.setCurrentItem(pager.getCurrentItem() + 1, true);
@@ -130,7 +133,6 @@ public class UserItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.user_list_user_partial, container, false);
-
         initializeTextViews(rootView);
         initializeButtons(rootView);
         setFonts();
@@ -144,8 +146,11 @@ public class UserItemFragment extends Fragment {
      * @param u
      */
     private void populateUser(User u) {
+        if (getActivity() == null) {
+            return;
+        }
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
-
+        User authUser = ((MainScreenActivity)getActivity()).currentUser;
         txtName.setText(u.name);
 
         if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
@@ -164,6 +169,13 @@ public class UserItemFragment extends Fragment {
         }
 
         txtPercentage.setText(u.percentage + "%");
+
+
+        if (u.isLiked) {
+            btnLike.setText(getString(R.string.user_list_liked));
+            btnLike.setEnabled(false);
+            btnLike.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+        }
 
         if (localeRules != null) {
             Integer age = u.ageCalc();

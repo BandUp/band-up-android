@@ -19,7 +19,6 @@ public class User implements Serializable {
     public User(JSONObject responseObj){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();
-        liked = new ArrayList<>();
 
         try {
             if (!responseObj.isNull("_id")) {
@@ -99,11 +98,11 @@ public class User implements Serializable {
             }
             this.location = userLocation;
 
-            if (!responseObj.isNull("liked")) {
-                JSONArray likedArray = responseObj.getJSONArray("liked");
-                for (int i = 0; i < likedArray.length(); i++) {
-                    this.liked.add(likedArray.getString(i));
-                }
+            if (!responseObj.isNull("isLiked")) {
+                this.isLiked = responseObj.getBoolean("isLiked");
+            } else {
+                this.isLiked = false;
+
             }
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
@@ -113,7 +112,6 @@ public class User implements Serializable {
     public User(){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();
-        liked = new ArrayList<>();
     }
     public String id;
     public String name;
@@ -130,7 +128,7 @@ public class User implements Serializable {
     public String soundCloudURL;
     public String soundCloudSongName;
     public UserLocation location;
-    public List<String> liked;
+    public Boolean isLiked;
 
     public Integer ageCalc() {
         if (dateOfBirth == null) {

@@ -25,7 +25,6 @@ import com.melodies.bandup.MainScreenActivity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
-import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -33,11 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -221,66 +216,14 @@ public class UserListFragment extends Fragment {
             try {
                 if (responseArr.get(i) != null) {
                     JSONObject item = responseArr.getJSONObject(i);
-                    User user = new User();
-                    if (!item.isNull("_id")) user.id = item.getString("_id");
-                    if (!item.isNull("username")) user.name = item.getString("username");
-                    if (!item.isNull("status")) user.status = item.getString("status");
-                    if (!item.isNull("distance")) user.distance = item.getInt("distance");
-
-                    user.percentage = item.getInt("percentage");
-                    if (!item.isNull("image")) {
-                        JSONObject userImg = item.getJSONObject("image");
-                        if (!userImg.isNull("url")) {
-                            user.imgURL = userImg.getString("url");
-                        }
-                    }
-
-                    if (!item.isNull("dateOfBirth")) {
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
-                    }
-
-                    JSONArray instrumentArray = item.getJSONArray("instruments");
-
-                    for (int j = 0; j < instrumentArray.length(); j++) {
-                        user.instruments.add(instrumentArray.getString(j));
-                    }
-
-                    JSONArray genreArray = item.getJSONArray("genres");
-
-                    for (int j = 0; j < genreArray.length(); j++) {
-                        user.genres.add(genreArray.getString(j));
-                    }
-                    Integer age = user.ageCalc();
-                    UserLocation userLocation = new UserLocation();
-                    if (!item.isNull("location")) {
-
-                        JSONObject location = item.getJSONObject("location");
-                        if (!location.isNull("lat")) {
-                            userLocation.setLatitude(location.getDouble("lat"));
-                        }
-
-                        if (!location.isNull("lon")) {
-                            userLocation.setLongitude(location.getDouble("lon"));
-                        }
-
-                        if (!location.isNull("valid")) {
-                            userLocation.setValid(location.getBoolean("valid"));
-                        }
-                    } else {
-                        userLocation.setValid(false);
-                    }
-                    user.location = userLocation;
-                    if (settingsAgeFilter(age, minAge, maxAge)) {
+                    User user = new User(item);
+                    if (settingsAgeFilter(user.ageCalc(), minAge, maxAge)) {
                         userList.add(user);
                     }
                 }
 
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            } catch (ParseException e) {
-                Toast.makeText(getActivity(), R.string.matches_error_date, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }

@@ -157,13 +157,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                llFacebookLoginDesign.setEnabled(true);
                 facebookCreateUser(loginResult);
             }
 
             @Override
             public void onCancel() {
-                llFacebookLoginDesign.setEnabled(true);
                 //System.out.println("Login Cancelled");
             }
 
@@ -179,7 +177,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void onClick(View v) {
                 loginButton.performClick();
-                llFacebookLoginDesign.setEnabled(false);
             }
         });
 

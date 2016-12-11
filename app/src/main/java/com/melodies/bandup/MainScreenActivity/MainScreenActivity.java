@@ -31,6 +31,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,7 +50,6 @@ import com.melodies.bandup.SoundCloudFragments.SoundCloudSelectorFragment;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.gcm_tools.RegistrationIntentService;
 import com.melodies.bandup.helper_classes.User;
-import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.squareup.picasso.Picasso;
@@ -58,12 +58,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
@@ -83,15 +79,15 @@ public class MainScreenActivity extends AppCompatActivity implements
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
 
-    final int NEAR_ME_FRAGMENT      = 0;
-    final int MY_PROFILE_FRAGMENT   = 1;
-    final int MATCHES_FRAGMENT      = 2;
-    final int SETTINGS_FRAGMENT     = 3;
-    final int COMING_SOON_FRAGMENT  = 4;
-    final int SEARCH_FRAGMENT       = 5;
-    final int USER_DETAILS_FRAGMENT = 6;
+    final public int NEAR_ME_FRAGMENT      = 0;
+    final public int MY_PROFILE_FRAGMENT   = 1;
+    final public int MATCHES_FRAGMENT      = 2;
+    final public int SETTINGS_FRAGMENT     = 3;
+    final public int COMING_SOON_FRAGMENT  = 4;
+    final public int SEARCH_FRAGMENT       = 5;
+    final public int USER_DETAILS_FRAGMENT = 6;
 
-    int currentFragment = NEAR_ME_FRAGMENT;
+    public int currentFragment = NEAR_ME_FRAGMENT;
 
     private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
@@ -120,10 +116,15 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     private LinearLayout networkErrorBar;
 
+    // prevents reloading of data from server if used as search results
     private boolean mIsSearch = false;
 
     public void setIsSearch(boolean isSearch){
         mIsSearch = isSearch;
+    }
+
+    public Boolean getIsSearch(){
+        return mIsSearch;
     }
 
     public Boolean hasLocationPermission() {
@@ -152,7 +153,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             getMenuInflater().inflate(R.menu.menu_search, menu);
             MenuItem item = menu.findItem(R.id.action_search);
             item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
-            if (currentFragment != NEAR_ME_FRAGMENT) {
+            if (currentFragment != NEAR_ME_FRAGMENT || mIsSearch) {
                 item.setVisible(false);
             }
         }
@@ -160,93 +161,6 @@ public class MainScreenActivity extends AppCompatActivity implements
 
         return super.onCreateOptionsMenu(menu);
 
-    }
-
-    public User parseUser(JSONObject responseObj) {
-        User currentUser = new User();
-        try {
-            if (!responseObj.isNull("_id")) {
-                currentUser.id = responseObj.getString("_id");
-            }
-            if (!responseObj.isNull("username")) {
-                currentUser.name = responseObj.getString("username");
-            }
-            if (!responseObj.isNull("dateOfBirth")) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                currentUser.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
-            }
-
-            if (!responseObj.isNull("favoriteinstrument")) {
-                currentUser.favoriteinstrument = responseObj.getString("favoriteinstrument");
-            }
-
-            if (!responseObj.isNull("percentage")) {
-                currentUser.percentage = responseObj.getInt("percentage");
-            }
-
-            if (!responseObj.isNull("genres")) {
-                JSONArray genreArray = responseObj.getJSONArray("genres");
-                for (int i = 0; i < genreArray.length(); i++) {
-                    currentUser.genres.add(genreArray.getString(i));
-                }
-            }
-
-            if (!responseObj.isNull("instruments")) {
-                JSONArray instrumentArray = responseObj.getJSONArray("instruments");
-                for (int i = 0; i < instrumentArray.length(); i++) {
-                    currentUser.instruments.add(instrumentArray.getString(i));
-                }
-            }
-
-            if (!responseObj.isNull("aboutme")) {
-                currentUser.aboutme = responseObj.getString("aboutme");
-            }
-
-            if (!responseObj.isNull("image")) {
-                JSONObject imageObj = responseObj.getJSONObject("image");
-
-                if (!imageObj.isNull("url")) {
-                    currentUser.imgURL = imageObj.getString("url");
-                }
-            }
-
-            if (!responseObj.isNull("soundCloudId")){
-                currentUser.soundCloudId = responseObj.getInt("soundCloudId");
-            }
-
-            if (!responseObj.isNull("soundcloudurl")){
-                currentUser.soundCloudURL = responseObj.getString("soundcloudurl");
-            }
-
-            if (!responseObj.isNull("soundCloudSongName")){
-                currentUser.soundCloudSongName = responseObj.getString("soundCloudSongName");
-            }
-
-            UserLocation userLocation = new UserLocation();
-            if (!responseObj.isNull("location")) {
-
-                JSONObject location = responseObj.getJSONObject("location");
-                if (!location.isNull("lat")) {
-                    userLocation.setLatitude(location.getDouble("lat"));
-                }
-
-                if (!location.isNull("lon")) {
-                    userLocation.setLongitude(location.getDouble("lon"));
-                }
-
-                if (!location.isNull("valid")) {
-                    userLocation.setValid(location.getBoolean("valid"));
-                }
-            } else {
-                userLocation.setValid(false);
-            }
-            currentUser.location = userLocation;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return currentUser;
     }
 
     @Override
@@ -284,8 +198,17 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onDestroy() {
+        unregisterReceiver(networkStateReceiver);
+        super.onDestroy();
+    }
+    BroadcastReceiver networkStateReceiver;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentUser = new User();
+        getUserProfile();
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -299,7 +222,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             editor.apply();
         }
 
-        BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
+         networkStateReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -394,12 +317,9 @@ public class MainScreenActivity extends AppCompatActivity implements
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_edit_profile));
-                currentFragment = MY_PROFILE_FRAGMENT;
                 invalidateOptionsMenu();
             }
         });
-        getUserProfile();
     }
     boolean isExiting = false;
 
@@ -418,41 +338,33 @@ public class MainScreenActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        int count = getSupportFragmentManager().getBackStackEntryCount();
+        FragmentManager fm = getSupportFragmentManager();
+        int fragCount = fm.getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (count != 0 && (currentFragment == USER_DETAILS_FRAGMENT || currentFragment == SEARCH_FRAGMENT)){
-            getSupportFragmentManager().popBackStack();
-            currentFragment = NEAR_ME_FRAGMENT;
-            setTitle(getString(R.string.main_title_user_list));
-            invalidateOptionsMenu();
+        } else if (fragCount != 0) {
+            fm.popBackStack();
         } else if (currentFragment != NEAR_ME_FRAGMENT) {
             FragmentTransaction ft;
-            FragmentManager fm = getSupportFragmentManager();
             ft = fm.beginTransaction().replace(R.id.mainFrame, userListFragment, "userListFragment");
             ft.commit();
-            setTitle(getString(R.string.main_title_user_list));
-            currentFragment = NEAR_ME_FRAGMENT;
             navigationView.getMenu().getItem(0).setChecked(true);
-            invalidateOptionsMenu();
-        } else if (isTaskRoot()) {
+        } else {
             if (isExiting) {
                 super.onBackPressed();
                 return;
             }
 
             this.isExiting = true;
-            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.exit_bandup_toast, Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    isExiting=false;
+                    isExiting = false;
                 }
             }, 2000);
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -463,55 +375,56 @@ public class MainScreenActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentManager fm = getSupportFragmentManager();
         switch (id){
             case R.id.nav_near_me:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 mIsSearch = false;
                 ft.replace(R.id.mainFrame, userListFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_user_list));
-                currentFragment = NEAR_ME_FRAGMENT;
-                invalidateOptionsMenu();
                 break;
             case R.id.nav_matches:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, matchesFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_matches));
-                currentFragment = MATCHES_FRAGMENT;
-                invalidateOptionsMenu();
                 break;
             case R.id.nav_edit_profile:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_edit_profile));
-                currentFragment = MY_PROFILE_FRAGMENT;
-                invalidateOptionsMenu();
+
                 break;
             case R.id.nav_settings:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, settingsFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_settings));
-                currentFragment = SETTINGS_FRAGMENT;
-                invalidateOptionsMenu();
-
-                break;
-            case R.id.nav_logout:
-                logout();
-                logoutDialog = new ProgressDialog(MainScreenActivity.this);
-                logoutDialog.setMessage(getString(R.string.main_log_out_title));
-                logoutDialog.setTitle(getString(R.string.main_log_out_message));
-                logoutDialog.show();
                 break;
             case R.id.nav_upcomming:
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
                 ft.commit();
-                setTitle(getString(R.string.main_title_upcoming_features));
-                currentFragment = COMING_SOON_FRAGMENT;
-                invalidateOptionsMenu();
-
                 break;
+            case R.id.nav_logout:
+                logoutDialog = new ProgressDialog(MainScreenActivity.this);
+                logoutDialog.setMessage(getString(R.string.main_log_out_message));
+                logoutDialog.setTitle(getString(R.string.main_log_out_title));
+                logoutDialog.show();
+                logout();
+            break;
             default:
                 break;
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -574,7 +487,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 return;
             }
             bundle.putString("user_id", mUserSearchResultsFragment.mAdapter.getUser(position).id);
-        }else {
+        } else {
             if (userListFragment.mAdapter.getUser(position) == null) {
                 return;
             }
@@ -711,16 +624,16 @@ public class MainScreenActivity extends AppCompatActivity implements
     }
 
 
-    public void onClickLike(String userID) {
-        JSONObject user = new JSONObject();
+    public void onClickLike(final User user, final View likeButton) {
+        JSONObject jsonUser = new JSONObject();
 
         try {
-            user.put("userID", userID);
+            jsonUser.put("userID", user.id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(user, new BandUpResponseListener() {
+        DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
                 networkErrorBar.setVisibility(View.INVISIBLE);
@@ -740,6 +653,14 @@ public class MainScreenActivity extends AppCompatActivity implements
                         Toast.makeText(MainScreenActivity.this, R.string.main_error_match, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (likeButton instanceof Button) {
+                        Button likeBtn = (Button) likeButton;
+                        likeBtn.setText(getString(R.string.user_list_liked));
+                        likeBtn.setEnabled(false);
+                        likeBtn.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+                    }
+                    user.isLiked = true;
+                    userListFragment.mAdapter.likeUserById(user.id);
                     if (isMatch) {
                         Toast.makeText(MainScreenActivity.this, R.string.main_matched, Toast.LENGTH_SHORT).show();
                     }
@@ -792,7 +713,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 }
                 if (responseObj != null) {
                     // Binding View to real data
-                    currentUser = parseUser(responseObj);
+                    currentUser = new User(responseObj);
                     txtUsernameNav.setText(currentUser.name);
                     txtFavoriteNav.setText(currentUser.favoriteinstrument);
 

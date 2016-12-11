@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Request;
@@ -21,7 +22,6 @@ import com.soundcloud.api.Token;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,6 +33,7 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
     private String url;
     private AdView mAdView;
     private Date dateOfBirth = null;
+    private Button mLoginSC;
     private DatePickerFragment datePickerFragment = null;
     SetupShared sShared;
 
@@ -40,6 +41,7 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_cloud);
+        mLoginSC = (Button) findViewById(R.id.sign_in_button);
         sShared = new SetupShared();
         getAd();
     }
@@ -59,6 +61,8 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
 
         final String username = ((EditText)findViewById(R.id.username)).getText().toString();
         final String password = ((EditText)findViewById(R.id.password)).getText().toString();
+
+        mLoginSC.setEnabled(false);
 
         // start new thread since requests cannot be made on main
         new Thread(new Runnable() {
@@ -96,12 +100,15 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
 
                     VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLoginSC.setEnabled(true);
+                        }
+                    });
                     e.printStackTrace();
                 }
-
             }
         }).start();
     }

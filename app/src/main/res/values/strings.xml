@@ -53,6 +53,7 @@
     <string name="login_username_validation">Please enter your email</string>
     <string name="login_password_validation">Please enter your password</string>
     <string name="user_list_like">Like</string>
+    <string name="user_list_liked">Liked</string>
     <string name="user_list_details">Details</string>
     <string name="login_progress_title">Logging in</string>
     <string name="login_progress_description">Please wait...</string>
@@ -95,7 +96,8 @@
     <string name="profile_select_song">Select a Song</string>
     <string name="select_genres">Select genres</string>
     <string name="search">Search</string>
-    <string name="select_instruments">select Instruments</string>
+    <string name="main_title_search">Search</string>
+    <string name="select_instruments">Select Instruments</string>
     <string name="please_enter_search_parameters">Please enter search parameters</string>
     <string name="ages">Ages</string>
     <string name="all_genres">All genres</string>
@@ -134,7 +136,7 @@
     <string name="main_error_match">Error loading match.</string>
     <string name="main_matched">You Matched!</string>
     <string name="matches_error_json">Could not parse the JSON object.</string>
-    <string name="password_reset_email_sent">An e-mail has been sent</string>
+    <string name="password_reset_email_sent">If this is a registered email, then you will receive an email shortly.</string>
     <string name="privacy_title_licenses">Licenses</string>
     <string name="age_not_available">Age not specified</string>
     <string name="profile_upload_title">Uploading Photo</string>
@@ -156,9 +158,9 @@
     <string name="search_select_instruments">Select instruments</string>
     <string name="volley_connection_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_network_error">Could not connect to the server\nCheck your settings or try again.</string>
-    <string name="volley_server_error">Við gátum ekki náð í gögnin.\nVinsamlegast prófaðu aftur.</string>
+    <string name="volley_server_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_server_parse_error">Server parse error!</string>
-    <string name="volley_unknown_error">"Unknown error! Contact Administrator "</string>
+    <string name="volley_unknown_error">"Unknown error! Contact Administrator"</string>
     <string name="setup_error_fetch">Could not fetch information</string>
     <string name="sc_frag_no_song_selected">No song selected</string>
     <string name="sc_frag_no_name">The selected song has no name</string>

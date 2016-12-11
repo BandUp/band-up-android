@@ -12,38 +12,98 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class User implements Serializable {
 
-    public User(JSONObject json){
+    public User(JSONObject responseObj){
         instruments = new ArrayList<>();
         genres = new ArrayList<>();
 
         try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
-            id = json.getString("_id");
-            name = json.getString("username");
-            status = json.getString("status");
-            distance = json.getInt("distance");
-            percentage = json.getInt("percentage");
-            imgURL = json.getJSONObject("image").getString("url");
-            dateOfBirth = df.parse(json.getString("dateOfBirth"));
-            aboutme = json.getString("aboutme");
-            favoriteinstrument = json.getString("favoriteinstrument");
-            soundCloudId = json.getInt("soundCloudId");
-            soundCloudURL = json.getString("soundcloudurl");
-
-            JSONArray genreArr = json.getJSONArray("genres");
-            JSONArray instrArr = json.getJSONArray("instruments");
-            for(int i = 0; i < genreArr.length(); i++){
-                genres.add(genreArr.getString(i));
+            if (!responseObj.isNull("_id")) {
+                this.id = responseObj.getString("_id");
+            }
+            if (!responseObj.isNull("username")) {
+                this.name = responseObj.getString("username");
+            }
+            if (!responseObj.isNull("dateOfBirth")) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                this.dateOfBirth = df.parse(responseObj.getString("dateOfBirth"));
             }
 
-            for(int i = 0; i < instrArr.length(); i++){
-                instruments.add(instrArr.getString(i));
+            if (!responseObj.isNull("favoriteinstrument")) {
+                this.favoriteinstrument = responseObj.getString("favoriteinstrument");
             }
 
+            if (!responseObj.isNull("percentage")) {
+                this.percentage = responseObj.getInt("percentage");
+            }
+
+            if (!responseObj.isNull("genres")) {
+                JSONArray genreArray = responseObj.getJSONArray("genres");
+                for (int i = 0; i < genreArray.length(); i++) {
+                    this.genres.add(genreArray.getString(i));
+                }
+            }
+
+            if (!responseObj.isNull("instruments")) {
+                JSONArray instrumentArray = responseObj.getJSONArray("instruments");
+                for (int i = 0; i < instrumentArray.length(); i++) {
+                    this.instruments.add(instrumentArray.getString(i));
+                }
+            }
+
+            if (!responseObj.isNull("aboutme")) {
+                this.aboutme = responseObj.getString("aboutme");
+            }
+
+            if (!responseObj.isNull("image")) {
+                JSONObject imageObj = responseObj.getJSONObject("image");
+
+                if (!imageObj.isNull("url")) {
+                    this.imgURL = imageObj.getString("url");
+                }
+            }
+
+            if (!responseObj.isNull("soundCloudId")){
+                this.soundCloudId = responseObj.getInt("soundCloudId");
+            }
+
+            if (!responseObj.isNull("soundcloudurl")){
+                this.soundCloudURL = responseObj.getString("soundcloudurl");
+            }
+
+            if (!responseObj.isNull("soundCloudSongName")){
+                this.soundCloudSongName = responseObj.getString("soundCloudSongName");
+            }
+
+            UserLocation userLocation = new UserLocation();
+            if (!responseObj.isNull("location")) {
+
+                JSONObject location = responseObj.getJSONObject("location");
+                if (!location.isNull("lat")) {
+                    userLocation.setLatitude(location.getDouble("lat"));
+                }
+
+                if (!location.isNull("lon")) {
+                    userLocation.setLongitude(location.getDouble("lon"));
+                }
+
+                if (!location.isNull("valid")) {
+                    userLocation.setValid(location.getBoolean("valid"));
+                }
+            } else {
+                userLocation.setValid(false);
+            }
+            this.location = userLocation;
+
+            if (!responseObj.isNull("isLiked")) {
+                this.isLiked = responseObj.getBoolean("isLiked");
+            } else {
+                this.isLiked = false;
+
+            }
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
@@ -68,6 +128,7 @@ public class User implements Serializable {
     public String soundCloudURL;
     public String soundCloudSongName;
     public UserLocation location;
+    public Boolean isLiked;
 
     public Integer ageCalc() {
         if (dateOfBirth == null) {

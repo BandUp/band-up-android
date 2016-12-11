@@ -67,6 +67,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private DatePickerFragment datePickerFragment = null;
     private Button btnSignIn;
     private Button btnSignUp;
+    private LinearLayout llFacebookLoginDesign;
+    private LinearLayout llGoogleLoginDesign;
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
@@ -170,7 +172,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         });
 
-        LinearLayout llFacebookLoginDesign = (LinearLayout) findViewById(R.id.login_button_facebook_design);
+        llFacebookLoginDesign = (LinearLayout) findViewById(R.id.login_button_facebook_design);
         llFacebookLoginDesign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,10 +197,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 .build();
 
         // Google+ Sign In button design
-        LinearLayout llGoogleLoginDesign = (LinearLayout) findViewById(R.id.login_button_google_design);
+        llGoogleLoginDesign = (LinearLayout) findViewById(R.id.login_button_google_design);
         llGoogleLoginDesign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                llGoogleLoginDesign.setEnabled(false);
                 signIn();
             }
         });
@@ -270,7 +273,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        llGoogleLoginDesign.setEnabled(true);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...)
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);

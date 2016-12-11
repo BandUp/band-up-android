@@ -25,7 +25,6 @@ import com.melodies.bandup.MainScreenActivity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
-import com.melodies.bandup.helper_classes.UserLocation;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -33,11 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,13 +45,11 @@ import java.util.Locale;
 public class UserListFragment extends Fragment {
     private AdView mAdView;
 
-    // prevents reloading of data from server if used as search results
-    private boolean mIsSearch = false;
-
     private OnFragmentInteractionListener mListener;
     private boolean isSwipeRefresh = false;
     private int currentUserIndex;
     private String userIdBeforeRefresh;
+    private MainScreenActivity mainScreenActivity;
 
     public UserListFragment() {
         // Required empty public constructor
@@ -92,17 +85,17 @@ public class UserListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainScreenActivity = (MainScreenActivity)getActivity();
         if (getArguments() != null) {
             String userList = getArguments().getString("userlist");
             if(userList != null){
-                ArrayList<User> userArrayList = new ArrayList<>();
                 try {
                     JSONArray jsonArray = new JSONArray(userList);
 
                     mAdapter = new UserListAdapter(getChildFragmentManager());
                     mAdapter.clear();
                     mAdapter.addUsers(parseUsers(jsonArray));
-                    mIsSearch = true;
+                    mainScreenActivity.setIsSearch(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -118,7 +111,7 @@ public class UserListFragment extends Fragment {
      * get users from backend and insert them into the user list adapter
      */
     private void getUserList() {
-        if (mIsSearch){
+        if (mainScreenActivity.getIsSearch()){
             progressBar.setVisibility(View.INVISIBLE);
             return;
         }
@@ -131,8 +124,10 @@ public class UserListFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().getUserList(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-
-                mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
+                if (getActivity() == null) {
+                    return;
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONArray responseArr = null;
 
@@ -181,14 +176,16 @@ public class UserListFragment extends Fragment {
                     txtNoUsers.setVisibility(View.VISIBLE);
                     return;
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
                 isSwipeRefresh = false;
 
             }
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-
+                if (getActivity() == null) {
+                    return;
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
@@ -205,7 +202,6 @@ public class UserListFragment extends Fragment {
                     return;
                 }
                 VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
-                mSwipeRefreshLayout.setRefreshing(false);
                 isSwipeRefresh = false;
             }
         });
@@ -219,66 +215,14 @@ public class UserListFragment extends Fragment {
             try {
                 if (responseArr.get(i) != null) {
                     JSONObject item = responseArr.getJSONObject(i);
-                    User user = new User();
-                    if (!item.isNull("_id")) user.id = item.getString("_id");
-                    if (!item.isNull("username")) user.name = item.getString("username");
-                    if (!item.isNull("status")) user.status = item.getString("status");
-                    if (!item.isNull("distance")) user.distance = item.getInt("distance");
-
-                    user.percentage = item.getInt("percentage");
-                    if (!item.isNull("image")) {
-                        JSONObject userImg = item.getJSONObject("image");
-                        if (!userImg.isNull("url")) {
-                            user.imgURL = userImg.getString("url");
-                        }
-                    }
-
-                    if (!item.isNull("dateOfBirth")) {
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        user.dateOfBirth = df.parse(item.getString("dateOfBirth"));
-                    }
-
-                    JSONArray instrumentArray = item.getJSONArray("instruments");
-
-                    for (int j = 0; j < instrumentArray.length(); j++) {
-                        user.instruments.add(instrumentArray.getString(j));
-                    }
-
-                    JSONArray genreArray = item.getJSONArray("genres");
-
-                    for (int j = 0; j < genreArray.length(); j++) {
-                        user.genres.add(genreArray.getString(j));
-                    }
-                    Integer age = user.ageCalc();
-                    UserLocation userLocation = new UserLocation();
-                    if (!item.isNull("location")) {
-
-                        JSONObject location = item.getJSONObject("location");
-                        if (!location.isNull("lat")) {
-                            userLocation.setLatitude(location.getDouble("lat"));
-                        }
-
-                        if (!location.isNull("lon")) {
-                            userLocation.setLongitude(location.getDouble("lon"));
-                        }
-
-                        if (!location.isNull("valid")) {
-                            userLocation.setValid(location.getBoolean("valid"));
-                        }
-                    } else {
-                        userLocation.setValid(false);
-                    }
-                    user.location = userLocation;
-                    if (settingsAgeFilter(age, minAge, maxAge)) {
+                    User user = new User(item);
+                    if (settingsAgeFilter(user.ageCalc(), minAge, maxAge)) {
                         userList.add(user);
                     }
                 }
 
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            } catch (ParseException e) {
-                Toast.makeText(getActivity(), R.string.matches_error_date, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -307,7 +251,15 @@ public class UserListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
+        final MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.NEAR_ME_FRAGMENT;
+        mainScreenActivity.invalidateOptionsMenu();
 
+        if (mainScreenActivity.getIsSearch()) {
+            getActivity().setTitle(getString(R.string.main_title_search_results));
+        } else {
+            getActivity().setTitle(getString(R.string.main_title_user_list));
+        }
         // Adding ad Banner
         mAdView = (AdView)rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -321,8 +273,13 @@ public class UserListFragment extends Fragment {
         mPager.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.bandUpYellow),
+                getResources().getColor(R.color.bandUpGreen)
+        );
 
-        if (mIsSearch) {
+
+        if (mainScreenActivity.getIsSearch()) {
             mSwipeRefreshLayout.setEnabled(false);
         }
 
@@ -330,10 +287,14 @@ public class UserListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 // TODO: Do not clear, but replace the items that are different.
-                if (!mIsSearch) {
+                if (!mainScreenActivity.getIsSearch()) {
                     isSwipeRefresh = true;
                     // currentUserIndex is changed in the OnPageChangeListener
-                    userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
+                    if (mAdapter.getUser(currentUserIndex) != null) {
+                        userIdBeforeRefresh = mAdapter.getUser(currentUserIndex).id;
+                    } else {
+                        userIdBeforeRefresh = "";
+                    }
                     getUserList();
                 }
             }
@@ -355,11 +316,6 @@ public class UserListFragment extends Fragment {
             }
         });
 
-
-
-
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.bandUpGreen));
-
         networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
 
         partialView.setVisibility(View.VISIBLE);
@@ -372,7 +328,7 @@ public class UserListFragment extends Fragment {
                 txtNoUsers.setVisibility(View.VISIBLE);
             }
 
-            if (mIsSearch) {
+            if (mainScreenActivity.getIsSearch()) {
                 txtNoUsers.setText(R.string.search_no_results);
                 txtNoUsers.setVisibility(View.VISIBLE);
             }
@@ -399,6 +355,7 @@ public class UserListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mainScreenActivity.setIsSearch(false);
     }
 
     /**

@@ -53,6 +53,7 @@
     <string name="login_password_validation">Vinsamlegast skrifaðu inn lykilorðið þitt</string>
     <string name="user_list_details">Nánar</string>
     <string name="user_list_like">Líka</string>
+    <string name="user_list_liked">Líkad</string>
     <string name="login_progress_description">Vinsamlegast bíðið...</string>
     <string name="login_progress_title">Skrái þig inn</string>
     <string name="register_enter_dateofbirth">Vinsamlega skráðu fæðingardag</string>
@@ -124,11 +125,12 @@
     <string name="main_log_out_title">Skrái þig út</string>
     <string name="main_matched">Þið tengdust!</string>
     <string name="main_title_search_results">Leitarniðurstöður</string>
+    <string name="main_title_search">Leit</string>
     <string name="main_title_upcoming_features">Á döfinni</string>
     <string name="matches_error_json">Gat ekki parsað JSON hlutinn.</string>
     <string name="matches_failed_to_fetch">Gat ekki náð í tenginga listann</string>
     <string name="mi_distance">mílur frá þér</string>
-    <string name="password_reset_email_sent">Tölvupóstur hefur verið sendur</string>
+    <string name="password_reset_email_sent">Ef þetta netfang er skráð hjá okkur, þá mun þér berast póstur innan skamms</string>
     <string name="privacy_title_licenses">Leyfi</string>
     <string name="profile_error_updating_user">Gat ekki uppfært notanda</string>
     <string name="profile_new_photo_dialog">Ný mynd</string>

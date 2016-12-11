@@ -76,6 +76,7 @@ public class MatchesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         matchItems = new ArrayList<>();
         mmrva = new MyMatchesRecyclerViewAdapter(getActivity(), matchItems, mListener);
         if (getArguments() != null) {
@@ -86,6 +87,11 @@ public class MatchesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.MATCHES_FRAGMENT;
+        mainScreenActivity.setTitle(R.string.main_title_matches);
+        mainScreenActivity.invalidateOptionsMenu();
+
         View view = inflater.inflate(R.layout.fragment_matches_list, container, false);
 
         // Adding ad Banner
@@ -124,6 +130,9 @@ public class MatchesFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        if (getActivity() == null) {
+                            return;
+                        }
                         progressBar.setVisibility(View.INVISIBLE);
 
                         if (response.length() == 0) {
@@ -156,6 +165,9 @@ public class MatchesFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (getActivity() == null) {
+                            return;
+                        }
                         txtNoUsers.setText(R.string.matches_failed_to_fetch);
                         txtNoUsers.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);

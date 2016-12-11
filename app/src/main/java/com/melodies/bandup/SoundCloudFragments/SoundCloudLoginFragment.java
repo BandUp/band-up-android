@@ -167,11 +167,17 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
                             new BandUpResponseListener() {
                                 @Override
                                 public void onBandUpResponse(Object response) {
+                                    if (getActivity() == null){
+                                        return;
+                                    }
                                     finish();
                                 }
                             }, new BandUpErrorListener() {
                                 @Override
                                 public void onBandUpErrorResponse(VolleyError error) {
+                                    if (getActivity() == null){
+                                        return;
+                                    }
                                     //Toast.makeText(getContext(), "server error", Toast.LENGTH_LONG).show();
                                     finish();
                                 }

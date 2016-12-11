@@ -89,6 +89,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.SETTINGS_FRAGMENT;
+        mainScreenActivity.setTitle(R.string.main_title_settings);
+        mainScreenActivity.invalidateOptionsMenu();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
@@ -340,11 +344,17 @@ public class SettingsFragment extends Fragment {
             DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
+                    if (getActivity() == null){
+                        return;
+                    }
                     // succesful response
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
+                    if (getActivity() == null){
+                        return;
+                    }
                     error.printStackTrace();
                     Toast.makeText(getActivity(), "Error" + error, Toast.LENGTH_LONG).show();
                 }

@@ -118,7 +118,7 @@ public class UserDetailsFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity) getActivity()).onClickLike(currentUser.id);
+                ((MainScreenActivity) getActivity()).onClickLike(currentUser, v);
             }
         });
     }
@@ -148,6 +148,7 @@ public class UserDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
         }
         // Gets the user_id from userListFragment
@@ -160,6 +161,10 @@ public class UserDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity.currentFragment = mainScreenActivity.USER_DETAILS_FRAGMENT;
+        mainScreenActivity.invalidateOptionsMenu();
+
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
 
@@ -202,12 +207,23 @@ public class UserDetailsFragment extends Fragment {
                     txtAge.setText(ageString);
                 }
             } else {
-                txtAge.setText("Age not available");
+                txtAge.setText(getString(R.string.age_not_available));
             }
         }
-        if (u.favoriteinstrument != null) {
+        if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
             txtFavorite.setText(u.favoriteinstrument);
+        } else {
+            if (u.instruments.size() != 0) {
+                txtFavorite.setText(u.instruments.get(0));
+            }
         }
+
+        if (u.isLiked) {
+            btnLike.setText(getString(R.string.user_list_liked));
+            btnLike.setEnabled(false);
+            btnLike.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+        }
+
         txtPercentage.setText(u.percentage + "%");
         txtAboutMe.setText(u.aboutme);
 
@@ -243,6 +259,9 @@ public class UserDetailsFragment extends Fragment {
 
 
         txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
+        if (u.id.equals(currentUser.id)) {
+
+        }
     }
 
     private Float getDistanceToUser(User u) {
@@ -305,6 +324,9 @@ public class UserDetailsFragment extends Fragment {
 
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null){
+                    return;
+                }
                 progressBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
                 if (response instanceof JSONObject) {
@@ -314,7 +336,7 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (responseObj != null) {
                     // Binding View to real data
-                    currentUser = ((MainScreenActivity)getActivity()).parseUser(responseObj);
+                    currentUser = new User(responseObj);
                     populateUser(currentUser);
 
                 }
@@ -322,6 +344,9 @@ public class UserDetailsFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null){
+                    return;
+                }
                 txtFetchError.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
 

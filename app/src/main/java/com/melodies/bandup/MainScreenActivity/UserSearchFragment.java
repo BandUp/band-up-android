@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -382,6 +383,9 @@ public class UserSearchFragment extends Fragment {
      * @param view
      */
     public void onClickSearch(View view){
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         Log.d(TAG, "Search initialized");
         JSONObject queryObject = makeQueryJson();
         makeQuery(queryObject);

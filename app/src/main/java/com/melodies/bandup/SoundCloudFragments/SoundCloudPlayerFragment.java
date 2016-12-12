@@ -83,6 +83,10 @@ public class SoundCloudPlayerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if(mSoundCloudPlayer != null) {
+            mSoundCloudPlayer.loadUrl("about:blank");
+            mSoundCloudPlayer = null;
+        }
     }
 
     private void instantiatePlayer(){

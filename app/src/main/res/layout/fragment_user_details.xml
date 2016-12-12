@@ -165,8 +165,8 @@
                         android:layout_height="match_parent"
                         android:paddingBottom="15dp"
                         android:paddingTop="15dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp" >
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp" >
 
                         <TextView
                             android:layout_width="match_parent"

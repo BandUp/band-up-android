@@ -79,10 +79,11 @@
     <string name="main_title_matches">Matches</string>
     <string name="main_title_settings">Settings</string>
     <string name="main_nav_settings">Settings</string>
-    <string name="main_nav_edit_profile">My Profile</string>
+    <string name="main_nav_my_profile">My Profile</string>
     <string name="main_nav_matches">Matches/Chat</string>
     <string name="main_nav_near_me">Near Me</string>
-    <string name="main_title_edit_profile">My Profile</string>
+    <string name="main_title_my_profile">My Profile</string>
+    <string name="main_title_edit_profile">Edit Profile</string>
     <string name="main_nav_log_out">Log Out</string>
     <string name="details_instruments">Instruments</string>
     <string name="details_genres">Genres</string>

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -183,6 +184,24 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+
+        etAboutMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+
+        etAboutMe.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    scrollView.fullScroll(View.FOCUS_DOWN);
+                }
+            }
+        });
 
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();

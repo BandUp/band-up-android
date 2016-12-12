@@ -69,13 +69,14 @@
     <string name="action_sign_in_short">Innskráning</string>
     <string name="prompt_email">Tölvupóstur</string>
     <string name="title_activity_sound_cloud">Nýskráning</string>
-    <string name="main_nav_edit_profile">Prófíllinn minn</string>
+    <string name="main_nav_my_profile">Prófíllinn minn</string>
     <string name="main_nav_matches">Tengingar/Spjall</string>
     <string name="main_nav_near_me">Nálægt mér</string>
     <string name="main_nav_settings">Stillingar</string>
     <string name="main_title_matches">Tengingar</string>
     <string name="main_title_settings">Stillingar</string>
-    <string name="main_title_edit_profile">Prófíllinn minn</string>
+    <string name="main_title_my_profile">Prófíllinn minn</string>
+    <string name="main_title_edit_profile">Breyta prófíl</string>
     <string name="main_nav_log_out">Útskrá</string>
     <string name="details_instruments">Hljóðfæri</string>
     <string name="details_genres">Tónlistarstefnur</string>

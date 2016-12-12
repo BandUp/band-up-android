@@ -205,7 +205,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.MY_PROFILE_FRAGMENT;
-        mainScreenActivity.setTitle(R.string.main_title_edit_profile);
+        mainScreenActivity.setTitle(R.string.main_title_my_profile);
         mainScreenActivity.invalidateOptionsMenu();
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         initializeViews(rootView);

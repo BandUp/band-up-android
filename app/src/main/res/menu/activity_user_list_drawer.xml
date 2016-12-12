@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/ic_account"
-            android:title="@string/main_nav_edit_profile" />
+            android:title="@string/main_nav_my_profile" />
 
         <item
             android:id="@+id/nav_matches"

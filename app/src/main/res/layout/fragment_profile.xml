@@ -69,6 +69,7 @@
 
                         <TextView
                             android:text="Username"
+                            android:textColor="@color/bandUpYellow"
                             android:layout_marginBottom="5dp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -118,6 +119,7 @@
 
                         <TextView
                             android:text="@string/details_instruments"
+                            android:textColor="@color/bandUpYellow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtInstrumentTitle"
@@ -142,6 +144,7 @@
 
                         <TextView
                             android:text="@string/details_genres"
+                            android:textColor="@color/bandUpYellow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/txtGenresTitle"
@@ -160,34 +163,30 @@
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="#FFFFFF" />
+                    android:layout_height="2dp"
+                    android:background="@color/bandUpYellowTransparent" />
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin">
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/txtAboutMe"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignEnd="@+id/txtStatus"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
                         android:textSize="18sp"
-                        android:hint="@string/about_me"
-                        android:maxLength="100" />
+                        android:hint="@string/about_me" />
 
                 </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:background="#60FFFFFF" />
+                    android:background="@color/bandUpYellowTransparent" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -120,7 +120,8 @@
     <string name="connection_banner_message">Please check your network connection.</string>
     <string name="profile_fetch_error_other">Could not get the profile</string>
     <string name="edit_profile_favourite_instument_hint">Your Favourite Instrument</string>
-    <string name="edit_profile_influences">What are your influences?</string>
+    <string name="edit_profile_influences">Tell us about your influences and experience</string>
+    <string name="edit_profile_more_info">More information is better for other users.</string>
     <string name="edit_profile_about_me">About Me</string>
     <string name="edit_profile_save">Save</string>
     <string name="no_soundcloud_example">has not selected an audio sample, yet.</string>
@@ -155,7 +156,9 @@
     <string name="search_ok">OK</string>
     <string name="search_cancel">Cancel</string>
     <string name="search_none_selected">None selected</string>
-    <string name="search_select_instruments">Select instruments</string>
+    <string name="search_select">Select</string>
+    <string name="search_select_instruments">Select Instruments</string>
+    <string name="search_select_genres">Select Genres</string>
     <string name="volley_connection_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_network_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_server_error">Could not connect to the server\nCheck your settings or try again.</string>
@@ -189,5 +192,4 @@
     <string name="upcoming_event_calendar">Event calendar</string>
     <string name="upcoming_share_users">Share users you found to social media</string>
     <string name="upcoming_rent_practice">Rent practise areas</string>
-    <string name="search_select_genres">Select Genres</string>
 </resources>

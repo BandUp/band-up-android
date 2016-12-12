@@ -114,7 +114,8 @@
     <string name="edit_profile_about_me">Um mig</string>
     <string name="edit_profile_favourite_instument_hint">Uppáhalds hljóðfærið þitt</string>
     <string name="edit_profile_save">Vista</string>
-    <string name="edit_profile_influences">Hverjir eru þínir áhrifavaldar?</string>
+    <string name="edit_profile_influences">Segðu frá þínum helstu áhrifavöldum og reynslu.</string>
+    <string name="edit_profile_more_info">Meiri upplýsingar eru betri fyrir aðra notendur.</string>
     <string name="audio_sample_from_soundcloud">Hljóðbrot frá SoundCloud</string>
     <string name="no_soundcloud_example">hefur ekki valið hljóðbrot.</string>
     <string name="age_not_available">Aldur ekki skilgreindur</string>
@@ -145,7 +146,9 @@
     <string name="search_no_results">Gat ekki fundið neinn sem passar við leitarskilyrðin</string>
     <string name="search_none_selected">Ekkert valið</string>
     <string name="search_ok">OK</string>
+    <string name="search_select">Velja</string>
     <string name="search_select_instruments">Velja hljóðfæri</string>
+    <string name="search_select_genres">Velja tónlistarstefnur</string>
     <string name="update_about_me_cancel">Hætta við</string>
     <string name="update_about_me_favorite_instrument">Hvað er uppáhalds hljóðfærið þitt?</string>
     <string name="user_list_error_fetch_list">Gat ekki náð í tónlistarfólk nálægt þér</string>
@@ -182,5 +185,4 @@
     <string name="upcoming_event_calendar">Viðburðadagatal</string>
     <string name="upcoming_rent_practice">Leigja æfingapláss</string>
     <string name="upcoming_share_users">Deila notendum sem þú fannst á samfélagsmiðlum</string>
-    <string name="search_select_genres">Velja tónlistarstefnur</string>
 </resources>

@@ -223,7 +223,7 @@ public class UserItemFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
         Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
-        if (hasLocationPermission) {
+        if (hasLocationPermission && locationProvider != null) {
             Location myLocation = locationManager.getLastKnownLocation(locationProvider);
             Location userLocation = new Location("");
             if (u.location.getValid()) {

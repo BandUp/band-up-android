@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,6 +52,8 @@ public class UserSearchFragment extends Fragment {
     private RangeSeekBar<Number> mSeekBarAges;
     private TextView             mSelectedInstruments;
     private TextView             mSelectedGenres;
+    private TextView             mInstrumentsTitle;
+    private TextView             mGenresTitle;
     private Button               mInstruments;
     private Button               mGenres;
     private Button               mSearch;
@@ -146,6 +149,8 @@ public class UserSearchFragment extends Fragment {
         mGenres              = (Button) rootView.findViewById(R.id.btn_select_genres);
         mSelectedGenres      = (TextView) rootView.findViewById(R.id.txt_select_genres);
         mSearch              = (Button) rootView.findViewById(R.id.btn_search);
+        mInstrumentsTitle = (TextView) rootView.findViewById(R.id.txt_instruments_title);
+        mGenresTitle = (TextView) rootView.findViewById(R.id.txt_genres_title);
     }
 
     /**
@@ -287,12 +292,19 @@ public class UserSearchFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // Set text on instruments list element.
                         mSelectedInstruments.setText("");
-                        for (int i = 0; i < mSelectedInstrumentNames.size(); i++) {
-                            mSelectedInstruments.append(mSelectedInstrumentNames.get(i));
-                            if (!(i == mSelectedInstrumentNames.size() - 1)) {
-                                mSelectedInstruments.append(", ");
+                        if (mSelectedInstrumentNames.size() != 0) {
+                            for (int i = 0; i < mSelectedInstrumentNames.size(); i++) {
+                                mSelectedInstruments.append(mSelectedInstrumentNames.get(i));
+                                if (!(i == mSelectedInstrumentNames.size() - 1)) {
+                                    mSelectedInstruments.append(", ");
+                                }
                             }
+                            mInstrumentsTitle.setTextColor(getActivity().getResources().getColor(R.color.bandUpYellow));
+                        } else {
+                            mInstrumentsTitle.setTextColor(getActivity().getResources().getColor(android.R.color.darker_gray));
+                            mSelectedInstruments.setText(getString(R.string.search_none_selected));
                         }
+
                     }
                 })
                 .setNegativeButton(getString(R.string.search_cancel), new DialogInterface.OnClickListener() {
@@ -337,12 +349,21 @@ public class UserSearchFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Set text on genre list element.
+
                         mSelectedGenres.setText("");
+                        if (mSelectedGenreNames.size() != 0) {
+
                         for (int i = 0; i < mSelectedGenreNames.size(); i++) {
                             mSelectedGenres.append(mSelectedGenreNames.get(i));
                             if (!(i == mSelectedGenreNames.size() - 1)) {
                                 mSelectedGenres.append(", ");
                             }
+                        }
+
+                        mGenresTitle.setTextColor(getActivity().getResources().getColor(R.color.bandUpYellow));
+                        } else {
+                            mGenresTitle.setTextColor(getActivity().getResources().getColor(android.R.color.darker_gray));
+                            mSelectedGenres.setText(getString(R.string.search_none_selected));
                         }
                     }
                 })
@@ -362,6 +383,9 @@ public class UserSearchFragment extends Fragment {
      * @param view
      */
     public void onClickSearch(View view){
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         Log.d(TAG, "Search initialized");
         JSONObject queryObject = makeQueryJson();
         makeQuery(queryObject);

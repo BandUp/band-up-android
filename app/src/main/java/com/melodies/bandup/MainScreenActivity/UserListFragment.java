@@ -136,12 +136,14 @@ public class UserListFragment extends Fragment {
                 } else {
                     txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
+                    partialView.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if (responseArr.length() == 0) {
                     txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
+                    partialView.setVisibility(View.INVISIBLE);
                     return;
                 }
 
@@ -174,6 +176,7 @@ public class UserListFragment extends Fragment {
                 if (mAdapter.getCount() == 0) {
                     txtNoUsers.setText(getString(R.string.user_list_no_users));
                     txtNoUsers.setVisibility(View.VISIBLE);
+                    partialView.setVisibility(View.INVISIBLE);
                     return;
                 }
                 isSwipeRefresh = false;
@@ -189,6 +192,7 @@ public class UserListFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
                 txtNoUsers.setText(R.string.user_list_error_fetch_list);
                 txtNoUsers.setVisibility(View.VISIBLE);
+                partialView.setVisibility(View.INVISIBLE);
 
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     networkErrorBar.setVisibility(View.VISIBLE);

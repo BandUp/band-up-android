@@ -95,6 +95,8 @@ public class UserDetailsFragment extends Fragment {
     private AdView mAdView;
     private LinearLayout mSoundcloudArea;
 
+    private Fragment soundCloudFragment;
+
     private void initializeViews(View rootView) {
         txtName = (TextView) rootView.findViewById(R.id.txtName);
         txtDistance = (TextView) rootView.findViewById(R.id.txtDistance);
@@ -299,7 +301,6 @@ public class UserDetailsFragment extends Fragment {
             FragmentTransaction ft = fragmentManager.beginTransaction();
 
             mSoundcloudArea.setId(Integer.valueOf(1234));
-            Fragment soundCloudFragment;
 
             soundCloudFragment = SoundCloudPlayerFragment.newInstance(user.soundCloudURL);
             ft.replace(mSoundcloudArea.getId(), soundCloudFragment, "soundCloudFragment");

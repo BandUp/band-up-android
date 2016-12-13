@@ -3,8 +3,6 @@ package com.melodies.bandup.MainScreenActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -119,14 +118,10 @@ public class SettingsFragment extends Fragment {
         txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
         txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
 
-        PackageInfo pInfo = null;
-        try {
-            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            String version = pInfo.versionName;
-            txtVersion.setText(String.format("BandUp %s", version));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        int build = BuildConfig.VERSION_CODE;
+        String version = BuildConfig.VERSION_NAME;
+        txtVersion.setText(String.format("BandUp %s (%s)", version, build));
 
     }
 

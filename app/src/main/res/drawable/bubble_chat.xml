@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <gradient
-        android:startColor="#3F51B5"
-        android:endColor="#303F9F"
+        android:startColor="@color/bandUpYellow"
+        android:endColor="#E5C404"
         android:angle="270" />
     <corners
         android:radius="20dp"

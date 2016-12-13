@@ -112,10 +112,7 @@ public class SettingsFragment extends Fragment {
         txtContact        = (TextView)rootView.findViewById(R.id.txtContact);
         txtHelp           = (TextView)rootView.findViewById(R.id.txtHelp);
         txtSupport        = (TextView)rootView.findViewById(R.id.txtSupport);
-        txtLegal          = (TextView)rootView.findViewById(R.id.txtLegal);
         txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
-        txtPPolicy        = (TextView)rootView.findViewById(R.id.txtPPolicy);
-        txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
         txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
 
 

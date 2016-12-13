@@ -41,6 +41,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
@@ -468,7 +469,17 @@ public class MainScreenActivity extends AppCompatActivity implements
         profileFragment.onClickDisplayModal(view);
     }
 
-    public void onClickContact(View view) { settingsFragment.onClickContact(view); }
+    public void onClickContact(View view) {
+        String subject = String.format("Help with Band Up %s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@bandup.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 
     public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }
 

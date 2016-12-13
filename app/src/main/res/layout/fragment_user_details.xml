@@ -54,8 +54,7 @@
                                 android:id="@+id/txtPercentage"
                                 android:gravity="center"
                                 android:layout_marginTop="10dp"
-                                android:layout_below="@+id/txtDistance"
-                                android:layout_toEndOf="@+id/imgProfile"
+                                android:textColor="@color/colorWhite"
                                 android:textSize="25sp" />
                         </LinearLayout>
 

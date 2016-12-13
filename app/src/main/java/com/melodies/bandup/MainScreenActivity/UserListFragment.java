@@ -237,7 +237,12 @@ public class UserListFragment extends Fragment {
     public Integer loadUserCredentials(String valueName) {
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
-            return sharedPreferences.getInt (valueName, 13);
+            if (valueName.equals("maxAge")) {
+                return sharedPreferences.getInt(valueName, getResources().getInteger(R.integer.max_age));
+            } else if (valueName.equals("minAge")) {
+                return sharedPreferences.getInt(valueName, getResources().getInteger(R.integer.min_age));
+            }
+            return sharedPreferences.getInt (valueName, 0);
         }
         return -1;
     }

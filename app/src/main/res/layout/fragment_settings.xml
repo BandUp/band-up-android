@@ -174,7 +174,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_title_about_us"
+                    android:text="@string/settings_support"
                     android:paddingStart="20dp"
                     android:textSize="20sp"
                     android:paddingTop="5dp"
@@ -185,43 +185,11 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="@string/settings_contact"
+                    android:text="Email Support"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
                     android:id="@+id/txtContact"
-                    android:onClick="onClickContact"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:background="?android:attr/selectableItemBackground"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#40FFFFFF" />
-                <TextView
-                    android:text="@string/settings_help"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center_vertical"
-                    android:id="@+id/txtHelp"
-                    android:onClick="onClickContact"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:background="?android:attr/selectableItemBackground"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#40FFFFFF" />
-                <TextView
-                    android:text="@string/settings_support"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center_vertical"
-                    android:id="@+id/txtSupport"
                     android:onClick="onClickContact"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"
@@ -245,60 +213,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
-
-                <TextView
-                    android:text="@string/settings_legal"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/txtLegal"
-                    android:onClick="onClickPrivacyPolicy"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#40FFFFFF" />
                 <TextView
                     android:text="@string/settings_licenses"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtLicenses"
-                    android:onClick="onClickPrivacyPolicy"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#40FFFFFF" />
-                <TextView
-                    android:text="@string/settings_privacy_policy"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/txtPPolicy"
-                    android:onClick="onClickPrivacyPolicy"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#40FFFFFF" />
-                <TextView
-                    android:text="@string/settings_terms_of_service"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/txtTermsOfService"
                     android:onClick="onClickPrivacyPolicy"
                     android:textSize="18sp"
                     android:textColor="@color/colorWhite"

@@ -32,6 +32,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
@@ -187,10 +190,11 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
         final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
 
+
         etAboutMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollView.fullScroll(View.FOCUS_DOWN);
+                scrollAfterHalfSecond(scrollView);
             }
         });
 
@@ -198,7 +202,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.fullScroll(View.FOCUS_DOWN);
+                    scrollAfterHalfSecond(scrollView);
                 }
             }
         });
@@ -207,6 +211,17 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView = (AdView)findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
+    }
+
+    private void scrollAfterHalfSecond(final ScrollView scrollView) {
+        final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+
+        exec.schedule(new Runnable(){
+            @Override
+            public void run(){
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 600, TimeUnit.MILLISECONDS);
     }
 
     private void updateAgeText() {

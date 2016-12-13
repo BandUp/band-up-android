@@ -112,10 +112,7 @@ public class SettingsFragment extends Fragment {
         txtContact        = (TextView)rootView.findViewById(R.id.txtContact);
         txtHelp           = (TextView)rootView.findViewById(R.id.txtHelp);
         txtSupport        = (TextView)rootView.findViewById(R.id.txtSupport);
-        txtLegal          = (TextView)rootView.findViewById(R.id.txtLegal);
         txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
-        txtPPolicy        = (TextView)rootView.findViewById(R.id.txtPPolicy);
-        txtTermsOfService = (TextView)rootView.findViewById(R.id.txtTermsOfService);
         txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
 
 
@@ -265,6 +262,9 @@ public class SettingsFragment extends Fragment {
     // loading switch state
     public boolean loadUserSwitch(String valueName) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+        if (valueName.equals("switchUnit")) {
+            return sharedPreferences.getBoolean(valueName, false);
+        }
         return sharedPreferences.getBoolean(valueName, true);   // this true is the default value
     }
 

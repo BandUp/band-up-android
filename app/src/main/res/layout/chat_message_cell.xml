@@ -19,5 +19,5 @@
         android:text="Message"
         android:gravity="start|center"
         android:id="@+id/txtChatMessageText"
-        android:textColor="@color/transparent"/>
+        android:textColor="@color/colorBlack"/>
 </LinearLayout>

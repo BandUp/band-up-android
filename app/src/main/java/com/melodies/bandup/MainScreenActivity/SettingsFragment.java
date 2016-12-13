@@ -262,6 +262,9 @@ public class SettingsFragment extends Fragment {
     // loading switch state
     public boolean loadUserSwitch(String valueName) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
+        if (valueName.equals("switchUnit")) {
+            return sharedPreferences.getBoolean(valueName, false);
+        }
         return sharedPreferences.getBoolean(valueName, true);   // this true is the default value
     }
 

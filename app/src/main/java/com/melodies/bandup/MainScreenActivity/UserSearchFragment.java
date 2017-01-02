@@ -130,7 +130,7 @@ public class UserSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.SEARCH_FRAGMENT;
-        mainScreenActivity.setTitle(R.string.search);
+        mainScreenActivity.setTitle(R.string.search_title);
         mainScreenActivity.invalidateOptionsMenu();
         View rootView = inflater.inflate(R.layout.fragment_user_search, container, false);
         findViews(rootView);

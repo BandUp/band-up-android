@@ -217,7 +217,7 @@
             <Button
                 android:text="@string/user_list_like"
                 android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:layout_gravity="center|bottom"
                 android:id="@+id/btnLike"
                 android:background="@drawable/button_user_list_like"

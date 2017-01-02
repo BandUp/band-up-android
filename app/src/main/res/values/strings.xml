@@ -97,10 +97,11 @@
     <string name="profile_select_song">Select a Song</string>
     <string name="select_genres">Select genres</string>
     <string name="search">Search</string>
+    <string name="search_title">Advanced Search</string>
     <string name="main_title_search">Search</string>
     <string name="select_instruments">Select Instruments</string>
-    <string name="please_enter_search_parameters">Please enter search parameters</string>
-    <string name="ages">Ages</string>
+    <string name="please_enter_search_parameters">Use these tools to find the perfect musician</string>
+    <string name="ages">Show age range…</string>
     <string name="all_genres">All genres</string>
     <string name="all_instuments">All instruments</string>
     <string name="search_find_username">Search by name</string>
@@ -134,7 +135,7 @@
     <string name="main_log_out_title">Logging out</string>
     <string name="main_log_out_message">Please wait...</string>
     <string name="main_title_upcoming_features">Upcoming features</string>
-    <string name="main_title_search_results">Search results</string>
+    <string name="main_title_search_results">Search Results</string>
     <string name="main_error_match">Error loading match.</string>
     <string name="main_matched">You Matched!</string>
     <string name="matches_error_json">Could not parse the JSON object.</string>
@@ -193,4 +194,5 @@
     <string name="upcoming_event_calendar">Event calendar</string>
     <string name="upcoming_share_users">Share users you found to social media</string>
     <string name="upcoming_rent_practice">Rent practise areas</string>
+    <string name="search_mucicians_displayed">Choose what kind of musicians you want to display</string>
 </resources>

@@ -90,10 +90,11 @@
     <string name="profile_select_song">Velja lag</string>
     <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
+    <string name="search_title">Ítarleg leit</string>
     <string name="search_find_username">Leita eftir nafni</string>
     <string name="select_instruments">Velja hljóðfæri</string>
-    <string name="please_enter_search_parameters">Vinsamlega skilgreindu leitarskilyrði</string>
-    <string name="ages">Aldur</string>
+    <string name="please_enter_search_parameters">Notaðu þessi tól til þess að finna hinn fullkomna tónlistarmann</string>
+    <string name="ages">Sýna aldursbil</string>
     <string name="all_genres">Allir tónlistarsmekkir</string>
     <string name="all_instuments">Öll hljóðfæri</string>
     <string name="coming_soon">Kemur fljótlega</string>
@@ -186,4 +187,5 @@
     <string name="upcoming_event_calendar">Viðburðadagatal</string>
     <string name="upcoming_rent_practice">Leigja æfingapláss</string>
     <string name="upcoming_share_users">Deila notendum sem þú fannst á samfélagsmiðlum</string>
+    <string name="search_mucicians_displayed">Veldu hverskonar tónlistarfólk þú vilt finna</string>
 </resources>

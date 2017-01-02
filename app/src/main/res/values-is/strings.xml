@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The name of the app as displayed on the homescreen -->
-    <string name="app_name">BandUp</string>
+    <string name="app_name">Band Up</string>
 
     <!-- Register Screen -->
     <string name="register_email">Tölvupóstur</string>

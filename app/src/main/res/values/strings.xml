@@ -198,4 +198,6 @@
     <string name="chat_chat_with">Chat with</string>
     <string name="email_support">Email Support</string>
     <string name="chat_title">Chat</string>
+    <string name="settings_title_manage_account">Manage Account</string>
+    <string name="setting_delete_account">Delete Account</string>
 </resources>

@@ -83,5 +83,9 @@ public interface BandUpDatabase {
     void sendPasswordResetRequest(JSONObject requestObject,
                                   BandUpResponseListener responseListener,
                                   BandUpErrorListener errorListener);
+
+    void delete_user(JSONObject requestObject,
+                     BandUpResponseListener responseListener,
+                     BandUpErrorListener errorListener);
 }
 

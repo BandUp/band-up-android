@@ -1,6 +1,8 @@
 package com.melodies.bandup.MainScreenActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -61,6 +63,7 @@ public class SettingsFragment extends Fragment {
     private TextView     txtPPolicy;
     private TextView     txtTermsOfService;
     private TextView     txtVersion;
+    private TextView     txtDeleteAccount;
 
 
     // Required empty public constructor
@@ -113,7 +116,8 @@ public class SettingsFragment extends Fragment {
         txtHelp           = (TextView)rootView.findViewById(R.id.txtHelp);
         txtSupport        = (TextView)rootView.findViewById(R.id.txtSupport);
         txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
-        txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
+        txtDeleteAccount  = (TextView) rootView.findViewById(R.id.txtDeleteAccount);
+        txtVersion        = (TextView) rootView.findViewById(R.id.band_up_version_number);
 
 
         int build = BuildConfig.VERSION_CODE;
@@ -373,6 +377,43 @@ public class SettingsFragment extends Fragment {
     public void onClickPrivacyPolicy (View view) {
         Intent privacy = new Intent(getActivity(), PrivacyPolicy.class);
         startActivity(privacy);
+    }
+
+    public void onClickDeleteAccount (View view) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int choice) {
+                switch (choice) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().delete_user(
+                                    new JSONObject(),
+                                    new BandUpResponseListener() {
+                                        @Override
+                                        public void onBandUpResponse(Object response) {
+                                            JSONObject responseObj = null;
+                                            if (response instanceof JSONObject) {
+                                                responseObj = (JSONObject) response;
+                                            }
+
+                                        }
+                                    },
+                                    new BandUpErrorListener() {
+                                        @Override
+                                        public void onBandUpErrorResponse(VolleyError error) {
+                                        }
+                                    }
+                            );
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Delete this account?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     // is called whenever we attach fragment to activity

@@ -198,6 +198,11 @@ public class MainScreenActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void onClickDeleteAccount(View view) {
+        settingsFragment.onClickDeleteAccount(view);
+    }
+
     @Override
     protected void onDestroy() {
         unregisterReceiver(networkStateReceiver);

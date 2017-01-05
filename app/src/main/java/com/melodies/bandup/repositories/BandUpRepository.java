@@ -323,4 +323,18 @@ public class BandUpRepository implements BandUpDatabase {
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(request);
     }
+
+    @Override
+    public void delete_user(JSONObject requestObject, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
+        String url = mContext.getResources().getString(R.string.api_address).concat("/user-delete");
+
+        JsonObjectRequest request = createObjectRequest(
+                Request.Method.DELETE,
+                url,
+                requestObject,
+                responseListener,
+                errorListener);
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
 }

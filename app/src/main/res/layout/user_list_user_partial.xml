@@ -9,14 +9,30 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity">
 
-    <ImageView
-        android:id="@+id/imgProfile"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="top"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_profile_picture_big"/>
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile_picture_big"/>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:id="@+id/animated_check"
+            android:src="@drawable/ic_check_dark"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:alpha="0.5"
+            android:tint="@color/bandUpYellow"/>
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -127,18 +143,19 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content" />
 
-            <Button
-                android:text="@string/user_list_like"
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
+                <Button
+                    android:text="@string/user_list_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:id="@+id/btnLike"
+                    android:background="@drawable/button_user_list_like"
+                    android:textSize="35sp"
+                    android:textColor="#000000"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:textAllCaps="false"/>
 
-                android:id="@+id/btnLike"
-                android:background="@drawable/button_user_list_like"
-                android:textSize="35sp"
-                android:textColor="#000000"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:textAllCaps="false"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+

@@ -11,19 +11,34 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
+import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
+import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;
+import com.melodies.bandup.listeners.BandUpErrorListener;
+import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static android.R.attr.animation;
 import static android.content.Context.LOCATION_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserItemFragment extends Fragment {
     int mNum;
@@ -32,6 +47,8 @@ public class UserItemFragment extends Fragment {
     private Button btnLike, btnDetails;
     private ImageView ivUserProfileImage;
     private AdView mAdView;
+    private ImageView animCheck;
+
     private User mUser;
     private LinearLayout networkErrorBar;
 
@@ -81,16 +98,15 @@ public class UserItemFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if (networkErrorBar.getVisibility() == View.INVISIBLE) {
-                        ((MainScreenActivity)getActivity()).onClickLike(mUser, v);
-                        ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
-                        if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
-                            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-                        }
-                    }
+                if (networkErrorBar.getVisibility() == View.INVISIBLE) {
+                    onClickLike(mUser, v);
+                    //ViewPager pager = ((UserListFragment)getParentFragment()).mPager;
 
+                    //if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
 
-
+                        //pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                    //}
+                }
             }
         });
 
@@ -125,6 +141,71 @@ public class UserItemFragment extends Fragment {
         btnDetails.setTypeface(masterOfBreak);
     }
 
+    public void onClickLike(final User user, final View likeButton) {
+        JSONObject jsonUser = new JSONObject();
+
+        try {
+            jsonUser.put("userID", user.id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
+            @Override
+            public void onBandUpResponse(Object response) {
+                networkErrorBar.setVisibility(View.INVISIBLE);
+                JSONObject responseObj = null;
+
+                if (response instanceof JSONObject) {
+                    responseObj = (JSONObject) response;
+                } else {
+                    return;
+                }
+                try {
+
+                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.pop);
+                    animCheck.setVisibility(View.VISIBLE);
+                    animCheck.startAnimation(animation);
+                    Boolean isMatch;
+                    if (!responseObj.isNull("isMatch")) {
+                        isMatch = responseObj.getBoolean("isMatch");
+                    } else {
+                        Toast.makeText(getActivity(), R.string.main_error_match, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (likeButton instanceof Button) {
+                        Button likeBtn = (Button) likeButton;
+                        likeBtn.setText(getString(R.string.user_list_liked));
+                        likeBtn.setEnabled(false);
+                        likeBtn.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+                    }
+                    user.isLiked = true;
+
+                    ((MainScreenActivity)getActivity()).userListFragment.mAdapter.likeUserById(user.id);
+
+                    if (isMatch) {
+                        Toast.makeText(getActivity(), R.string.main_matched, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new BandUpErrorListener() {
+            @Override
+            public void onBandUpErrorResponse(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    networkErrorBar.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                // TODO: Add OnClickListener.
+
+                VolleySingleton.getInstance(getActivity()).checkCauseOfError(error);
+
+            }
+        });
+    }
+
 
     /*
      * Set up the view for the fragment.
@@ -136,6 +217,7 @@ public class UserItemFragment extends Fragment {
         initializeTextViews(rootView);
         initializeButtons(rootView);
         setFonts();
+        animCheck = (ImageView) rootView.findViewById(R.id.animated_check);
         populateUser(mUser);
 
         return rootView;
@@ -175,6 +257,7 @@ public class UserItemFragment extends Fragment {
             btnLike.setText(getString(R.string.user_list_liked));
             btnLike.setEnabled(false);
             btnLike.setBackgroundResource(R.drawable.button_user_list_like_disabled);
+            animCheck.setVisibility(View.VISIBLE);
         }
 
         if (localeRules != null) {

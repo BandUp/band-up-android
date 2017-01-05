@@ -2,6 +2,7 @@
 <resources>
     <color name="colorGray">#242424</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteTransparent">#80FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="transparent">#FFFFFFFF</color>
     <color name="colorLikeGreenSelected">#176A2D</color>

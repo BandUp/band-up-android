@@ -191,8 +191,11 @@
     <string name="settings_licenses">Licenses</string>
     <string name="settings_privacy_policy">Privacy policy</string>
     <string name="settings_terms_of_service">Terms of service</string>
-    <string name="upcoming_event_calendar">Event calendar</string>
-    <string name="upcoming_share_users">Share users you found to social media</string>
-    <string name="upcoming_rent_practice">Rent practise areas</string>
+    <string name="upcoming_event_calendar">Concert Calendar</string>
+    <string name="upcoming_share_users">Share found users to friends via social media</string>
+    <string name="upcoming_rent_practice">Band Start-Up: Support for upcoming bands</string>
     <string name="search_mucicians_displayed">Choose what kind of musicians you want to display</string>
+    <string name="chat_chat_with">Chat with</string>
+    <string name="email_support">Email Support</string>
+    <string name="chat_title">Chat</string>
 </resources>

@@ -18,7 +18,7 @@ public class PrivacyPolicy extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
-        setTitle(getString(R.string.privacy_title_licenses));
+        setTitle(getString(R.string.settings_privacy_policy));
 
         // back to activity before
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -53,5 +53,4 @@ public class PrivacyPolicy extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }

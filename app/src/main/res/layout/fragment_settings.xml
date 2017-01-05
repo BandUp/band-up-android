@@ -185,7 +185,7 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="Email Support"
+                    android:text="@string/email_support"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
@@ -214,7 +214,7 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="@string/settings_licenses"
+                    android:text="@string/settings_privacy_policy"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtLicenses"

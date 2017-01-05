@@ -184,8 +184,12 @@
     <string name="settings_support">Aðstoð</string>
     <string name="settings_privacy_policy">Persónuverndarstefna</string>
     <string name="settings_use_imperial_system">Nota breskar mælieiningar</string>
-    <string name="upcoming_event_calendar">Viðburðadagatal</string>
-    <string name="upcoming_rent_practice">Leigja æfingapláss</string>
-    <string name="upcoming_share_users">Deila notendum sem þú fannst á samfélagsmiðlum</string>
+    <string name="upcoming_event_calendar">Tónleikadagatal</string>
+    <string name="upcoming_share_users">Deila notendum til vina í gegnum samfélagsmiðla</string>
+    <string name="upcoming_rent_practice">Band Start-Up: Stuðningur fyrir upprennandi hljómsveitir</string>
     <string name="search_mucicians_displayed">Veldu hverskonar tónlistarfólk þú vilt finna</string>
+    <string name="chat_chat_with">Spjall við</string>
+    <string name="email_support">Senda tölvupóst til okkar</string>
+    <string name="chat_title">Spjall</string>
+
 </resources>

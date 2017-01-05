@@ -144,7 +144,12 @@ public class ChatActivity extends AppCompatActivity {
             finish();
         }
 
-        setTitle("Chat with ".concat(sendToUsername));
+        try {
+            setTitle(getString(R.string.chat_title));
+            getSupportActionBar().setSubtitle(sendToUsername);
+        } catch (Exception npe) {
+            setTitle(getString(R.string.chat_chat_with).concat(" ").concat(sendToUsername));
+        }
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
         } catch (URISyntaxException e) {

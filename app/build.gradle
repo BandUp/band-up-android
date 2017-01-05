@@ -29,7 +29,7 @@ android {
         applicationId "com.melodies.bandup"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 11
+        versionCode 12
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

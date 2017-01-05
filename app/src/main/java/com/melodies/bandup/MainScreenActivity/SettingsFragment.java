@@ -1,6 +1,7 @@
 package com.melodies.bandup.MainScreenActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
+import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -64,6 +66,7 @@ public class SettingsFragment extends Fragment {
     private TextView     txtTermsOfService;
     private TextView     txtVersion;
     private TextView     txtDeleteAccount;
+    ProgressDialog       deleteDialog;
 
 
     // Required empty public constructor
@@ -382,24 +385,31 @@ public class SettingsFragment extends Fragment {
     public void onClickDeleteAccount (View view) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int choice) {
+            public void onClick(final DialogInterface dialog, int choice) {
                 switch (choice) {
                     case DialogInterface.BUTTON_POSITIVE:
-                            DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().delete_user(
+                        deleteDialog = new ProgressDialog(getActivity());
+                        deleteDialog.setMessage(getString(R.string.settings_progress_delete_message));
+                        deleteDialog.setTitle(getString(R.string.settings_progress_delete_title));
+                        deleteDialog.show();
+
+                        DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().delete_user(
                                     new JSONObject(),
                                     new BandUpResponseListener() {
                                         @Override
                                         public void onBandUpResponse(Object response) {
-                                            JSONObject responseObj = null;
-                                            if (response instanceof JSONObject) {
-                                                responseObj = (JSONObject) response;
-                                            }
-
+                                            deleteDialog.dismiss();
+                                            Intent intent = new Intent(getActivity(), Login.class);
+                                            startActivity(intent);
+                                            getActivity().finish();
                                         }
                                     },
                                     new BandUpErrorListener() {
                                         @Override
                                         public void onBandUpErrorResponse(VolleyError error) {
+                                            System.out.println(error.getMessage());
+                                            deleteDialog.dismiss();
+                                            Toast.makeText(getActivity(), "Could not delete account.\nPlease try again later.", Toast.LENGTH_LONG).show();
                                         }
                                     }
                             );
@@ -411,9 +421,10 @@ public class SettingsFragment extends Fragment {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Delete this account?")
-                .setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
+        builder.setTitle(R.string.settings_alert_delete_title)
+                .setMessage(R.string.settings_alert_delete_message)
+                .setPositiveButton(R.string.settings_alert_delete_positive, dialogClickListener)
+                .setNegativeButton(android.R.string.cancel, dialogClickListener).show();
     }
 
     // is called whenever we attach fragment to activity

@@ -80,6 +80,9 @@ public class RegistrationIntentService extends IntentService {
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
+                    if (error == null) {
+                        return;
+                    }
                     Log.d(TAG, error.getMessage());
                 }
             });

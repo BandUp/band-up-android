@@ -191,5 +191,12 @@
     <string name="chat_chat_with">Spjall við</string>
     <string name="email_support">Senda tölvupóst til okkar</string>
     <string name="chat_title">Spjall</string>
+    <string name="setting_delete_account">Eyða reikningi</string>
+    <string name="settings_alert_delete_message">Ertu viss um að þú viljir eyða reikningnum þínum?\n\nÞessi aðgerð er ekki afturkræf.</string>
+    <string name="settings_alert_delete_positive">Eyða</string>
+    <string name="settings_alert_delete_title">Eyða reikningi</string>
+    <string name="settings_title_manage_account">Band Up reikningurinn þinn</string>
+    <string name="settings_progress_delete_message">Vinsamlegast bíðið...</string>
+    <string name="settings_progress_delete_title">Eyði reikning</string>
 
 </resources>

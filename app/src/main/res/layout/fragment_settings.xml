@@ -249,11 +249,15 @@
                     android:id="@+id/txtDeleteAccount"
                     android:onClick="onClickDeleteAccount"
                     android:textSize="18sp"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/bandUpRed"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#50FFFFFF" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -262,10 +266,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingEnd="20dp"/>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#50FFFFFF" />
+
             </LinearLayout>
         </ScrollView>
 

@@ -198,6 +198,11 @@
     <string name="chat_chat_with">Chat with</string>
     <string name="email_support">Email Support</string>
     <string name="chat_title">Chat</string>
-    <string name="settings_title_manage_account">Manage Account</string>
+    <string name="settings_title_manage_account">Your Band Up Account</string>
     <string name="setting_delete_account">Delete Account</string>
+    <string name="settings_alert_delete_title">Delete Account</string>
+    <string name="settings_alert_delete_message">Are you sure you want to delete your account?\n\nThis can not be undone.</string>
+    <string name="settings_alert_delete_positive">Delete</string>
+    <string name="settings_progress_delete_title">Deleting Your Account</string>
+    <string name="settings_progress_delete_message">Please wait...</string>
 </resources>

@@ -229,7 +229,9 @@ public class ProfileFragment extends Fragment {
     private void populateUser(User u) {
 
         if (u.imgURL != null) {
-            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+            if (!u.imgURL.equals("")) {
+                Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+            }
         }
 
         txtName.setText(u.name);
@@ -456,7 +458,9 @@ public class ProfileFragment extends Fragment {
                         //Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         String a = validateJSON(urlResponse);
                         if (a != null) {
-                            Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
+                            if (!a.equals("")) {
+                                Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
+                            }
                             ((MainScreenActivity) getActivity()).updateNavUserImage(a);
                             ((MainScreenActivity) getActivity()).currentUser.imgURL = a;
                         } else {

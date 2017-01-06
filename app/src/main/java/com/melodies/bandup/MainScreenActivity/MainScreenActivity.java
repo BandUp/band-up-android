@@ -330,7 +330,9 @@ public class MainScreenActivity extends AppCompatActivity implements
     boolean isExiting = false;
 
     public void updateNavUserImage(String url) {
-        Picasso.with(MainScreenActivity.this).load(url).into(imgProfileNav);
+        if (!url.equals("")) {
+            Picasso.with(MainScreenActivity.this).load(url).into(imgProfileNav);
+        }
     }
 
     public void updateNavUserName(String name) {
@@ -734,7 +736,9 @@ public class MainScreenActivity extends AppCompatActivity implements
                     txtFavoriteNav.setText(currentUser.favoriteinstrument);
 
                     if (currentUser.imgURL != null) {
-                        Picasso.with(MainScreenActivity.this).load(currentUser.imgURL).into(imgProfileNav);
+                        if (!currentUser.imgURL.equals("")) {
+                            Picasso.with(MainScreenActivity.this).load(currentUser.imgURL).into(imgProfileNav);
+                        }
                     } else {
                         Picasso.with(MainScreenActivity.this).load(R.drawable.ic_profile_picture_placeholder).into(imgProfileNav);
 

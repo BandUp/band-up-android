@@ -297,8 +297,9 @@ public class UserItemFragment extends Fragment {
         if (u.imgURL == null) {
             Picasso.with(getActivity()).load(R.drawable.ic_profile_picture_big).into(ivUserProfileImage);
         } else {
-            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
-
+            if (!u.imgURL.equals("")) {
+                Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+            }
         }
     }
 

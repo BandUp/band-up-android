@@ -194,7 +194,9 @@ public class UserDetailsFragment extends Fragment {
 
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
         if (u.imgURL != null) {
-            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+            if (!u.imgURL.equals("")) {
+                Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
+            }
         }
 
         txtName.setText(u.name);

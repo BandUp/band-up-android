@@ -46,7 +46,9 @@ public class MyMatchesRecyclerViewAdapter extends RecyclerView.Adapter<MyMatches
         holder.mImageView.setImageBitmap(null);
 
         if (mValues.get(position).imgURL != null) {
-            Picasso.with(mContext).load(mValues.get(position).imgURL).into(holder.mImageView);
+            if (mValues.get(position).imgURL.equals("")) {
+                Picasso.with(mContext).load(mValues.get(position).imgURL).into(holder.mImageView);
+            }
         } else {
             Picasso.with(mContext).load(R.drawable.ic_profile_picture_placeholder).into(holder.mImageView);
         }

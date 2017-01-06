@@ -222,9 +222,11 @@ public class ChatActivity extends AppCompatActivity {
             ChatActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // args[0] = from username
-                    // args[1] = message
+                // args[0] = from username
+                // args[1] = message
+                if (sendToUsername.equals(args[0])) {
                     displayMessage(false, args[0].toString(), args[1].toString());
+                }
                 }
             });
         }

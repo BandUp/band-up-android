@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     private String sendTo;
     private String sendToUsername;
     private Socket mSocket;
+    private AdView mAdView;
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -134,7 +135,6 @@ public class ChatActivity extends AppCompatActivity {
 
     // Adding ad Banner
     private void getAd() {
-        AdView mAdView;
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -143,9 +143,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getAd();
-
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -162,6 +159,7 @@ public class ChatActivity extends AppCompatActivity {
         } catch (Exception npe) {
             setTitle(getString(R.string.chat_chat_with).concat(" ").concat(sendToUsername));
         }
+
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
         } catch (URISyntaxException e) {
@@ -175,6 +173,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_chat);
+        getAd();
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
 

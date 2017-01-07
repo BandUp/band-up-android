@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         getAd();
 
-
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);

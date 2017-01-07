@@ -176,7 +176,10 @@ public class UserSearchFragment extends Fragment {
                     return;
                 }
                 mGenres.setEnabled(true);
-                Log.d(TAG, error.getMessage());
+                if (error != null) {
+                    Log.d(TAG, error.getMessage());
+                }
+
                 Toast.makeText(getContext(),
                         "Oops, hit an unexpected error while fetching genres!",
                         Toast.LENGTH_LONG).show();
@@ -207,7 +210,9 @@ public class UserSearchFragment extends Fragment {
                     return;
                 }
                 mInstruments.setEnabled(true);
-                Log.d(TAG, error.getMessage());
+                if (error != null) {
+                    Log.d(TAG, error.getMessage());
+                }
                 Toast.makeText(getContext(),
                         "Oops, hit an unexpected error while fetching instruments!",
                         Toast.LENGTH_LONG).show();

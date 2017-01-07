@@ -355,10 +355,6 @@ public class SetupShared {
         return px * (context.getResources().getDisplayMetrics().density);
     }
 
-    public static float displayPixelsToPixels(final Context context, final float px) {
-        return px / (context.getResources().getDisplayMetrics().density);
-    }
-
     // Storing user userId in UserIdData folder, which only this app can access
     public Boolean saveUserId(Context c, JSONObject response) {
         try {

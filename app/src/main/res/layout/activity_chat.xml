@@ -10,6 +10,8 @@
     android:orientation="vertical"
     tools:context="com.melodies.bandup.ChatActivity">
 
+    <include layout="@layout/ads"/>
+
     <LinearLayout
         android:id="@+id/chatLayout"
         android:orientation="vertical"

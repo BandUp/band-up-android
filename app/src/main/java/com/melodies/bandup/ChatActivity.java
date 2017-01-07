@@ -22,6 +22,8 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,8 +114,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 txtMessage.setText("");
 
-
-
                 // Create the JSON object to send the message.
                 final JSONObject msgObject = new JSONObject();
                 msgObject.put("nick", sendTo);
@@ -132,10 +132,22 @@ public class ChatActivity extends AppCompatActivity {
         return (!userId.equals(DEFAULT)) ? userId : "No data Found";
     }
 
+    // Adding ad Banner
+    private void getAd() {
+        AdView mAdView;
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getAd();
+
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
             sendTo = extras.getString("SEND_TO_USER_ID");
             sendToUsername = extras.getString("SEND_TO_USERNAME");

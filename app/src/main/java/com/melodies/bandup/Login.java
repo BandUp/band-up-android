@@ -81,7 +81,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         getAd();
 
-
         String route = "/login-local";
         url = getResources().getString(R.string.api_address).concat(route);
         loginDialog = new ProgressDialog(Login.this);
@@ -253,8 +252,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    sShared.saveUserId(Login.this, response);
-                    openCorrectIntent(response);
+                    if (sShared.saveUserId(Login.this, response)) {
+                        openCorrectIntent(response);
+                    } else {
+                        // TODO: Fetch the current logged in user from server.
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -337,23 +339,29 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             jsonObject.put("access_token", idToken);
             jsonObject.put("dateOfBirth", dateOfBirth);
+            loginDialog = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_description), true, false);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url,
-                    jsonObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            sShared.saveUserId(Login.this, response);
-                            openCorrectIntent(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            errorHandlerLogin(error);
-                        }
-                    });
+                url,
+                jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                    loginDialog.dismiss();
+                    if (sShared.saveUserId(Login.this, response)) {
+                        openCorrectIntent(response);
+                    } else {
+                        // TODO: Fetch the current logged in user from server.
+                    }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loginDialog.dismiss();
+                        errorHandlerLogin(error);
+                    }
+                });
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -421,14 +429,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 new BandUpResponseListener() {
                     @Override
                     public void onBandUpResponse(Object response) {
+                        loginDialog.dismiss();
                         JSONObject responseObj = null;
                         if (response instanceof JSONObject) {
                             responseObj = (JSONObject) response;
                         }
 
-                        sShared.saveUserId(Login.this, responseObj);
-                        openCorrectIntent(responseObj);
-                        loginDialog.dismiss();
+                        if (sShared.saveUserId(Login.this, responseObj)) {
+                            openCorrectIntent(responseObj);
+                        } else {
+                            // TODO: Fetch the current logged in user from server
+                        }
+
 
                     }
                 },

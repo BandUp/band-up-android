@@ -88,8 +88,11 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
                             new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            sShared.saveUserId(SoundCloud.this, response);
-                            openCorrectIntent(response);
+                            if (sShared.saveUserId(SoundCloud.this, response)) {
+                                openCorrectIntent(response);
+                            } else {
+                                // TODO: Fetch the current logged in user from server.
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override

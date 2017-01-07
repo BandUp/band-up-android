@@ -56,16 +56,22 @@
                 android:text="Display Name"
                 android:textColor="@color/bandUpYellow"
                 android:textSize="25sp"
+                android:layout_weight="1"
+                android:maxLines="1"
+
+                android:ellipsize="end"
                 />
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                />
 
             <TextView
                 android:id="@+id/txtMainInstrument"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:maxLines="1"
                 android:text="Instrument"
                 android:textColor="@color/bandUpYellow"
                 android:textSize="25sp"/>

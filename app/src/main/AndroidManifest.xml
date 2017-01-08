@@ -133,10 +133,6 @@
             android:label="@string/title_activity_sound_cloud"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Filter"
-            android:label="@string/filter_title"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PasswordReset"
             android:theme="@style/BandUpTheme"
             android:label="@string/title_activity_password_reset" />

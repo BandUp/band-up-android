@@ -9,6 +9,7 @@ import com.melodies.bandup.MainScreenActivity.UserItemFragment;
 import com.melodies.bandup.helper_classes.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class UserListAdapter extends FragmentStatePagerAdapter {
     /**
@@ -117,7 +118,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        //Collections.shuffle(userList);
+        Collections.shuffle(userList);
         super.notifyDataSetChanged();
     }
 

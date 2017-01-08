@@ -139,7 +139,7 @@
         <activity
             android:name=".PasswordReset"
             android:theme="@style/BandUpTheme"
-            android:label="@string/title_activity_password_reset"></activity>
+            android:label="@string/title_activity_password_reset" />
     </application>
 
 </manifest>

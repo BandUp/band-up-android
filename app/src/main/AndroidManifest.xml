@@ -109,15 +109,19 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainScreenActivity.UpdateAboutMe"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".MainScreenActivity.Contact"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".MainScreenActivity.PrivacyPolicy"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -128,6 +132,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SoundCloud"
             android:label="@string/title_activity_sound_cloud"

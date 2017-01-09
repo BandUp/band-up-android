@@ -10,14 +10,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
 import com.melodies.bandup.R;
-
-import java.util.Objects;
 
 public class BandUpGCMListenerService extends GcmListenerService {
     // name for service thread
@@ -37,7 +34,8 @@ public class BandUpGCMListenerService extends GcmListenerService {
     @SuppressLint("LongLogTag")
     @Override
     public void onMessageReceived(String from, Bundle data){
-        String message = data.getBundle("notification").getString("body");
+        // Temporarily disabling the in app notifications
+        /*String message = data.getBundle("notification").getString("body");
         String type = data.getBundle("data").getString("type");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
@@ -59,7 +57,7 @@ public class BandUpGCMListenerService extends GcmListenerService {
                 }
             }
 
-        }
+        }*/
     }
 
     // loading switch state

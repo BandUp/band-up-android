@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,6 @@ public class ChatActivity extends AppCompatActivity {
     private Socket mSocket;
     private AdView mAdView;
     private ChatRecyclerAdapter mAdapter;
-    private ScrollView mScrollView;
     private RecyclerView mRecycler;
     private EditText txtMessage;
 
@@ -88,13 +88,13 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void scrollAfterHalfSecond(final ScrollView scrollView) {
+    private void scrollAfterHalfSecond() {
         final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
 
         exec.schedule(new Runnable(){
             @Override
             public void run(){
-                scrollView.fullScroll(View.FOCUS_DOWN);
+                mRecycler.scrollToPosition(0);
             }
         }, 600, TimeUnit.MILLISECONDS);
     }
@@ -124,7 +124,8 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("message", message);
 
                 displayMessage(getUserId(), message);
-                scrollToBottom(mScrollView);
+
+                mRecycler.scrollToPosition(0);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
@@ -148,19 +149,12 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
         txtMessage = (EditText) findViewById(R.id.txtMessage);
-        txtMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    scrollAfterHalfSecond(mScrollView);
-                }
-            }
-        });
 
         Bundle extras = getIntent().getExtras();
         mAdapter = new ChatRecyclerAdapter(ChatActivity.this, null, getUserId());
-        mScrollView = (ScrollView) findViewById(R.id.scrollView);
 
         if (extras != null) {
             sendTo = extras.getString("SEND_TO_USER_ID");
@@ -191,7 +185,23 @@ public class ChatActivity extends AppCompatActivity {
 
         mRecycler = (RecyclerView) findViewById(R.id.recyclerList);
         mRecycler.setAdapter(mAdapter);
-
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        mRecycler.setLayoutManager(linearLayoutManager);
+        mRecycler.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    mRecycler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecycler.scrollToPosition(0);
+                        }
+                    }, 100);
+                }
+            }
+        });
         getAd();
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
@@ -208,7 +218,6 @@ public class ChatActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response.toString());
                         if (!response.isNull("chatHistory")) {
                             try {
                                 JSONArray chatHistory = response.getJSONArray("chatHistory");
@@ -218,7 +227,6 @@ public class ChatActivity extends AppCompatActivity {
                                         displayMessage(item.getString("sender"), item.getString("message"));
                                     }
                                 }
-                                scrollToBottom(mScrollView);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -266,7 +274,7 @@ public class ChatActivity extends AppCompatActivity {
                 // args[1] = message
                 if (sendTo.equals(args[0])) {
                     displayMessage(args[0].toString(), args[1].toString());
-                    scrollToBottom(mScrollView);
+                    mRecycler.scrollToPosition(0);
                 }
                 }
             });

@@ -209,6 +209,16 @@ public class ChatActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (error == null) {
+                            // TODO: Display Error Message
+                            return;
+                        }
+
+                        if (error.networkResponse == null) {
+                            // TODO: Display Error Message
+                            return;
+                        }
+
                         // If there is no chat found. No worries.
                         if (error.networkResponse.statusCode != 404) {
                             VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(error);

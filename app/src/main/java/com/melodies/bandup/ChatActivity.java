@@ -235,7 +235,7 @@ public class ChatActivity extends AppCompatActivity {
                 public void run() {
                 // args[0] = from username
                 // args[1] = message
-                if (sendToUsername.equals(args[0])) {
+                if (sendTo.equals(args[0])) {
                     displayMessage(false, args[0].toString(), args[1].toString());
                 }
                 }

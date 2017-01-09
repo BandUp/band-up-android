@@ -78,12 +78,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void scrollToBottom(final ScrollView scrollView) {
+        txtMessage.requestFocus();
+
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-
                 scrollView.fullScroll(View.FOCUS_DOWN);
-                txtMessage.requestFocus();
             }
         });
     }
@@ -264,7 +264,7 @@ public class ChatActivity extends AppCompatActivity {
                 public void run() {
                 // args[0] = from username
                 // args[1] = message
-                if (sendToUsername.equals(args[0])) {
+                if (sendTo.equals(args[0])) {
                     displayMessage(args[0].toString(), args[1].toString());
                     scrollToBottom(mScrollView);
                 }

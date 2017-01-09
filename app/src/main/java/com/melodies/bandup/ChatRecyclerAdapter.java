@@ -61,8 +61,8 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     }
 
     public void addMessage(ChatMessage message) {
-        mMessages.add(message);
-        notifyItemInserted(mMessages.size() - 1);
+        mMessages.add(0, message);
+        notifyItemInserted(0);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

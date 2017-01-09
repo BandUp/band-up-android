@@ -21,18 +21,12 @@
         android:layout_weight="1"
         android:gravity="top">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollView"
-            android:layout_gravity="center_horizontal">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+
                 android:id="@+id/chatCells">
 
                 <android.support.v7.widget.RecyclerView
@@ -43,9 +37,7 @@
                     app:layoutManager="LinearLayoutManager"
                     tools:context="com.melodies.bandup.ChatActivity"
                     tools:listitem="@layout/chat_message_cell" />
-
             </LinearLayout>
-        </ScrollView>
     </LinearLayout>
     <View android:background="#999999"
         android:layout_width = "match_parent"

@@ -30,32 +30,40 @@ public class BandUpGCMListenerService extends GcmListenerService {
     private static final int MSG_NOTIFICATION_ID = 2;
 
     /**
-     * gets called for every notification that arrives
+     * gets called for every notification that arrives when the app is open
      * @param from
      * @param data
      */
     @SuppressLint("LongLogTag")
     @Override
     public void onMessageReceived(String from, Bundle data){
-        String message = data.getBundle("notification").getString("body");
-        String type = data.getBundle("data").getString("type");
+        Bundle notif = data.getBundle("notification");
+        if (notif == null) {
+            return;
+        }
+        String message = notif.getString("body");
+
+        String type = data.getString("type");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
 
         if (from.startsWith("/topics/")){
             // message recieved from a topic (currently not in use)
-        }else{
+        } else {
             // normal downstream message
             if (type != null) {
                 if (Objects.equals(type, MATCH_NOTIFICATION) && loadUserSwitch("switchMatches")) {
-                    senMatchNotification(data);
+                    sendMatchNotification(data);
+                    return;
                 }
                 if (Objects.equals(type, MSG_NOTIFICATION) && loadUserSwitch("switchMessages")) {
                     sendMessageNotification(data);
+                    return;
                 }
                 if (loadUserSwitch("switchAlert")) {
                     sendNotification(data);
+                    return;
                 }
             }
 
@@ -79,22 +87,28 @@ public class BandUpGCMListenerService extends GcmListenerService {
      * @param data
      */
     private void sendMessageNotification(Bundle data) {
-        String message = data.getBundle("notification").getString("body");
-        String title = data.getBundle("notification").getString("title");
+        Bundle notif = data.getBundle("notification");
+        if (notif == null) {
+            return;
+        }
+
+        String message = notif.getString("body");
+        String title = notif.getString("title");
         // create intent to start activity on notification click
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("SEND_TO_USER_ID", data.getBundle("data").getString("from"));
-        intent.putExtra("SEND_TO_USERNAME", data.getBundle("data").getString("fromName"));
+        intent.putExtra("SEND_TO_USER_ID", data.getString("senderId"));
+        intent.putExtra("SEND_TO_USERNAME", data.getString("senderName"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /*Request code*/, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         // need uri if we want notification sound (we can make custom sounds if we want)
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder = null;        // atach activity intent
+        NotificationCompat.Builder notificationBuilder;        // atach activity intent
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_band_up_logo_notification) // set icon for notification
+                .setSmallIcon(R.drawable.ic_band_up_notification) // set icon for notification
                 .setContentTitle(title)         // title for notification
                 .setContentText(message)                 // text to display
                 .setAutoCancel(true)
@@ -115,9 +129,13 @@ public class BandUpGCMListenerService extends GcmListenerService {
      * notification object
      * @param data
      */
-    private void senMatchNotification(Bundle data) {
-        String message = data.getBundle("notification").getString("body");
-        String title = data.getBundle("notification").getString("title");
+    private void sendMatchNotification(Bundle data) {
+        Bundle notif = data.getBundle("notification");
+        if (notif == null) {
+            return;
+        }
+        String message = notif.getString("body");
+        String title = notif.getString("title");
         // create intent to start activity on notification click
         Intent intent = new Intent(this, MainScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -129,7 +147,7 @@ public class BandUpGCMListenerService extends GcmListenerService {
 
         NotificationCompat.Builder notificationBuilder = null;        // atach activity intent
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_band_up_logo_notification) // set icon for notification
+                .setSmallIcon(R.drawable.ic_band_up_notification) // set icon for notification
                 .setContentTitle(title)         // title for notification
                 .setContentText(message)                 // text to display
                 .setAutoCancel(true)
@@ -147,8 +165,12 @@ public class BandUpGCMListenerService extends GcmListenerService {
      * @param data
      */
     private void sendNotification(Bundle data){
-        String message = data.getBundle("notification").getString("body");
-        String title = data.getBundle("notification").getString("title");
+        Bundle notif = data.getBundle("notification");
+        if (notif == null) {
+            return;
+        }
+        String message = notif.getString("body");
+        String title = notif.getString("title");
         // create intent to start activity on notification click
         Intent intent = new Intent(this, MainScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -160,7 +182,7 @@ public class BandUpGCMListenerService extends GcmListenerService {
 
         NotificationCompat.Builder notificationBuilder = null;        // atach activity intent
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_band_up_logo_notification) // set icon for notification
+                .setSmallIcon(R.drawable.ic_band_up_notification) // set icon for notification
                 .setContentTitle(title)         // title for notification
                 .setContentText(message)                 // text to display
                 .setAutoCancel(true)

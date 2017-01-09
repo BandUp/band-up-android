@@ -9,6 +9,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_margin="@dimen/text_margin"
+        android:src="@drawable/ic_profile_picture_placeholder"
         android:textAppearance="?attr/textAppearanceListItem"
         android:contentDescription="" />
 

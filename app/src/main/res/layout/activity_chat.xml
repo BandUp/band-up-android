@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
@@ -33,6 +34,15 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:id="@+id/chatCells">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerList"
+                    android:name="com.melodies.bandup.ChatActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:context="com.melodies.bandup.ChatActivity"
+                    tools:listitem="@layout/chat_message_cell" />
 
             </LinearLayout>
         </ScrollView>

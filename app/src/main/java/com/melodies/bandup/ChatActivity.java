@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,6 +36,9 @@ public class ChatActivity extends AppCompatActivity {
     private String sendToUsername;
     private Socket mSocket;
     private AdView mAdView;
+    private ChatRecyclerAdapter mAdapter;
+    private ScrollView mScrollView;
+    private RecyclerView mRecycler;
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -63,26 +63,15 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     /* Adds the message to the ScrollView and scrolls to the bottom. */
-    private void displayMessage(Boolean isUser, String sender, String message) {
+    private void displayMessage(String sender, String message) {
 
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.text = message;
+        chatMessage.senderUserId = sender;
 
-        LinearLayout ll = (LinearLayout) findViewById(R.id.chatCells);
-        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mAdapter.addMessage(chatMessage);
 
-        View myView = vi.inflate(R.layout.chat_message_cell, ll, false);
-        if (isUser) {
-            LinearLayout chatCell = (LinearLayout) myView.findViewById(R.id.chatMessageCell);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chatCell.getLayoutParams();
-            params.gravity = Gravity.END;
-            chatCell.setLayoutParams(params);
-        }
-
-        TextView tv = (TextView) myView.findViewById(R.id.txtChatMessageText);
-        tv.setText(message);
-
-        ll.addView(myView);
-        scrollToBottom(scrollView);
+        scrollToBottom(mScrollView);
     }
 
     /* Scroll to the bottom. */
@@ -120,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("nick", sendTo);
                 msgObject.put("message", message);
 
-                displayMessage(true, "You", message);
+                displayMessage(getUserId(), message);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
@@ -143,7 +132,11 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
         Bundle extras = getIntent().getExtras();
+        mAdapter = new ChatRecyclerAdapter(ChatActivity.this, null, getUserId());
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
 
         if (extras != null) {
             sendTo = extras.getString("SEND_TO_USER_ID");
@@ -172,7 +165,9 @@ public class ChatActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        setContentView(R.layout.activity_chat);
+        mRecycler = (RecyclerView) findViewById(R.id.recyclerList);
+        mRecycler.setAdapter(mAdapter);
+
         getAd();
         mSocket.on("recv_privatemsg", onNewMessage);
         mSocket.connect();
@@ -196,8 +191,7 @@ public class ChatActivity extends AppCompatActivity {
                                 for (int i = 0; i < chatHistory.length(); i++) {
                                     JSONObject item = chatHistory.getJSONObject(i);
                                     if (!item.isNull("message")) {
-                                        Boolean isUser = getUserId().equals(item.getString("sender"));
-                                        displayMessage(isUser, item.getString("sender"), item.getString("message"));
+                                        displayMessage(item.getString("sender"), item.getString("message"));
                                     }
                                 }
                             } catch (JSONException e) {
@@ -209,6 +203,16 @@ public class ChatActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (error == null) {
+                            // TODO: Display Error Message
+                            return;
+                        }
+
+                        if (error.networkResponse == null) {
+                            // TODO: Display Error Message
+                            return;
+                        }
+
                         // If there is no chat found. No worries.
                         if (error.networkResponse.statusCode != 404) {
                             VolleySingleton.getInstance(ChatActivity.this).checkCauseOfError(error);
@@ -236,7 +240,7 @@ public class ChatActivity extends AppCompatActivity {
                 // args[0] = from username
                 // args[1] = message
                 if (sendToUsername.equals(args[0])) {
-                    displayMessage(false, args[0].toString(), args[1].toString());
+                    displayMessage(args[0].toString(), args[1].toString());
                 }
                 }
             });

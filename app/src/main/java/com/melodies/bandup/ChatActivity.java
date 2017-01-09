@@ -27,6 +27,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
@@ -39,6 +42,8 @@ public class ChatActivity extends AppCompatActivity {
     private ChatRecyclerAdapter mAdapter;
     private ScrollView mScrollView;
     private RecyclerView mRecycler;
+    private EditText txtMessage;
+
 
     Ack sendMessageAck = new Ack() {
         @Override
@@ -62,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     };
 
-    /* Adds the message to the ScrollView and scrolls to the bottom. */
+    /* Adds the message to the ScrollView. */
     private void displayMessage(String sender, String message) {
 
         ChatMessage chatMessage = new ChatMessage();
@@ -70,23 +75,32 @@ public class ChatActivity extends AppCompatActivity {
         chatMessage.senderUserId = sender;
 
         mAdapter.addMessage(chatMessage);
-
-        scrollToBottom(mScrollView);
     }
 
-    /* Scroll to the bottom. */
     private void scrollToBottom(final ScrollView scrollView) {
         scrollView.post(new Runnable() {
             @Override
             public void run() {
+
                 scrollView.fullScroll(View.FOCUS_DOWN);
+                txtMessage.requestFocus();
             }
         });
     }
 
+    private void scrollAfterHalfSecond(final ScrollView scrollView) {
+        final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+
+        exec.schedule(new Runnable(){
+            @Override
+            public void run(){
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 600, TimeUnit.MILLISECONDS);
+    }
+
     /* When the user taps on the Send Message button. */
     public void onClickSend (View v) throws JSONException {
-        final EditText txtMessage = (EditText) findViewById(R.id.txtMessage);
 
         switch (v.getId()) {
             case R.id.btnSend:
@@ -110,6 +124,7 @@ public class ChatActivity extends AppCompatActivity {
                 msgObject.put("message", message);
 
                 displayMessage(getUserId(), message);
+                scrollToBottom(mScrollView);
 
                 mSocket.emit("privatemsg", msgObject, sendMessageAck);
                 break;
@@ -133,6 +148,15 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        txtMessage = (EditText) findViewById(R.id.txtMessage);
+        txtMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    scrollAfterHalfSecond(mScrollView);
+                }
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         mAdapter = new ChatRecyclerAdapter(ChatActivity.this, null, getUserId());
@@ -194,6 +218,7 @@ public class ChatActivity extends AppCompatActivity {
                                         displayMessage(item.getString("sender"), item.getString("message"));
                                     }
                                 }
+                                scrollToBottom(mScrollView);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -241,6 +266,7 @@ public class ChatActivity extends AppCompatActivity {
                 // args[1] = message
                 if (sendToUsername.equals(args[0])) {
                     displayMessage(args[0].toString(), args[1].toString());
+                    scrollToBottom(mScrollView);
                 }
                 }
             });

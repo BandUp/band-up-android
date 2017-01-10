@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static android.os.Build.VERSION_CODES.M;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -163,9 +165,12 @@ public class UserDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
-        mainScreenActivity.currentFragment = mainScreenActivity.USER_DETAILS_FRAGMENT;
-        mainScreenActivity.invalidateOptionsMenu();
+        if (getActivity() instanceof  MainScreenActivity) {
+            MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
+            mainScreenActivity.currentFragment = mainScreenActivity.USER_DETAILS_FRAGMENT;
+            mainScreenActivity.invalidateOptionsMenu();
+        }
+
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
@@ -270,8 +275,11 @@ public class UserDetailsFragment extends Fragment {
 
     private Float getDistanceToUser(User u) {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
-        Boolean hasLocationPermission = ((MainScreenActivity) getActivity()).hasLocationPermission();
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
+        criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
+        String locationProvider = locationManager.getBestProvider(criteria, false);
+        Boolean hasLocationPermission = this.hasLocationPermission();
         if (hasLocationPermission && locationProvider != null) {
             Location myLocation = locationManager.getLastKnownLocation(locationProvider);
             Location userLocation = new Location("");
@@ -397,5 +405,10 @@ public class UserDetailsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public Boolean hasLocationPermission() {
+        return !(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
     }
 }

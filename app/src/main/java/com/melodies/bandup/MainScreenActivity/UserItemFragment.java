@@ -2,12 +2,14 @@ package com.melodies.bandup.MainScreenActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +38,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.R.attr.animation;
 import static android.content.Context.LOCATION_SERVICE;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserItemFragment extends Fragment {
     int mNum;
@@ -305,8 +305,11 @@ public class UserItemFragment extends Fragment {
 
     private Float getDistanceToUser(User u) {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        String locationProvider = ((MainScreenActivity) getActivity()).bestProvider;
-        Boolean hasLocationPermission = ((MainScreenActivity)getActivity()).hasLocationPermission();
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
+        criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
+        String locationProvider = locationManager.getBestProvider(criteria, false);
+        Boolean hasLocationPermission = this.hasLocationPermission();
         if (hasLocationPermission && locationProvider != null) {
             Location myLocation = locationManager.getLastKnownLocation(locationProvider);
             Location userLocation = new Location("");
@@ -329,5 +332,10 @@ public class UserItemFragment extends Fragment {
     // Converts miles into whole kilometers for consistent search range storage
     private int kilometersToMiles(double miles) {
         return (int) Math.round(miles / 1.609344);
+    }
+
+    public Boolean hasLocationPermission() {
+        return !(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
     }
 }

@@ -205,4 +205,10 @@
     <string name="settings_alert_delete_positive">Delete</string>
     <string name="settings_progress_delete_title">Deleting Your Account</string>
     <string name="settings_progress_delete_message">Please wait...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

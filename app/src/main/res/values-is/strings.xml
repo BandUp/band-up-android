@@ -198,5 +198,7 @@
     <string name="settings_title_manage_account">Band Up reikningurinn þinn</string>
     <string name="settings_progress_delete_message">Vinsamlegast bíðið...</string>
     <string name="settings_progress_delete_title">Eyði reikning</string>
+    <string name="chat_user_profile">Skoða prófíl</string>
+
 
 </resources>

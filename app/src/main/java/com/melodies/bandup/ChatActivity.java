@@ -36,6 +36,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
     private ChatFragment chatFragment;
     UserDetailsFragment userDetailsFragment;
+
     private MyAdapter mSectionsPagerAdapter;
 
 
@@ -90,7 +91,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        chatFragment = (ChatFragment) mSectionsPagerAdapter.getItem(0);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -107,12 +108,6 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
             }
         });
-
-        chatFragment = ChatFragment.newInstance(receiverId, receiverUsername);
-        userDetailsFragment = UserDetailsFragment.newInstance();
-
-
-
 
         try {
             setTitle(getString(R.string.chat_title));
@@ -187,23 +182,12 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         }
     }
 
+
+
     public Boolean hasLocationPermission() {
         return !(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
     }
-
-    // Listener to listen to the "recv_privatemsg" emission.
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    chatFragment.onNewMessage(args);
-                }
-            });
-        }
-    };
 
     @Override
     public void onDestroy() {
@@ -223,6 +207,8 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         public MyAdapter(FragmentManager fm) {
             super(fm);
         }
+        ChatFragment chatFragment;
+        UserDetailsFragment userDetailsFragment;
 
         @Override
         public int getCount() {
@@ -232,23 +218,47 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return ChatFragment.newInstance(receiverId, receiverUsername);
-            } else if (position == 1) {
-                UserDetailsFragment userDetailsFragment1 = UserDetailsFragment.newInstance();
-                Bundle bundle = new Bundle();
-
-                bundle.putString("user_id", receiverId);
-
-                if (userDetailsFragment1.getArguments() != null) {
-                    userDetailsFragment1.getArguments().clear();
-                    userDetailsFragment1.getArguments().putAll(bundle);
-                } else {
-                    userDetailsFragment1.setArguments(bundle);
+                if (chatFragment == null) {
+                    chatFragment = ChatFragment.newInstance(receiverId, receiverUsername);
                 }
-                return userDetailsFragment1;
+                return chatFragment;
+            } else if (position == 1) {
+                if (userDetailsFragment == null) {
+                    userDetailsFragment = UserDetailsFragment.newInstance();
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("user_id", receiverId);
+
+                    if (userDetailsFragment.getArguments() != null) {
+                        userDetailsFragment.getArguments().clear();
+                        userDetailsFragment.getArguments().putAll(bundle);
+                    } else {
+                        userDetailsFragment.setArguments(bundle);
+                    }
+                }
+
+                return userDetailsFragment;
             } else {
                 return null;
             }
         }
     }
+
+    // Listener to listen to the "recv_privatemsg" emission.
+    public Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // args[0] = from username
+                    // args[1] = message
+                    if (receiverId.equals(args[0])) {
+                        chatFragment.displayMessage(args[0].toString(), args[1].toString());
+                        chatFragment.mRecycler.scrollToPosition(0);
+                    }
+                }
+            });
+        }
+    };
 }

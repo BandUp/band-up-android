@@ -12,22 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
@@ -221,7 +217,7 @@ public class ChatFragment extends Fragment {
     }
 
     /* Adds the message to the ScrollView. */
-    private void displayMessage(String sender, String message) {
+    public void displayMessage(String sender, String message) {
 
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.text = message;
@@ -230,27 +226,6 @@ public class ChatFragment extends Fragment {
         mAdapter.addMessage(chatMessage);
     }
 
-    private void scrollToBottom(final ScrollView scrollView) {
-        txtMessage.requestFocus();
-
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-    }
-
-    private void scrollAfterHalfSecond() {
-        final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
-
-        exec.schedule(new Runnable(){
-            @Override
-            public void run(){
-                mRecycler.scrollToPosition(0);
-            }
-        }, 600, TimeUnit.MILLISECONDS);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -274,14 +249,15 @@ public class ChatFragment extends Fragment {
         return (!userId.equals(DEFAULT)) ? userId : "No data Found";
     }
 
-    public void onNewMessage(final Object... args) {
-        // args[0] = from username
-        // args[1] = message
-        if (mReceiverId.equals(args[0])) {
-            displayMessage(args[0].toString(), args[1].toString());
-            mRecycler.scrollToPosition(0);
-        }
+
+    public String getReceiverId() {
+        return mReceiverId;
     }
+
+    public RecyclerView getRecyclerView() {
+        return mRecycler;
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

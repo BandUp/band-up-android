@@ -217,8 +217,8 @@ public class MainScreenActivity extends AppCompatActivity implements
         getUserProfile();
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
+        criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
         bestProvider = locationManager.getBestProvider(criteria, false);
         setContentView(R.layout.activity_main_screen);
         sharedPrefs = getSharedPreferences("permissions", Context.MODE_PRIVATE);
@@ -576,7 +576,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         try {
             Location location = locationManager.getLastKnownLocation(bestProvider);
             // Get a new location every two minutes
-            locationManager.requestLocationUpdates(bestProvider, 120000, 0, this);
+            locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
 
 
             sendLocation(location);

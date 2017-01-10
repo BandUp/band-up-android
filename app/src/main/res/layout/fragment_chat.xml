@@ -34,7 +34,8 @@
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager"
                 tools:context="com.melodies.bandup.ChatActivity"
-                tools:listitem="@layout/chat_message_cell" />
+                tools:listitem="@layout/chat_message_cell"
+                android:scrollbars="vertical"/>
         </LinearLayout>
     </LinearLayout>
     <View android:background="#999999"

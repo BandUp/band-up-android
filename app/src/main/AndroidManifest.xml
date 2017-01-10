@@ -92,6 +92,7 @@
             android:theme="@style/BandUpThemeNoActionBar" />
         <activity
             android:name=".ChatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Chat" />
         <activity
             android:name=".MainScreenActivity.MainScreenActivity"

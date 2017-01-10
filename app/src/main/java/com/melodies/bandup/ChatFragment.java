@@ -17,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -123,14 +122,13 @@ public class ChatFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                txtMessage.setText("");
+                if (((ChatActivity) getActivity()).sendMessage(msgObject)) {
+                    txtMessage.setText("");
 
-                displayMessage(getUserId(), message);
+                    displayMessage(getUserId(), message);
 
-                mRecycler.scrollToPosition(0);
-
-
-                ((ChatActivity) getActivity()).sendMessage(msgObject);
+                    mRecycler.scrollToPosition(0);
+                }
             }
         });
 

@@ -576,7 +576,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         try {
             Location location = locationManager.getLastKnownLocation(bestProvider);
             // Get a new location every two minutes
-            locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+            locationManager.requestLocationUpdates(bestProvider, 120000, 0, this);
 
 
             sendLocation(location);

@@ -68,7 +68,8 @@ configurations.all {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // adding volley library
-    compile('com.github.nkzawa:socket.io-client:0.3.0') {
+    compile ('io.socket:socket.io-client:0.8.3') {
+        // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
     compile('org.apache.httpcomponents:httpmime:4.3') {

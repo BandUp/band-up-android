@@ -14,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -100,6 +102,14 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
             @Override
             public void onPageSelected(int position) {
+                View view = ChatActivity.this.getCurrentFocus();
+                if (position == 1) {
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
+
                 invalidateOptionsMenu();
             }
 
@@ -164,6 +174,11 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
             case R.id.action_user:
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(1, true);
+                    View view = this.getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
                     invalidateOptionsMenu();
                 } else {
                     mViewPager.setCurrentItem(0, true);

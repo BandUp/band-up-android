@@ -125,7 +125,7 @@ public class ChatFragment extends Fragment {
                 if (((ChatActivity) getActivity()).sendMessage(msgObject)) {
                     txtMessage.setText("");
 
-                    displayMessage(getUserId(), message);
+                    displayMessage(getUserId(), message, true);
 
                     mRecycler.scrollToPosition(0);
                 }
@@ -157,7 +157,11 @@ public class ChatFragment extends Fragment {
         return rootView;
     }
 
-    private void getChatHistory() {
+    public void getChatHistory() {
+        if (getActivity() == null) {
+            return;
+        }
+
         String url = getResources().getString(R.string.api_address).concat("/chat_history/").concat(mReceiverId);
 
         // Get chat history.
@@ -168,15 +172,17 @@ public class ChatFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        mAdapter.clearChatHistory();
                         if (!response.isNull("chatHistory")) {
                             try {
                                 JSONArray chatHistory = response.getJSONArray("chatHistory");
                                 for (int i = 0; i < chatHistory.length(); i++) {
                                     JSONObject item = chatHistory.getJSONObject(i);
                                     if (!item.isNull("message")) {
-                                        displayMessage(item.getString("sender"), item.getString("message"));
+                                        displayMessage(item.getString("sender"), item.getString("message"), false);
                                     }
                                 }
+                                mAdapter.notifyDataSetChanged();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -215,13 +221,13 @@ public class ChatFragment extends Fragment {
     }
 
     /* Adds the message to the ScrollView. */
-    public void displayMessage(String sender, String message) {
+    public void displayMessage(String sender, String message, Boolean notify) {
 
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.text = message;
         chatMessage.senderUserId = sender;
 
-        mAdapter.addMessage(chatMessage);
+        mAdapter.addMessage(chatMessage, notify);
     }
 
 
@@ -235,6 +241,8 @@ public class ChatFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
+
 
     @Override
     public void onDetach() {
@@ -255,7 +263,6 @@ public class ChatFragment extends Fragment {
     public RecyclerView getRecyclerView() {
         return mRecycler;
     }
-
 
     /**
      * This interface must be implemented by activities that contain this

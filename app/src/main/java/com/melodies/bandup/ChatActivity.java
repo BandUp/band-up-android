@@ -153,16 +153,11 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mSocket.on("recv_privatemsg", onNewMessage);
-        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        restartSockets();
 
         mSocket.connect();
 
         mSocket.emit("adduser", getUserId(), addUserAck);
-
     }
 
     private Emitter.Listener onConnect = new Emitter.Listener() {
@@ -172,12 +167,47 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                 @Override
                 public void run() {
                     isConnected = true;
+                    chatFragment.getChatHistory();
                     System.out.println("Socket.IO: Connected");
-
                 }
             });
         }
     };
+
+    private void restartSockets() {
+        mSocket.off();
+        mSocket.on("recv_privatemsg", onNewMessage);
+        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+    }
+
+    private void turnOffSockets() {
+        mSocket.off();
+        mSocket.disconnect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        restartSockets();
+
+        mSocket.connect();
+
+        mSocket.emit("adduser", getUserId(), addUserAck);
+        chatFragment.getChatHistory();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        turnOffSockets();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        turnOffSockets();
+    }
 
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
@@ -187,18 +217,6 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                 public void run() {
                     isConnected = false;
                     System.out.println("Socket.IO: Disconnected");
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            ChatActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Socket.IO: Connection Error");
                 }
             });
         }
@@ -268,13 +286,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSocket.off();
-        mSocket.disconnect();
-        mSocket.off("recv_privatemsg", onNewMessage);
-        mSocket.off(Socket.EVENT_CONNECT,onConnect);
-        mSocket.off(Socket.EVENT_DISCONNECT,onDisconnect);
-        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        turnOffSockets();
     }
 
     @Override
@@ -333,7 +345,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                     // args[0] = from username
                     // args[1] = message
                     if (receiverId.equals(args[0])) {
-                        chatFragment.displayMessage(args[0].toString(), args[1].toString());
+                        chatFragment.displayMessage(args[0].toString(), args[1].toString(), true);
                         chatFragment.mRecycler.scrollToPosition(0);
                     }
                 }

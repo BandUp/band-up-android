@@ -60,9 +60,28 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         return mMessages.size();
     }
 
-    public void addMessage(ChatMessage message) {
+    public void addMessage(ChatMessage message, Boolean notify) {
+        if (mMessages == null) {
+            return;
+        }
+
         mMessages.add(0, message);
-        notifyItemInserted(0);
+
+        if (mMessages.size() == 0) {
+            return;
+        }
+
+        if (notify) {
+            notifyItemInserted(0);
+        }
+    }
+
+    public void clearChatHistory() {
+        if (mMessages == null) {
+            return;
+        }
+        mMessages.clear();
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

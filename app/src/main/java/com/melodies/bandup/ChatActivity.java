@@ -1,9 +1,12 @@
 package com.melodies.bandup;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -18,15 +21,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.Ack;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.melodies.bandup.MainScreenActivity.UserDetailsFragment;
 
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+
+import io.socket.client.Ack;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
 
@@ -34,24 +38,24 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
     private String receiverId;
     private String receiverUsername;
-    private Socket mSocket;
+    Socket mSocket;
+    BroadcastReceiver networkStateReceiver;
 
     private ChatFragment chatFragment;
+    private Boolean hasValidUsername = false;
+    private Boolean isConnected = false;
     UserDetailsFragment userDetailsFragment;
 
     private MyAdapter mSectionsPagerAdapter;
-
-
-
 
     Ack sendMessageAck = new Ack() {
         @Override
         public void call(Object... args) {
             // If the message transmission succeeded or not
             if (args[0].equals(false)) {
-                System.out.println("Sending message. Message saved to server");
+                System.out.println("Socket.IO: Sending message. Message saved to server");
             } else {
-                System.out.println("Sending message. Receiver online.");
+                System.out.println("Socket.IO: Sending message. Receiver online.");
             }
         }
     };
@@ -59,9 +63,14 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     Ack addUserAck = new Ack() {
         @Override
         public void call(Object... args) {
-
+            System.out.println("Socket.IO: CHECK USERNAME");
             // If the username is taken
             if (args[0].equals(false)) {
+                hasValidUsername = false;
+                System.out.println("Socket.IO: Username Taken");
+            } else {
+                hasValidUsername = true;
+                System.out.println("Socket.IO: Username not Taken");
             }
         }
     };
@@ -89,6 +98,12 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
             finish();
         }
         mSectionsPagerAdapter = new MyAdapter(getSupportFragmentManager());
+
+
+
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkStateReceiver, filter);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -138,11 +153,74 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mSocket.on("recv_privatemsg", onNewMessage);
+        restartSockets();
+
         mSocket.connect();
 
         mSocket.emit("adduser", getUserId(), addUserAck);
     }
+
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isConnected = true;
+                    chatFragment.getChatHistory();
+                    System.out.println("Socket.IO: Connected");
+                }
+            });
+        }
+    };
+
+    private void restartSockets() {
+        mSocket.off();
+        mSocket.on("recv_privatemsg", onNewMessage);
+        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+    }
+
+    private void turnOffSockets() {
+        mSocket.off();
+        mSocket.disconnect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        restartSockets();
+
+        mSocket.connect();
+
+        mSocket.emit("adduser", getUserId(), addUserAck);
+        chatFragment.getChatHistory();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        turnOffSockets();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        turnOffSockets();
+    }
+
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isConnected = false;
+                    System.out.println("Socket.IO: Disconnected");
+                }
+            });
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,12 +238,13 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
     }
 
-    public void sendMessage(JSONObject msgObject) {
-        if (!mSocket.connected()) {
-            mSocket.connect();
-        }
+    public Boolean sendMessage(JSONObject msgObject) {
+        if (!isConnected) return false;
+        System.out.println("Socket.IO: Is Connected");
+        if (!hasValidUsername) return false;
+        System.out.println("Socket.IO: All is well");
         mSocket.emit("privatemsg", msgObject, sendMessageAck);
-
+        return true;
     }
 
     // Return to previous Activity
@@ -207,10 +286,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("ONDESTROY");
-        mSocket.off();
-        mSocket.disconnect();
-        mSocket.off("recv_privatemsg", onNewMessage);
+        turnOffSockets();
     }
 
     @Override
@@ -269,7 +345,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                     // args[0] = from username
                     // args[1] = message
                     if (receiverId.equals(args[0])) {
-                        chatFragment.displayMessage(args[0].toString(), args[1].toString());
+                        chatFragment.displayMessage(args[0].toString(), args[1].toString(), true);
                         chatFragment.mRecycler.scrollToPosition(0);
                     }
                 }

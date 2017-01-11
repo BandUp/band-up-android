@@ -20,6 +20,7 @@
 -keep class com.kosalgeek.android.photoutil.**
 -dontwarn com.squareup.picasso.**
 -dontwarn com.kosalgeek.android.photoutil.**
+-dontwarn okio.**
 
 -keep class * implements java.io.Serializable
 

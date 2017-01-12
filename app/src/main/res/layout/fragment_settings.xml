@@ -73,7 +73,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
-                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekBarAges"

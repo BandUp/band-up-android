@@ -45,7 +45,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"/>
 
-        <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+        <org.florescu.android.rangeseekbar.RangeSeekBar
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_width="match_parent"

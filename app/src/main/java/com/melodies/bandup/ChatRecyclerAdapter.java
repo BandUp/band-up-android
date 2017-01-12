@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ViewHolder> {
 
     private ArrayList<ChatMessage> mMessages;
-    private Context mContext;
     private String mUserId;
 
     public ChatRecyclerAdapter(Context context, ArrayList<ChatMessage> items, String userId) {
@@ -28,7 +27,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             mMessages = items;
         }
         mUserId = userId;
-        mContext = context;
     }
 
     @Override
@@ -85,8 +83,8 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
-        final TextView mMessage;
+        private final View mView;
+        private final TextView mMessage;
 
         ViewHolder(View view) {
             super(view);

@@ -24,7 +24,7 @@ public class MultipartRequest extends Request<String> {
     private Response.Listener mListener;
 
 
-    public MultipartRequest(String url, File file, String routeId,
+    public MultipartRequest(String url, File file,
                             Response.Listener<String> listener,
                             Response.ErrorListener errorListener) {
         super(Method.POST, url, errorListener);

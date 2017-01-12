@@ -454,7 +454,7 @@ public class ProfileFragment extends Fragment {
     public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
         final File image = new File(path);
         final String url = getResources().getString(R.string.api_address).concat("/profile-picture");
-        final MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+        final MultipartRequest multipartRequest = new MultipartRequest(url, image,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {

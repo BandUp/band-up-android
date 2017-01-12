@@ -6,7 +6,7 @@ import android.content.Context;
  * Grammar rules for Icelandic.
  */
 public class LocaleRules_is implements LocaleRules {
-    Context mContext;
+    private Context mContext;
 
     public LocaleRules_is(Context c) {
         mContext = c;

@@ -5,9 +5,10 @@ import android.content.Context;
 public class CurrentUserSingleton {
 
     private static CurrentUserSingleton mInstance;
+    private Context mContext;
 
-    CurrentUserSingleton(Context context) {
-
+    private CurrentUserSingleton(Context context) {
+        mContext = context;
     }
     public static synchronized CurrentUserSingleton getInstance(Context context){
         if (mInstance == null){

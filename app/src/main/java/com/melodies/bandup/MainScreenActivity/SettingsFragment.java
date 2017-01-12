@@ -277,7 +277,7 @@ public class SettingsFragment extends Fragment {
 
     // ============================== END Shared Preferences SAVING AND LOADING ===================================================
 
-
+    int stepSize = 5;
     // all behaviour of radiusBarUnit is placed in this function
     private void radiusInit(View rootView) {
         txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
@@ -298,6 +298,9 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarRadius.setMax(MAX_RANGE);      // Maximum value of search range in Km
+
+                progress = ((int)Math.round(progress/stepSize))*stepSize;
+                seekBar.setProgress(progress);
 
                 // if unit switch is on, put mi in text view else km
                 if (loadUserSwitch("switchUnit")) {

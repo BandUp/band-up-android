@@ -25,7 +25,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
      */
     public UserListAdapter(FragmentManager fm) {
         super(fm);
-        userList = new ArrayList();
+        userList = new ArrayList<>();
         mFragmentManager = fm;
     }
 
@@ -82,7 +82,6 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
                     return i;
                 }
             }
-
         }
         return 0;
     }
@@ -94,9 +93,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
                     userList.get(i).isLiked = true;
                 }
             }
-
         }
-
     }
 
     /**

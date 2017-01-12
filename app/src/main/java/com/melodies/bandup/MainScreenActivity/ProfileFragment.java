@@ -168,6 +168,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateCurrentUserSoundCloud(int soundCloudId){
+        if (getActivity() == null) {
+            return;
+        }
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
         currUser.soundCloudId = soundCloudId;
         if (mSoundLoginFragment != null){
@@ -179,6 +182,9 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("UseValueOf")
     private void createSoundCloudArea() {
+        if (getActivity() == null) {
+            return;
+        }
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
@@ -203,7 +209,8 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.MY_PROFILE_FRAGMENT;
         mainScreenActivity.setTitle(R.string.main_title_my_profile);
         mainScreenActivity.invalidateOptionsMenu();
@@ -384,6 +391,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (getActivity() == null) {
+            return;
+        }
         Boolean allGranted = true;
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
@@ -417,10 +427,10 @@ public class ProfileFragment extends Fragment {
      * @param data The intent data. Contains the URI of the image.
      */
     public void onImageSelectResult(int requestCode, int resultCode, Intent data) {
-
-        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        if (getActivity() == null) {
+            return;
+        }
         if (resultCode == RESULT_OK) {
-
             if (requestCode == CAMERA_REQUEST) {
                 displayDownloadMessage(getString(R.string.profile_upload_title), getString(R.string.profile_upload_message));
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
@@ -685,7 +695,9 @@ public class ProfileFragment extends Fragment {
     // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (getActivity() == null) {
+            return;
+        }
         if (requestCode == EDIT_PROFILE_REQUEST_CODE) {
             if (data != null) {
                 User currUser = ((MainScreenActivity) getActivity()).currentUser;

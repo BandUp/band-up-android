@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:rsb="http://schemas.android.com/apk/res-auto"
-    tools:context="com.melodies.bandup.MainScreenActivity.UserSearchFragment"
+    tools:context="com.melodies.bandup.main_screen_activity.UserSearchFragment"
     android:orientation="vertical">
 <ScrollView
     android:layout_width="match_parent"

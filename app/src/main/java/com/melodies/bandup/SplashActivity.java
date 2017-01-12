@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
-import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.setup.Instruments;

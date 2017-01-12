@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity.adapters;
+package com.melodies.bandup.main_screen_activity.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.melodies.bandup.MainScreenActivity.MatchesFragment.OnListFragmentInteractionListener;
+import com.melodies.bandup.main_screen_activity.MatchesFragment.OnListFragmentInteractionListener;
 import com.melodies.bandup.R;
 import com.melodies.bandup.helper_classes.User;
 import com.squareup.picasso.Picasso;

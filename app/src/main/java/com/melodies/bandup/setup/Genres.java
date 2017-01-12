@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.R;
 
 import org.json.JSONArray;

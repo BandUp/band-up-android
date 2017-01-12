@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -63,7 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.os.Build.VERSION_CODES.M;
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 
 public class MainScreenActivity extends AppCompatActivity implements

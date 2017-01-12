@@ -7,7 +7,7 @@
     android:layout_weight="1"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity">
+    tools:context="com.melodies.bandup.main_screen_activity.MainScreenActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

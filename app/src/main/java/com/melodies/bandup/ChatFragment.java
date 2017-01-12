@@ -24,7 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 
 /**

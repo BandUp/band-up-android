@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.melodies.bandup.MainScreenActivity.UserDetailsFragment;
+import com.melodies.bandup.main_screen_activity.UserDetailsFragment;
 
 import org.json.JSONObject;
 
@@ -32,7 +32,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener, UserDetailsFragment.OnFragmentInteractionListener {
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity">
+    tools:context="com.melodies.bandup.main_screen_activity.MainScreenActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

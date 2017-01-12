@@ -1,6 +1,5 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,17 +35,10 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import static android.content.Context.LOCATION_SERVICE;
-import static android.os.Build.VERSION_CODES.M;
 
 /**
  * A simple {@link Fragment} subclass.

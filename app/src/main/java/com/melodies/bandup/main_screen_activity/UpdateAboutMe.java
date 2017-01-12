@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 

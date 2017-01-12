@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:context="com.melodies.bandup.MainScreenActivity.MatchesFragment"
+            tools:context="com.melodies.bandup.main_screen_activity.MatchesFragment"
             tools:listitem="@layout/fragment_matches" >
         </android.support.v7.widget.RecyclerView>
 

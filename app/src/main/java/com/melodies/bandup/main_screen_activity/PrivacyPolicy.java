@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -95,7 +95,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Chat" />
         <activity
-            android:name=".MainScreenActivity.MainScreenActivity"
+            android:name=".main_screen_activity.MainScreenActivity"
             android:label="@string/main_title_user_list"
             android:screenOrientation="portrait"
             android:theme="@style/BandUpThemeNoActionBar" />
@@ -112,13 +112,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainScreenActivity.UpdateAboutMe"
+            android:name=".main_screen_activity.UpdateAboutMe"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainScreenActivity.Contact"
+            android:name=".main_screen_activity.Contact"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainScreenActivity.PrivacyPolicy"
+            android:name=".main_screen_activity.PrivacyPolicy"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"

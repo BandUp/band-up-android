@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.melodies.bandup.ChatActivity;
-import com.melodies.bandup.MainScreenActivity.adapters.MyMatchesRecyclerViewAdapter;
+import com.melodies.bandup.main_screen_activity.adapters.MyMatchesRecyclerViewAdapter;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
 import com.melodies.bandup.helper_classes.User;

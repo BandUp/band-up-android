@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -31,7 +31,7 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 /**
  * A simple {@link Fragment} subclass.

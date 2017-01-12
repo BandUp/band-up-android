@@ -64,7 +64,7 @@
             android:background="@color/bandUpYellowTransparent"/>
 
         <TextView
-            android:text="@string/search_mucicians_displayed"
+            android:text="@string/search_musicians_displayed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"

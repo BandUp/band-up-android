@@ -6,6 +6,6 @@
     <item
         android:id="@+id/action_user"
         android:icon="@drawable/ic_account"
-        android:title="@string/chat_user_profile"
+        android:title="@string/chat_view_profile"
         app:showAsAction="always"/>
 </menu>

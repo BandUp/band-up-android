@@ -135,10 +135,10 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         });
 
         try {
-            setTitle(getString(R.string.chat_title));
+            setTitle(getString(R.string.chat_title1));
             getSupportActionBar().setSubtitle(receiverUsername);
         } catch (Exception npe) {
-            setTitle(getString(R.string.chat_chat_with).concat(" ").concat(receiverUsername));
+            setTitle(getString(R.string.chat_title2).concat(" ").concat(receiverUsername));
         }
 
         try {

@@ -8,6 +8,7 @@
     <color name="bandUpYellow">#FFD302</color>
     <color name="bandUpYellowTransparent">#80FFD302</color>
     <color name="bandUpGreen">#00A651</color>
-    <color name="bandUpGray">#0D0D0D</color>
+    <color name="bandUpBlack">#0D0D0D</color>
+    <color name="bandUpBackground">#0D0D0D</color>
     <color name="bandUpRed">#e20909</color>
 </resources>

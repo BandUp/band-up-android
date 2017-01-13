@@ -7,7 +7,6 @@
 
     <style name="BandUpTheme" parent="Theme.AppCompat">
         <item name="colorAccent">@color/bandUpYellow</item>
-        <item name="android:colorBackground">@color/bandUpGray</item>
         <item name="colorControlActivated">@color/bandUpYellow</item>
     </style>
 

@@ -226,7 +226,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_chat, menu);
-        MenuItem item = menu.findItem(R.id.action_user);
+        MenuItem item = menu.findItem(R.id.action_user_details);
 
         if (mViewPager.getCurrentItem() == 0) {
             item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
@@ -250,7 +250,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     // Return to previous Activity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-            case R.id.action_user:
+            case R.id.action_user_details:
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(1, true);
                     View view = this.getCurrentFocus();

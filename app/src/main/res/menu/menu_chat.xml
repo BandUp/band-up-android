@@ -4,8 +4,8 @@
 
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
-        android:id="@+id/action_user"
-        android:icon="@drawable/ic_account"
+        android:id="@+id/action_user_details"
+        android:icon="@drawable/ic_account_chat"
         android:title="@string/chat_view_profile"
         app:showAsAction="always"/>
 </menu>

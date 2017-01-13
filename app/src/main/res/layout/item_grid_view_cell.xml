@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:id="@+id/itemBackground"
-        android:src="@color/bandUpGray"/>
+        android:src="@color/bandUpBlack"/>
 
     <TextView
         android:layout_width="wrap_content"

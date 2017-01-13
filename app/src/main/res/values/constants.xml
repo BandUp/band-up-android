@@ -17,4 +17,6 @@
         </html>]]>
     </string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-2677510616264993/2222069667</string>
+    <string name="facebook_app_id" translatable="false">1734365480157177</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1734365480157177</string>
 </resources>

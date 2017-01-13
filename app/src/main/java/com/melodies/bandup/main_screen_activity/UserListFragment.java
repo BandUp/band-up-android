@@ -65,7 +65,7 @@ public class UserListFragment extends Fragment {
     public static UserListFragment newInstance(JSONArray userlist) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
-        if (userlist != null){
+        if (userlist != null) {
             args.putString("userlist", userlist.toString());
         }
         fragment.setArguments(args);
@@ -74,7 +74,7 @@ public class UserListFragment extends Fragment {
 
     private TextView txtNoUsers;
     private ProgressBar progressBar;
-    private View     partialView;
+    private View partialView;
     private LinearLayout networkErrorBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -85,10 +85,10 @@ public class UserListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainScreenActivity = (MainScreenActivity)getActivity();
+        mainScreenActivity = (MainScreenActivity) getActivity();
         if (getArguments() != null) {
             String userList = getArguments().getString("userlist");
-            if(userList != null){
+            if (userList != null) {
                 try {
                     JSONArray jsonArray = new JSONArray(userList);
 
@@ -111,7 +111,7 @@ public class UserListFragment extends Fragment {
      * get users from backend and insert them into the user list adapter
      */
     private void getUserList() {
-        if (mainScreenActivity.getIsSearch()){
+        if (mainScreenActivity.getIsSearch()) {
             progressBar.setVisibility(View.INVISIBLE);
             return;
         }
@@ -242,7 +242,7 @@ public class UserListFragment extends Fragment {
             } else if (valueName.equals("minAge")) {
                 return sharedPreferences.getInt(valueName, getResources().getInteger(R.integer.min_age));
             }
-            return sharedPreferences.getInt (valueName, 0);
+            return sharedPreferences.getInt(valueName, 0);
         }
         return -1;
     }
@@ -260,7 +260,7 @@ public class UserListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
-        final MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        final MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.NEAR_ME_FRAGMENT;
         mainScreenActivity.invalidateOptionsMenu();
 
@@ -270,12 +270,12 @@ public class UserListFragment extends Fragment {
             getActivity().setTitle(getString(R.string.main_title_user_list));
         }
         // Adding ad Banner
-        mAdView = (AdView)rootView.findViewById(R.id.adView);
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
         partialView = rootView.findViewById(R.id.user_linear_layout);
-        txtNoUsers  = (TextView) rootView.findViewById(R.id.txtNoUsers);
+        txtNoUsers = (TextView) rootView.findViewById(R.id.txtNoUsers);
 
         progressBar = (ProgressBar) rootView.findViewById(R.id.userListProgressBar);
         mPager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -286,7 +286,6 @@ public class UserListFragment extends Fragment {
                 getResources().getColor(R.color.bandUpYellow),
                 getResources().getColor(R.color.bandUpGreen)
         );
-
 
         if (mainScreenActivity.getIsSearch()) {
             mSwipeRefreshLayout.setEnabled(false);
@@ -309,18 +308,18 @@ public class UserListFragment extends Fragment {
             }
         });
 
-        mPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled( int position, float v, int i1 ) {
+            public void onPageScrolled(int position, float v, int i1) {
             }
 
             @Override
-            public void onPageSelected( int position ) {
+            public void onPageSelected(int position) {
                 currentUserIndex = position;
             }
 
             @Override
-            public void onPageScrollStateChanged( int state ) {
+            public void onPageScrollStateChanged(int state) {
                 mSwipeRefreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
             }
         });

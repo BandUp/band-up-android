@@ -94,12 +94,12 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            mId                 = extras.getString         ("USER_ID");
-            mName               = extras.getString         ("USER_NAME");
-            mFavoriteInstrument = extras.getString         ("USER_FAVOURITE_INSTRUMENT");
-            mInstruments        = extras.getStringArrayList("USER_INSTRUMENTS");
-            mGenres             = extras.getStringArrayList("USER_GENRES");
-            mAboutMe            = extras.getString         ("USER_ABOUT_ME");
+            mId = extras.getString("USER_ID");
+            mName = extras.getString("USER_NAME");
+            mFavoriteInstrument = extras.getString("USER_FAVOURITE_INSTRUMENT");
+            mInstruments = extras.getStringArrayList("USER_INSTRUMENTS");
+            mGenres = extras.getStringArrayList("USER_GENRES");
+            mAboutMe = extras.getString("USER_ABOUT_ME");
 
             Date dob;
             dob = (Date) getIntent().getSerializableExtra("USER_DATE_OF_BIRTH");
@@ -195,9 +195,9 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
                 if (mDateOfBirth == null) {
                     mDateOfBirth = Calendar.getInstance();
                 }
-                int year  = mDateOfBirth.get(Calendar.YEAR);
+                int year = mDateOfBirth.get(Calendar.YEAR);
                 int month = mDateOfBirth.get(Calendar.MONTH);
-                int day   = mDateOfBirth.get(Calendar.DAY_OF_MONTH);
+                int day = mDateOfBirth.get(Calendar.DAY_OF_MONTH);
                 datePickerFragment.setDate(year, month, day);
                 datePickerFragment.show(UpdateAboutMe.this.getFragmentManager(), "DatePicker");
             }
@@ -222,15 +222,11 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             etAboutMe.setText(mAboutMe);
         }
 
-
         // back to activity before
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
-
 
         etAboutMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,16 +246,16 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
         // Adding ad Banner
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView = (AdView)findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         mAdView.loadAd(adRequest);
     }
 
     private void scrollAfterHalfSecond(final ScrollView scrollView) {
         final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
 
-        exec.schedule(new Runnable(){
+        exec.schedule(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 scrollView.fullScroll(View.FOCUS_DOWN);
             }
         }, 600, TimeUnit.MILLISECONDS);
@@ -267,8 +263,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
     private void updateAgeText() {
         // Get the locale date format.
-        if (mDateOfBirth != null)
-        {
+        if (mDateOfBirth != null) {
             java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(UpdateAboutMe.this);
             // Formatted date.
             String date = dateFormat.format(mDateOfBirth.getTime());
@@ -278,7 +273,6 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             String dateString = String.format("%s (%s)", date, age);
             etDateOfBirth.setText(dateString);
         }
-
 
     }
 
@@ -296,7 +290,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             String genreString = "";
             for (int i = 0; i < list.size(); i++) {
                 genreString = genreString.concat(list.get(i));
-                if (i != list.size()-1) genreString = genreString.concat(", ");
+                if (i != list.size() - 1) genreString = genreString.concat(", ");
             }
             textField.setText(genreString);
         }
@@ -342,29 +336,29 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             userUpdated.put("aboutme", etAboutMe.getText().toString());
             userUpdated.put("username", etName.getText().toString());
             userUpdated.put("favoriteinstrument", etFavouriteInstrument.getText().toString());
-            if(mDateOfBirth != null){
+            if (mDateOfBirth != null) {
                 userUpdated.put("dateOfBirth", mDateOfBirth.getTime().toString());
             }
 
             DatabaseSingleton.getInstance(this).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
-            @Override
-            public void onBandUpResponse(Object response) {
-                // we were successful send about me data to previous view:
-                Intent i = new Intent();
+                @Override
+                public void onBandUpResponse(Object response) {
+                    // we were successful send about me data to previous view:
+                    Intent i = new Intent();
 
-                i.putExtra               ("USER_ID", mId);
-                i.putExtra               ("USER_NAME", etName.getText().toString());
-                i.putExtra               ("USER_FAVOURITE_INSTRUMENT", etFavouriteInstrument.getText().toString());
-                i.putStringArrayListExtra("USER_INSTRUMENTS", mInstruments);
-                i.putStringArrayListExtra("USER_GENRES", mGenres);
-                i.putExtra               ("USER_ABOUT_ME", etAboutMe.getText().toString());
-                if (mDateOfBirth != null){
-                    i.putExtra               ("USER_DATE_OF_BIRTH", mDateOfBirth.getTime());
+                    i.putExtra("USER_ID", mId);
+                    i.putExtra("USER_NAME", etName.getText().toString());
+                    i.putExtra("USER_FAVOURITE_INSTRUMENT", etFavouriteInstrument.getText().toString());
+                    i.putStringArrayListExtra("USER_INSTRUMENTS", mInstruments);
+                    i.putStringArrayListExtra("USER_GENRES", mGenres);
+                    i.putExtra("USER_ABOUT_ME", etAboutMe.getText().toString());
+                    if (mDateOfBirth != null) {
+                        i.putExtra("USER_DATE_OF_BIRTH", mDateOfBirth.getTime());
+                    }
+
+                    setResult(EDIT_PROFILE_REQUEST_CODE, i);
+                    finish();
                 }
-                
-                setResult(EDIT_PROFILE_REQUEST_CODE, i);
-                finish();
-            }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
@@ -380,7 +374,6 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
-
 
         i.putStringArrayListExtra("USER_INSTRUMENTS", mInstruments);
         i.putStringArrayListExtra("USER_GENRES", mGenres);

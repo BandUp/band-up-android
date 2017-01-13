@@ -64,7 +64,6 @@ import java.util.Arrays;
 import static android.os.Build.VERSION_CODES.M;
 import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
-
 public class MainScreenActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         UserListFragment.OnFragmentInteractionListener,
@@ -79,12 +78,12 @@ public class MainScreenActivity extends AppCompatActivity implements
         UpcomingFeaturesFragment.OnFragmentInteractionListener,
         LocationListener {
 
-    final public int NEAR_ME_FRAGMENT      = 0;
-    final public int MY_PROFILE_FRAGMENT   = 1;
-    final public int MATCHES_FRAGMENT      = 2;
-    final public int SETTINGS_FRAGMENT     = 3;
-    final public int COMING_SOON_FRAGMENT  = 4;
-    final public int SEARCH_FRAGMENT       = 5;
+    final public int NEAR_ME_FRAGMENT = 0;
+    final public int MY_PROFILE_FRAGMENT = 1;
+    final public int MATCHES_FRAGMENT = 2;
+    final public int SETTINGS_FRAGMENT = 3;
+    final public int COMING_SOON_FRAGMENT = 4;
+    final public int SEARCH_FRAGMENT = 5;
     final public int USER_DETAILS_FRAGMENT = 6;
 
     public int currentFragment = NEAR_ME_FRAGMENT;
@@ -118,11 +117,11 @@ public class MainScreenActivity extends AppCompatActivity implements
     // prevents reloading of data from server if used as search results
     private boolean mIsSearch = false;
 
-    public void setIsSearch(boolean isSearch){
+    public void setIsSearch(boolean isSearch) {
         mIsSearch = isSearch;
     }
 
-    public Boolean getIsSearch(){
+    public Boolean getIsSearch() {
         return mIsSearch;
     }
 
@@ -156,7 +155,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                 item.setVisible(false);
             }
         }
-
 
         return super.onCreateOptionsMenu(menu);
 
@@ -197,7 +195,6 @@ public class MainScreenActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
     public void onClickDeleteAccount(View view) {
         settingsFragment.onClickDeleteAccount(view);
     }
@@ -207,6 +204,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         unregisterReceiver(networkStateReceiver);
         super.onDestroy();
     }
+
     BroadcastReceiver networkStateReceiver;
 
     @Override
@@ -227,7 +225,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             editor.apply();
         }
 
-         networkStateReceiver = new BroadcastReceiver() {
+        networkStateReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -243,13 +241,13 @@ public class MainScreenActivity extends AppCompatActivity implements
         registerReceiver(networkStateReceiver, filter);
 
         // Create all fragments
-        userListFragment            = UserListFragment.newInstance(null);
-        userDetailsFragment         = UserDetailsFragment.newInstance();
-        matchesFragment             = new MatchesFragment();
-        settingsFragment            = SettingsFragment.newInstance();
-        profileFragment             = ProfileFragment.newInstance();
-        mUserSearchFragment         = UserSearchFragment.newInstance();
-        mUpcomingFeaturesFragment   = UpcomingFeaturesFragment.newInstance();
+        userListFragment = UserListFragment.newInstance(null);
+        userDetailsFragment = UserDetailsFragment.newInstance();
+        matchesFragment = new MatchesFragment();
+        settingsFragment = SettingsFragment.newInstance();
+        profileFragment = ProfileFragment.newInstance();
+        mUserSearchFragment = UserSearchFragment.newInstance();
+        mUpcomingFeaturesFragment = UpcomingFeaturesFragment.newInstance();
 
         networkErrorBar = (LinearLayout) findViewById(R.id.network_connection_error_bar);
 
@@ -268,7 +266,6 @@ public class MainScreenActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-
         // Open the UserListFragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, userListFragment);
@@ -280,7 +277,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         Boolean shouldDisplayRationale = sharedPrefs.getBoolean("display_rationale", false);
 
         int apiVersion = android.os.Build.VERSION.SDK_INT;
-        if (apiVersion >= M){
+        if (apiVersion >= M) {
 
             if (!hasLocationPermission()) {
                 // If location permissions have NOT been granted.
@@ -308,9 +305,9 @@ public class MainScreenActivity extends AppCompatActivity implements
         } else {
             createLocationRequest();
         }
-        imgProfileNav  = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgProfileNav);
-        txtUsernameNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtUsernameNav);
-        txtFavoriteNav = (TextView)  navigationView.getHeaderView(0).findViewById(R.id.txtFavoriteNav);
+        imgProfileNav = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imgProfileNav);
+        txtUsernameNav = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUsernameNav);
+        txtFavoriteNav = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtFavoriteNav);
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,6 +323,7 @@ public class MainScreenActivity extends AppCompatActivity implements
             }
         });
     }
+
     boolean isExiting = false;
 
     public void updateNavUserImage(String url) {
@@ -383,9 +381,9 @@ public class MainScreenActivity extends AppCompatActivity implements
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         FragmentManager fm = getSupportFragmentManager();
-        switch (id){
+        switch (id) {
             case R.id.nav_near_me:
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                     fm.popBackStack();
                 }
                 mIsSearch = false;
@@ -393,14 +391,14 @@ public class MainScreenActivity extends AppCompatActivity implements
                 ft.commit();
                 break;
             case R.id.nav_matches:
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                     fm.popBackStack();
                 }
                 ft.replace(R.id.mainFrame, matchesFragment);
                 ft.commit();
                 break;
             case R.id.nav_edit_profile:
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                     fm.popBackStack();
                 }
                 ft.replace(R.id.mainFrame, profileFragment);
@@ -408,14 +406,14 @@ public class MainScreenActivity extends AppCompatActivity implements
 
                 break;
             case R.id.nav_settings:
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                     fm.popBackStack();
                 }
                 ft.replace(R.id.mainFrame, settingsFragment);
                 ft.commit();
                 break;
             case R.id.nav_upcomming:
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                     fm.popBackStack();
                 }
                 ft.replace(R.id.mainFrame, mUpcomingFeaturesFragment);
@@ -427,11 +425,10 @@ public class MainScreenActivity extends AppCompatActivity implements
                 logoutDialog.setTitle(getString(R.string.main_log_out_title));
                 logoutDialog.show();
                 logout();
-            break;
+                break;
             default:
                 break;
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -441,20 +438,20 @@ public class MainScreenActivity extends AppCompatActivity implements
     public void logout() {
         DatabaseSingleton.getInstance(MainScreenActivity.this).getBandUpDatabase().logout(
                 new BandUpResponseListener() {
-            @Override
-            public void onBandUpResponse(Object response) {
-                logoutDialog.dismiss();
-                Intent intent = new Intent(MainScreenActivity.this, Login.class);
-                startActivity(intent);
-                finish();
-            }
-        }, new BandUpErrorListener() {
-            @Override
-            public void onBandUpErrorResponse(VolleyError error) {
-                logoutDialog.dismiss();
-                VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
-            }
-        });
+                    @Override
+                    public void onBandUpResponse(Object response) {
+                        logoutDialog.dismiss();
+                        Intent intent = new Intent(MainScreenActivity.this, Login.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, new BandUpErrorListener() {
+                    @Override
+                    public void onBandUpErrorResponse(VolleyError error) {
+                        logoutDialog.dismiss();
+                        VolleySingleton.getInstance(MainScreenActivity.this).checkCauseOfError(error);
+                    }
+                });
     }
 
     @Override
@@ -464,6 +461,7 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     /**
      * Used for the MatchesFragment. When the user taps on another user.
+     *
      * @param user The the user that the current user wants to chat with.
      */
     @Override
@@ -487,9 +485,11 @@ public class MainScreenActivity extends AppCompatActivity implements
         }
     }
 
-    public void onClickPrivacyPolicy(View view) { settingsFragment.onClickPrivacyPolicy(view); }
+    public void onClickPrivacyPolicy(View view) {
+        settingsFragment.onClickPrivacyPolicy(view);
+    }
 
-    public UserListFragment startSearchResults(JSONArray users){
+    public UserListFragment startSearchResults(JSONArray users) {
         mIsSearch = true;
         mUserSearchResultsFragment = UserListFragment.newInstance(users);
 
@@ -499,7 +499,7 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     public void onClickDetails(View view, int position) {
         Bundle bundle = new Bundle();
-        if (mIsSearch){
+        if (mIsSearch) {
             if (mUserSearchResultsFragment.mAdapter.getUser(position) == null) {
                 return;
             }
@@ -539,10 +539,9 @@ public class MainScreenActivity extends AppCompatActivity implements
     // ======= Location setup ========
     private final int LOCATION_REQUEST_CODE = 333;
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        if (requestCode == LOCATION_REQUEST_CODE){
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted, yay! Do the contacts-related task you need to do.
 
@@ -577,18 +576,17 @@ public class MainScreenActivity extends AppCompatActivity implements
             // Get a new location every two minutes
             locationManager.requestLocationUpdates(bestProvider, 120000, 0, this);
 
-
             sendLocation(location);
-        }catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
-        }catch (SecurityException ex){
+        } catch (SecurityException ex) {
             Toast.makeText(this, "Security Exception: " + ex, Toast.LENGTH_SHORT).show();
             ex.printStackTrace();
         }
     }
 
-    private void sendLocation(Location location){
-        if (location == null){
+    private void sendLocation(Location location) {
+        if (location == null) {
             System.err.println("Location is null when sending location.");
             System.err.println(Arrays.toString(Thread.currentThread().getStackTrace()));
             return;
@@ -639,7 +637,6 @@ public class MainScreenActivity extends AppCompatActivity implements
     public void onProviderDisabled(String provider) {
 
     }
-
 
     public void onClickLike(final User user, final View likeButton) {
         JSONObject jsonUser = new JSONObject();
@@ -701,7 +698,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         });
     }
 
-    public void onClickSave(View v){
+    public void onClickSave(View v) {
         System.out.println("FOOOO");
     }
 

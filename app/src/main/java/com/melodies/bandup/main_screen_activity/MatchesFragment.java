@@ -87,7 +87,7 @@ public class MatchesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.MATCHES_FRAGMENT;
         mainScreenActivity.setTitle(R.string.main_title_matches);
         mainScreenActivity.invalidateOptionsMenu();
@@ -95,7 +95,7 @@ public class MatchesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_matches_list, container, false);
 
         // Adding ad Banner
-        mAdView = (AdView)view.findViewById(R.id.adView);
+        mAdView = (AdView) view.findViewById(R.id.adView);
         RecyclerView myRecycler = (RecyclerView) view.findViewById(R.id.recyclerList);
 
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -144,15 +144,16 @@ public class MatchesFragment extends Fragment {
                             try {
                                 JSONObject item = response.getJSONObject(i);
                                 User user = new User();
-                                if (!item.isNull("_id"))      user.id = item.getString("_id");
-                                if (!item.isNull("username")) user.name = item.getString("username");
+                                if (!item.isNull("_id")) user.id = item.getString("_id");
+                                if (!item.isNull("username"))
+                                    user.name = item.getString("username");
                                 if (!item.isNull("image")) {
                                     JSONObject imgObj = item.getJSONObject("image");
-                                    if (!imgObj.isNull("url")) user.imgURL = imgObj.getString("url");
+                                    if (!imgObj.isNull("url"))
+                                        user.imgURL = imgObj.getString("url");
 
                                 }
                                 mmrva.addUser(user);
-
 
                             } catch (JSONException e) {
                                 Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();

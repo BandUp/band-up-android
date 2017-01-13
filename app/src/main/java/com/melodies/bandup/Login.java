@@ -51,12 +51,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, DatePickable {
-    // server url location for login
-    private String url;
-
-    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
+    // ------------------------------ SoundCloud---------------------------------------------------------------
+    LinearLayout btnSoundCloud;
+    // server url location for login
+    private String url;
+    private GoogleApiClient mGoogleApiClient;
     private ProgressDialog loginDialog;
     private EditText etUsername;
     private EditText etPassword;
@@ -69,7 +70,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private Button btnSignUp;
     private LinearLayout llFacebookLoginDesign;
     private LinearLayout llGoogleLoginDesign;
-
     private CallbackManager callbackManager = CallbackManager.Factory.create();
 
     @Override
@@ -130,10 +130,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tilUsername.setErrorEnabled(false);
             }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         etPassword.addTextChangedListener(new TextWatcher() {
@@ -141,10 +145,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tilPassword.setErrorEnabled(false);
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
         });
 
         // -----------------------------Facebook START ------------------------------------------------------------
@@ -224,7 +232,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     // creates advertisment
     private void getAd() {
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
-        AdView mAdview = (AdView)findViewById(R.id.adView);
+        AdView mAdview = (AdView) findViewById(R.id.adView);
         AdRequest mAdRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) // this line makes ads on emulator
                 .build();
@@ -297,11 +305,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             sendGoogleUserToServer(idToken);
         }
     }
+
     private void openInstrumentsIntent() {
         Intent instrumentsIntent = new Intent(Login.this, Instruments.class);
         instrumentsIntent.putExtra("IS_SETUP_PROCESS", true);
         Login.this.startActivity(instrumentsIntent);
     }
+
     private void openCorrectIntent(JSONObject response) {
         Boolean hasFinishedSetup = null;
         try {
@@ -342,26 +352,26 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             loginDialog = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_description), true, false);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url,
-                jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                    loginDialog.dismiss();
-                    if (sShared.saveUserId(Login.this, response)) {
-                        openCorrectIntent(response);
-                    } else {
-                        // TODO: Fetch the current logged in user from server.
-                    }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loginDialog.dismiss();
-                        errorHandlerLogin(error);
-                    }
-                });
+                    url,
+                    jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            loginDialog.dismiss();
+                            if (sShared.saveUserId(Login.this, response)) {
+                                openCorrectIntent(response);
+                            } else {
+                                // TODO: Fetch the current logged in user from server.
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            loginDialog.dismiss();
+                            errorHandlerLogin(error);
+                        }
+                    });
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -373,16 +383,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    // ------------------------------Google+ END---------------------------------------------------------------
+
     // Google+ Sign In
     public void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-    // ------------------------------Google+ END---------------------------------------------------------------
-
-    // ------------------------------ SoundCloud---------------------------------------------------------------
-    LinearLayout btnSoundCloud;
     // ------------------------------SoundCloud END ---------------------------------------------------------------
 
     // when Sign In is Clicked grab data and ...
@@ -412,7 +419,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         }
     }
-    
+
     // Login user into app
     private void createloginRequest(String username, String password) {
         // create request for Login
@@ -454,7 +461,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         );
     }
 
-    public void onResetPassword(View v){
+    public void onResetPassword(View v) {
         Intent paswordResetIntent = new Intent(Login.this, PasswordReset.class);
         Login.this.startActivity(paswordResetIntent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

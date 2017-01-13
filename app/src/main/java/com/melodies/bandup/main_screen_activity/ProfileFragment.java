@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
     private ImageView ivUserProfileImage;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
-    private AdView    mAdView;
+    private AdView mAdView;
     private final int CAMERA_REQUEST = 555;
     private final int GALLERY_REQUEST = 666;
     private final int REQUEST_TIMEOUT = 120000;
@@ -122,30 +122,30 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initializeViews(View rootView) {
-        txtName             = (TextView)    rootView.findViewById(R.id.txtName);
-        txtAge              = (TextView)    rootView.findViewById(R.id.txtAge);
-        txtFavorite         = (TextView)    rootView.findViewById(R.id.txtFavorite);
-        txtAboutMe          = (TextView)    rootView.findViewById(R.id.txtAboutMe);
-        txtInstrumentsTitle = (TextView)    rootView.findViewById(R.id.txtInstrumentTitle);
-        txtGenresTitle      = (TextView)    rootView.findViewById(R.id.txtGenresTitle);
-        txtInstrumentsList  = (TextView)    rootView.findViewById(R.id.txtInstrumentsList);
-        txtGenresList       = (TextView)    rootView.findViewById(R.id.txtGenresList);
-        txtSoundCloudExample= (TextView)    rootView.findViewById(R.id.txt_audio_example);
-        ivUserProfileImage  = (ImageView)   rootView.findViewById(R.id.imgProfile);
-        mAdView             = (AdView)      rootView.findViewById(R.id.adView);
+        txtName = (TextView) rootView.findViewById(R.id.txtName);
+        txtAge = (TextView) rootView.findViewById(R.id.txtAge);
+        txtFavorite = (TextView) rootView.findViewById(R.id.txtFavorite);
+        txtAboutMe = (TextView) rootView.findViewById(R.id.txtAboutMe);
+        txtInstrumentsTitle = (TextView) rootView.findViewById(R.id.txtInstrumentTitle);
+        txtGenresTitle = (TextView) rootView.findViewById(R.id.txtGenresTitle);
+        txtInstrumentsList = (TextView) rootView.findViewById(R.id.txtInstrumentsList);
+        txtGenresList = (TextView) rootView.findViewById(R.id.txtGenresList);
+        txtSoundCloudExample = (TextView) rootView.findViewById(R.id.txt_audio_example);
+        ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
     }
 
     private void setFonts() {
-        Typeface caviarDreams     = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
+        Typeface caviarDreams = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
         Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
-        txtName             .setTypeface(caviarDreams);
-        txtAge              .setTypeface(caviarDreams);
-        txtFavorite         .setTypeface(caviarDreams);
-        txtAboutMe          .setTypeface(caviarDreams);
-        txtInstrumentsList  .setTypeface(caviarDreams);
-        txtGenresList       .setTypeface(caviarDreams);
-        txtInstrumentsTitle .setTypeface(caviarDreamsBold);
-        txtGenresTitle      .setTypeface(caviarDreamsBold);
+        txtName.setTypeface(caviarDreams);
+        txtAge.setTypeface(caviarDreams);
+        txtFavorite.setTypeface(caviarDreams);
+        txtAboutMe.setTypeface(caviarDreams);
+        txtInstrumentsList.setTypeface(caviarDreams);
+        txtGenresList.setTypeface(caviarDreams);
+        txtInstrumentsTitle.setTypeface(caviarDreamsBold);
+        txtGenresTitle.setTypeface(caviarDreamsBold);
         txtSoundCloudExample.setTypeface(caviarDreamsBold);
     }
 
@@ -153,20 +153,19 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         cameraPhoto = new CameraPhoto(getActivity());
         galleryPhoto = new GalleryPhoto(getActivity());
         myThread = new MyThread();
         myThread.start();
     }
 
-    public void updateCurrentUserSoundCloud(int soundCloudId){
+    public void updateCurrentUserSoundCloud(int soundCloudId) {
         if (getActivity() == null) {
             return;
         }
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
         currUser.soundCloudId = soundCloudId;
-        if (mSoundLoginFragment != null){
+        if (mSoundLoginFragment != null) {
             Fragment loginFragment = getChildFragmentManager().findFragmentByTag("soundCloudLoginFragment");
             getChildFragmentManager().beginTransaction().remove(loginFragment).detach(loginFragment).commitAllowingStateLoss();
         }
@@ -183,13 +182,13 @@ public class ProfileFragment extends Fragment {
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
 
         //soundCloudArea.setId(Integer.valueOf(1234));
-        if (currUser.soundCloudId == 0){
+        if (currUser.soundCloudId == 0) {
             mSoundLoginFragment = SoundCloudLoginFragment.newInstance();
             ft.replace(R.id.content, mSoundLoginFragment, "soundCloudLoginFragment");
         } else {
             mSoundSelectFragment = SoundCloudSelectorFragment.newInstance(currUser.soundCloudId,
-                                                                    currUser.soundCloudURL,
-                                                                    currUser.soundCloudSongName);
+                    currUser.soundCloudURL,
+                    currUser.soundCloudSongName);
             ft.replace(R.id.content, mSoundSelectFragment, "soundCloudSelectorFragment");
         }
 
@@ -220,6 +219,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Displays the user on the profile fragment
+     *
      * @param u the user that should be displayed.
      */
     private void populateUser(User u) {
@@ -229,7 +229,7 @@ public class ProfileFragment extends Fragment {
         }
 
         txtName.setText(u.name);
-        ((MainScreenActivity)getActivity()).updateNavUserName(u.name);
+        ((MainScreenActivity) getActivity()).updateNavUserName(u.name);
         if (localeRules != null) {
             Integer age = u.ageCalc();
             if (age != null) {
@@ -244,15 +244,15 @@ public class ProfileFragment extends Fragment {
                 txtAge.setText(R.string.age_not_available);
             }
         }
-        
+
         if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
             txtFavorite.setText(u.favoriteinstrument);
-            ((MainScreenActivity)getActivity()).updateFavouriteInstrument(u.favoriteinstrument);
+            ((MainScreenActivity) getActivity()).updateFavouriteInstrument(u.favoriteinstrument);
 
         } else {
             if (u.instruments.size() != 0) {
                 txtFavorite.setText(u.instruments.get(0));
-                ((MainScreenActivity)getActivity()).updateFavouriteInstrument(u.instruments.get(0));
+                ((MainScreenActivity) getActivity()).updateFavouriteInstrument(u.instruments.get(0));
             }
         }
 
@@ -275,6 +275,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Opens a ProgressDialog to display that upload is in progress.
+     *
      * @param title
      * @param message
      */
@@ -366,8 +367,9 @@ public class ProfileFragment extends Fragment {
     /**
      * When the user has granted or denied us permissions to the camera,
      * this function will be called.
-     * @param requestCode Arbitrary value we chose when making the request. Just to be sure we are getting the right request.
-     * @param permissions The name of the permissions we were requestingþ
+     *
+     * @param requestCode  Arbitrary value we chose when making the request. Just to be sure we are getting the right request.
+     * @param permissions  The name of the permissions we were requestingþ
      * @param grantResults The results of the permission request.
      */
     @Override
@@ -383,9 +385,9 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        switch(requestCode){
+        switch (requestCode) {
             case REQUEST_TAKE_PICTURE:
-                if(allGranted) {
+                if (allGranted) {
                     openCamera();
                 } else {
                     Toast.makeText(getActivity(), R.string.user_allow_camera, Toast.LENGTH_SHORT).show();
@@ -406,9 +408,10 @@ public class ProfileFragment extends Fragment {
     /**
      * When the user has selected an image,
      * this function will be called.
+     *
      * @param requestCode Arbitrary value we chose when making the request. Just to be sure we are getting the right request.
-     * @param resultCode The result of the request.
-     * @param data The intent data. Contains the URI of the image.
+     * @param resultCode  The result of the request.
+     * @param data        The intent data. Contains the URI of the image.
      */
     public void onImageSelectResult(int requestCode, int resultCode, Intent data) {
         if (getActivity() == null) {
@@ -432,7 +435,8 @@ public class ProfileFragment extends Fragment {
      * Sends the image at the path 'path' to the server.
      * shouldDeleteAfterwards should be true if we downloaded the image from somewhere else
      * and it was not in the camera roll, so we do not clutter the device's camera roll.
-     * @param path the path to the image on the SD card
+     *
+     * @param path                   the path to the image on the SD card
      * @param shouldDeleteAfterwards Should we delete the image after uploading it to the server?
      */
     public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
@@ -493,7 +497,7 @@ public class ProfileFragment extends Fragment {
 
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(multipartRequest);
 
-        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -533,6 +537,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Opens an AlertDialog that prompts the user to take a photo or select a photo.
+     *
      * @param view
      */
     public void onClickDisplayModal(View view) {
@@ -589,7 +594,7 @@ public class ProfileFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().getUserProfile(user, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 progressBar.setVisibility(View.INVISIBLE);
@@ -610,7 +615,7 @@ public class ProfileFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 progressBar.setVisibility(View.INVISIBLE);
@@ -623,8 +628,9 @@ public class ProfileFragment extends Fragment {
 
     /**
      * saves user new age into database and updates current activity
+     *
      * @param date is users current date of birth
-     * @param age is user calculated age to be displayed
+     * @param age  is user calculated age to be displayed
      */
     public void updateAge(Date date, String age) {
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
@@ -641,9 +647,10 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Updates user information
-     * @param id is user we want to be updated id
+     *
+     * @param id        is user we want to be updated id
      * @param valueName is the mlab Schema attribute name
-     * @param value is the actual data we want to change
+     * @param value     is the actual data we want to change
      */
     public void updateUser(String id, String valueName, final String value) {
         JSONObject userUpdated = new JSONObject();
@@ -654,15 +661,15 @@ public class ProfileFragment extends Fragment {
             DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
-                    if (getActivity() == null){
+                    if (getActivity() == null) {
                         return;
                     }
-                // success response
+                    // success response
                 }
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
-                    if (getActivity() == null){
+                    if (getActivity() == null) {
                         return;
                     }
                     error.printStackTrace();
@@ -673,7 +680,6 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 
     // All onActivityResults are handled by the activity.
     // The onActivityResult function in MainScreenActivity calls this function.
@@ -697,7 +703,6 @@ public class ProfileFragment extends Fragment {
                         currUser.name = name;
                     }
 
-
                     String favoriteinstrument = extras.getString("USER_FAVOURITE_INSTRUMENT");
                     if (favoriteinstrument != null) {
                         currUser.favoriteinstrument = favoriteinstrument;
@@ -712,8 +717,8 @@ public class ProfileFragment extends Fragment {
                         currUser.dateOfBirth = dateOfBirth;
                     }
 
-                    currUser.instruments        = extras.getStringArrayList("USER_INSTRUMENTS");
-                    currUser.genres             = extras.getStringArrayList("USER_GENRES");
+                    currUser.instruments = extras.getStringArrayList("USER_INSTRUMENTS");
+                    currUser.genres = extras.getStringArrayList("USER_GENRES");
                     populateUser(currUser);
                 }
             }

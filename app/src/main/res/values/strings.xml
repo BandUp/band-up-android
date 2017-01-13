@@ -3,6 +3,60 @@
     <!-- The name of the app as displayed on the home screen -->
     <string name="app_name">Band Up</string>
 
+    <!-- Login Screen -->
+
+    <!-- The hint displayed on the email text field. -->
+    <string name="login_username">Email</string>
+
+    <!-- The hint displayed on the password text field. -->
+    <string name="login_password">Password</string>
+
+    <!-- An error that appears when a user hasn't entered his/her email. -->
+    <string name="login_username_validation">Please enter your email</string>
+
+    <!-- An error that appears when a user hasn't entered his/her password. -->
+    <string name="login_password_validation">Please enter your password</string>
+
+    <!-- The log in button -->
+    <string name="login_sign_in">Log in</string>
+
+    <!-- A button that allows you to open another screen where you register for a new account -->
+    <string name="login_sign_up">Do not have an account? Sign up here.</string>
+
+    <!-- The text on the button to log in with Facebook -->
+    <string name="login_btn_facebook_hint">Log in with Facebook</string>
+
+    <!-- The text on the button to log in with Google -->
+    <string name="login_btn_google_hint">Log in with Google</string>
+
+    <!-- The text on the button to log in with SoundCloud -->
+    <string name="login_btn_soundcloud_hint">Log in with SoundCloud</string>
+
+    <!-- The text that appears above the Facebook SoundCloud and Google sign in buttons. -->
+    <string name="login_sign_up_with_services">Or sign up with these services</string>
+
+    <!-- A button that allows you to open another screen where you can reset your password -->
+    <string name="forgot_your_password">Forgot your password?</string>
+
+    <!-- The title of a progress indicator that appears while logging in -->
+    <string name="login_progress_title">Logging in</string>
+
+    <!-- The description of a progress indicator that appears while logging in -->
+    <string name="login_progress_description">Please wait...</string>
+
+    <!-- A message that appears as a Toast when the user has entered incorrect email or password -->
+    <string name="login_credentials_incorrect">Email or password incorrect</string>
+
+
+    <!-- Sound Cloud Login-->
+    <string name="prompt_email">Email</string>
+
+
+    <string name="action_sign_in">Sign in to SoundCloud</string>
+
+
+    <string name="action_sign_in_short">Sign in</string>
+
     <!-- Register Screen -->
     <string name="register_email">Email</string>
     <string name="register_username">Name</string>
@@ -20,7 +74,17 @@
     <string name="register_til_error_password_length">Your password must be at least 6 characters long</string>
     <string name="register_fix_errors">Please fix the remaining errors.</string>
     <string name="register_til_error_fill_password_again">Please fill in your password again</string>
+    <string name="register_success">Registration successful!\nYou can log in now.</string>
+    <string name="register_password_mismatch">Passwords don\'t match!</string>
+    <string name="register_enter_dateofbirth">Please enter your Date Of Birth.</string>
+    <string name="register_progress_description">Please wait...</string>
+    <string name="register_progress_title">Registering</string>
 
+    <!-- Password Reset -->
+    <string name="title_activity_password_reset">Password Reset</string>
+    <string name="send_password_reset_e_mail">Send password reset email</string>
+    <string name="please_enter_your_e_mail">Please enter your email address.\nThen follow the instructions in the email, that we will send you, to reset your password.</string>
+    <string name="password_reset_email_sent">If this is a registered email, then you will receive an email shortly.</string>
 
     <!-- Setup Screens (Instruments and Genres) -->
     <string name="setup_get_started">Let\'s get started</string>
@@ -32,100 +96,115 @@
     <string name="setup_no_genres">No Genres Available</string>
     <string name="setup_no_genre_selection">You need to select at least one genre</string>
     <string name="setup_no_instrument_selection">You need to select at least one instrument</string>
-
-    <!-- Filter Screen -->
-    <string name="filter_title">Filter</string>
-
-    <!-- Login Screen -->
-    <string name="login_username">Email</string>
-    <string name="login_password">Password</string>
-    <string name="login_sign_in">Log in</string>
-    <string name="login_sign_up">Do not have an account? Sign up here.</string>
+    <string name="setup_no_items">No items available</string>
 
     <!-- User List Screen -->
     <string name="main_title_user_list">Musicians near you</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <!-- Chat Screen -->
-    <string name="chat_send">Send</string>
-    <string name="chat_message_hint">Type a message…</string>
-    <string name="login_username_validation">Please enter your email</string>
-    <string name="login_password_validation">Please enter your password</string>
     <string name="user_list_like">Like</string>
     <string name="user_list_liked">Liked</string>
     <string name="user_list_details">Details</string>
-    <string name="login_progress_title">Logging in</string>
-    <string name="login_progress_description">Please wait...</string>
-    <string name="register_success">Registration successful!\nYou can log in now.</string>
-    <string name="register_password_mismatch">Passwords don\'t match!</string>
-    <string name="register_enter_dateofbirth">Please enter your Date Of Birth.</string>
-    <string name="register_progress_description">Please wait...</string>
-    <string name="register_progress_title">Registering</string>
+    <string name="user_list_no_users">No Musicians Nearby</string>
+
+
+    <!-- Chat Screen -->
+    <string name="chat_title1">Chat</string>
+    <string name="chat_title2">Chat with</string>
+    <string name="chat_message_hint">Type a message…</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_view_profile">View Profile</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title_filter">Filter</string>
+    <string name="settings_title_push_notifications">Push Notifications</string>
+    <string name="settings_title_measurement">Measurement</string>
+    <string name="settings_title_legal">Legal</string>
+    <string name="settings_filter_ages">Ages</string>
+    <string name="settings_new_matches">New matches</string>
+    <string name="settings_inactive_alert">Inactive alert</string>
+    <string name="settings_messages">Messages</string>
+    <string name="settings_use_imperial_system">Use Imperial Units</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_privacy_policy">Privacy policy</string>
+    <string name="settings_title_manage_account">Your Band Up Account</string>
+    <string name="settings_delete_account">Delete Account</string>
+    <string name="settings_alert_delete_title">Delete Account</string>
+    <string name="settings_alert_delete_message">Are you sure you want to delete your account?\n\nThis can not be undone.</string>
+    <string name="settings_alert_delete_positive">Delete</string>
+    <string name="settings_progress_delete_title">Deleting Your Account</string>
+    <string name="settings_progress_delete_message">Please wait...</string>
+    <string name="settings_email_support">Email Support</string>
+
+    <!-- Advanced Search -->
+    <string name="search_no_results">Could not find anyone matching your criteria</string>
+    <string name="search_ok">OK</string>
+    <string name="search_cancel">Cancel</string>
+    <string name="search_none_selected">None selected</string>
+    <string name="search_select">Select</string>
+    <string name="search_select_instruments">Select Instruments</string>
+    <string name="search_select_genres">Select Genres</string>
+    <string name="search_musicians_displayed">Choose what kind of musicians you want to display</string>
+    <string name="search">Search</string>
+    <string name="search_title">Advanced Search</string>
+    <string name="please_enter_search_parameters">Use these tools to find the perfect musician</string>
+    <string name="search_find_username">Search by name</string>
+    <string name="main_title_search_results">Search Results</string>
+
+    <!-- Upcoming Features -->
+    <string name="upcoming_event_calendar">Concert Calendar</string>
+    <string name="upcoming_share_users">Share found users to friends via social media</string>
+    <string name="upcoming_rent_practice">Band Start-Up: Support for upcoming bands</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <!-- My Profile -->
+    <string name="edit_profile_favourite_instument_hint">Your Favourite Instrument</string>
+    <string name="edit_profile_influences">Tell us about your influences and experience</string>
+    <string name="edit_profile_more_info">More information is better for other users.</string>
+    <string name="edit_profile_about_me">About Me</string>
+    <string name="edit_profile_save">Save</string>
+    <string name="main_title_my_profile">My Profile</string>
+    <string name="main_title_edit_profile">Edit Profile</string>
     <string name="user_image_error">Could not save the image to the server. Please try again.</string>
     <string name="user_allow_camera">Please allow access to take a photo.</string>
     <string name="user_error">Something went wrong</string>
     <string name="user_allow_storage">Please allow access to select a photo.</string>
     <string name="title_activity_sound_cloud">Sign Up</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="action_sign_in">Sign in to SoundCloud</string>
-    <string name="action_sign_in_short">Sign in</string>
-
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-2677510616264993/2222069667</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Matches -->
     <string name="main_title_matches">Matches</string>
+
+    <!-- Settings -->
     <string name="main_title_settings">Settings</string>
+
+    <!-- Navigation Drawer -->
     <string name="main_nav_settings">Settings</string>
     <string name="main_nav_my_profile">My Profile</string>
     <string name="main_nav_matches">Matches/Chat</string>
     <string name="main_nav_near_me">Near Me</string>
-    <string name="main_title_my_profile">My Profile</string>
-    <string name="main_title_edit_profile">Edit Profile</string>
     <string name="main_nav_log_out">Log Out</string>
+
+    <!-- User Details -->
     <string name="details_instruments">Instruments</string>
     <string name="details_genres">Genres</string>
-    <string name="dateOfBirth">Date of Birth</string>
-    <string name="user_list_no_users">No Musicians Nearby</string>
+
+    <!-- General text -->
     <string name="age_year_singular">"year old"</string>
     <string name="age_year_plural">"years old"</string>
-    <string name="login_credentials_incorrect">Email or password incorrect</string>
+    <string name="exit_bandup_toast">To exit BandUp, click BACK again.</string>
     <string name="no_distance_available">Distance not available</string>
     <string name="km_distance">km away from you</string>
+    <string name="dateOfBirth">Date of Birth</string>
+
+
     <string name="profile_select_song">Select a Song</string>
-    <string name="select_genres">Select genres</string>
-    <string name="search">Search</string>
-    <string name="search_title">Advanced Search</string>
-    <string name="main_title_search">Search</string>
-    <string name="select_instruments">Select Instruments</string>
-    <string name="please_enter_search_parameters">Use these tools to find the perfect musician</string>
     <string name="ages">Show age range…</string>
     <string name="all_genres">All genres</string>
     <string name="all_instuments">All instruments</string>
-    <string name="search_find_username">Search by name</string>
-    <string name="coming_soon">Coming soon</string>
-    <string name="login_btn_facebook_hint">Log in with Facebook</string>
-    <string name="login_btn_google_hint">Log in with Google</string>
-    <string name="login_btn_soundcloud_hint">Log in with SoundCloud</string>
-    <string name="login_sign_up_with_services">Or sign up with these services</string>
-    <string name="forgot_your_password">Forgot your password?</string>
-    <string name="title_activity_password_reset">Password Reset</string>
-    <string name="send_password_reset_e_mail">Send password reset email</string>
-    <string name="please_enter_your_e_mail">Please enter your email address.\nThen follow the instructions in the email, that we will send you, to reset your password.</string>
     <string name="edit_instrument_genres_save">Save</string>
-    <string name="exit_bandup_toast">To exit BandUp, click BACK again.</string>
     <string name="matches_no_users">You haven\'t matched with anyone, yet.</string>
     <string name="profile_fetch_error">Could not get your profile</string>
     <string name="connection_banner_title">Could not connect to the Internet.</string>
     <string name="connection_banner_message">Please check your network connection.</string>
     <string name="profile_fetch_error_other">Could not get the profile</string>
-    <string name="edit_profile_favourite_instument_hint">Your Favourite Instrument</string>
-    <string name="edit_profile_influences">Tell us about your influences and experience</string>
-    <string name="edit_profile_more_info">More information is better for other users.</string>
-    <string name="edit_profile_about_me">About Me</string>
-    <string name="edit_profile_save">Save</string>
     <string name="no_soundcloud_example">has not selected an audio sample, yet.</string>
     <string name="audio_sample_from_soundcloud">Audio sample from SoundCloud</string>
     <string name="matches_failed_to_fetch">Could not get the matches list</string>
@@ -135,12 +214,9 @@
     <string name="main_log_out_title">Logging out</string>
     <string name="main_log_out_message">Please wait...</string>
     <string name="main_title_upcoming_features">Upcoming features</string>
-    <string name="main_title_search_results">Search Results</string>
     <string name="main_error_match">Error loading match.</string>
     <string name="main_matched">You Matched!</string>
     <string name="matches_error_json">Could not parse the JSON object.</string>
-    <string name="password_reset_email_sent">If this is a registered email, then you will receive an email shortly.</string>
-    <string name="privacy_title_licenses">Licenses</string>
     <string name="age_not_available">Age not specified</string>
     <string name="profile_upload_title">Uploading Photo</string>
     <string name="profile_upload_message">Please wait...</string>
@@ -152,15 +228,7 @@
     <string name="sc_frag_select_song">Please select a song</string>
     <string name="update_about_me_favorite_instrument">What is your favorite instrument?</string>
     <string name="update_about_me_cancel">Cancel</string>
-    <string name="matches_error_date">Could not parse the Date object.</string>
     <string name="user_list_error_fetch_list">Could not get musicians near you</string>
-    <string name="search_no_results">Could not find anyone matching your criteria</string>
-    <string name="search_ok">OK</string>
-    <string name="search_cancel">Cancel</string>
-    <string name="search_none_selected">None selected</string>
-    <string name="search_select">Select</string>
-    <string name="search_select_instruments">Select Instruments</string>
-    <string name="search_select_genres">Select Genres</string>
     <string name="volley_connection_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_network_error">Could not connect to the server\nCheck your settings or try again.</string>
     <string name="volley_server_error">Could not connect to the server\nCheck your settings or try again.</string>
@@ -173,37 +241,9 @@
     <string name="about_me">About Me</string>
     <string name="profile_take_photo">Take a photo</string>
     <string name="profile_choose_photo">Choose a photo</string>
-    <string name="setup_no_items">No items available</string>
-    <string name="settings_title_filter">Filter</string>
-    <string name="settings_title_push_notifications">Push Notifications</string>
-    <string name="settings_title_measurement">Measurement</string>
-    <string name="settings_title_about_us">About Us</string>
-    <string name="settings_title_legal">Legal</string>
-    <string name="settings_filter_ages">Ages</string>
-    <string name="settings_new_matches">New matches</string>
-    <string name="settings_inactive_alert">Inactive alert</string>
-    <string name="settings_messages">Messages</string>
-    <string name="settings_use_imperial_system">Use Imperial Units</string>
-    <string name="settings_contact">Contact</string>
-    <string name="settings_help">Help</string>
-    <string name="settings_support">Support</string>
-    <string name="settings_legal">Legal</string>
-    <string name="settings_licenses">Licenses</string>
-    <string name="settings_privacy_policy">Privacy policy</string>
-    <string name="settings_terms_of_service">Terms of service</string>
-    <string name="upcoming_event_calendar">Concert Calendar</string>
-    <string name="upcoming_share_users">Share found users to friends via social media</string>
-    <string name="upcoming_rent_practice">Band Start-Up: Support for upcoming bands</string>
-    <string name="search_mucicians_displayed">Choose what kind of musicians you want to display</string>
-    <string name="chat_chat_with">Chat with</string>
-    <string name="email_support">Email Support</string>
-    <string name="chat_title">Chat</string>
-    <string name="settings_title_manage_account">Your Band Up Account</string>
-    <string name="setting_delete_account">Delete Account</string>
-    <string name="settings_alert_delete_title">Delete Account</string>
-    <string name="settings_alert_delete_message">Are you sure you want to delete your account?\n\nThis can not be undone.</string>
-    <string name="settings_alert_delete_positive">Delete</string>
-    <string name="settings_progress_delete_title">Deleting Your Account</string>
-    <string name="settings_progress_delete_message">Please wait...</string>
-    <string name="chat_user_profile">View Profile</string>
+
+
+    <!-- Other -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

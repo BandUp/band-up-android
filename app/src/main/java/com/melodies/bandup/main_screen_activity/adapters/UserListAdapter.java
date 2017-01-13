@@ -1,11 +1,11 @@
-package com.melodies.bandup.MainScreenActivity.adapters;
+package com.melodies.bandup.main_screen_activity.adapters;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.melodies.bandup.MainScreenActivity.UserItemFragment;
+import com.melodies.bandup.main_screen_activity.UserItemFragment;
 import com.melodies.bandup.helper_classes.User;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
      */
     public UserListAdapter(FragmentManager fm) {
         super(fm);
-        userList = new ArrayList();
+        userList = new ArrayList<>();
         mFragmentManager = fm;
     }
 
@@ -82,7 +82,6 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
                     return i;
                 }
             }
-
         }
         return 0;
     }
@@ -94,9 +93,7 @@ public class UserListAdapter extends FragmentStatePagerAdapter {
                     userList.get(i).isLiked = true;
                 }
             }
-
         }
-
     }
 
     /**

@@ -5,8 +5,8 @@ package com.melodies.bandup.setup;
  */
 public class DoubleListItem {
     public final String name;
-    final int drawableId;
-    Boolean isSelected;
+    public final int drawableId;
+    public Boolean isSelected;
     public final String id;
 
     DoubleListItem (String id, int drawableId, String name) {

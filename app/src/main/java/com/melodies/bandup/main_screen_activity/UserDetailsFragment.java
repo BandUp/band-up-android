@@ -1,6 +1,5 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,17 +35,20 @@ import com.melodies.bandup.listeners.BandUpResponseListener;
 import com.melodies.bandup.locale.LocaleRules;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import static android.content.Context.LOCATION_SERVICE;
-import static android.os.Build.VERSION_CODES.M;
+import static com.melodies.bandup.R.id.txtAboutMe;
+import static com.melodies.bandup.R.id.txtAge;
+import static com.melodies.bandup.R.id.txtDistance;
+import static com.melodies.bandup.R.id.txtFavorite;
+import static com.melodies.bandup.R.id.txtFetchError;
+import static com.melodies.bandup.R.id.txtGenresList;
+import static com.melodies.bandup.R.id.txtGenresTitle;
+import static com.melodies.bandup.R.id.txtInstrumentsList;
+import static com.melodies.bandup.R.id.txtName;
+import static com.melodies.bandup.R.id.txtPercentage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,28 +60,6 @@ import static android.os.Build.VERSION_CODES.M;
  */
 public class UserDetailsFragment extends Fragment {
     private User currentUser;
-
-    private OnFragmentInteractionListener mListener;
-
-
-    public UserDetailsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment UserDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UserDetailsFragment newInstance() {
-        UserDetailsFragment fragment = new UserDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     private TextView txtName;
     private TextView txtAge;
     private TextView txtFavorite;
@@ -96,8 +76,25 @@ public class UserDetailsFragment extends Fragment {
     private Button btnLike;
     private AdView mAdView;
     private LinearLayout mSoundcloudArea;
-
     private Fragment soundCloudFragment;
+    private OnFragmentInteractionListener mListener;
+    private TextView txtFetchError;
+    private ProgressBar progressBar;
+    private LinearLayout llProfile;
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment UserDetailsFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static UserDetailsFragment newInstance() {
+        UserDetailsFragment fragment = new UserDetailsFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private void initializeViews(View rootView) {
         txtName = (TextView) rootView.findViewById(R.id.txtName);
@@ -117,7 +114,6 @@ public class UserDetailsFragment extends Fragment {
         mSoundcloudArea = (LinearLayout) rootView.findViewById(R.id.soundcloud_player_area);
         txtFetchError = (TextView) rootView.findViewById(R.id.txtFetchError);
         txtNoSoundCloudExample = (TextView) rootView.findViewById(R.id.no_soundcloud_example);
-
 
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,16 +148,8 @@ public class UserDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-        }
-        // Gets the user_id from userListFragment
-
     }
 
-    private TextView txtFetchError;
-    private ProgressBar progressBar;
-    private LinearLayout llProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -198,10 +186,8 @@ public class UserDetailsFragment extends Fragment {
         mAdView.loadAd(adRequest);
 
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
-        if (u.imgURL != null) {
-            if (!u.imgURL.equals("")) {
-                Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
-            }
+        if (u.imgURL != null && !"".equals(u.imgURL)) {
+            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }
 
         txtName.setText(u.name);
@@ -268,9 +254,6 @@ public class UserDetailsFragment extends Fragment {
 
 
         txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
-        if (u.id.equals(currentUser.id)) {
-
-        }
     }
 
     private Float getDistanceToUser(User u) {

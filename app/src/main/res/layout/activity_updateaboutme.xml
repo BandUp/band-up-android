@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    >
+    android:background="@color/bandUpBackground">
 
     <include layout="@layout/ads"/>
 
@@ -100,20 +100,26 @@
                     android:id="@+id/etFavouriteInstrument"/>
             </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:text="@string/edit_profile_about_me"
-                android:textSize="19sp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtAboutMeDescription"
-                android:layout_weight="0.05"
-                android:layout_marginTop="20dp" />
-            <TextView
-                android:text="@string/edit_profile_more_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.05"
-                android:layout_marginTop="5dp" />
+                android:orientation="vertical"
+                android:id="@+id/about_me_layout">
+                <TextView
+                    android:text="@string/edit_profile_about_me"
+                    android:textSize="19sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtAboutMeDescription"
+                    android:layout_weight="0.05"
+                    android:layout_marginTop="20dp" />
+                <TextView
+                    android:text="@string/edit_profile_more_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
 
             <EditText
                 android:layout_width="match_parent"
@@ -124,20 +130,13 @@
                 android:hint="@string/edit_profile_influences"
                 android:background="@android:color/transparent"
                 android:layout_marginTop="10dp"
-                android:maxLength="150" />
-
-
-            <Button
-                android:text="@string/edit_profile_save"
+                android:maxLength="500" />
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnSaveChanges"
-                android:layout_weight="0.05"
-                android:layout_marginTop="20dp"
-                android:onClick="onClickSave"
-                />
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/colorWhite"/>
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

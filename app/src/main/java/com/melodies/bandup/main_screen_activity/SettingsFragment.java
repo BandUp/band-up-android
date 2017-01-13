@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -27,12 +27,11 @@ import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
-import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
-
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -277,7 +276,7 @@ public class SettingsFragment extends Fragment {
 
     // ============================== END Shared Preferences SAVING AND LOADING ===================================================
 
-
+    int stepSize = 5;
     // all behaviour of radiusBarUnit is placed in this function
     private void radiusInit(View rootView) {
         txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
@@ -298,6 +297,9 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarRadius.setMax(MAX_RANGE);      // Maximum value of search range in Km
+
+                progress = ((int)Math.round(progress/stepSize))*stepSize;
+                seekBar.setProgress(progress);
 
                 // if unit switch is on, put mi in text view else km
                 if (loadUserSwitch("switchUnit")) {

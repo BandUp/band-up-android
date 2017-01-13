@@ -14,7 +14,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.melodies.bandup.ChatActivity;
-import com.melodies.bandup.MainScreenActivity.MainScreenActivity;
+import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.R;
 
 import java.util.Objects;

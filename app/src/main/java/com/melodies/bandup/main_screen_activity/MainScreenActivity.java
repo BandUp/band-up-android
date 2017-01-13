@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -40,7 +40,6 @@ import android.widget.Toast;
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
@@ -63,7 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.os.Build.VERSION_CODES.M;
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 
 public class MainScreenActivity extends AppCompatActivity implements
@@ -92,28 +91,27 @@ public class MainScreenActivity extends AppCompatActivity implements
 
     private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
 
-    UserListFragment userListFragment;
-    UserListFragment mUserSearchResultsFragment;
-    UserDetailsFragment userDetailsFragment;
-    MatchesFragment matchesFragment;
-    SettingsFragment settingsFragment;
-    ProfileFragment profileFragment;
-    UserSearchFragment mUserSearchFragment;
-    UpcomingFeaturesFragment mUpcomingFeaturesFragment;
+    public UserListFragment userListFragment;
+    private UserListFragment mUserSearchResultsFragment;
+    private UserDetailsFragment userDetailsFragment;
+    private MatchesFragment matchesFragment;
+    private SettingsFragment settingsFragment;
+    private ProfileFragment profileFragment;
+    private UserSearchFragment mUserSearchFragment;
+    private UpcomingFeaturesFragment mUpcomingFeaturesFragment;
 
-    ProgressDialog logoutDialog;
-    LocationManager locationManager;
-    Criteria criteria;
-    String bestProvider;
-    SharedPreferences sharedPrefs;
-    GoogleApiClient mGoogleApiClient;
-    User currentUser;
+    private ProgressDialog logoutDialog;
+    private LocationManager locationManager;
+    private Criteria criteria;
+    private String bestProvider;
+    private SharedPreferences sharedPrefs;
+    public User currentUser;
 
-    ImageView imgProfileNav;
-    TextView txtUsernameNav;
-    TextView txtFavoriteNav;
+    private ImageView imgProfileNav;
+    private TextView txtUsernameNav;
+    private TextView txtFavoriteNav;
 
-    NavigationView navigationView;
+    private NavigationView navigationView;
 
     private LinearLayout networkErrorBar;
 
@@ -192,6 +190,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                 aboutMeIntent.putExtras(asdf);
 
                 startActivityForResult(aboutMeIntent, EDIT_PROFILE_REQUEST_CODE);
+                break;
             default:
                 break;
         }

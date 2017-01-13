@@ -1,16 +1,19 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -36,7 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
 
@@ -51,11 +54,38 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
     ArrayList<String> mGenres;
     String mAboutMe;
     private DatePickerFragment datePickerFragment = null;
+    private LinearLayout aboutMeLayout;
+    ScrollView scrollView;
 
     int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
     int EDIT_GENRES_REQUEST_CODE = 4989;
 
     private EditText etName, etDateOfBirth, etFavouriteInstrument, etInstruments, etGenres, etAboutMe;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                // Update user and send it to server
+
+                updateUser();
+                break;
+            default:
+                this.onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +119,15 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         etInstruments = (EditText) findViewById(R.id.etInstruments);
         etGenres = (EditText) findViewById(R.id.etGenres);
         etAboutMe = (EditText) findViewById(R.id.etAboutMe);
+        aboutMeLayout = (LinearLayout) findViewById(R.id.about_me_layout);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         etInstruments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent instrumentsIntent = new Intent(UpdateAboutMe.this, Instruments.class);
                 instrumentsIntent.putExtra("IS_SETUP_PROCESS", false);
-                instrumentsIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) mInstruments);
+                instrumentsIntent.putStringArrayListExtra("PRESELECTED_ITEMS", mInstruments);
                 startActivityForResult(instrumentsIntent, EDIT_INSTRUMENTS_REQUEST_CODE);
             }
         });
@@ -105,8 +137,17 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             public void onClick(View v) {
                 Intent genresIntent = new Intent(UpdateAboutMe.this, Genres.class);
                 genresIntent.putExtra("IS_SETUP_PROCESS", false);
-                genresIntent.putStringArrayListExtra("PRESELECTED_ITEMS", (ArrayList<String>) mGenres);
+                genresIntent.putStringArrayListExtra("PRESELECTED_ITEMS", mGenres);
                 startActivityForResult(genresIntent, EDIT_GENRES_REQUEST_CODE);
+            }
+        });
+
+        aboutMeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etAboutMe.requestFocus();
+                etAboutMe.setSelection(etAboutMe.getText().length());
+                scrollAfterHalfSecond(scrollView);
             }
         });
 
@@ -188,7 +229,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+
 
 
         etAboutMe.setOnClickListener(new View.OnClickListener() {
@@ -286,12 +327,6 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         }
     }
 
-    // Return to previous Activity
-    public boolean onOptionsItemSelected(MenuItem item){
-        this.onBackPressed();
-        return true;
-    }
-
     // Get the userid of logged in user
     public String getUserId() throws JSONException {
         SharedPreferences srdPref = getSharedPreferences("UserIdRegister", Context.MODE_PRIVATE);
@@ -340,11 +375,6 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    // Update About Me and send it to server
-    public void onClickSave(View view) throws JSONException {
-        updateUser();
     }
 
     @Override

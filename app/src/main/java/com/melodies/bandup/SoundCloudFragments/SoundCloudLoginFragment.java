@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 
 import com.android.volley.VolleyError;
 import com.melodies.bandup.DatabaseSingleton;
-import com.melodies.bandup.MainScreenActivity.ProfileFragment;
+import com.melodies.bandup.main_screen_activity.ProfileFragment;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;

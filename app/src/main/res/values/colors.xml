@@ -2,14 +2,13 @@
 <resources>
     <color name="colorGray">#242424</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorWhiteTransparent">#80FFFFFF</color>
     <color name="colorBlack">#000000</color>
-    <color name="transparent">#FFFFFFFF</color>
     <color name="colorLikeGreenSelected">#176A2D</color>
     <color name="colorDetailsYellowSelected">#A18005</color>
     <color name="bandUpYellow">#FFD302</color>
     <color name="bandUpYellowTransparent">#80FFD302</color>
     <color name="bandUpGreen">#00A651</color>
-    <color name="bandUpGray">#0D0D0D</color>
+    <color name="bandUpBlack">#0D0D0D</color>
+    <color name="bandUpBackground">#0D0D0D</color>
     <color name="bandUpRed">#e20909</color>
 </resources>

@@ -6,7 +6,7 @@ import android.content.Context;
  * Grammar rules for English.
  */
 public class LocaleRules_en implements LocaleRules {
-    Context mContext;
+    private Context mContext;
 
     public LocaleRules_en(Context c) {
         mContext = c;

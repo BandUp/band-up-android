@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="@color/bandUpBackground">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:context="com.melodies.bandup.MainScreenActivity.UserListFragment">
+        tools:context="com.melodies.bandup.main_screen_activity.UserListFragment">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
@@ -25,15 +26,14 @@
             android:visibility="visible"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="com.melodies.bandup.MainScreenActivity.MainScreenActivity"
+            tools:context="com.melodies.bandup.main_screen_activity.MainScreenActivity"
             tools:showIn="@layout/app_bar_main_screen">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="1"
-                android:background="@color/bandUpGray">
+                android:layout_weight="1">
             </android.support.v4.view.ViewPager>
 
         </LinearLayout>

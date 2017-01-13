@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.melodies.bandup.MainScreenActivity.UserDetailsFragment;
+import com.melodies.bandup.main_screen_activity.UserDetailsFragment;
 
 import org.json.JSONObject;
 
@@ -32,7 +32,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-import static com.melodies.bandup.MainScreenActivity.ProfileFragment.DEFAULT;
+import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
 public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener, UserDetailsFragment.OnFragmentInteractionListener {
 
@@ -135,10 +135,10 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         });
 
         try {
-            setTitle(getString(R.string.chat_title));
+            setTitle(getString(R.string.chat_title1));
             getSupportActionBar().setSubtitle(receiverUsername);
         } catch (Exception npe) {
-            setTitle(getString(R.string.chat_chat_with).concat(" ").concat(receiverUsername));
+            setTitle(getString(R.string.chat_title2).concat(" ").concat(receiverUsername));
         }
 
         try {
@@ -226,7 +226,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_chat, menu);
-        MenuItem item = menu.findItem(R.id.action_user);
+        MenuItem item = menu.findItem(R.id.action_user_details);
 
         if (mViewPager.getCurrentItem() == 0) {
             item.getIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
@@ -250,7 +250,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     // Return to previous Activity
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
-            case R.id.action_user:
+            case R.id.action_user_details:
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(1, true);
                     View view = this.getCurrentFocus();

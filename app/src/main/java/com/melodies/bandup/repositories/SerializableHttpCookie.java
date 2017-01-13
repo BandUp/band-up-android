@@ -44,9 +44,6 @@ public class SerializableHttpCookie implements Serializable {
     // need to access it using reflection
     private Field fieldHttpOnly;
 
-    public SerializableHttpCookie() {
-    }
-
     public String encode(HttpCookie cookie) {
         this.cookie = cookie;
 

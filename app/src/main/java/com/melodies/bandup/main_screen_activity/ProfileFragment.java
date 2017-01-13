@@ -1,4 +1,4 @@
-package com.melodies.bandup.MainScreenActivity;
+package com.melodies.bandup.main_screen_activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -39,7 +39,6 @@ import com.google.android.gms.ads.AdView;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
-import com.melodies.bandup.DatePickerFragment;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.SoundCloudFragments.SoundCloudLoginFragment;
@@ -77,17 +76,36 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     public static final String DEFAULT = "N/A";
-    int EDIT_INSTRUMENTS_REQUEST_CODE = 4939;
-    int EDIT_GENRES_REQUEST_CODE = 4989;
     private static final int EDIT_PROFILE_REQUEST_CODE = 3929;
-
-    private DatePickerFragment datePickerFragment = new DatePickerFragment();
-    LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
-
+    private LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
     private OnFragmentInteractionListener mListener;
-
-    // Required empty public constructor
-    public ProfileFragment() {}
+    private TextView txtName;
+    private TextView txtInstrumentsTitle;
+    private TextView txtGenresTitle;
+    private TextView txtAge;
+    private TextView txtFavorite;
+    private TextView txtAboutMe;
+    private TextView txtInstrumentsList;
+    private TextView txtGenresList;
+    private TextView txtSoundCloudExample;
+    private ImageView ivUserProfileImage;
+    private CameraPhoto cameraPhoto;
+    private GalleryPhoto galleryPhoto;
+    private AdView    mAdView;
+    private final int CAMERA_REQUEST = 555;
+    private final int GALLERY_REQUEST = 666;
+    private final int REQUEST_TIMEOUT = 120000;
+    private final int REQUEST_RETRY = 0;
+    private final int REQUEST_TAKE_PICTURE = 200;
+    private final int REQUEST_READ_GALLERY = 300;
+    ProgressDialog imageDownloadDialog;
+    private TextView txtFetchError;
+    private ProgressBar progressBar;
+    private LinearLayout llProfile;
+    MyThread myThread;
+    //User currentUser;
+    Fragment mSoundLoginFragment;
+    Fragment mSoundSelectFragment;
 
     /**
      * Use this factory method to create a new instance of
@@ -102,31 +120,6 @@ public class ProfileFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private TextView txtName;
-    private TextView txtInstrumentsTitle;
-    private TextView txtGenresTitle;
-    private TextView txtAge;
-    private TextView txtFavorite;
-    private TextView txtAboutMe;
-    private TextView txtInstrumentsList;
-    private TextView txtGenresList;
-    private TextView txtSoundCloudExample;
-    private ImageView ivUserProfileImage;
-    private CameraPhoto cameraPhoto;
-    private GalleryPhoto galleryPhoto;
-    private AdView    mAdView;
-    final int CAMERA_REQUEST = 555;
-    final int GALLERY_REQUEST = 666;
-    final int REQUEST_TIMEOUT = 120000;
-    final int REQUEST_RETRY = 0;
-    final int REQUEST_TAKE_PICTURE = 200;
-    final int REQUEST_READ_GALLERY = 300;
-    ProgressDialog imageDownloadDialog;
-    MyThread myThread;
-    //User currentUser;
-    Fragment mSoundLoginFragment;
-    Fragment mSoundSelectFragment;
 
     private void initializeViews(View rootView) {
         txtName             = (TextView)    rootView.findViewById(R.id.txtName);
@@ -168,6 +161,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateCurrentUserSoundCloud(int soundCloudId){
+        if (getActivity() == null) {
+            return;
+        }
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
         currUser.soundCloudId = soundCloudId;
         if (mSoundLoginFragment != null){
@@ -179,6 +175,9 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("UseValueOf")
     private void createSoundCloudArea() {
+        if (getActivity() == null) {
+            return;
+        }
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         User currUser = ((MainScreenActivity) getActivity()).currentUser;
@@ -197,13 +196,10 @@ public class ProfileFragment extends Fragment {
         ft.commitAllowingStateLoss();
     }
 
-    private TextView txtFetchError;
-    private ProgressBar progressBar;
-    private LinearLayout llProfile;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.MY_PROFILE_FRAGMENT;
         mainScreenActivity.setTitle(R.string.main_title_my_profile);
         mainScreenActivity.invalidateOptionsMenu();
@@ -228,10 +224,8 @@ public class ProfileFragment extends Fragment {
      */
     private void populateUser(User u) {
 
-        if (u.imgURL != null) {
-            if (!u.imgURL.equals("")) {
-                Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
-            }
+        if (u.imgURL != null && !u.imgURL.equals("")) {
+            Picasso.with(getActivity()).load(u.imgURL).into(ivUserProfileImage);
         }
 
         txtName.setText(u.name);
@@ -325,8 +319,6 @@ public class ProfileFragment extends Fragment {
 
                         if (photoPath != null) {
                             sendImageToServer(galleryPhoto.getPath(), true);
-                        } else {
-
                         }
 
                     } catch (FileNotFoundException e) {
@@ -344,10 +336,7 @@ public class ProfileFragment extends Fragment {
     }
 
     class MyThread extends Thread {
-        Handler handler;
-        public MyThread() {
-
-        }
+        private Handler handler;
 
         @Override
         public void run() {
@@ -384,6 +373,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (getActivity() == null) {
+            return;
+        }
         Boolean allGranted = true;
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
@@ -406,6 +398,8 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.user_allow_storage, Toast.LENGTH_SHORT).show();
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -417,10 +411,10 @@ public class ProfileFragment extends Fragment {
      * @param data The intent data. Contains the URI of the image.
      */
     public void onImageSelectResult(int requestCode, int resultCode, Intent data) {
-
-        String url = getResources().getString(R.string.api_address).concat("/profile-picture");
+        if (getActivity() == null) {
+            return;
+        }
         if (resultCode == RESULT_OK) {
-
             if (requestCode == CAMERA_REQUEST) {
                 displayDownloadMessage(getString(R.string.profile_upload_title), getString(R.string.profile_upload_message));
                 sendImageToServer(cameraPhoto.getPhotoPath(), false);
@@ -444,7 +438,7 @@ public class ProfileFragment extends Fragment {
     public void sendImageToServer(String path, final Boolean shouldDeleteAfterwards) {
         final File image = new File(path);
         final String url = getResources().getString(R.string.api_address).concat("/profile-picture");
-        final MultipartRequest multipartRequest = new MultipartRequest(url, image, "",
+        final MultipartRequest multipartRequest = new MultipartRequest(url, image,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String urlResponse) {
@@ -458,7 +452,7 @@ public class ProfileFragment extends Fragment {
                         //Toast.makeText(getActivity(), R.string.user_image_success, Toast.LENGTH_SHORT).show();
                         String a = validateJSON(urlResponse);
                         if (a != null) {
-                            if (!a.equals("")) {
+                            if (!"".equals(a)) {
                                 Picasso.with(getActivity()).load(a).into(ivUserProfileImage);
                             }
                             ((MainScreenActivity) getActivity()).updateNavUserImage(a);
@@ -685,7 +679,9 @@ public class ProfileFragment extends Fragment {
     // The onActivityResult function in MainScreenActivity calls this function.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (getActivity() == null) {
+            return;
+        }
         if (requestCode == EDIT_PROFILE_REQUEST_CODE) {
             if (data != null) {
                 User currUser = ((MainScreenActivity) getActivity()).currentUser;

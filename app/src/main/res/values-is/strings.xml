@@ -31,9 +31,6 @@
     <string name="setup_no_genre_selection">Þú verður að velja a.m.k. eina tónlistarstefnu</string>
     <string name="setup_no_instrument_selection">Þú verður að velja a.m.k. eitt hljóðfæri</string>
 
-    <!-- Filter Screen -->
-    <string name="filter_title">Sía</string>
-
     <!-- Login Screen -->
     <string name="login_username">Tölvupóstur</string>
     <string name="login_password">Lykilorð</string>
@@ -88,11 +85,9 @@
     <string name="no_distance_available">Vegalengd ekki tiltæk</string>
     <string name="km_distance">km frá þér</string>
     <string name="profile_select_song">Velja lag</string>
-    <string name="select_genres">Velja tónlistarsmekki</string>
     <string name="search">Leita</string>
     <string name="search_title">Ítarleg leit</string>
     <string name="search_find_username">Leita eftir nafni</string>
-    <string name="select_instruments">Velja hljóðfæri</string>
     <string name="please_enter_search_parameters">Notaðu þessi tól til þess að finna hinn fullkomna tónlistarmann</string>
     <string name="ages">Sýna aldursbil</string>
     <string name="all_genres">Allir tónlistarsmekkir</string>
@@ -128,13 +123,11 @@
     <string name="main_log_out_title">Skrái þig út</string>
     <string name="main_matched">Þið tengdust!</string>
     <string name="main_title_search_results">Leitarniðurstöður</string>
-    <string name="main_title_search">Leit</string>
     <string name="main_title_upcoming_features">Á döfinni</string>
     <string name="matches_error_json">Gat ekki parsað JSON hlutinn.</string>
     <string name="matches_failed_to_fetch">Gat ekki náð í tenginga listann</string>
     <string name="mi_distance">mílur frá þér</string>
     <string name="password_reset_email_sent">Ef þetta netfang er skráð hjá okkur, þá mun þér berast póstur innan skamms</string>
-    <string name="privacy_title_licenses">Leyfi</string>
     <string name="profile_error_updating_user">Gat ekki uppfært notanda</string>
     <string name="profile_new_photo_dialog">Ný mynd</string>
     <string name="profile_upload_message">Vinsamlegast bíðið...</string>
@@ -143,7 +136,6 @@
     <string name="sc_frag_log_in">Innskrá</string>
     <string name="location_rationale">Til þess að finna tónlistarfólk nálægt þér þurfum við aðgang að staðsetningunni þinni. Við munum aðeins nota hana til þess að mæla vegalengdina milli þín og annars tónlistarfólks.</string>
     <string name="sc_frag_select_song">Veldu lag</string>
-    <string name="matches_error_date">Gat ekki parsað Date hlutinn.</string>
     <string name="search_cancel">Hætta við</string>
     <string name="search_no_results">Gat ekki fundið neinn sem passar við leitarskilyrðin</string>
     <string name="search_none_selected">Ekkert valið</string>
@@ -167,38 +159,32 @@
     <string name="profile_choose_photo">Velja mynd</string>
     <string name="profile_take_photo">Taka mynd</string>
     <string name="setup_no_items">Engir hlutir tiltækir</string>
-    <string name="settings_contact">Hafa samband</string>
     <string name="settings_filter_ages">Aldur</string>
-    <string name="settings_help">Hjálp</string>
     <string name="settings_inactive_alert">Óvirknistilkynning</string>
-    <string name="settings_legal">Lagaleg ákvæði</string>
-    <string name="settings_licenses">Leyfi</string>
     <string name="settings_messages">Skilaboð</string>
     <string name="settings_new_matches">Nýjar tengingar</string>
     <string name="settings_title_filter">Sía</string>
     <string name="settings_title_push_notifications">Tilkynningar</string>
     <string name="settings_title_measurement">Mælieiningar</string>
     <string name="settings_title_legal">Lagaleg ákvæði</string>
-    <string name="settings_title_about_us">Um okkur</string>
-    <string name="settings_terms_of_service">Skilmálar þjónustu</string>
     <string name="settings_support">Aðstoð</string>
     <string name="settings_privacy_policy">Persónuverndarstefna</string>
     <string name="settings_use_imperial_system">Nota breskar mælieiningar</string>
     <string name="upcoming_event_calendar">Tónleikadagatal</string>
     <string name="upcoming_share_users">Deila notendum til vina í gegnum samfélagsmiðla</string>
     <string name="upcoming_rent_practice">Band Start-Up: Stuðningur fyrir upprennandi hljómsveitir</string>
-    <string name="search_mucicians_displayed">Veldu hverskonar tónlistarfólk þú vilt finna</string>
-    <string name="chat_chat_with">Spjall við</string>
-    <string name="email_support">Senda tölvupóst til okkar</string>
-    <string name="chat_title">Spjall</string>
-    <string name="setting_delete_account">Eyða reikningi</string>
+    <string name="search_musicians_displayed">Veldu hverskonar tónlistarfólk þú vilt finna</string>
+    <string name="chat_title2">Spjall við</string>
+    <string name="settings_email_support">Senda tölvupóst til okkar</string>
+    <string name="chat_title1">Spjall</string>
+    <string name="settings_delete_account">Eyða reikningi</string>
     <string name="settings_alert_delete_message">Ertu viss um að þú viljir eyða reikningnum þínum?\n\nÞessi aðgerð er ekki afturkræf.</string>
     <string name="settings_alert_delete_positive">Eyða</string>
     <string name="settings_alert_delete_title">Eyða reikningi</string>
     <string name="settings_title_manage_account">Band Up reikningurinn þinn</string>
     <string name="settings_progress_delete_message">Vinsamlegast bíðið...</string>
     <string name="settings_progress_delete_title">Eyði reikning</string>
-    <string name="chat_user_profile">Skoða prófíl</string>
+    <string name="chat_view_profile">Skoða prófíl</string>
 
 
 </resources>

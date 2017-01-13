@@ -3,7 +3,8 @@
     xmlns:rsb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.melodies.bandup.MainScreenActivity.SettingsFragment">
+    android:background="@color/bandUpBlack"
+    tools:context="com.melodies.bandup.main_screen_activity.SettingsFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -73,7 +74,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
-                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekBarAges"
@@ -185,7 +186,7 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="@string/email_support"
+                    android:text="@string/settings_email_support"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:gravity="center_vertical"
@@ -243,7 +244,7 @@
                     android:layout_height="1dp"
                     android:background="#50FFFFFF" />
                 <TextView
-                    android:text="@string/setting_delete_account"
+                    android:text="@string/settings_delete_account"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:id="@+id/txtDeleteAccount"

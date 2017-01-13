@@ -31,13 +31,13 @@ public class PrivacyPolicy extends AppCompatActivity {
     }
 
     // Return to previous Activity
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return true;
     }
 
     private void displayLicense() {
-        TextView txtLicence = (TextView)findViewById(R.id.txtLicense);
+        TextView txtLicence = (TextView) findViewById(R.id.txtLicense);
 
         try {
             InputStream myInput = PrivacyPolicy.this.getAssets().open("license.txt");

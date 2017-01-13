@@ -48,15 +48,15 @@ public class UserSearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     // View objects
-    private EditText             mUsername;
+    private EditText mUsername;
     private RangeSeekBar<Number> mSeekBarAges;
-    private TextView             mSelectedInstruments;
-    private TextView             mSelectedGenres;
-    private TextView             mInstrumentsTitle;
-    private TextView             mGenresTitle;
-    private Button               mInstruments;
-    private Button               mGenres;
-    private Button               mSearch;
+    private TextView mSelectedInstruments;
+    private TextView mSelectedGenres;
+    private TextView mInstrumentsTitle;
+    private TextView mGenresTitle;
+    private Button mInstruments;
+    private Button mGenres;
+    private Button mSearch;
 
     // The id's of all selected genres (data that will be sent to search query).
     private ArrayList<CharSequence> mSelectedGenreIdList = new ArrayList<>();
@@ -83,6 +83,7 @@ public class UserSearchFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment UserSearchFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -95,8 +96,9 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Used to show the selected instruments and genres that the user has previously chosen.
+     *
      * @param arrayNameList array of instrument or genre names.
-     * @param selectedText text that will be displayed.
+     * @param selectedText  text that will be displayed.
      */
     public void writeToSelectionText(ArrayList<CharSequence> arrayNameList, TextView selectedText) {
         // If user selected something before then add it to the selectedText.
@@ -108,7 +110,7 @@ public class UserSearchFragment extends Fragment {
                     selectedText.append(", ");
                 }
             }
-        }else {
+        } else {
             selectedText.setText(R.string.search_none_selected);
         }
     }
@@ -128,7 +130,7 @@ public class UserSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.SEARCH_FRAGMENT;
         mainScreenActivity.setTitle(R.string.search_title);
         mainScreenActivity.invalidateOptionsMenu();
@@ -139,31 +141,33 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Find all views to be manipulated and set them to private variables.
+     *
      * @param rootView
      */
     private void findViews(View rootView) {
-        mUsername            = (EditText) rootView.findViewById(R.id.et_search_username);
-        mSeekBarAges         = (RangeSeekBar<Number>) rootView.findViewById(R.id.search_seekBarAges);
-        mInstruments         = (Button) rootView.findViewById(R.id.btn_select_instruments);
+        mUsername = (EditText) rootView.findViewById(R.id.et_search_username);
+        mSeekBarAges = (RangeSeekBar<Number>) rootView.findViewById(R.id.search_seekBarAges);
+        mInstruments = (Button) rootView.findViewById(R.id.btn_select_instruments);
         mSelectedInstruments = (TextView) rootView.findViewById(R.id.txt_select_instruments);
-        mGenres              = (Button) rootView.findViewById(R.id.btn_select_genres);
-        mSelectedGenres      = (TextView) rootView.findViewById(R.id.txt_select_genres);
-        mSearch              = (Button) rootView.findViewById(R.id.btn_search);
+        mGenres = (Button) rootView.findViewById(R.id.btn_select_genres);
+        mSelectedGenres = (TextView) rootView.findViewById(R.id.txt_select_genres);
+        mSearch = (Button) rootView.findViewById(R.id.btn_search);
         mInstrumentsTitle = (TextView) rootView.findViewById(R.id.txt_instruments_title);
         mGenresTitle = (TextView) rootView.findViewById(R.id.txt_genres_title);
     }
 
     /**
      * Display a dialog to show genres and allow user to select multiple.
+     *
      * @param v View which is calling this function
      */
-    public void onShowGenres(View v){
+    public void onShowGenres(View v) {
         Log.d(TAG, "Show genres pushed!");
         mGenres.setEnabled(false);
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getGenres(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 mGenres.setEnabled(true);
@@ -172,7 +176,7 @@ public class UserSearchFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 mGenres.setEnabled(true);
@@ -189,6 +193,7 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Display a dialog to show instruments and allow user to select multiple.
+     *
      * @param v view containing all instruments
      */
     public void onShowInstruments(View v) {
@@ -197,7 +202,7 @@ public class UserSearchFragment extends Fragment {
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getInstruments(new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 mInstruments.setEnabled(true);
@@ -206,7 +211,7 @@ public class UserSearchFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 mInstruments.setEnabled(true);
@@ -222,6 +227,7 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Create and display selection dialog made from the instruments listed in the response object.
+     *
      * @param response
      */
     private void createInstrumentsDialog(JSONArray response) {
@@ -237,21 +243,21 @@ public class UserSearchFragment extends Fragment {
 
             Dialog instrumentDialog = createInstrumentsSelectionDialog(itemNames, itemIds);
             instrumentDialog.show();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Create and display selection dialog made from the genres listed in the response object.
+     *
      * @param response an array of all genres.
      */
     private void createGenresDialog(JSONArray response) {
         try {
             CharSequence[] itemNames = new CharSequence[response.length()];
             ArrayList<CharSequence> itemIds = new ArrayList<>();
-            for (int i = 0; i < response.length(); i++){
+            for (int i = 0; i < response.length(); i++) {
                 JSONObject curr = response.getJSONObject(i);
                 itemNames[i] = curr.getString("name");
                 itemIds.add(curr.getString("_id"));
@@ -267,8 +273,9 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Use dialog builder to create checkbox dialog from itemNames and select itemIds.
+     *
      * @param itemNames list of all instrument names to display.
-     * @param itemIds list of all instrument id's to display (id index corresponds to name index).
+     * @param itemIds   list of all instrument id's to display (id index corresponds to name index).
      * @return
      */
     private Dialog createInstrumentsSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
@@ -325,8 +332,9 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Use dialog builder to create checkbox dialog from itemNames and select itemIds.
+     *
      * @param itemNames list of all genre names to display
-     * @param itemIds list of all genre id's to display (id index corresponds to name index)
+     * @param itemIds   list of all genre id's to display (id index corresponds to name index)
      * @return dialog
      */
     private Dialog createGenresSelectionDialog(final CharSequence[] itemNames, final ArrayList<CharSequence> itemIds) {
@@ -358,14 +366,14 @@ public class UserSearchFragment extends Fragment {
                         mSelectedGenres.setText("");
                         if (mSelectedGenreNames.size() != 0) {
 
-                        for (int i = 0; i < mSelectedGenreNames.size(); i++) {
-                            mSelectedGenres.append(mSelectedGenreNames.get(i));
-                            if (!(i == mSelectedGenreNames.size() - 1)) {
-                                mSelectedGenres.append(", ");
+                            for (int i = 0; i < mSelectedGenreNames.size(); i++) {
+                                mSelectedGenres.append(mSelectedGenreNames.get(i));
+                                if (!(i == mSelectedGenreNames.size() - 1)) {
+                                    mSelectedGenres.append(", ");
+                                }
                             }
-                        }
 
-                        mGenresTitle.setTextColor(getActivity().getResources().getColor(R.color.bandUpYellow));
+                            mGenresTitle.setTextColor(getActivity().getResources().getColor(R.color.bandUpYellow));
                         } else {
                             mGenresTitle.setTextColor(getActivity().getResources().getColor(android.R.color.darker_gray));
                             mSelectedGenres.setText(getString(R.string.search_none_selected));
@@ -385,10 +393,11 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Take all parameters from form and send search request.
+     *
      * @param view
      */
-    public void onClickSearch(View view){
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    public void onClickSearch(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
         Log.d(TAG, "Search initialized");
@@ -398,6 +407,7 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Make and send request to server and respond to results.
+     *
      * @param queryObject JSON query for server
      */
     private void makeQuery(JSONObject queryObject) {
@@ -405,22 +415,22 @@ public class UserSearchFragment extends Fragment {
                 new BandUpResponseListener() {
                     @Override
                     public void onBandUpResponse(Object response) {
-                        if (getActivity() == null){
+                        if (getActivity() == null) {
                             return;
                         }
                         // create userlist and instantiate fragment with new list
-                        try{
-                            JSONObject rsp = (JSONObject)response;
+                        try {
+                            JSONObject rsp = (JSONObject) response;
                             JSONArray userArr = rsp.getJSONArray("result");
 
                             FragmentManager fragmentManager = getFragmentManager();
 
-                            UserListFragment us = ((MainScreenActivity)getActivity()).startSearchResults(userArr);
+                            UserListFragment us = ((MainScreenActivity) getActivity()).startSearchResults(userArr);
 
                             fragmentManager.beginTransaction()
-                                            .replace(R.id.mainFrame, us).addToBackStack(null)
-                                            .commit();
-                        } catch (JSONException ex){
+                                    .replace(R.id.mainFrame, us).addToBackStack(null)
+                                    .commit();
+                        } catch (JSONException ex) {
                             ex.printStackTrace();
                         }
 
@@ -428,7 +438,7 @@ public class UserSearchFragment extends Fragment {
                 }, new BandUpErrorListener() {
                     @Override
                     public void onBandUpErrorResponse(VolleyError error) {
-                        if (getActivity() == null){
+                        if (getActivity() == null) {
                             return;
                         }
                         error.printStackTrace();
@@ -438,6 +448,7 @@ public class UserSearchFragment extends Fragment {
 
     /**
      * Take all information from form and if not in default value state insert into query.
+     *
      * @return JSONObject that represents our query
      */
     private JSONObject makeQueryJson() {
@@ -448,8 +459,8 @@ public class UserSearchFragment extends Fragment {
 
         // construct JSON
         JSONObject query = new JSONObject();
-        try{
-            if (!username.equals("")){
+        try {
+            if (!username.equals("")) {
                 JSONObject regex = new JSONObject();
                 // get all users with username as substring
                 regex.put("$regex", username);
@@ -458,20 +469,20 @@ public class UserSearchFragment extends Fragment {
                 query.put("username", regex);
             }
             // set genre and instrument selection
-            if (mSelectedGenreIdList.size() > 0){
+            if (mSelectedGenreIdList.size() > 0) {
                 JSONObject elemMatch = new JSONObject();
                 JSONArray genres = new JSONArray();
-                for (int i = 0; i < mSelectedGenreIdList.size(); i++){
+                for (int i = 0; i < mSelectedGenreIdList.size(); i++) {
                     genres.put(mSelectedGenreIdList.get(i));
                 }
                 elemMatch.put("$in", genres);
                 query.put("genres", elemMatch);
             }
 
-            if(mSelectedInstrumentIdList.size() > 0){
+            if (mSelectedInstrumentIdList.size() > 0) {
                 JSONObject elemMatch = new JSONObject();
                 JSONArray instruments = new JSONArray();
-                for (int i = 0; i < mSelectedInstrumentIdList.size(); i++){
+                for (int i = 0; i < mSelectedInstrumentIdList.size(); i++) {
                     instruments.put(mSelectedInstrumentIdList.get(i));
                 }
                 elemMatch.put("$in", instruments);
@@ -479,7 +490,6 @@ public class UserSearchFragment extends Fragment {
             }
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-
 
             // set age ranges
             Calendar minDate = Calendar.getInstance();
@@ -495,12 +505,11 @@ public class UserSearchFragment extends Fragment {
             dateSelect.put("$gte", df.format(maxDate.getTime()));
 
             query.put("dateOfBirth", dateSelect);
-        }catch (JSONException ex){
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
         return query;
     }
-
 
     @Override
     public void onAttach(Context context) {

@@ -27,6 +27,7 @@ import com.melodies.bandup.Login;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,27 +50,27 @@ public class SettingsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private static int   searchRadius = 0;
-    private TextView     txtRadius;
-    private SeekBar      seekBarRadius;
-    private Switch       switchMatches;
-    private Switch       switchMessages;
-    private Switch       switchAlert;
-    private Switch       switchUnit;
-    private TextView     txtContact;
-    private TextView     txtHelp;
-    private TextView     txtSupport;
-    private TextView     txtLegal;
-    private TextView     txtLicenses;
-    private TextView     txtPPolicy;
-    private TextView     txtTermsOfService;
-    private TextView     txtVersion;
-    private TextView     txtDeleteAccount;
-    ProgressDialog       deleteDialog;
-
+    private static int searchRadius = 0;
+    private TextView txtRadius;
+    private SeekBar seekBarRadius;
+    private Switch switchMatches;
+    private Switch switchMessages;
+    private Switch switchAlert;
+    private Switch switchUnit;
+    private TextView txtContact;
+    private TextView txtHelp;
+    private TextView txtSupport;
+    private TextView txtLegal;
+    private TextView txtLicenses;
+    private TextView txtPPolicy;
+    private TextView txtTermsOfService;
+    private TextView txtVersion;
+    private TextView txtDeleteAccount;
+    ProgressDialog deleteDialog;
 
     // Required empty public constructor
-    public SettingsFragment() {}
+    public SettingsFragment() {
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -93,7 +94,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
         mainScreenActivity.currentFragment = mainScreenActivity.SETTINGS_FRAGMENT;
         mainScreenActivity.setTitle(R.string.main_title_settings);
         mainScreenActivity.invalidateOptionsMenu();
@@ -114,13 +115,12 @@ public class SettingsFragment extends Fragment {
         notificationMatchesInit(rootView);
         notificationMessagesInit(rootView);
         notificationAlertInit(rootView);
-        txtContact        = (TextView)rootView.findViewById(R.id.txtContact);
-        txtHelp           = (TextView)rootView.findViewById(R.id.txtHelp);
-        txtSupport        = (TextView)rootView.findViewById(R.id.txtSupport);
-        txtLicenses       = (TextView)rootView.findViewById(R.id.txtLicenses);
-        txtDeleteAccount  = (TextView) rootView.findViewById(R.id.txtDeleteAccount);
-        txtVersion        = (TextView) rootView.findViewById(R.id.band_up_version_number);
-
+        txtContact = (TextView) rootView.findViewById(R.id.txtContact);
+        txtHelp = (TextView) rootView.findViewById(R.id.txtHelp);
+        txtSupport = (TextView) rootView.findViewById(R.id.txtSupport);
+        txtLicenses = (TextView) rootView.findViewById(R.id.txtLicenses);
+        txtDeleteAccount = (TextView) rootView.findViewById(R.id.txtDeleteAccount);
+        txtVersion = (TextView) rootView.findViewById(R.id.band_up_version_number);
 
         int build = BuildConfig.VERSION_CODE;
         String version = BuildConfig.VERSION_NAME;
@@ -137,7 +137,7 @@ public class SettingsFragment extends Fragment {
 
     // saving and updating unit state
     private void unitInit(View rootView) {
-        switchUnit = (Switch)rootView.findViewById(R.id.switchUnit);
+        switchUnit = (Switch) rootView.findViewById(R.id.switchUnit);
         // loading user switch criteria
         switchUnit.setChecked(loadUserSwitch("switchUnit"));
 
@@ -149,8 +149,7 @@ public class SettingsFragment extends Fragment {
                     String textmi = String.format("Radius: %s %s", kilometersToMiles(loadUserCredentials("searchradius")), "mi");
                     txtRadius.setText(textmi);
 
-                }
-                else {
+                } else {
                     saveSwitchState("switchUnit", false);
 
                     String textkm = String.format("Radius: %s %s", loadUserCredentials("searchradius"), "km");
@@ -163,7 +162,7 @@ public class SettingsFragment extends Fragment {
 
     // if switch Inactive Alert is checked send notifications to user, else do not
     public void notificationAlertInit(View rootView) {
-        switchAlert = (Switch)rootView.findViewById(R.id.switchAlert);
+        switchAlert = (Switch) rootView.findViewById(R.id.switchAlert);
         // loading user switch criteria it's always on(true) by default
         switchAlert.setChecked(loadUserSwitch("switchAlert"));
 
@@ -172,8 +171,7 @@ public class SettingsFragment extends Fragment {
                 // saving new states
                 if (switchAlert.isChecked()) {
                     saveSwitchState("switchAlert", true);
-                }
-                else {
+                } else {
                     saveSwitchState("switchAlert", false);
                 }
             }
@@ -182,7 +180,7 @@ public class SettingsFragment extends Fragment {
 
     // if switch messages is checked send notifications to user about new message, else do not
     public void notificationMessagesInit(View rootView) {
-        switchMessages = (Switch)rootView.findViewById(R.id.switchMessages);
+        switchMessages = (Switch) rootView.findViewById(R.id.switchMessages);
         // loading user switch criteria by default it's always on
         switchMessages.setChecked(loadUserSwitch("switchMessages"));
 
@@ -191,8 +189,7 @@ public class SettingsFragment extends Fragment {
                 // saving new states
                 if (switchMessages.isChecked()) {
                     saveSwitchState("switchMessages", true);
-                }
-                else {
+                } else {
                     saveSwitchState("switchMessages", false);
                 }
             }
@@ -202,7 +199,7 @@ public class SettingsFragment extends Fragment {
 
     // if switch matches is checked send notifications to user about new matches, else do not
     public void notificationMatchesInit(View rootView) {
-        switchMatches = (Switch)rootView.findViewById(R.id.switchMatches);
+        switchMatches = (Switch) rootView.findViewById(R.id.switchMatches);
         // loading user switch criteria
         switchMatches.setChecked(loadUserSwitch("switchMatches"));
 
@@ -211,8 +208,7 @@ public class SettingsFragment extends Fragment {
                 // saving new states
                 if (switchMatches.isChecked()) {
                     saveSwitchState("switchMatches", true);
-                }
-                else {
+                } else {
                     saveSwitchState("switchMatches", false);
                 }
             }
@@ -236,6 +232,7 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
+
     // ============================== START Shared Preferences SAVING AND LOADING ===================================================
     // Saving user credentials: age and searchrangeon on User Phone
     public void saveUserSearchRange(String valueName, Integer value) {
@@ -257,9 +254,9 @@ public class SettingsFragment extends Fragment {
     public Integer loadUserCredentials(String valueName) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileAge", Context.MODE_PRIVATE);
         if (valueName == "minAge") {
-            return sharedPreferences.getInt (valueName, MINAGE);    // This is default value for age, and range
-        } else if (valueName == "maxAge"){
-            return sharedPreferences.getInt (valueName, MAXAGE);    // This is default value for age, and range
+            return sharedPreferences.getInt(valueName, MINAGE);    // This is default value for age, and range
+        } else if (valueName == "maxAge") {
+            return sharedPreferences.getInt(valueName, MAXAGE);    // This is default value for age, and range
         } else {
             return sharedPreferences.getInt(valueName, DEFAULTAGE);
         }
@@ -277,38 +274,37 @@ public class SettingsFragment extends Fragment {
     // ============================== END Shared Preferences SAVING AND LOADING ===================================================
 
     int stepSize = 5;
+
     // all behaviour of radiusBarUnit is placed in this function
     private void radiusInit(View rootView) {
-        txtRadius = (TextView)rootView.findViewById(R.id.txtRadius);
-        seekBarRadius = (SeekBar)rootView.findViewById(R.id.seekBarRadius);
+        txtRadius = (TextView) rootView.findViewById(R.id.txtRadius);
+        seekBarRadius = (SeekBar) rootView.findViewById(R.id.seekBarRadius);
         // Default values
         seekBarRadius.setMax(MAX_RANGE);
         seekBarRadius.setProgress(loadUserCredentials("searchradius"));
         if (loadUserSwitch("switchUnit")) {
             String textmi = String.format("Radius: %s %s", kilometersToMiles(loadUserCredentials("searchradius")), "mi");
             txtRadius.setText(textmi);
-        }
-        else {
+        } else {
             String textkm = String.format("Radius: %s %s", loadUserCredentials("searchradius"), "km");
             txtRadius.setText(textkm);
         }
 
-        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarRadius.setMax(MAX_RANGE);      // Maximum value of search range in Km
 
-                progress = ((int)Math.round(progress/stepSize))*stepSize;
+                progress = ((int) Math.round(progress / stepSize)) * stepSize;
                 seekBar.setProgress(progress);
 
                 // if unit switch is on, put mi in text view else km
                 if (loadUserSwitch("switchUnit")) {
-                          // Maximum value of search range in Mi
+                    // Maximum value of search range in Mi
                     String radius = String.format("Radius: %s %s", kilometersToMiles(progress), "mi");
                     txtRadius.setText(radius);
                     searchRadius = progress;
-                }
-                else {
+                } else {
                     String radius = String.format("Radius: %s %s", progress, "km");
                     txtRadius.setText(radius);
                     searchRadius = progress;
@@ -316,7 +312,8 @@ public class SettingsFragment extends Fragment {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -348,7 +345,7 @@ public class SettingsFragment extends Fragment {
             DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().updateUser(userUpdated, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
-                    if (getActivity() == null){
+                    if (getActivity() == null) {
                         return;
                     }
                     // succesful response
@@ -356,7 +353,7 @@ public class SettingsFragment extends Fragment {
             }, new BandUpErrorListener() {
                 @Override
                 public void onBandUpErrorResponse(VolleyError error) {
-                    if (getActivity() == null){
+                    if (getActivity() == null) {
                         return;
                     }
                     error.printStackTrace();
@@ -374,17 +371,17 @@ public class SettingsFragment extends Fragment {
         return (int) Math.ceil(kilometers);
     }
 
-    public void onClickContact (View view) {
+    public void onClickContact(View view) {
         Intent contact = new Intent(getActivity(), Contact.class);
         startActivity(contact);
     }
 
-    public void onClickPrivacyPolicy (View view) {
+    public void onClickPrivacyPolicy(View view) {
         Intent privacy = new Intent(getActivity(), PrivacyPolicy.class);
         startActivity(privacy);
     }
 
-    public void onClickDeleteAccount (View view) {
+    public void onClickDeleteAccount(View view) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int choice) {
@@ -396,25 +393,31 @@ public class SettingsFragment extends Fragment {
                         deleteDialog.show();
 
                         DatabaseSingleton.getInstance(getActivity()).getBandUpDatabase().delete_user(
-                                    new JSONObject(),
-                                    new BandUpResponseListener() {
-                                        @Override
-                                        public void onBandUpResponse(Object response) {
-                                            deleteDialog.dismiss();
-                                            Intent intent = new Intent(getActivity(), Login.class);
-                                            startActivity(intent);
-                                            getActivity().finish();
+                                new JSONObject(),
+                                new BandUpResponseListener() {
+                                    @Override
+                                    public void onBandUpResponse(Object response) {
+                                        if (getActivity() == null) {
+                                            return;
                                         }
-                                    },
-                                    new BandUpErrorListener() {
-                                        @Override
-                                        public void onBandUpErrorResponse(VolleyError error) {
-                                            System.out.println(error.getMessage());
-                                            deleteDialog.dismiss();
-                                            Toast.makeText(getActivity(), "Could not delete account.\nPlease try again later.", Toast.LENGTH_LONG).show();
-                                        }
+                                        deleteDialog.dismiss();
+                                        Intent intent = new Intent(getActivity(), Login.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
                                     }
-                            );
+                                },
+                                new BandUpErrorListener() {
+                                    @Override
+                                    public void onBandUpErrorResponse(VolleyError error) {
+                                        if (getActivity() == null) {
+                                            return;
+                                        }
+                                        System.out.println(error.getMessage());
+                                        deleteDialog.dismiss();
+                                        Toast.makeText(getActivity(), "Could not delete account.\nPlease try again later.", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
@@ -446,7 +449,6 @@ public class SettingsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

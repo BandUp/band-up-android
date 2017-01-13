@@ -54,7 +54,8 @@ public class UserItemFragment extends Fragment {
 
     /**
      * Create a new instance of the UserItemFragment
-     * @param num the index of the user in the list
+     *
+     * @param num  the index of the user in the list
      * @param user the user itself.
      * @return the fragment
      */
@@ -82,17 +83,17 @@ public class UserItemFragment extends Fragment {
 
     private void initializeTextViews(View rootView) {
         ivUserProfileImage = (ImageView) rootView.findViewById(R.id.imgProfile);
-        txtName            = (TextView)  rootView.findViewById(R.id.txtName);
-        txtInstruments     = (TextView)  rootView.findViewById(R.id.txtMainInstrument);
-        txtGenres          = (TextView)  rootView.findViewById(R.id.txtGenres);
-        txtDistance        = (TextView)  rootView.findViewById(R.id.txtDistance);
-        txtPercentage      = (TextView)  rootView.findViewById(R.id.txtPercentage);
-        txtAge             = (TextView)  rootView.findViewById(R.id.txtAge);
-        mAdView            = (AdView)    rootView.findViewById(R.id.adView);
+        txtName = (TextView) rootView.findViewById(R.id.txtName);
+        txtInstruments = (TextView) rootView.findViewById(R.id.txtMainInstrument);
+        txtGenres = (TextView) rootView.findViewById(R.id.txtGenres);
+        txtDistance = (TextView) rootView.findViewById(R.id.txtDistance);
+        txtPercentage = (TextView) rootView.findViewById(R.id.txtPercentage);
+        txtAge = (TextView) rootView.findViewById(R.id.txtAge);
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
     }
 
     private void initializeButtons(View rootView) {
-        btnLike     = (Button)    rootView.findViewById(R.id.btnLike);
+        btnLike = (Button) rootView.findViewById(R.id.btnLike);
         networkErrorBar = (LinearLayout) getActivity().findViewById(R.id.network_connection_error_bar);
 
         btnLike.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +105,13 @@ public class UserItemFragment extends Fragment {
 
                     //if (pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
 
-                        //pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+                    //pager.setCurrentItem(pager.getCurrentItem() + 1, true);
                     //}
                 }
             }
         });
 
-        btnDetails  = (Button)    rootView.findViewById(R.id.btnDetails);
+        btnDetails = (Button) rootView.findViewById(R.id.btnDetails);
         btnDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,14 +131,14 @@ public class UserItemFragment extends Fragment {
         Typeface caviarDreams = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams.ttf");
         Typeface masterOfBreak = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
 
-        txtName       .setTypeface(caviarDreams);
+        txtName.setTypeface(caviarDreams);
         txtInstruments.setTypeface(caviarDreams);
-        txtGenres     .setTypeface(caviarDreams);
-        txtDistance   .setTypeface(caviarDreams);
-        txtPercentage .setTypeface(caviarDreams);
-        txtAge        .setTypeface(caviarDreams);
+        txtGenres.setTypeface(caviarDreams);
+        txtDistance.setTypeface(caviarDreams);
+        txtPercentage.setTypeface(caviarDreams);
+        txtAge.setTypeface(caviarDreams);
 
-        btnLike   .setTypeface(masterOfBreak);
+        btnLike.setTypeface(masterOfBreak);
         btnDetails.setTypeface(masterOfBreak);
     }
 
@@ -153,6 +154,9 @@ public class UserItemFragment extends Fragment {
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
             @Override
             public void onBandUpResponse(Object response) {
+                if (getActivity() == null) {
+                    return;
+                }
                 networkErrorBar.setVisibility(View.INVISIBLE);
                 JSONObject responseObj = null;
 
@@ -181,7 +185,7 @@ public class UserItemFragment extends Fragment {
                     }
                     user.isLiked = true;
 
-                    ((MainScreenActivity)getActivity()).userListFragment.mAdapter.likeUserById(user.id);
+                    ((MainScreenActivity) getActivity()).userListFragment.mAdapter.likeUserById(user.id);
 
                     if (isMatch) {
                         Toast.makeText(getActivity(), R.string.main_matched, Toast.LENGTH_SHORT).show();
@@ -193,6 +197,9 @@ public class UserItemFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
+                if (getActivity() == null) {
+                    return;
+                }
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     networkErrorBar.setVisibility(View.VISIBLE);
                     return;
@@ -205,7 +212,6 @@ public class UserItemFragment extends Fragment {
             }
         });
     }
-
 
     /*
      * Set up the view for the fragment.
@@ -225,6 +231,7 @@ public class UserItemFragment extends Fragment {
 
     /**
      * Displays the user 'u' in the fragment
+     *
      * @param u
      */
     private void populateUser(User u) {
@@ -232,13 +239,12 @@ public class UserItemFragment extends Fragment {
             return;
         }
         LocaleRules localeRules = LocaleSingleton.getInstance(getActivity()).getLocaleRules();
-        User authUser = ((MainScreenActivity)getActivity()).currentUser;
+        User authUser = ((MainScreenActivity) getActivity()).currentUser;
         txtName.setText(u.name);
 
         if (u.favoriteinstrument != null && !u.favoriteinstrument.equals("")) {
             txtInstruments.setText(u.favoriteinstrument);
-        }
-        else {
+        } else {
             if (u.instruments.size() != 0) {
                 txtInstruments.setText(u.instruments.get(0));
             }
@@ -251,7 +257,6 @@ public class UserItemFragment extends Fragment {
         }
 
         txtPercentage.setText(u.percentage + "%");
-
 
         if (u.isLiked) {
             btnLike.setText(getString(R.string.user_list_liked));
@@ -281,10 +286,10 @@ public class UserItemFragment extends Fragment {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SettingsFileSwitch", Context.MODE_PRIVATE);
                 Boolean usesImperial = sharedPreferences.getBoolean("switchUnit", false);
                 if (usesImperial) {
-                    String distanceString = String.format("%s %s", (int) Math.ceil(kilometersToMiles(distanceBetweenUsers/1000)), getString(R.string.mi_distance));
+                    String distanceString = String.format("%s %s", (int) Math.ceil(kilometersToMiles(distanceBetweenUsers / 1000)), getString(R.string.mi_distance));
                     txtDistance.setText(distanceString);
                 } else {
-                    String distanceString = String.format("%s %s", (int) Math.ceil(distanceBetweenUsers/1000), getString(R.string.km_distance));
+                    String distanceString = String.format("%s %s", (int) Math.ceil(distanceBetweenUsers / 1000), getString(R.string.km_distance));
                     txtDistance.setText(distanceString);
                 }
             } else {
@@ -329,6 +334,7 @@ public class UserItemFragment extends Fragment {
             return null;
         }
     }
+
     // Converts miles into whole kilometers for consistent search range storage
     private int kilometersToMiles(double miles) {
         return (int) Math.round(miles / 1.609344);

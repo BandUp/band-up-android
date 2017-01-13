@@ -1,4 +1,5 @@
 package com.melodies.bandup.main_screen_activity;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -14,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-
 public class MultipartRequest extends Request<String> {
     public static final String KEY_PICTURE = "mypicture";
     public static final String KEY_PICTURE_NAME = "filename";
@@ -22,7 +22,6 @@ public class MultipartRequest extends Request<String> {
     private HttpEntity mHttpEntity;
 
     private Response.Listener mListener;
-
 
     public MultipartRequest(String url, File file,
                             Response.Listener<String> listener,

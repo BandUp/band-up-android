@@ -128,7 +128,6 @@ public class UserDetailsFragment extends Fragment {
         Typeface caviarDreamsBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/caviar_dreams_bold.ttf");
         Typeface masterOfBreak = Typeface.createFromAsset(getActivity().getAssets(), "fonts/master_of_break.ttf");
 
-
         txtName.setTypeface(caviarDreams);
         txtDistance.setTypeface(caviarDreams);
         txtPercentage.setTypeface(caviarDreams);
@@ -150,15 +149,13 @@ public class UserDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getActivity() instanceof  MainScreenActivity) {
+        if (getActivity() instanceof MainScreenActivity) {
             MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
             mainScreenActivity.currentFragment = mainScreenActivity.USER_DETAILS_FRAGMENT;
             mainScreenActivity.invalidateOptionsMenu();
         }
-
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_user_details, container, false);
@@ -252,7 +249,6 @@ public class UserDetailsFragment extends Fragment {
         createSoundCloudPlayer(u);
         llProfile.setVisibility(View.VISIBLE);
 
-
         txtNoSoundCloudExample.setText(String.format("%s %s", u.name, getString(R.string.no_soundcloud_example)));
     }
 
@@ -285,7 +281,7 @@ public class UserDetailsFragment extends Fragment {
 
     private void createSoundCloudPlayer(User user) {
 
-        if (user.soundCloudURL == null || user.soundCloudURL.equals("")){
+        if (user.soundCloudURL == null || user.soundCloudURL.equals("")) {
             txtNoSoundCloudExample.setVisibility(View.VISIBLE);
         } else {
             txtNoSoundCloudExample.setVisibility(View.GONE);
@@ -298,8 +294,6 @@ public class UserDetailsFragment extends Fragment {
             ft.replace(mSoundcloudArea.getId(), soundCloudFragment, "soundCloudFragment");
             ft.commit();
         }
-
-
 
     }
 
@@ -317,7 +311,7 @@ public class UserDetailsFragment extends Fragment {
 
             @Override
             public void onBandUpResponse(Object response) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 progressBar.setVisibility(View.INVISIBLE);
@@ -337,7 +331,7 @@ public class UserDetailsFragment extends Fragment {
         }, new BandUpErrorListener() {
             @Override
             public void onBandUpErrorResponse(VolleyError error) {
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
                 txtFetchError.setVisibility(View.VISIBLE);

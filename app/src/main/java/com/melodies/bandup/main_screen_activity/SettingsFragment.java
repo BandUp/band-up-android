@@ -66,11 +66,7 @@ public class SettingsFragment extends Fragment {
     private TextView txtTermsOfService;
     private TextView txtVersion;
     private TextView txtDeleteAccount;
-    ProgressDialog deleteDialog;
-
-    // Required empty public constructor
-    public SettingsFragment() {
-    }
+    private ProgressDialog deleteDialog;
 
     /**
      * Use this factory method to create a new instance of
@@ -397,9 +393,7 @@ public class SettingsFragment extends Fragment {
                                 new BandUpResponseListener() {
                                     @Override
                                     public void onBandUpResponse(Object response) {
-                                        if (getActivity() == null) {
-                                            return;
-                                        }
+                                        if (getActivity() == null)
                                         deleteDialog.dismiss();
                                         Intent intent = new Intent(getActivity(), Login.class);
                                         startActivity(intent);
@@ -409,9 +403,6 @@ public class SettingsFragment extends Fragment {
                                 new BandUpErrorListener() {
                                     @Override
                                     public void onBandUpErrorResponse(VolleyError error) {
-                                        if (getActivity() == null) {
-                                            return;
-                                        }
                                         System.out.println(error.getMessage());
                                         deleteDialog.dismiss();
                                         Toast.makeText(getActivity(), "Could not delete account.\nPlease try again later.", Toast.LENGTH_LONG).show();

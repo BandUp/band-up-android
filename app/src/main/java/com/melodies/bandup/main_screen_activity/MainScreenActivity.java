@@ -266,10 +266,31 @@ public class MainScreenActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        // Open the UserListFragment
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, userListFragment);
-        ft.commit();
+        Bundle extras = getIntent().getExtras();
+        int openFragment;
+        if (extras != null) {
+            openFragment = extras.getInt("OPEN_FRAGMENT");
+
+            if (openFragment == 2) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.mainFrame, matchesFragment);
+                ft.commit();
+                navigationView.getMenu().getItem(2).setChecked(true);
+
+            } else {
+                // Open the UserListFragment
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.mainFrame, userListFragment);
+                ft.commit();
+            }
+        } else {
+            // Open the UserListFragment
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrame, userListFragment);
+            ft.commit();
+        }
+
+
 
         // We know the user is logged in time to start services
         startService(new Intent(getApplicationContext(), RegistrationIntentService.class));
@@ -403,7 +424,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                 }
                 ft.replace(R.id.mainFrame, profileFragment);
                 ft.commit();
-
                 break;
             case R.id.nav_settings:
                 for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {

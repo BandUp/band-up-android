@@ -18,6 +18,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
@@ -73,6 +75,7 @@ public class PersistentCookieStore implements CookieStore {
                 targetCookies.add(cookie);
             } catch (URISyntaxException e) {
                 Log.w(TAG, e);
+                FirebaseCrash.report(e);
             }
         }
     }
@@ -118,6 +121,7 @@ public class PersistentCookieStore implements CookieStore {
                         cookie.getPath() == null ? "/" : cookie.getPath(), null);
             } catch (URISyntaxException e) {
                 Log.w(TAG, e);
+                FirebaseCrash.report(e);
             }
         }
         return cookieUri;

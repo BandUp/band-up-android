@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.VolleySingleton;
@@ -125,7 +126,7 @@ public class SetupShared {
 
                         } catch (JSONException e) {
                             Toast.makeText(context, R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
+                            FirebaseCrash.report(e);
                         }
                     }
                 }
@@ -370,7 +371,7 @@ public class SetupShared {
             editor.apply();
             return true;
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         return false;
     }

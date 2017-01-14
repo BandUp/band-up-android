@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -56,7 +57,7 @@ public class RegistrationIntentService extends IntentService {
             sendRegistrationToServer(token);
             subscribeTopics(token);
         } catch (IOException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -88,7 +89,7 @@ public class RegistrationIntentService extends IntentService {
             });
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -103,7 +104,7 @@ public class RegistrationIntentService extends IntentService {
             try {
                 pubSub.subscribe(token, "/topics/" + topic, null);
             } catch (IOException e) {
-                e.printStackTrace();
+                FirebaseCrash.report(e);
             }
         }
     }

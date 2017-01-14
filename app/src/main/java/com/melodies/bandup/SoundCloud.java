@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 import com.melodies.bandup.setup.SetupShared;
@@ -110,7 +111,7 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
                             mLoginSC.setEnabled(true);
                         }
                     });
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
             }
         }).start();
@@ -132,6 +133,7 @@ public class SoundCloud extends AppCompatActivity implements DatePickable {
                 finish();
             }
         } catch (JSONException e) {
+            FirebaseCrash.report(e);
             Intent instrumentsIntent = new Intent(SoundCloud.this, Instruments.class);
             SoundCloud.this.startActivity(instrumentsIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);

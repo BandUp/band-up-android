@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,7 +120,7 @@ public class ChatFragment extends Fragment {
                     msgObject.put("nick", mReceiverId);
                     msgObject.put("message", message);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
 
                 if (((ChatActivity) getActivity()).sendMessage(msgObject)) {
@@ -184,7 +185,7 @@ public class ChatFragment extends Fragment {
                                 }
                                 mAdapter.notifyDataSetChanged();
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                FirebaseCrash.report(e);
                             }
                         }
                     }

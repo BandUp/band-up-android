@@ -1,5 +1,7 @@
 package com.melodies.bandup.helper_classes;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,7 +107,7 @@ public class User implements Serializable {
 
             }
         } catch (JSONException | ParseException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 

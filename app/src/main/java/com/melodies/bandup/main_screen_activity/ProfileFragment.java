@@ -36,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 import com.melodies.bandup.DatabaseSingleton;
@@ -323,12 +324,12 @@ public class ProfileFragment extends Fragment {
                         }
 
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        FirebaseCrash.report(e);
                     } finally {
                         try {
                             inputStream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (IOException | NullPointerException e) {
+                            FirebaseCrash.report(e);
                         }
                     }
                 }
@@ -586,7 +587,7 @@ public class ProfileFragment extends Fragment {
         try {
             user.put("userId", getUserId());
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         llProfile.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -677,7 +678,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -736,7 +737,7 @@ public class ProfileFragment extends Fragment {
             cameraPhoto.addToGallery();
         } catch (IOException e) {
             Toast.makeText(getActivity(), R.string.user_error, Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -751,7 +752,7 @@ public class ProfileFragment extends Fragment {
                 return null;
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
             return null;
         }
         if (imageURL == null || imageURL.equals("")) {

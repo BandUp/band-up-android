@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.main_screen_activity.ProfileFragment;
 import com.melodies.bandup.R;
@@ -182,10 +183,8 @@ public class SoundCloudLoginFragment extends Fragment implements View.OnClickLis
                                     finish();
                                 }
                             });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (IOException | JSONException e) {
+                    FirebaseCrash.report(e);
                 }
             }
         }).start();

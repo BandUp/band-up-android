@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
@@ -318,7 +319,7 @@ public class SettingsFragment extends Fragment {
                 try {
                     updateUser(getUserId(), "searchradius", searchRadius);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
             }
         });
@@ -357,7 +358,7 @@ public class SettingsFragment extends Fragment {
                 }
             });
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 

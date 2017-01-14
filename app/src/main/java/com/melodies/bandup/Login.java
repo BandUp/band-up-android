@@ -38,6 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -116,7 +117,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     try {
                         Login.this.onClickSignIn(findViewById(R.id.btnSignIn));
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FirebaseCrash.report(e);
                     }
                     return true;
                 }
@@ -277,6 +278,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         } catch (JSONException ex) {
+            FirebaseCrash.report(ex);
             System.out.println(ex.getMessage());
         }
     }
@@ -328,6 +330,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 finish();
             }
         } catch (JSONException e) {
+            FirebaseCrash.report(e);
             openInstrumentsIntent();
             overridePendingTransition(R.anim.slide_in_right, R.anim.no_change);
             finish();
@@ -374,7 +377,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     });
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -428,7 +431,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             user.put("username", username);
             user.put("password", password);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         DatabaseSingleton.getInstance(getApplicationContext()).getBandUpDatabase().local_login(

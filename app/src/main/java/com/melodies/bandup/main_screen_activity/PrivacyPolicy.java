@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.R;
 
 import java.io.BufferedReader;
@@ -50,7 +51,7 @@ public class PrivacyPolicy extends AppCompatActivity {
 
             txtLicence.setText(total.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 }

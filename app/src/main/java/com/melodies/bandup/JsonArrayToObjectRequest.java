@@ -5,6 +5,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +33,10 @@ public class JsonArrayToObjectRequest extends JsonRequest<JSONObject> {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
+            FirebaseCrash.report(e);
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
+            FirebaseCrash.report(je);
             return Response.error(new ParseError(je));
         }
     }

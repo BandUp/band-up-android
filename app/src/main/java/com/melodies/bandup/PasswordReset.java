@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -102,7 +103,7 @@ public class PasswordReset extends AppCompatActivity {
                         }
                 );
             } catch (JSONException e) {
-                e.printStackTrace();
+                FirebaseCrash.report(e);
             }
         } else {
             

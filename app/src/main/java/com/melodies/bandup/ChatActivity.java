@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.main_screen_activity.UserDetailsFragment;
 
 import org.json.JSONObject;
@@ -137,13 +138,17 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         try {
             setTitle(getString(R.string.chat_title1));
             getSupportActionBar().setSubtitle(receiverUsername);
-        } catch (Exception npe) {
+        } catch (NullPointerException npe) {
+            FirebaseCrash.log("Action Bar was null");
+            FirebaseCrash.report(npe);
             setTitle(getString(R.string.chat_title2).concat(" ").concat(receiverUsername));
         }
 
         try {
             mSocket = IO.socket(getResources().getString(R.string.api_address));
         } catch (URISyntaxException e) {
+            FirebaseCrash.log("URL parsing failed");
+            FirebaseCrash.report(e);
             Toast.makeText(ChatActivity.this, "URL parsing failed", Toast.LENGTH_SHORT).show();
         }
 

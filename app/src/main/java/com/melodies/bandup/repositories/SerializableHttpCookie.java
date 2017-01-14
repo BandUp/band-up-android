@@ -17,6 +17,8 @@ package com.melodies.bandup.repositories;/*
 
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,7 +54,8 @@ public class SerializableHttpCookie implements Serializable {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);
             outputStream.writeObject(this);
         } catch (IOException e) {
-            Log.d(TAG, "IOException in encodeCookie", e);
+            FirebaseCrash.log("IOException in encodeCookie");
+            FirebaseCrash.report(e);
             return null;
         }
 
@@ -69,9 +72,11 @@ public class SerializableHttpCookie implements Serializable {
                     byteArrayInputStream);
             cookie = ((SerializableHttpCookie) objectInputStream.readObject()).cookie;
         } catch (IOException e) {
-            Log.d(TAG, "IOException in decodeCookie", e);
+            FirebaseCrash.log("IOException in decodeCookie");
+            FirebaseCrash.report(e);
         } catch (ClassNotFoundException e) {
-            Log.d(TAG, "ClassNotFoundException in decodeCookie", e);
+            FirebaseCrash.log("ClassNotFoundException in decodeCookie");
+            FirebaseCrash.report(e);
         }
 
         return cookie;
@@ -86,6 +91,7 @@ public class SerializableHttpCookie implements Serializable {
             // NoSuchFieldException || IllegalAccessException ||
             // IllegalArgumentException
             Log.w(TAG, e);
+            FirebaseCrash.report(e);
         }
         return false;
     }
@@ -99,6 +105,7 @@ public class SerializableHttpCookie implements Serializable {
             // NoSuchFieldException || IllegalAccessException ||
             // IllegalArgumentException
             Log.w(TAG, e);
+            FirebaseCrash.report(e);
         }
     }
 

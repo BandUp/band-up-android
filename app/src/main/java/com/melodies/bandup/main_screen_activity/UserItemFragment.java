@@ -252,9 +252,7 @@ public class UserItemFragment extends Fragment {
         }
 
         if (u.genres.size() > 0) {
-            if (u.instruments.size() != 0) {
-                txtGenres.setText(u.genres.get(0));
-            }
+            txtGenres.setText(u.genres.get(0));
         }
 
         txtPercentage.setText(u.percentage + "%");

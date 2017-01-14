@@ -138,6 +138,7 @@ public class BandUpGCMListenerService extends GcmListenerService {
         String title = notif.getString("title");
         // create intent to start activity on notification click
         Intent intent = new Intent(this, MainScreenActivity.class);
+        intent.putExtra("OPEN_FRAGMENT", 2);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /*Request code*/, intent,
                 PendingIntent.FLAG_ONE_SHOT);

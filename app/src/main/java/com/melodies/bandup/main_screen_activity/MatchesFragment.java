@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.ChatActivity;
 import com.melodies.bandup.main_screen_activity.adapters.MyMatchesRecyclerViewAdapter;
 import com.melodies.bandup.R;
@@ -157,7 +158,7 @@ public class MatchesFragment extends Fragment {
 
                             } catch (JSONException e) {
                                 Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
+                                FirebaseCrash.report(e);
                             }
                         }
                     }

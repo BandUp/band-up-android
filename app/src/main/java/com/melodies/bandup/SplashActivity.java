@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
@@ -70,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            FirebaseCrash.report(e);
                         }
                     }
                 }, new BandUpErrorListener() {

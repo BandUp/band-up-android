@@ -5,6 +5,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -53,6 +54,9 @@ public class MultipartRequest extends Request<String> {
             mHttpEntity.writeTo(bos);
         } catch (IOException e) {
             VolleyLog.e("IOException writing to ByteArrayOutputStream");
+            FirebaseCrash.log("IOException writing to ByteArrayOutputStream");
+            FirebaseCrash.report(e);
+
         }
         return bos.toByteArray();
     }

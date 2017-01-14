@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.BuildConfig;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.Login;
@@ -598,10 +599,11 @@ public class MainScreenActivity extends AppCompatActivity implements
 
             sendLocation(location);
         } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
+            FirebaseCrash.log("Illegal argument when creating a location request.");
+            FirebaseCrash.report(ex);
         } catch (SecurityException ex) {
-            Toast.makeText(this, "Security Exception: " + ex, Toast.LENGTH_SHORT).show();
-            ex.printStackTrace();
+            FirebaseCrash.log("Security Exception thrown.");
+            FirebaseCrash.report(ex);
         }
     }
 
@@ -634,7 +636,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                         }
                     });
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -664,7 +666,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         try {
             jsonUser.put("userID", user.id);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
@@ -699,7 +701,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                         Toast.makeText(MainScreenActivity.this, R.string.main_matched, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
             }
         }, new BandUpErrorListener() {
@@ -734,7 +736,7 @@ public class MainScreenActivity extends AppCompatActivity implements
         try {
             user.put("userId", getUserId());
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         DatabaseSingleton.getInstance(MainScreenActivity.this.getApplicationContext())

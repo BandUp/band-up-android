@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
@@ -303,7 +304,7 @@ public class UserDetailsFragment extends Fragment {
         try {
             user.put("userId", userid);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         llProfile.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);

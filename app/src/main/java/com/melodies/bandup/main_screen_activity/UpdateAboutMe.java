@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.DatePickable;
 import com.melodies.bandup.DatePickerFragment;
@@ -367,7 +368,7 @@ public class UpdateAboutMe extends AppCompatActivity implements DatePickable {
                 }
             });
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 

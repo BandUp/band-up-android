@@ -20,6 +20,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.main_screen_activity.adapters.UserListAdapter;
 import com.melodies.bandup.R;
@@ -97,7 +98,7 @@ public class UserListFragment extends Fragment {
                     mAdapter.addUsers(parseUsers(jsonArray));
                     mainScreenActivity.setIsSearch(true);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
 
                 return;
@@ -227,7 +228,7 @@ public class UserListFragment extends Fragment {
 
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), R.string.matches_error_json, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                FirebaseCrash.report(e);
             }
         }
         return userList;

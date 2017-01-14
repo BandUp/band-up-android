@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -244,7 +245,7 @@ public class UserSearchFragment extends Fragment {
             Dialog instrumentDialog = createInstrumentsSelectionDialog(itemNames, itemIds);
             instrumentDialog.show();
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -267,7 +268,7 @@ public class UserSearchFragment extends Fragment {
             Dialog genresDialog = createGenresSelectionDialog(itemNames, itemIds);
             genresDialog.show();
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 
@@ -431,7 +432,7 @@ public class UserSearchFragment extends Fragment {
                                     .replace(R.id.mainFrame, us).addToBackStack(null)
                                     .commit();
                         } catch (JSONException ex) {
-                            ex.printStackTrace();
+                            FirebaseCrash.report(ex);
                         }
 
                     }
@@ -506,7 +507,7 @@ public class UserSearchFragment extends Fragment {
 
             query.put("dateOfBirth", dateSelect);
         } catch (JSONException ex) {
-            ex.printStackTrace();
+            FirebaseCrash.report(ex);
         }
         return query;
     }

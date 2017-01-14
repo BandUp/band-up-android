@@ -24,6 +24,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
 
@@ -78,7 +79,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                         try {
                             email.put("email", textValue);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            FirebaseCrash.report(e);
                         }
                         ivSuccess.setVisibility(View.INVISIBLE);
                         ivError.setVisibility(View.INVISIBLE);
@@ -109,7 +110,7 @@ public class Register extends AppCompatActivity implements DatePickable {
                                             ivSuccess.setVisibility(View.INVISIBLE);
                                         }
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        FirebaseCrash.report(e);
                                     }
                                 }
                             }
@@ -404,7 +405,7 @@ public class Register extends AppCompatActivity implements DatePickable {
             jsonObject.put("email", email);
             jsonObject.put("dateOfBirth", dateOfBirth);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         DatabaseSingleton.getInstance(Register.this).getBandUpDatabase().register(jsonObject, new BandUpResponseListener() {
@@ -447,7 +448,7 @@ public class Register extends AppCompatActivity implements DatePickable {
             editor.putString("userId", id);
             editor.apply();
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 }

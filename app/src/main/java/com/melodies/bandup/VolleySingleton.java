@@ -17,6 +17,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.repositories.PersistentCookieStore;
 
 import org.json.JSONException;
@@ -92,7 +93,7 @@ public class VolleySingleton {
         }
         else if (error instanceof ServerError) {
             String jsonString = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-
+            FirebaseCrash.report(error);
             try {
                 JSONObject myObject = new JSONObject(jsonString);
                 int errNo      = myObject.getInt("err");
@@ -100,16 +101,19 @@ public class VolleySingleton {
                 Toast.makeText(mCtx, message, Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 Toast.makeText(mCtx, R.string.volley_server_error, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                FirebaseCrash.report(e);
             }
         }
         else if (error instanceof NetworkError) {
+            FirebaseCrash.report(error);
             Toast.makeText(mCtx, R.string.volley_network_error, Toast.LENGTH_LONG).show();
         }
         else if (error instanceof ParseError) {
+            FirebaseCrash.report(error);
             Toast.makeText(mCtx, R.string.volley_server_parse_error, Toast.LENGTH_LONG).show();
 
         } else {
+            FirebaseCrash.report(error);
             Toast.makeText(mCtx, mCtx.getString(R.string.volley_unknown_error) + error, Toast.LENGTH_LONG).show();
         }
     }

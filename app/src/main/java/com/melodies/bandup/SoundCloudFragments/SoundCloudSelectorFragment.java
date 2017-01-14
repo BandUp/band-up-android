@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.R;
 import com.melodies.bandup.listeners.BandUpErrorListener;
@@ -179,7 +180,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                         }
                     });
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
@@ -207,8 +208,8 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
             dialogBuilder.setTitle(R.string.sc_frag_select_song)
                     .setItems(titles.toArray(new CharSequence[titles.size()]), this);
             return dialogBuilder.create();
-        }catch (JSONException ex){
-            ex.printStackTrace();
+        } catch (JSONException ex){
+            FirebaseCrash.report(ex);
         }
         return null;
     }
@@ -245,7 +246,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
             reader.endObject();
 
         } catch (JSONException | IOException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
         return track;
     }
@@ -288,7 +289,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
             mSongName.setText(selected.getString("title"));
             mTracksArray = new JSONArray();
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
     }
 

@@ -25,6 +25,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.melodies.bandup.DatabaseSingleton;
 import com.melodies.bandup.LocaleSingleton;
 import com.melodies.bandup.R;
@@ -148,7 +149,7 @@ public class UserItemFragment extends Fragment {
         try {
             jsonUser.put("userID", user.id);
         } catch (JSONException e) {
-            e.printStackTrace();
+            FirebaseCrash.report(e);
         }
 
         DatabaseSingleton.getInstance(getActivity().getApplicationContext()).getBandUpDatabase().postLike(jsonUser, new BandUpResponseListener() {
@@ -191,7 +192,7 @@ public class UserItemFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.main_matched, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FirebaseCrash.report(e);
                 }
             }
         }, new BandUpErrorListener() {

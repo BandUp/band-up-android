@@ -10,12 +10,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.melodies.bandup.ChatActivity;
-import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.R;
+import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 
 import java.util.Objects;
 
@@ -41,12 +40,8 @@ public class BandUpGCMListenerService extends GcmListenerService {
         if (notif == null) {
             return;
         }
-        String message = notif.getString("body");
 
         String type = data.getString("type");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-
 
         if (from.startsWith("/topics/")){
             // message recieved from a topic (currently not in use)

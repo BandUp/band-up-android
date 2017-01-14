@@ -404,7 +404,10 @@ public class SettingsFragment extends Fragment {
                                 new BandUpErrorListener() {
                                     @Override
                                     public void onBandUpErrorResponse(VolleyError error) {
-                                        System.out.println(error.getMessage());
+                                        if (error != null && error.getMessage() != null) {
+                                            FirebaseCrash.log("Could not delete account.");
+                                            FirebaseCrash.log(error.getMessage());
+                                        }
                                         deleteDialog.dismiss();
                                         Toast.makeText(getActivity(), "Could not delete account.\nPlease try again later.", Toast.LENGTH_LONG).show();
                                     }

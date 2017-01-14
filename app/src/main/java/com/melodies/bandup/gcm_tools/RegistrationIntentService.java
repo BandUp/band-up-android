@@ -2,7 +2,6 @@ package com.melodies.bandup.gcm_tools;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.android.gms.gcm.GcmPubSub;
@@ -75,7 +74,7 @@ public class RegistrationIntentService extends IntentService {
             DatabaseSingleton.getInstance(this).getBandUpDatabase().sendGCMRegToken(jsonObject, new BandUpResponseListener() {
                 @Override
                 public void onBandUpResponse(Object response) {
-                    Log.d(TAG, "it worked");
+                    FirebaseCrash.log("Registration Token sent to the server");
                     //startService(new Intent(getApplicationContext(), BandUpGCMListenerService.class));
                 }
             }, new BandUpErrorListener() {
@@ -84,7 +83,8 @@ public class RegistrationIntentService extends IntentService {
                     if (error == null) {
                         return;
                     }
-                    Log.d(TAG, error.getMessage());
+                    FirebaseCrash.log("Could not send the Registration Token to the server");
+                    FirebaseCrash.report(error);
                 }
             });
 

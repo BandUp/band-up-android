@@ -9,7 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,9 +38,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.crash.FirebaseCrash;
-import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.listeners.BandUpErrorListener;
 import com.melodies.bandup.listeners.BandUpResponseListener;
+import com.melodies.bandup.main_screen_activity.MainScreenActivity;
 import com.melodies.bandup.setup.Instruments;
 import com.melodies.bandup.setup.SetupShared;
 
@@ -175,7 +174,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onError(FacebookException error) {
-                System.out.println("hit an error");
+                FirebaseCrash.log("Hit an error");
+                FirebaseCrash.report(error);
                 Toast.makeText(Login.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -279,7 +279,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
         } catch (JSONException ex) {
             FirebaseCrash.report(ex);
-            System.out.println(ex.getMessage());
         }
     }
 
@@ -297,7 +296,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Accessing user data from Google & storing on server
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Logged in, accessing user data
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -383,7 +381,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     // Unresorvable error occured and Google API will not be available
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        FirebaseCrash.log("onConnectionFailed: " + connectionResult.toString());
     }
 
     // ------------------------------Google+ END---------------------------------------------------------------

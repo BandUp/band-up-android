@@ -99,7 +99,6 @@ public class BandUpRepository implements BandUpDatabase {
     public void getUserProfile(final JSONObject user, final BandUpResponseListener responseListener, final BandUpErrorListener errorListener) {
 
         String url = mContext.getResources().getString(R.string.api_address).concat("/user");
-        System.out.println(user);
         JsonObjectRequest jsonObjectRequest = createObjectRequest(Request.Method.POST, url, user, responseListener, errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonObjectRequest);
@@ -127,7 +126,6 @@ public class BandUpRepository implements BandUpDatabase {
     @Override
     public void postInstruments(JSONArray instruments, BandUpResponseListener responseListener, BandUpErrorListener errorListener) {
         String url = mContext.getResources().getString(R.string.api_address).concat("/instruments");
-        System.out.println(instruments);
         JsonArrayToObjectRequest jsonInstrumentRequest = createArrayObjectRequest(Request.Method.POST, url, instruments, responseListener, errorListener);
 
         VolleySingleton.getInstance(mContext).addToRequestQueue(jsonInstrumentRequest);

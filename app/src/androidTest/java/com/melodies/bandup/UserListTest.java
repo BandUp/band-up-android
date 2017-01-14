@@ -137,11 +137,8 @@ public class UserListTest {
         app.setLocale(new LocaleRulesDefault(app));
 
         mActivityRule.launchActivity(new Intent());
-        System.out.println();
         onView(withText(mActivityRule.getActivity().getResources().getString(R.string.user_list_no_users))).check(matches(not(isDisplayed())));
-        System.out.println();
         onView(withId(R.id.btnDetails)).perform(click());
-        System.out.println();
         onView(withId(R.id.txtName))           .check(matches(withText("TestUser0")));
         onView(withId(R.id.txtPercentage))     .check(matches(withText("11%")));
         onView(withId(R.id.txtGenresList))     .check(matches(withText("QWERTY0\nYTREWQ0\n")));

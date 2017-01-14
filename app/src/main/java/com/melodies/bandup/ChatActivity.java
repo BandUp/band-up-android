@@ -54,9 +54,9 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         public void call(Object... args) {
             // If the message transmission succeeded or not
             if (args[0].equals(false)) {
-                System.out.println("Socket.IO: Sending message. Message saved to server");
+                FirebaseCrash.log("Socket.IO: Sending message. Message saved to server");
             } else {
-                System.out.println("Socket.IO: Sending message. Receiver online.");
+                FirebaseCrash.log("Socket.IO: Sending message. Receiver online.");
             }
         }
     };
@@ -64,14 +64,14 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     Ack addUserAck = new Ack() {
         @Override
         public void call(Object... args) {
-            System.out.println("Socket.IO: CHECK USERNAME");
+            FirebaseCrash.log("Socket.IO: CHECK USERNAME");
             // If the username is taken
             if (args[0].equals(false)) {
                 hasValidUsername = false;
-                System.out.println("Socket.IO: Username Taken");
+                FirebaseCrash.log("Socket.IO: Username Taken");
             } else {
                 hasValidUsername = true;
-                System.out.println("Socket.IO: Username not Taken");
+                FirebaseCrash.log("Socket.IO: Username not Taken");
             }
         }
     };
@@ -173,7 +173,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                 public void run() {
                     isConnected = true;
                     chatFragment.getChatHistory();
-                    System.out.println("Socket.IO: Connected");
+                    FirebaseCrash.log("Socket.IO: Connected");
                 }
             });
         }
@@ -221,7 +221,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
                 @Override
                 public void run() {
                     isConnected = false;
-                    System.out.println("Socket.IO: Disconnected");
+                    FirebaseCrash.log("Socket.IO: Disconnected");
                 }
             });
         }
@@ -245,9 +245,9 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
 
     public Boolean sendMessage(JSONObject msgObject) {
         if (!isConnected) return false;
-        System.out.println("Socket.IO: Is Connected");
+        FirebaseCrash.log("Socket.IO: Is Connected");
         if (!hasValidUsername) return false;
-        System.out.println("Socket.IO: All is well");
+        FirebaseCrash.log("Socket.IO: All is well");
         mSocket.emit("privatemsg", msgObject, sendMessageAck);
         return true;
     }

@@ -621,7 +621,6 @@ public class MainScreenActivity extends AppCompatActivity implements
             locObject.put("lat", location.getLatitude());
 
             jsonObject.put("location", locObject);
-            System.out.println(locObject);
             DatabaseSingleton.getInstance(this).getBandUpDatabase().postLocation(jsonObject,
                     new BandUpResponseListener() {
                         @Override
@@ -633,6 +632,7 @@ public class MainScreenActivity extends AppCompatActivity implements
                         public void onBandUpErrorResponse(VolleyError error) {
                             error.printStackTrace();
                             Toast.makeText(getApplicationContext(), "Something went wrong sending location", Toast.LENGTH_LONG).show();
+
                         }
                     });
         } catch (JSONException e) {
@@ -718,10 +718,6 @@ public class MainScreenActivity extends AppCompatActivity implements
 
             }
         });
-    }
-
-    public void onClickSave(View v) {
-        System.out.println("FOOOO");
     }
 
     // Get the User ID of the logged in user

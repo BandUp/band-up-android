@@ -274,7 +274,7 @@ public class SoundCloudSelectorFragment extends Fragment implements View.OnClick
                                 return;
                             }
                             // everything was succesfull we do not need to respond
-                            Log.d(TAG, "Succesfully saved");
+                            System.out.println("Succesfully saved");
                         }
                     }, new BandUpErrorListener() {
                         @Override

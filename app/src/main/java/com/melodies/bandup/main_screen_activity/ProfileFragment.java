@@ -299,7 +299,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void sendMessage(final Intent data) {
-        System.out.println(myThread.handler);
         myThread.handler.post(new Runnable() {
             @Override
             public void run() {
@@ -470,9 +469,9 @@ public class ProfileFragment extends Fragment {
 
                         if (shouldDeleteAfterwards) {
                             if (image.delete()) {
-                                System.out.println("FILE DELETION SUCCEEDED");
+                                FirebaseCrash.log("FILE DELETION SUCCEEDED");
                             } else {
-                                System.out.println("FILE DELETION FAILED");
+                                FirebaseCrash.log("FILE DELETION FAILED");
                             }
                         }
                     }
@@ -622,7 +621,7 @@ public class ProfileFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
                 llProfile.setVisibility(View.INVISIBLE);
                 txtFetchError.setVisibility(View.VISIBLE);
-                System.out.println("ERROR");
+                FirebaseCrash.log("Could not get the user profile");
             }
         });
     }

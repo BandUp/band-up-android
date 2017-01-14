@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,7 +162,7 @@ public class UserSearchFragment extends Fragment {
      * @param v View which is calling this function
      */
     public void onShowGenres(View v) {
-        Log.d(TAG, "Show genres pushed!");
+        System.out.println("Show genres pushed!");
         mGenres.setEnabled(false);
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getGenres(new BandUpResponseListener() {
             @Override
@@ -181,8 +180,8 @@ public class UserSearchFragment extends Fragment {
                     return;
                 }
                 mGenres.setEnabled(true);
-                if (error != null) {
-                    Log.d(TAG, error.getMessage());
+                if (error != null && error.getMessage() != null) {
+                    System.out.println(error.getMessage());
                 }
 
                 Toast.makeText(getContext(),
@@ -198,7 +197,7 @@ public class UserSearchFragment extends Fragment {
      * @param v view containing all instruments
      */
     public void onShowInstruments(View v) {
-        Log.d(TAG, "Show instruments pushed!");
+        System.out.println("Show instruments pushed!");
         mInstruments.setEnabled(false);
         DatabaseSingleton.getInstance(getContext()).getBandUpDatabase().getInstruments(new BandUpResponseListener() {
             @Override
@@ -216,8 +215,8 @@ public class UserSearchFragment extends Fragment {
                     return;
                 }
                 mInstruments.setEnabled(true);
-                if (error != null) {
-                    Log.d(TAG, error.getMessage());
+                if (error != null && error.getMessage() != null) {
+                    System.out.println(error.getMessage());
                 }
                 Toast.makeText(getContext(),
                         "Oops, hit an unexpected error while fetching instruments!",
@@ -240,7 +239,7 @@ public class UserSearchFragment extends Fragment {
                 itemNames[i] = curr.getString("name");
                 itemIds.add(curr.getString("_id"));
             }
-            Log.d(TAG, "All instruments have been added to list!");
+            System.out.println("All instruments have been added to list!");
 
             Dialog instrumentDialog = createInstrumentsSelectionDialog(itemNames, itemIds);
             instrumentDialog.show();
@@ -263,7 +262,7 @@ public class UserSearchFragment extends Fragment {
                 itemNames[i] = curr.getString("name");
                 itemIds.add(curr.getString("_id"));
             }
-            Log.d(TAG, "All genres have been added to list!");
+            System.out.println("All genres have been added to list!");
 
             Dialog genresDialog = createGenresSelectionDialog(itemNames, itemIds);
             genresDialog.show();
@@ -401,7 +400,7 @@ public class UserSearchFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-        Log.d(TAG, "Search initialized");
+        System.out.println("Search initialized");
         JSONObject queryObject = makeQueryJson();
         makeQuery(queryObject);
     }

@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
+import com.melodies.bandup.SoundCloudFragments.SoundCloudPlayerFragment;
 import com.melodies.bandup.main_screen_activity.UserDetailsFragment;
 
 import org.json.JSONObject;
@@ -35,7 +36,9 @@ import io.socket.emitter.Emitter;
 
 import static com.melodies.bandup.main_screen_activity.ProfileFragment.DEFAULT;
 
-public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener, UserDetailsFragment.OnFragmentInteractionListener {
+public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
+                                                                UserDetailsFragment.OnFragmentInteractionListener,
+                                                                SoundCloudPlayerFragment.OnFragmentInteractionListener {
 
     private String receiverId;
     private String receiverUsername;
@@ -88,6 +91,7 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        FirebaseCrash.log("Chat Activity Created");
 
         Bundle extras = getIntent().getExtras();
 

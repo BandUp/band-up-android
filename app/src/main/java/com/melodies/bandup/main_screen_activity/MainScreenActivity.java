@@ -631,8 +631,6 @@ public class MainScreenActivity extends AppCompatActivity implements
                         @Override
                         public void onBandUpErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Something went wrong sending location", Toast.LENGTH_LONG).show();
-
                         }
                     });
         } catch (JSONException e) {
